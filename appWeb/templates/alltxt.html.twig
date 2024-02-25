@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>Liste des textes</h1>
+
+<ul>
+    {% for texte in textes %}
+        <li>
+            <a href="{{ path('texte_show', { 'id': texte.id }) }}">{{ texte.text }}</a>
+        </li>
+    {% else %}
+        <li>Aucun texte trouvé.</li>
+    {% endfor %}
+
+</ul>
+<a href="{{ path('new_text') }}">Créer un nouveau texte</a>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>RPS GAME :D</h1>
+
+    <div class="row">
+        <div class="col">
+            <h2>Choix de l'utilisateur</h2>
+            <p id="user-choice"></p>
+        </div>
+        <div class="col">
+            <h2>Choix de l'ordinateur</h2>
+            <p id="computer-choice"></p>
+        </div>
+
+        <div class="col">
+            <h2>Résultat</h2>
+            <p id="result"></p>
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h2>Score de l'utilisateur</h2>
+            <p id="user-score">0</p>
+        </div>
+        <div class="col">
+            <h2>Score de l'ordinateur</h2>
+            <p id="computer-score">0</p>
+        </div>
+
+	<div class="row">
+		<div class="col">
+			<button class="btn-lg btn border m-4" id="pierre">Pierre</button>
+		</div>
+		<div class="col">
+			<button class="btn-lg btn border m-4" id="papier">Feuille</button>
+		</div>
+		<div class="col">
+			<button class="btn-lg btn border m-4" id="ciseaux">Ciseaux</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    var userChoice = "";
+    var computerChoice = "";
+    var result = "";
+    var userScore = 0;
+    var computerScore = 0;
+    var pierre_div = document.getElementById("pierre");
+    var papier_div = document.getElementById("papier");
+    var ciseaux_div = document.getElementById("ciseaux");
+
+    function getComputerChoice() {
+        var choices = ['pierre', 'papier', 'ciseaux'];
+        var randomNumber = Math.floor(Math.random() * 3);
+        return choices[randomNumber];
+    }
+
+    function win(userChoice, computerChoice) {
+        userScore++;
+        document.getElementById("user-score").innerHTML = userScore;
+        document.getElementById("computer-score").innerHTML = computerScore;
+        document.getElementById(userChoice).classList.add('btn-success');
+        setTimeout(function() {document.getElementById(userChoice).classList.remove('btn-success')}, 500);
+        document.getElementById("result").innerHTML = userChoice + " bat " + computerChoice + ". Vous avez gagné !";
+    }
+    
+    function lose(userChoice, computerChoice) {
+        computerScore++;
+        document.getElementById("user-score").innerHTML = userScore;
+        document.getElementById("computer-score").innerHTML = computerScore;
+        document.getElementById(userChoice).classList.add('btn-danger');
+        setTimeout(function() {document.getElementById(userChoice).classList.remove('btn-danger')}, 500);
+        document.getElementById("result").innerHTML = userChoice + " perd contre " + computerChoice + ". Vous avez perdu !";
+    }
+
+    function draw(userChoice, computerChoice) {
+        document.getElementById("user-score").innerHTML = userScore;
+        document.getElementById("computer-score").innerHTML = computerScore;
+        document.getElementById(userChoice).classList.add('btn-secondary');
+        setTimeout(function() {document.getElementById(userChoice).classList.remove('btn-secondary')}, 500);
+        document.getElementById("result").innerHTML = userChoice + " est égal à " + computerChoice + ". C'est une égalité !";
+    }
+
+    function game(userChoice) {
+        computerChoice = getComputerChoice();
+        document.getElementById("user-choice").innerHTML = userChoice;
+        document.getElementById("computer-choice").innerHTML = computerChoice;
+        switch (userChoice + computerChoice) {
+            case "pierreciseaux":
+            case "papierpierre":
+            case "ciseauxpapier":
+                win(userChoice, computerChoice);
+                break;
+            case "pierrepapier":
+            case "papierciseaux":
+            case "ciseauxpierre":
+                lose(userChoice, computerChoice);
+                break;
+            case "pierrepierre":
+            case "papierpapier":
+            case "ciseauxciseaux":
+                draw(userChoice, computerChoice);
+                break;
+        }
+    }
+
+    function main() {
+        pierre_div.addEventListener('click', function() {
+            game("pierre");
+        })
+
+        papier_div.addEventListener('click', function() {
+            game("papier");
+        })
+
+        ciseaux_div.addEventListener('click', function() {
+            game("ciseaux");
+        })
+    }
+
+    main();
+</script>
+{% endblock %}

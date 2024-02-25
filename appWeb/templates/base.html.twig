@@ -1,17 +1,169 @@
 <!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr" data-bs-theme="auto">
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/offcanvas-navbar.css') }}"> {% block stylesheets %}{% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+		</head>
+		<body class="bg-body-tertiary">
+			<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+				<symbol id="check2" viewbox="0 0 16 16">
+					<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+				</symbol>
+				<symbol id="circle-half" viewbox="0 0 16 16">
+					<path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+				</symbol>
+				<symbol id="moon-stars-fill" viewbox="0 0 16 16">
+					<path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+					<path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+				</symbol>
+				<symbol id="sun-fill" viewbox="0 0 16 16">
+					<path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+				</symbol>
+			</svg>
+			<div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+				<button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+					<svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+						<use href="#circle-half"></use>
+					</svg>
+					<span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+					<li>
+						<button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+							<svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+								<use href="#sun-fill"></use>
+							</svg>
+							Light
+							<svg class="bi ms-auto d-none" width="1em" height="1em">
+								<use href="#check2"></use>
+							</svg>
+						</button>
+					</li>
+					<li>
+						<button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+							<svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+								<use href="#moon-stars-fill"></use>
+							</svg>
+							Dark
+							<svg class="bi ms-auto d-none" width="1em" height="1em">
+								<use href="#check2"></use>
+							</svg>
+						</button>
+					</li>
+					<li>
+						<button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+							<svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+								<use href="#circle-half"></use>
+							</svg>
+							Auto
+							<svg class="bi ms-auto d-none" width="1em" height="1em">
+								<use href="#check2"></use>
+							</svg>
+						</button>
+					</li>
+				</ul>
+			</div>
+			<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation" style="z-index: 1000">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="{{path('index') }}">Offcanvas navbar</a>
+					<button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" href="{{path('dashboard') }}">Dashboard</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('notifications') }}">Notifications</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('profile') }}">Profile</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Switch account</a>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a class="dropdown-item" href="{{path('settings') }}">Action</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="#">Another action</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="#">Something else here</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<form class="d-flex" role="search" action="{{path('results') }}">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+							<button class="btn btn-outline-success" type="submit">Search</button>
+						</form>
+					</div>
+				</div>
+			</nav>
+			<div class="nav-scroller bg-body shadow-sm">
+				<nav class="nav" aria-label="Secondary navigation">
+					<a class="nav-link active" aria-current="page" href="{{path('dashboard') }}">Dashboard</a>
+					<a class="nav-link" href="{{path('friends') }}">
+						Friends
+						<span class="badge text-bg-light rounded-pill align-text-bottom">27</span>
+					</a>
+					<a class="nav-link" href="#">Explore</a>
+					<a class="nav-link" href="{{path('suggestions') }}">Suggestions</a>
+					<a class="nav-link" href="{{path('all_texts') }}">Textes</a>
+					<a class="nav-link" href="{{path('rps_index') }}">RPS</a>
+					<a class="nav-link" href="#">Link</a>
+					<a class="nav-link" href="#">Link</a>
+					<a class="nav-link" href="#">Link</a>
+				</nav>
+			</div>
+			<main class="container my-3">
+				<div aria-live="polite" aria-atomic="true" class="position-relative">
+					<div class="toast-container top-0 end-0 p-3">
+						{% for label, messages in app.flashes %}
+							{% for message in messages %}
+								<div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+									<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay='152' data-bs-animation="true">
+										<div class="toast-header text-white bg-{{ label }}">
+											<strong class="me-auto">Notification</strong>
+											<small>Maintenant</small>
+											<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+										</div>
+										<div class="toast-body">
+											{{ message }}
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						{% endfor %}
+					</div>
+				</div>
+				{% block body %}{% endblock %}
+			</main>
+			<script src="{{ asset('js/bootstrap.bundle.min.js') }}" defer></script>
+			<script src="{{ asset('js/offcanvas-navbar.js') }}" defer></script>
+			<script src="{{ asset('js/color-modes.js') }}" defer></script>
+			<script>
+				window.onload = function () {
+					var toastLiveExample = document.getElementById('liveToast')
+					if (toastLiveExample) {
+						toastLiveExample.classList.add('show');
+					}
+				}
+			</script>
+			{% block javascripts %}{% endblock %}
+		</body>
+	</html>

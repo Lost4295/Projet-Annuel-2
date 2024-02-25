@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Article creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Create</button>
+    {{ form_end(form) }}
+
+            <a href="{{ path('index') }}">Back to the list</a>
+{% endblock %}
