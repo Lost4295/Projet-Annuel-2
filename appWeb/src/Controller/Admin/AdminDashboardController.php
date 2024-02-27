@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Locale;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
+use App\Entity\User;
 
 class AdminDashboardController extends AbstractDashboardController
 {
@@ -18,9 +19,33 @@ class AdminDashboardController extends AbstractDashboardController
     ) {
     }
 
-    #[Route('/admin', name: 'admin')]
+    #[Route('/admin/{_locale}', name: 'admin_dashboard', defaults:['_locale' => 'fr|en'])]
     public function index(): Response
     {
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart->setData([
+            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            'datasets' => [
+                [
+                    'label' => 'Views',
+                    'borderColor' => 'rgb(255, 99, 132)',
+                    'data' => [12, 19, 3, 5, 2, 3, 7],
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => true,
+                ],
+            ],
+        ]);
+
+
+        return $this->render('admin/dashboard.html.twig', [
+            'chart' => $chart,
+        ]);
         return parent::index();
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
@@ -83,19 +108,21 @@ class AdminDashboardController extends AbstractDashboardController
             // parameter in the admin dashboard URL (e.g. '/admin/{_locale}').
             // the name of each locale will be rendered in that locale
             // (in the following example you'll see: "English", "Polski")
-            ->setLocales(['en', 'pl'])
+            ->setLocales(['en', 'pl', 'fr'])
             // to customize the labels of locales, pass a key => value array
             // (e.g. to display flags; although it's not a recommended practice,
             // because many languages/locales are not associated to a single country)
             ->setLocales([
                 'en' => '🇬🇧 English',
-                'pl' => '🇵🇱 Polski'
+                'pl' => '🇵🇱 Polski',
+                'fr'=> '🇫🇷 Français'
             ])
             // to further customize the locale option, pass an instance of
             // EasyCorp\Bundle\EasyAdminBundle\Config\Locale
             ->setLocales([
                 'en', // locale without custom options
-                Locale::new('pl', 'polski', 'far fa-language') // custom label and icon
+                Locale::new('pl', 'polski', 'fa fa-language'), // custom label and icon
+                Locale::new('fr', 'français', 'fa fa-language') // custom label and icon
             ])
         ;
     }
@@ -104,6 +131,14 @@ class AdminDashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('The Label', 'fas fa-list', User::class);
+        yield MenuItem::section('Blog');
+        // yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        // yield MenuItem::linkToCrud('Blog Posts', 'fa fa-file-text', BlogPost::class);
+
+        yield MenuItem::section('Users');
+        // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
+        yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 
