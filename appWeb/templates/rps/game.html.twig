@@ -79,8 +79,6 @@
     }
 
     function draw(userChoice, computerChoice) {
-        document.getElementById("user-score").innerHTML = userScore;
-        document.getElementById("computer-score").innerHTML = computerScore;
         document.getElementById(userChoice).classList.add('btn-secondary');
         setTimeout(function() {document.getElementById(userChoice).classList.remove('btn-secondary')}, 500);
         document.getElementById("result").innerHTML = userChoice + " est égal à " + computerChoice + ". C'est une égalité !";
