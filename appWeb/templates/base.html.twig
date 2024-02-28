@@ -8,10 +8,9 @@
 		</title>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 		<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/offcanvas-navbar.css') }}"> 
+		<link rel="stylesheet" href="{{ asset('css/offcanvas-navbar.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 		{% block stylesheets %}{% endblock %}
-
 		</head>
 		<body class="bg-body-tertiary">
 			<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -74,14 +73,13 @@
 			</div>
 			<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation" style="z-index: 1000">
 				<div class="container-fluid">
-					<a class="navbar-brand" href="{{path('index') }}">Offcanvas navbar
-					<img alt="ici le logo" src="http://hdqwalls.com/wallpapers/anime-girl-water-drops-red-head-blue-eyes-i6.jpg" width="40" /></a>
+					<a class="navbar-brand" href="{{path('index') }}">
+						<img id="logo" alt="ici le logo" src="http://hdqwalls.com/wallpapers/anime-girl-water-drops-red-head-blue-eyes-i6.jpg" width="60"/></a>
 					<button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-
-					<div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<div class="navbar-collapse offcanvas-collapse justify-content-between" id="navbarsExampleDefault">
+						<ul class="navbar-nav mb-2 mb-lg-0">
 							<li class="nav-item">
 								<a class="nav-link active" aria-current="page" href="{{path('dashboard') }}">Dashboard</a>
 							</li>
@@ -101,37 +99,59 @@
 										<a class="dropdown-item" href="{{path('settings') }}">Action</a>
 									</li>
 									<li>
-										<a class="dropdown-item" href="#">Another action</a>
+										<a class="dropdown-item" href="{{path('app_login') }}">Another Log action</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{path('app_login2') }}">Another log action</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{path('app_register') }}">Another reg action</a>
 									</li>
 									<li>
 										<a class="dropdown-item" href="#">Something else here</a>
 									</li>
 								</ul>
 							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('dashboard') }}">Dashboard</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('friends') }}">
+									Friends
+									<span class="badge text-bg-light rounded-pill align-text-bottom">27</span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('suggestions') }}">Suggestions</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('all_texts') }}">Textes</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('rps_index') }}">RPS</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Link</a>
+							</li>
 						</ul>
 						<form class="d-flex" role="search" action="{{path('results') }}">
 							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 							<button class="btn btn-outline-success" type="submit">Search</button>
 						</form>
+						<div>
+						{% if app.user %}
+							<a href="{{path('app_logout') }}" class="btn btn-outline-danger">Logout</a>
+						{% else %}
+							<a href="{{path('app_login') }}" class="btn btn-outline-success">Login</a>
+							<a href="{{path('app_register') }}" class="btn btn-outline-primary">Register</a>
+						{% endif %}
+						</div>
 					</div>
 				</div>
 			</nav>
-			<div class="nav-scroller bg-body shadow-sm">
-				<nav class="nav" aria-label="Secondary navigation">
-					<a class="nav-link active" aria-current="page" href="{{path('dashboard') }}">Dashboard</a>
-					<a class="nav-link" href="{{path('friends') }}">
-						Friends
-						<span class="badge text-bg-light rounded-pill align-text-bottom">27</span>
-					</a>
-					<a class="nav-link" href="#">Explore</a>
-					<a class="nav-link" href="{{path('suggestions') }}">Suggestions</a>
-					<a class="nav-link" href="{{path('all_texts') }}">Textes</a>
-					<a class="nav-link" href="{{path('rps_index') }}">RPS</a>
-					<a class="nav-link" href="#">Link</a>
-					<a class="nav-link" href="#">Link</a>
-					<a class="nav-link" href="#">Link</a>
-				</nav>
-			</div>
+			{# <div class="nav-scroller bg-body shadow-sm">
+							<nav class="nav" aria-label="Secondary navigation"></nav>
+						</div> #}
 			<main class="container my-3">
 				<div aria-live="polite" aria-atomic="true" class="position-relative">
 					<div class="toast-container top-0 end-0 p-3">
@@ -158,6 +178,7 @@
 			<script src="{{ asset('js/bootstrap.bundle.min.js') }}" defer></script>
 			<script src="{{ asset('js/offcanvas-navbar.js') }}" defer></script>
 			<script src="{{ asset('js/color-modes.js') }}" defer></script>
+			<script src="{{ asset('js/jquery.js') }}" defer></script>
 			<script>
 				window.onload = function () {
 					var toastLiveExample = document.getElementById('liveToast')

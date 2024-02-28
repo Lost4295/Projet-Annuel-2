@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,6 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    /**
+     * @var list<string> The user roles
+     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -37,13 +40,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $last_conn_date = null;
+    private ?\DateTimeInterface $lastConnDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $creation_date = null;
+    private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column]
-    private ?bool $is_admin = null;
+    private ?bool $admin = null;
 
     #[ORM\Column(length: 60)]
     private ?string $username = null;
@@ -70,7 +73,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
     /**
      * A visual identifier that represents this user.
      *
@@ -83,6 +85,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -93,6 +97,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param list<string> $roles
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -150,36 +157,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getLastConnDate(): ?\DateTimeInterface
     {
-        return $this->last_conn_date;
+        return $this->lastConnDate;
     }
 
-    public function setLastConnDate(\DateTimeInterface $last_conn_date): static
+    public function setLastConnDate(\DateTimeInterface $lastConnDate): static
     {
-        $this->last_conn_date = $last_conn_date;
+        $this->lastConnDate = $lastConnDate;
 
         return $this;
     }
 
     public function getCreationDate(): ?\DateTimeInterface
     {
-        return $this->creation_date;
+        return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTimeInterface $creation_date): static
+    public function setCreationDate(\DateTimeInterface $creationDate): static
     {
-        $this->creation_date = $creation_date;
+        $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function isIsAdmin(): ?bool
+    public function isAdmin(): ?bool
     {
-        return $this->is_admin;
+        return $this->admin;
     }
 
-    public function setIsAdmin(bool $is_admin): static
+    public function setAdmin(bool $admin): static
     {
-        $this->is_admin = $is_admin;
+        $this->admin = $admin;
 
         return $this;
     }

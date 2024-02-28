@@ -121,8 +121,8 @@ class AdminDashboardController extends AbstractDashboardController
             // EasyCorp\Bundle\EasyAdminBundle\Config\Locale
             ->setLocales([
                 'en', // locale without custom options
-                Locale::new('pl', 'polski', 'fa fa-language'), // custom label and icon
-                Locale::new('fr', 'français', 'fa fa-language') // custom label and icon
+                Locale::new('pl', 'polski', 'bi bi-translate'), // custom label and icon
+                Locale::new('fr', 'français', 'bi bi-translate') // custom label and icon
             ])
         ;
     }

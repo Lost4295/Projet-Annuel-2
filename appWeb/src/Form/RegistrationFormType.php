@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,11 +20,36 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', TextType::class, [
+            ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control'
-                ]
+                ],
+                'required'=> false
             ])
+            // ->add('nom', TextType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control'
+            //     ],
+            //     'required'=> false
+            // ])
+            // ->add('prenom', TextType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control'
+            //     ],
+            //     'required'=> false
+            // ])
+            // ->add('username', TextType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control'
+            //     ],
+            //     'required'=> false
+            // ])
+            // ->add('birthdate', DateTimeType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control'
+            //     ],
+            //     'required'=> false
+            // ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

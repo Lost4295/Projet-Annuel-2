@@ -17,8 +17,6 @@ class DefaultController extends AbstractController
 
     
     #[Route("/index", name:"index")]
-    
-    
     public function index()
     {
         return $this->render('index.html.twig', ['message' => 'Hello World!']);
@@ -88,10 +86,9 @@ class DefaultController extends AbstractController
     }
 
     #[Route("/results", name:"results")]
-    
     public function results()
     {
-        $results = "results";
+        $results = "Benjamin";
 
         return $this->render('results.html.twig', [
             'results' => $results,
