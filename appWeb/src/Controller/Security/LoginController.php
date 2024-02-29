@@ -12,16 +12,7 @@ class LoginController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('registration/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->redirectToRoute('app_login2');
     }
 
     #[Route(path: '/login2', name: 'app_login2')]
@@ -34,7 +25,7 @@ class LoginController extends AbstractController
             // parameters usually defined in Symfony login forms
             'error' => $error,
             'last_username' => $lastUsername,
-
+            'action' => $this->generateUrl('app_login2'),
             // OPTIONAL parameters to customize the login form:
 
             // the translation_domain to use (define this option only if you are
@@ -71,10 +62,9 @@ class LoginController extends AbstractController
             'sign_in_label' => 'Log in',
 
             // the 'name' HTML attribute of the <input> used for the username field (default: '_username')
-            'username_parameter' => 'my_custom_username_field',
-
+            // 'username_parameter' => 'custom_username_param',
             // the 'name' HTML attribute of the <input> used for the password field (default: '_password')
-            'password_parameter' => 'my_custom_password_field',
+            // 'password_parameter' => 'custom_password_param',
 
             // whether to enable or not the "forgot password?" link (default: false)
             'forgot_password_enabled' => true,

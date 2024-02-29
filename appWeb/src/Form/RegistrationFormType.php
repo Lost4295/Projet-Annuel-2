@@ -24,32 +24,30 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'required'=> false
             ])
-            // ->add('nom', TextType::class, [
-            //     'attr' => [
-            //         'class' => 'form-control'
-            //     ],
-            //     'required'=> false
-            // ])
-            // ->add('prenom', TextType::class, [
-            //     'attr' => [
-            //         'class' => 'form-control'
-            //     ],
-            //     'required'=> false
-            // ])
-            // ->add('username', TextType::class, [
-            //     'attr' => [
-            //         'class' => 'form-control'
-            //     ],
-            //     'required'=> false
-            // ])
-            // ->add('birthdate', DateTimeType::class, [
-            //     'attr' => [
-            //         'class' => 'form-control'
-            //     ],
-            //     'required'=> false
-            // ])
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->add('prenom', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            // 
+            ])
+            ->add('username', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            // 
+            ])
+            ->add('birthdate', DateTimeType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            // 
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

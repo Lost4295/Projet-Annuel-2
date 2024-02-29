@@ -15,20 +15,18 @@ security:
             security: false
         secured_area:
             form_login:
-                enable_csrf: true
-
-        main:
-            lazy: true
-            provider: app_user_provider
-            form_login:
                 # "app_login" is the name of the route created previously
-                login_path: app_login
-                check_path: app_login
+                login_path: app_login2
+                check_path: app_login2
                 enable_csrf: true
+                provider: app_user_provider
             login_throttling:
-                max_attempts: 3
+                    max_attempts: 5
             logout:
                 path: /logout
+        main:
+            lazy: true
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

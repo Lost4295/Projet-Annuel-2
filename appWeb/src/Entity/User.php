@@ -39,14 +39,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 80)]
     private ?string $prenom = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastConnDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column]
-    private ?bool $admin = null;
+    private ?bool $admin = false;
 
     #[ORM\Column(length: 60)]
     private ?string $username = null;

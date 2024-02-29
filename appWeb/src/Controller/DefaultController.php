@@ -23,89 +23,29 @@ class DefaultController extends AbstractController
     }
 
     #[Route("/number", name:"number")]
-    
-    public function number()
-    {
-        $number = random_int(0, 100);
-
-        return $this->render('number.html.twig', [
-            'number' => $number,
-        ]);
-    }
     #[Route("/notifications", name:"notifications")]
-    
-    public function notifications()
-    {
-        $notifications = "notifications";
-
-        return $this->render('notifications.html.twig', [
-            'notifications' => $notifications,
-        ]);
-    }
     #[Route("/profile", name:"profile")]
-    
-    public function profile()
-    {
-        $profile = "profile";
-
-        return $this->render('profile.html.twig', [
-            'profile' => $profile,
-        ]);
-    }
     #[Route("/settings", name:"settings")]
-    
-    public function settings()
-    {
-        $settings = "settings";
-
-        return $this->render('settings.html.twig', [
-            'settings' => $settings,
-        ]);
-    }
     #[Route("/friends", name:"friends")]
-    
-    public function friends()
-    {
-        $friends = "friends";
-
-        return $this->render('friends.html.twig', [
-            'friends' => $friends,
-        ]);
-    }
-
     #[Route("/dashboard", name:"dashboard")]
-    
-
-    public function dashboard()
+    #[Route("/results", name:"results")]
+    #[Route("/suggestions", name:"suggestions")]
+    public function createPage(Request $request)
     {
-        $dashboard = "dashboard";
+        $routeName = $request->attributes->get("_route");
+
+        if ($routeName === "number") {
+            $number = random_int(0, 100);
+        } else {
+            $number = $routeName;
+        }
 
         return $this->render('dashboard.html.twig', [
-            'dashboard' => $dashboard,
+            'text' => $number,
         ]);
     }
-
-    #[Route("/results", name:"results")]
-    public function results()
-    {
-        $results = "Benjamin";
-
-        return $this->render('results.html.twig', [
-            'results' => $results,
-        ]);
-    }
-
-    #[Route("/suggestions", name:"suggestions")]
     
-    public function suggestions()
-    {
-        $suggestions = "suggestions";
-
-        return $this->render('suggestions.html.twig', [
-            'suggestions' => $suggestions,
-        ]);
-    }
-
+    
     #[Route("/create/text", name:"new_text")]
     
 
