@@ -99,10 +99,7 @@
 										<a class="dropdown-item" href="{{path('settings') }}">Action</a>
 									</li>
 									<li>
-										<a class="dropdown-item" href="{{path('app_login') }}">Another Log action</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="{{path('app_login2') }}">Another log action</a>
+										<a class="dropdown-item" href="{{path('login') }}">Another Log action</a>
 									</li>
 									<li>
 										<a class="dropdown-item" href="{{path('app_register') }}">Another reg action</a>
@@ -140,9 +137,9 @@
 						</form>
 						<div>
 						{% if app.user %}
-							<a href="{{path('app_logout') }}" class="btn btn-outline-danger">Logout</a>
+							<a href="{{path('logout') }}" class="btn btn-outline-danger">Logout</a>
 						{% else %}
-							<a href="{{path('app_login') }}" class="btn btn-outline-success">Login</a>
+							<a href="{{path('login') }}" class="btn btn-outline-success">Login</a>
 							<a href="{{path('app_register') }}" class="btn btn-outline-primary">Register</a>
 						{% endif %}
 						</div>

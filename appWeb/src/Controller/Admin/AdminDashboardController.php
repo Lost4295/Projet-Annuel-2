@@ -11,6 +11,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Locale;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AdminDashboardController extends AbstractDashboardController
 {
@@ -29,7 +31,7 @@ class AdminDashboardController extends AbstractDashboardController
                 [
                     'label' => 'Views',
                     'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [12, 19, 3, 5, 2, 3, 7],
+                    'data' => [12, 29, 3, 5, 2, 3, 7],
                 ],
             ],
         ]);
@@ -69,22 +71,22 @@ class AdminDashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             // the name visible to end users
-            ->setTitle('ACME Corp.')
+            // ->setTitle('ACME Corp.')
             // you can include HTML contents too (e.g. to link to an image)
-            ->setTitle('<img src="..."> ACME <span class="text-small">Corp.</span>')
+            ->setTitle('Paris Caretaker Services <small>Admin Dashboard</small>')
 
             // by default EasyAdmin displays a black square as its default favicon;
             // use this method to display a custom favicon: the given path is passed
             // "as is" to the Twig asset() function:
             // <link rel="shortcut icon" href="{{ asset('...') }}">
-            ->setFaviconPath('favicon.svg')
+            ->setFaviconPath('brand/bootstrap-logo.svg')
 
             // the domain used by default is 'messages'
-            ->setTranslationDomain('my-custom-domain')
+            // ->setTranslationDomain('my-custom-domain')
 
             // there's no need to define the "text direction" explicitly because
             // its default value is inferred dynamically from the user locale
-            ->setTextDirection('ltr')
+            // ->setTextDirection('ltr')
 
             // set this option if you prefer the page content to span the entire
             // browser width, instead of the default design which sets a max width
@@ -92,12 +94,12 @@ class AdminDashboardController extends AbstractDashboardController
 
             // set this option if you prefer the sidebar (which contains the main menu)
             // to be displayed as a narrow column instead of the default expanded design
-            ->renderSidebarMinimized()
+            // ->renderSidebarMinimized()
 
             // by default, users can select between a "light" and "dark" mode for the
             // backend interface. Call this method if you prefer to disable the "dark"
             // mode for any reason (e.g. if your interface customizations are not ready for it)
-            ->disableDarkMode()
+            // ->disableDarkMode()
 
             // by default, all backend URLs are generated as absolute URLs. If you
             // need to generate relative URLs instead, call this method
@@ -115,31 +117,58 @@ class AdminDashboardController extends AbstractDashboardController
             ->setLocales([
                 'en' => '🇬🇧 English',
                 'pl' => '🇵🇱 Polski',
-                'fr'=> '🇫🇷 Français'
+                'fr'=>  '🇫🇷 Français'
             ])
             // to further customize the locale option, pass an instance of
             // EasyCorp\Bundle\EasyAdminBundle\Config\Locale
-            ->setLocales([
-                'en', // locale without custom options
-                Locale::new('pl', 'polski', 'bi bi-translate'), // custom label and icon
-                Locale::new('fr', 'français', 'bi bi-translate') // custom label and icon
-            ])
+            // ->setLocales([
+            //     'en', // locale without custom options
+            //     Locale::new('pl', 'polski', 'translate'), // custom label and icon
+            //     Locale::new('fr', 'français', 'translate') // custom label and icon
+            // ])
         ;
     }
+    public function configureUserMenu(UserInterface $user): UserMenu
+    {
+        // Usually it's better to call the parent method because that gives you a
+        // user menu with some menu items already created ("sign out", "exit impersonation", etc.)
+        // if you prefer to create the user menu from scratch, use: return UserMenu::new()->...
+        return parent::configureUserMenu($user)
+            // use the given $user object to get the user name
+            ->setName($user->getFullName())
+            // use this method if you don't want to display the name of the user
+            // ->displayUserName(false)
 
+            // you can return an URL with the avatar image
+            // ->setAvatarUrl('https://...')
+            // ->setAvatarUrl($user->getProfileImageUrl())
+            // use this method if you don't want to display the user image
+            ->displayUserAvatar(false)
+            // you can also pass an email address to use gravatar's service
+            // ->setGravatarEmail($user->getMainEmailAddress())
+
+            // you can use any type of menu item, except submenus
+            ->setMenuItems([
+                MenuItem::linkToRoute('My Profile', 'fa fa-id-card', '...', ['...' => '...']),
+                MenuItem::linkToRoute('Settings', 'fa fa-user-cog', '...', ['...' => '...']),
+                MenuItem::section(),
+                MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
+            ]);
+    }
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('The Label', 'fas fa-list', User::class);
+        yield MenuItem::linkToUrl("Page d'accueil","fa fa-home" , "/" );
+        yield MenuItem::linkToDashboard('Dashboard général', 'fa fa-home');
         yield MenuItem::section('Blog');
+        yield MenuItem::linkToCrud('The Label', 'fas fa-list', User::class);
         // yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linkToCrud('Blog Posts', 'fa fa-file-text', BlogPost::class);
 
         yield MenuItem::section('Users');
         // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
         yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+
     }
 
 }

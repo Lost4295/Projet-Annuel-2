@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,13 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = 'login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    private $entityManager;
+
+    public function __construct(private UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
     }
 
     public function authenticate(Request $request): Passport
@@ -48,9 +52,12 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        $user= $this->entityManager->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
+        $user->setLastLogin(new \DateTime());
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
         // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        // TODO : provide a valid redirect inside .__FILE__);
+        return new RedirectResponse($this->urlGenerator->generate('index'));
 
         throw new \Exception(' TODO : provide a valid redirect inside '.__FILE__);
     }

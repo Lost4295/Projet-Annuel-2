@@ -9,13 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
-    {
-        return $this->redirectToRoute('app_login2');
-    }
-
-    #[Route(path: '/login2', name: 'app_login2')]
+    #[Route(path: '/login', name: 'login')]
     public function login2(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -25,7 +19,7 @@ class LoginController extends AbstractController
             // parameters usually defined in Symfony login forms
             'error' => $error,
             'last_username' => $lastUsername,
-            'action' => $this->generateUrl('app_login2'),
+            'action' => $this->generateUrl('login'),
             // OPTIONAL parameters to customize the login form:
 
             // the translation_domain to use (define this option only if you are
@@ -43,14 +37,14 @@ class LoginController extends AbstractController
             // the title visible above the login form (define this option only if you are
             // rendering the login template in a regular Symfony controller; when rendering
             // it from an EasyAdmin Dashboard this is automatically set as the Dashboard title)
-            'page_title' => 'ACME login',
+            'page_title' => 'connect',
 
             // the string used to generate the CSRF token. If you don't define
             // this parameter, the login form won't include a CSRF token
             'csrf_token_intention' => 'authenticate',
 
             // the URL users are redirected to after the login (default: '/admin')
-            'target_path' => $this->generateUrl('admin_dashboard'),
+            'target_path' => $this->generateUrl('homepage'),
 
             // the label displayed for the username form field (the |trans filter is applied to it)
             'username_label' => 'Your username',
@@ -79,10 +73,10 @@ class LoginController extends AbstractController
             'remember_me_enabled' => true,
 
             // remember me name form field (default: '_remember_me')
-            'remember_me_parameter' => 'custom_remember_me_param',
+            // 'remember_me_parameter' => 'custom_remember_me_param',
 
             // whether to check by default the "remember me" checkbox (default: false)
-            'remember_me_checked' => true,
+            // 'remember_me_checked' => true,
 
             // the label displayed for the remember me checkbox (the |trans filter is applied to it)
             'remember_me_label' => 'Remember me',

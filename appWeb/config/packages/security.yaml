@@ -16,8 +16,8 @@ security:
         secured_area:
             form_login:
                 # "app_login" is the name of the route created previously
-                login_path: app_login2
-                check_path: app_login2
+                login_path: login
+                check_path: login
                 enable_csrf: true
                 provider: app_user_provider
             login_throttling:
