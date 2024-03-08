@@ -87,4 +87,17 @@ class DefaultController extends AbstractController
             'texte' => $texte,
         ]);
     }
+    
+    #[Route("/service",name:"services")]
+    public function table()
+    {
+        $tab = [];
+        for ($i = 0; $i < 10; $i++) {
+            $tab[] = random_int(0, 100);
+        }
+        return $this->render('service.html.twig', [
+            'tab' => $tab,
+        ]);
+    }
+    
 }
