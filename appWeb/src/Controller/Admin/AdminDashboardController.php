@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Locale;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use App\Entity\User;
+use App\Entity\Email;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -160,10 +161,11 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl("Page d'accueil","fa fa-home" , "/" );
         yield MenuItem::linkToDashboard('Dashboard général', 'fa fa-home');
         yield MenuItem::section('Blog');
+        yield MenuItem::linktoRoute('APIs', 'fa fa-robot', 'api_state');
         yield MenuItem::linkToCrud('The Label', 'fas fa-list', User::class);
         // yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);
         // yield MenuItem::linkToCrud('Blog Posts', 'fa fa-file-text', BlogPost::class);
-
+        yield MenuItem::linkToCrud('Emails', 'fa fa-envelope', Email::class);
         yield MenuItem::section('Users');
         // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
         yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);

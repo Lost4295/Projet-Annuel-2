@@ -47,10 +47,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $admin = false;
-
+    
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $birthdate = null;
-
+    
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
@@ -176,15 +176,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+
     public function isAdmin(): ?bool
     {
         return $this->admin;
     }
 
-    public function setAdmin(bool $admin): static
+public function setAdmin(bool $admin): static
     {
         $this->admin = $admin;
+        if ($admin) {
+            $this->grantAdmin();
+        } else {
+            $this->removeAdmin();
+        }
+        return $this;
+    }
 
+
+    public function grantAdmin(): static
+    {
+        $roles=  $this->getRoles();
+        $roles[] = "ROLE_ADMIN";
+        $this->setRoles($roles) ;
+        return $this;
+    }
+
+    public function removeAdmin(): static
+    {
+        $roles=  $this->getRoles();
+        $roles = array_diff($roles, ["ROLE_ADMIN"]);
+        $this->setRoles($roles);
         return $this;
     }
 
@@ -215,5 +238,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFullName(): string
     {
         return $this->getPrenom() . ' ' . $this->getNom();
+    }
+
+    public function getInitials(): string
+    {
+        return substr($this->getPrenom(),0,1). substr($this->getNom(),0,1);
     }
 }

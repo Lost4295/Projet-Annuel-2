@@ -15,22 +15,21 @@ use App\Form\FileType;
 class DefaultController extends AbstractController
 {
 
-    
-    #[Route("/index", name:"index")]
-    #[Route("/", name:"homepage")]
+
+    #[Route("/index", name: "index")]
+    #[Route("/", name: "homepage")]
     public function index()
     {
         return $this->render('index.html.twig', ['message' => 'Hello World!']);
     }
 
-    #[Route("/number", name:"number")]
-    #[Route("/notifications", name:"notifications")]
-    #[Route("/profile", name:"profile")]
-    #[Route("/settings", name:"settings")]
-    #[Route("/friends", name:"friends")]
-    #[Route("/dashboard", name:"dashboard")]
-    #[Route("/results", name:"results")]
-    #[Route("/suggestions", name:"suggestions")]
+    #[Route("/number", name: "number")]
+    #[Route("/notifications", name: "notifications")]
+    #[Route("/settings", name: "settings")]
+    #[Route("/friends", name: "friends")]
+    #[Route("/dashboard", name: "dashboard")]
+    #[Route("/results", name: "results")]
+    #[Route("/suggestions", name: "suggestions")]
     public function createPage(Request $request)
     {
         $routeName = $request->attributes->get("_route");
@@ -45,12 +44,12 @@ class DefaultController extends AbstractController
             'text' => $number,
         ]);
     }
-    
-    
-    #[Route("/create/text", name:"new_text")]
-    
 
-    public function createText(Request $request, EntityManagerInterface $entityManager) : Response
+
+    #[Route("/create/text", name: "new_text")]
+
+
+    public function createText(Request $request, EntityManagerInterface $entityManager): Response
     {
         $text = new File();
         $form = $this->createForm(FileType::class, $text);
@@ -67,8 +66,8 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route("alltexts", name:"all_texts")]
-    
+    #[Route("alltexts", name: "all_texts")]
+
 
     public function allTexts(EntityManagerInterface $em)
     {
@@ -78,7 +77,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route("text/{id}",name:"texte_show")]
+    #[Route("text/{id}", name: "texte_show")]
 
     public function showText($id, EntityManagerInterface $em)
     {
@@ -87,8 +86,8 @@ class DefaultController extends AbstractController
             'texte' => $texte,
         ]);
     }
-    
-    #[Route("/service",name:"services")]
+
+    #[Route("/service", name: "services")]
     public function table()
     {
         $tab = [];
@@ -99,5 +98,4 @@ class DefaultController extends AbstractController
             'tab' => $tab,
         ]);
     }
-    
 }

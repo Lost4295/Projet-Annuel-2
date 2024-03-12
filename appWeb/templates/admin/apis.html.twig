@@ -1,0 +1,25 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_content %}
+	<h1>APIs</h1>
+	<table class="table table-bordered table-hover" >
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>State</th>
+		</tr>
+		{% if apis is not defined or apis is empty %}
+			<tr>
+				<td colspan="3">No APIs found</td>
+			</tr>
+		{% else %}
+			{% for api in apis %}
+				<tr>
+					<td>{{ api.id }}</td>
+					<td>{{ api.name }}</td>
+					<td>{{ api.state == "ok" ? "<i class='fa fa-check fa-2x text-success'></i>":"<i class='fa fa-times fa-2x text-danger'></i>" }}</td>
+				</tr>
+			{% endfor %}
+		{% endif %}
+    </table>
+	{% endblock %}

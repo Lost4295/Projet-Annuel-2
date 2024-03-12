@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -16,7 +17,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
-
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
 class UserAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
@@ -24,10 +26,12 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     public const LOGIN_ROUTE = 'login';
 
     private $entityManager;
+    private $emailVerifier;
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager)
+    public function __construct(private UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager, EmailVerifier $emailVerifier)
     {
         $this->entityManager = $entityManager;
+        $this->emailVerifier = $emailVerifier;
     }
 
     public function authenticate(Request $request): Passport
@@ -48,18 +52,27 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
 
-        $user= $this->entityManager->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
         $user->setLastLogin(new \DateTime());
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+        if (!$user->isVerified()) {
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                (new TemplatedEmail())
+                    ->from(new Address('toto@titi.com', 'Administrateur Site')) //FIXME À changer
+                    ->to($user->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+        }
         // For example:
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+            return new RedirectResponse($targetPath);
+        }
         return new RedirectResponse($this->urlGenerator->generate('index'));
 
-        throw new \Exception(' TODO : provide a valid redirect inside '.__FILE__);
+        throw new \Exception(' TODO : provide a valid redirect inside ' . __FILE__);
     }
 
     protected function getLoginUrl(Request $request): string
