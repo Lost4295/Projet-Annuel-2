@@ -41,14 +41,7 @@
     const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
     const svgOfActiveBtn = btnToActive.querySelector('svg use').getAttribute('href')
 
-    if (theme === 'auto') {
-      logo.src = 'http://hdqwalls.com/wallpapers/anime-girl-water-drops-red-head-blue-eyes-i6.jpg'
-    } else if (theme === 'light') {
-      logo.src = 'http://hdqwalls.com/wallpapers/anime-girl-water-drops-red-head-blue-eyes-i6.jpg'
-    }
-    else {
-      logo.src = 'https://i.pinimg.com/736x/8c/45/d1/8c45d13df73c9064908547f50310a78a.jpg'
-    }
+
 
     document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
       element.classList.remove('active')

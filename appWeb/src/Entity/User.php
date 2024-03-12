@@ -47,12 +47,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $admin = false;
-    
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $birthdate = null;
-    
+
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\Column(type: 'blob', nullable: true)]
+    private $avatar;
+    public function __construct()
+    {
+        $this->creationDate = new \DateTime();
+        $this->roles = ['ROLE_USER'];
+        $this->isVerified = false;
+    }
+
 
     public function getId(): ?int
     {
@@ -183,7 +193,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->admin;
     }
 
-public function setAdmin(bool $admin): static
+    public function setAdmin(bool $admin): static
     {
         $this->admin = $admin;
         if ($admin) {
@@ -197,15 +207,15 @@ public function setAdmin(bool $admin): static
 
     public function grantAdmin(): static
     {
-        $roles=  $this->getRoles();
+        $roles =  $this->getRoles();
         $roles[] = "ROLE_ADMIN";
-        $this->setRoles($roles) ;
+        $this->setRoles($roles);
         return $this;
     }
 
     public function removeAdmin(): static
     {
-        $roles=  $this->getRoles();
+        $roles =  $this->getRoles();
         $roles = array_diff($roles, ["ROLE_ADMIN"]);
         $this->setRoles($roles);
         return $this;
@@ -242,6 +252,26 @@ public function setAdmin(bool $admin): static
 
     public function getInitials(): string
     {
-        return substr($this->getPrenom(),0,1). substr($this->getNom(),0,1);
+        return substr($this->getPrenom(), 0, 1) . substr($this->getNom(), 0, 1);
+    }
+
+    /**
+     * Get the value of avatar
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * Set the value of avatar
+     *
+     * @return  self
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
     }
 }

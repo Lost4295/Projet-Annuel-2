@@ -17,6 +17,7 @@ class DefaultController extends AbstractController
 
 
     #[Route("/index", name: "index")]
+    #[Route('/{_locale<en|fr>}/', name: 'homepage', defaults:["_locale"=>"en"])]
     #[Route("/", name: "homepage")]
     public function index()
     {

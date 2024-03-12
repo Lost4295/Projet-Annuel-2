@@ -161,6 +161,7 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl("Page d'accueil","fa fa-home" , "/" );
         yield MenuItem::linkToDashboard('Dashboard général', 'fa fa-home');
         yield MenuItem::section('Blog');
+        yield MenuItem::linktoRoute('Envoyer un Email', 'fa fa-share-square', 'make_email');
         yield MenuItem::linktoRoute('APIs', 'fa fa-robot', 'api_state');
         yield MenuItem::linkToCrud('The Label', 'fas fa-list', User::class);
         // yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);
