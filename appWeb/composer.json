@@ -82,7 +82,6 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd",
-            "doctrine:schema:update --dump-sql -f": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
