@@ -16,9 +16,6 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$request->hasPreviousSession()) {
-            return;
-        }
         // try to see if the locale has been set as a _locale routing parameter
         if ($locale = $request->get('_locale')) {
             $request->getSession()->set('_locale', $locale);

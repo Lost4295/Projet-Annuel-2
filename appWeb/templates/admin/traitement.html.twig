@@ -1,0 +1,211 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_content %}
+<h1 >Transaction</h1>
+<style>
+		.main {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+
+		ul.this {
+			display: flex;
+		}
+
+		ul.this li {
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin: 0 40px;
+		}
+
+		ul.this li .icons {
+			font-size: 25px;
+			color: #1b761b;
+			margin: 0 60px;
+		}
+
+		ul.this li .label {
+			font-family: sans-serif;
+			letter-spacing: 1px;
+			font-size: 14px;
+			font-weight: bold;
+			color: #1b761b;
+		}
+
+		ul.this li .step {
+			height: 30px;
+			width: 30px;
+			border-radius: 50%;
+			background-color: #d7d7c3;
+			margin: 16px 0 10px;
+			display: grid;
+			place-items: center;
+			color: ghostwhite;
+			position: relative;
+			cursor: pointer;
+		}
+
+		.step::after {
+			content: "";
+			position: absolute;
+			width: 197px;
+			height: 3px;
+			background-color: #d7d7c3;
+			right: 30px;
+		}
+
+		.first::after {
+			width: 0;
+			height: 0;
+		}
+
+		ul.this li .step .awesome {
+			display: none;
+		}
+
+		ul.this li .step p {
+			font-size: 18px;
+		}
+
+		ul.this li .active {
+			background-color: #1b761b;
+		}
+
+		li .active::after {
+			background-color: #1b761b;
+
+		}
+
+		ul.this li .active p {
+			display: none;
+		}
+
+		ul.this li .active .awesome {
+			display: flex;
+		}
+	</style>
+
+<div class="d-none">
+    <button onclick="nextStep(0)">Step 1</button>
+    <button onclick="nextStep(1)">Step 2</button>
+    <button onclick="nextStep(2)">Step 3</button>
+    <button onclick="nextStep(3)">Step 4</button>
+    <button onclick="nextStep(4)">Step 5</button>
+    <button onclick="nextStep(-1)">Reset</button>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="main">
+                    <ul class="this">
+                        <li>
+                            <i class="icons awesome fa-solid fa-user"></i>
+                            <div class="step first active">
+                                <p>1</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Profile</p>
+                        </li>
+                        <li>
+                            <i class="icons awesome fa-solid fa-coins"></i>
+                            <div class="step second active">
+                                <p>2</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Finances</p>
+                        </li>
+                        <li>
+                            <i class="icons awesome fa-solid fa-house"></i>
+                            <div class="step third active ">
+                                <p>3</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Property</p>
+                        </li>
+                        <li>
+                            <i class="icons awesome fa-regular fa-star-half-stroke"></i>
+                            <div class="step fourth">
+                                <p>4</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Evaluation</p>
+                        </li>
+                        <li>
+                            <i class="icons awesome fa-solid fa-thumbs-up"></i>
+                            <div class="step fifth">
+                                <p>5</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Approval</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                        <a href="#" class="btn btn-primary">Next</a>
+                        <p>
+                        <br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac dui metus. Fusce ut ultricies justo. Aenean et elementum dui, vulputate egestas dui.
+                        Maecenas nibh enim, ultrices ut mauris sed, consectetur porta justo. Ut auctor augue libero. Vivamus sodales turpis augue, sit amet dictum ex consequat at.
+                        Maecenas varius ornare purus, nec vehicula nisl.<br> Curabitur nunc lacus, venenatis sit amet ipsum a, bibendum venenatis arcu. <br> Quisque ac magna metus.
+                        Nulla blandit tortor quis metus posuere, id fermentum massa dictum. Nunc varius rhoncus mauris vel maximus. Mauris ac fringilla justo, et maximus turpis.
+                        Vivamus vel cursus lacus. Curabitur sed tincidunt eros, in consequat tellus. Mauris id scelerisque orci.<br><br> Vivamus mattis ante nunc, ac faucibus turpis gravida a.
+                        Suspendisse mattis sem cursus volutpat placerat. Quisque ullamcorper libero fringilla varius iaculis. Cras id volutpat odio.</p>
+                        <div class="btn-group d-flex justify-content-center">
+                        <a href="#" class="btn btn-success">Valider</a>
+                        <a href="#" class="btn btn-warning">Editer</a>
+                        <a href="#" class="btn btn-danger">Refuser</a>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    const first = document.querySelector(".first");
+    const second = document.querySelector(".second");
+    const third = document.querySelector(".third");
+    const fourth = document.querySelector(".fourth");
+    const fifth = document.querySelector(".fifth");
+    const steps = [first, second, third, fourth, fifth];
+
+    function nextStep(currentStep) {
+        steps.forEach(step => step.classList.remove("active"));
+
+        steps.forEach((step, index) => {
+            if (index <= currentStep) {
+                step.classList.add("active");
+            } else {
+                step.classList.remove("active");
+            }
+        });
+    }
+
+    steps.forEach((step, index) => {
+        step.addEventListener("click", () => {
+            nextStep(index);
+        });
+    });
+</script>
+{% endblock %}

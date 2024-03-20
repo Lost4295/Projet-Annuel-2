@@ -1,9 +1,9 @@
-{% extends '@EasyAdmin/page/login.html.twig' %}
+{% extends 'base.html.twig' %}
 
 
 {% block page_title %}Register{% endblock %}
 {% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
-{% block wrapper_wrapper %}
+{% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
@@ -40,9 +40,6 @@
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
-
-            <script src="{{ asset('login.js', constant('EasyCorp\\Bundle\\EasyAdminBundle\\Asset\\AssetPackage::PACKAGE_NAME')) }}"></script>
         </section>
     </div>
-    
 {% endblock %}

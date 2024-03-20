@@ -4,33 +4,22 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Entity\File;
 use Symfony\Component\HttpFoundation\Request;
-use App\Form\FileType;
 
 class DefaultController extends AbstractController
 {
 
 
     #[Route("/index", name: "index")]
-    #[Route('/{_locale<en|fr>}/', name: 'homepage', defaults:["_locale"=>"en"])]
     #[Route("/", name: "homepage")]
     public function index()
     {
         return $this->render('index.html.twig', ['message' => 'Hello World!']);
     }
 
-    #[Route("/number", name: "number")]
-    #[Route("/notifications", name: "notifications")]
-    #[Route("/settings", name: "settings")]
-    #[Route("/friends", name: "friends")]
-    #[Route("/dashboard", name: "dashboard")]
-    #[Route("/results", name: "results")]
-    #[Route("/suggestions", name: "suggestions")]
+    #[Route("/locations", name: "locations")]
     public function createPage(Request $request)
     {
         $routeName = $request->attributes->get("_route");
@@ -47,56 +36,34 @@ class DefaultController extends AbstractController
     }
 
 
-    #[Route("/create/text", name: "new_text")]
-
-
-    public function createText(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $text = new File();
-        $form = $this->createForm(FileType::class, $text);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($text);
-            $entityManager->flush();
-            $this->addFlash('success', 'Texte créé avec succès');
-            return $this->redirectToRoute('all_texts');
-        }
-        return $this->render('createtxt.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    #[Route("alltexts", name: "all_texts")]
-
-
-    public function allTexts(EntityManagerInterface $em)
-    {
-        $textes = $em->getRepository(File::class)->findAll();
-        return $this->render('alltxt.html.twig', [
-            'textes' => $textes,
-        ]);
-    }
-
-    #[Route("text/{id}", name: "texte_show")]
-
-    public function showText($id, EntityManagerInterface $em)
-    {
-        $texte = $em->getRepository(File::class)->find($id);
-        return $this->render('showtxt.html.twig', [
-            'texte' => $texte,
-        ]);
-    }
 
     #[Route("/service", name: "services")]
     public function table()
     {
-        $tab = [];
-        for ($i = 0; $i < 10; $i++) {
-            $tab[] = random_int(0, 100);
-        }
         return $this->render('service.html.twig', [
-            'tab' => $tab,
         ]);
     }
+
+    #[Route("/cookies", name: "cookies")]
+    #[Route("/ventes", name: "ventes")]
+    #[Route("/privacy", name: "privacy")]
+    #[Route("/terms", name: "terms")]
+    #[Route("/about", name: "about")]
+    public function legals( Request $request)
+    {
+        $name = $request->attributes->get("_route");
+        $route = "legal/" . $name . ".html.twig";
+        return $this->render($route);
+    }
+
+    #[Route("/faq", name: "faq")]
+    #[Route("/contact", name: "contact")]
+    #[Route("/pricing", name: "pricing")]
+    public function contact(Request $request)
+    {
+        $name = $request->attributes->get("_route");
+        $route = "info/" . $name . ".html.twig";
+        return $this->render($route);
+    }
+
 }

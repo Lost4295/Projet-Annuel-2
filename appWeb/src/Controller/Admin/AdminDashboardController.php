@@ -22,7 +22,7 @@ class AdminDashboardController extends AbstractDashboardController
     ) {
     }
 
-    #[Route('/admin/{_locale}', name: 'admin_dashboard', defaults:['_locale' => 'fr|en'])]
+    #[Route('/admin', name: 'admin_dashboard')]
     public function index(): Response
     {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
@@ -158,18 +158,19 @@ class AdminDashboardController extends AbstractDashboardController
     }
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToUrl("Page d'accueil","fa fa-home" , "/" );
-        yield MenuItem::linkToDashboard('Dashboard général', 'fa fa-home');
+        yield MenuItem::linkToUrl("homepage","fa fa-home" , "/" );
+        yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
         yield MenuItem::section('Blog');
-        yield MenuItem::linktoRoute('Envoyer un Email', 'fa fa-share-square', 'make_email');
-        yield MenuItem::linktoRoute('APIs', 'fa fa-robot', 'api_state');
-        yield MenuItem::linkToCrud('The Label', 'fas fa-list', User::class);
+        yield MenuItem::linktoRoute('sendmail', 'fa fa-share-square', 'make_email');
+        yield MenuItem::linktoRoute('apis', 'fa fa-robot', 'api_state');
+        yield MenuItem::linktoRoute('tarifs', 'fa fa-list', 'tarifs');
+        yield MenuItem::linktoRoute('transaction', 'fa fa-list', 'all_states');
         // yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);
         // yield MenuItem::linkToCrud('Blog Posts', 'fa fa-file-text', BlogPost::class);
-        yield MenuItem::linkToCrud('Emails', 'fa fa-envelope', Email::class);
-        yield MenuItem::section('Users');
+        yield MenuItem::linkToCrud('email', 'fa fa-envelope', Email::class);
+        yield MenuItem::section('userrl');
         // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
-        yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('users', 'fa fa-user', User::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
 
     }

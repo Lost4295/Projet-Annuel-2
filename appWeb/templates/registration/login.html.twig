@@ -1,15 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!
+{% block title %}{{page_title}}
 {% endblock %}
 
 {% block body %}
-	<div>
-		<i class="fa fa-user"></i>
-		<svg class="bi" width="32" height="32" fill="currentColor">
-			<use xlink:href="bootstrap-icons.svg#shop"/>
-		</svg>
-	</div>
 	{% if app.user %}
 		<div class="mb-3">
 			You are logged in as
@@ -17,21 +11,24 @@
 			<a href="{{ path('app_logout') }}">Logout</a>
 		</div>
 	{% endif %}
-	<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+	<h1 class="h3 mb-3 font-weight-normal">{{page_title}}</h1>
 	{% if error %}
 		<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 	{% endif %}
-	<form action="{{ path('app_login') }}" method="post">
-		<label for="username">Email:</label>
+	<form action="{{ path('login') }}" method="post">
+		<label for="username">{{username_label|trans([],"admin")}}</label>
 		<input type="text" id="username" name="_username" value="{{ last_username }}">
-
-		<label for="password">Password:</label>
+		<label for="password">{{password_label|trans([], "admin")}}</label>
 		<input
 		type="password" id="password" name="_password">
+		<button type="submit">{{sign_in_label|trans([], "admin")}}</button>
+		<a href="#">{{forgot_password_label|trans([], "admin")}}</a>
+		<input type="checkbox" id="remember_me" name="_remember_me" checked>
+		<label for="remember_me">{{remember_me_label|trans([], "admin")}}</label>
 
 		{# If you want to control the URL the user is redirected to on success
 					        <input type="hidden" name="_target_path" value="/account"> #}
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-		<button type="submit">login</button>
+		<button type="submit">{{sign_in_label|trans([], "admin")}}</button>
 	</form>
 {% endblock %}

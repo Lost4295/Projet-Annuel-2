@@ -1,0 +1,39 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_content %}
+    <table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Type</th>
+            <th>Info</th>
+            <th>État</th>
+            <th>Date de Création</th>
+            <th>Date de Modification</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if traitements is defined %}
+        {% for traitement in traitements %}
+            <tr>
+                <td>{{ traitement.id }}</td>
+                <td>{{ traitement.name }}</td>
+                <td>{{ traitement.lastname }}</td>
+                <td>{{ traitement.email }}</td>
+                <td>{{ traitement.phone }}</td>
+                <td>{{ traitement.birthdate|date('Y-m-d') }}</td>
+            </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="8">Pas de traitements en cours</td>
+        </tr>
+        <tr>
+            <td colspan="7">Test</td>
+            <td><a href="{{url}}" class="btn btn-primary">Ajouter</a></td>
+        </tr>
+        {% endif %}
+    </table>
+{% endblock %}

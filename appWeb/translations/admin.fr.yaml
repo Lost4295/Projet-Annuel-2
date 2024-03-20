@@ -82,7 +82,7 @@ settings.appearance.auto: Automatique
 settings.locale: Langue
 login_page.username: Identifiant
 login_page.password: 'Mot de passe'
-login_page.sign_in: Connectez-vous
+login_page.sign_in: 'Se connecter'
 login_page.forgot_password: 'Mot de passe oublié ?'
 login_page.remember_me: 'Rester connecté'
 exception.entity_not_found: "Cet élément n'est plus disponible."

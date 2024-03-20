@@ -32,10 +32,12 @@
 				</symbol>
 			</svg>
 			<div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-				<button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-					<svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-						<use href="#circle-half"></use>
-					</svg>
+				<button
+					class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+					{# <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+																					<use href="#circle-half"></use>
+																				</svg> #}
+					<i class="bi bi-chat-text"></i>
 					<span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
@@ -72,37 +74,39 @@
 							</svg>
 						</button>
 					</li>
+					<li>
+						<input type="range" class="form-range" id="bd-theme-range" min="0" max="100" step="1" value="50" aria-label="Theme opacity">
+					</li>
+					<li>
+						<input type="text" class="form-control" id="bd-theme-color" value="#0d6efd" aria-label="Theme color">
+					</li>
 				</ul>
 			</div>
 			<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow" aria-label="Main navigation">
 				<div class="container-fluid">
 					<a class="navbar-brand" href="{{path('index') }}">
-						<img id="logo" alt="ici le logo" src="{{asset("brand/PCS_Logo/Black_Full.svg")}}" width="135"/></a>
+						<img id="logo" alt="ici le logo" src="{{asset("brand/PCS_Logo/Black_Keys.svg")}}" width="65"/></a>
 					<button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="navbar-collapse offcanvas-collapse justify-content-between" id="navbarsExampleDefault">
 						<nav class="navbar-nav mb-2 mb-lg-0 nav-fill">
-							<a class="nav-link active" aria-current="page" href="{{path('dashboard') }}">{{'locations' |trans }}</a>
-							&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+							<a class="nav-link fs-4 mx-3{% if app.request.get("_route") == 'locations' %} active {%endif%}" {% if app.request.get('_route') == 'locations' %} aria-current="page" {% endif %} href="{{path('locations') }}">{{'locations' |trans }}</a>
 							{# Je triche oui #}
-							<a class="nav-link" href="{{path('services') }}">{{'services' |trans }}</a>
-							&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-							<a class="nav-link" href="{{path('all_texts') }}">{{'prestataires' |trans }}</a>
-							&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-							<a class="nav-link" href="{{path('profile') }}">{{'contacter' |trans }}</a>
-							&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+							<a class="nav-link fs-4 mx-3{% if app.request.get("_route") == 'services' %} active {%endif%}" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} href="{{path('services') }}">{{'services' |trans }}</a>
+							<a class="nav-link fs-4 mx-3{% if app.request.get("_route") == 'prestataires' %} active {%endif%}" {% if app.request.get('_route') == 'prestataires' %} aria-current="page" {% endif %} href="{{path('prestataires') }}">{{'prestataires' |trans }}</a>
+							<a class="nav-link fs-4 mx-3{% if app.request.get("_route") == 'contact' %} active {%endif%}" {% if app.request.get('_route') == 'contact' %} aria-current="page" {% endif %} href="{{path('contact') }}">{{'contacter' |trans }}</a>
 							{#
-							<a class="nav-link" href="{{path('rps_index') }}">RPS</a>
-							<a class="nav-link" href="#">Link</a>
-							#}
+																												<a class="nav-link" href="{{path('rps_index') }}">RPS</a>
+																												<a class="nav-link" href="#">Link</a>
+																												#}
 						</nav>
 						{#
-													<form class="d-flex m-auto" role="search" action="{{path('results') }}">
-							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-							<button class="btn btn-outline-success" type="submit">Search</button>
-						</form>
-						#}
+																															<form class="d-flex m-auto" role="search" action="{{path('results') }}">
+																									<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+																									<button class="btn btn-outline-success" type="submit">Search</button>
+																								</form>
+																								#}
 						<div class="d-flex flex-row">
 							{% if app.user %}
 								<div class="dropdown">
@@ -140,9 +144,9 @@
 					</div>
 				</nav>
 				{# <div class="nav-scroller bg-body shadow-sm">
-												<nav class="nav" aria-label="Secondary navigation"></nav>
-												</div> #}
-				<main class="container-fluid my-3">
+																								<nav class="nav" aria-label="Secondary navigation"></nav>
+																								</div> #}
+				<main class="container-fluid mb-5 pb-5">
 					<div aria-live="polite" aria-atomic="true" class="position-relative">
 						<div class="toast-container top-0 end-0 p-3">
 							{% for label, messages in app.flashes %}
@@ -165,6 +169,29 @@
 					</div>
 					{% block body %}{% endblock %}
 				</main>
+				<div class="">
+					<footer class="footer fixed-bottom border-info bg-info">
+						<div class="container-fluid mt-2">
+							<div class="d-flex justify-content-center">
+								Copyright © 2024 CaretakerServices &emsp;
+								<ul class="list-inline">
+									<li class="list-inline-item">
+										<a href="{{path('cookies') }}" class="link-dark px-3" >Utilisation des Cookies</a>
+									</li>
+									<li class="list-inline-item">
+										<a href="{{path('privacy') }}" class="link-dark px-3" >Confidentialité</a>
+									</li>
+									<li class="list-inline-item">
+										<a href="{{path('terms') }}" class="link-dark px-3" >Conditions générales</a>
+									</li>
+									<li class="list-inline-item">
+										<a href="{{path('about') }}" class="link-dark px-3" >Infos sur l’entreprise</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</footer>
+				</div>
 				<script src="{{ asset('js/bootstrap.bundle.min.js') }}" defer></script>
 				<script src="{{ asset('js/offcanvas-navbar.js') }}" defer></script>
 				<script src="{{ asset('js/color-modes.js') }}" defer></script>

@@ -11,7 +11,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
 
-    #[Route(path: '/login/{_locale<fr|en>}', name: 'login')]
+    #[Route(path: '/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         if ($this->getUser()) {
@@ -20,7 +20,7 @@ class LoginController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('@EasyAdmin/page/login.html.twig', [
+        return $this->render('registration/login.html.twig', [
             // parameters usually defined in Symfony login forms
             'error' => $error,
             'last_username' => $lastUsername,
@@ -52,13 +52,13 @@ class LoginController extends AbstractController
             'target_path' => $this->generateUrl('homepage'),
 
             // the label displayed for the username form field (the |trans filter is applied to it)
-            'username_label' => 'Your username',
+            'username_label' => 'login_page.username',
 
             // the label displayed for the password form field (the |trans filter is applied to it)
-            'password_label' => 'Your password',
+            'password_label' => 'login_page.password',
 
             // the label displayed for the Sign In form button (the |trans filter is applied to it)
-            'sign_in_label' => 'Log in',
+            'sign_in_label' => 'login_page.sign_in',
 
             // the 'name' HTML attribute of the <input> used for the username field (default: '_username')
             // 'username_parameter' => 'custom_username_param',
@@ -72,7 +72,7 @@ class LoginController extends AbstractController
             // 'forgot_password_path' => $this->generateUrl('...', ['...' => '...']),:
 
             // the label displayed for the "forgot password?" link (the |trans filter is applied to it)
-            'forgot_password_label' => 'Forgot your password?',
+            'forgot_password_label' => 'login_page.forgot_password',
 
             // whether to enable or not the "remember me" checkbox (default: false)
             'remember_me_enabled' => true,
@@ -84,7 +84,7 @@ class LoginController extends AbstractController
             // 'remember_me_checked' => true,
 
             // the label displayed for the remember me checkbox (the |trans filter is applied to it)
-            'remember_me_label' => 'Remember me',
+            'remember_me_label' => 'login_page.remember_me',
         ]);
     }
 
