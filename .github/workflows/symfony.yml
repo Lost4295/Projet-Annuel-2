@@ -35,8 +35,7 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
-    - name: get to right directory
-      run: cd appWeb
     - name: Install Dependencies
-      run: ls -la && composer install 
+      run: composer install
+      working-directory: ./appWeb
     
