@@ -19,35 +19,13 @@ class DefaultController extends AbstractController
         return $this->render('index.html.twig', ['message' => 'Hello World!']);
     }
 
-    #[Route("/locations", name: "locations")]
-    public function createPage(Request $request)
-    {
-        $routeName = $request->attributes->get("_route");
 
-        if ($routeName === "number") {
-            $number = random_int(0, 100);
-        } else {
-            $number = $routeName;
-        }
-
-        return $this->render('dashboard.html.twig', [
-            'text' => $number,
-        ]);
-    }
-
-
-
-    #[Route("/service", name: "services")]
-    public function table()
-    {
-        return $this->render('service.html.twig', [
-        ]);
-    }
 
     #[Route("/cookies", name: "cookies")]
     #[Route("/ventes", name: "ventes")]
     #[Route("/privacy", name: "privacy")]
     #[Route("/terms", name: "terms")]
+    #[Route("/legal", name:"legalmentions")]
     #[Route("/about", name: "about")]
     public function legals( Request $request)
     {
