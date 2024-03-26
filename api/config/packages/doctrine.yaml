@@ -1,15 +1,6 @@
 doctrine:
     dbal:
-        # url: '%env(resolve:DATABASE_URL)%'
-        driver_class: "Circle\\DoctrineRestDriver\\Driver"
-        host:         "%env(DEFAULT_API_URL)%"
-        port:         "%env(DEFAULT_API_PORT)%"
-        user:         "%env(DEFAULT_API_USERNAME)%"
-        password:     "%env(DEFAULT_API_PASSWORD)%"
-        # options:
-            # format:               "json" | "YourOwnNamespaceName" | if not specified json will be used
-            # authenticator_class:  "HttpAuthentication" | "YourOwnNamespaceName" | if not specified no authentication will be used
-
+        url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
@@ -31,6 +22,8 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+        controller_resolver:
+            auto_mapping: false
 
 when@test:
     doctrine:

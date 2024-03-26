@@ -1,4 +1,7 @@
 {
+    "ci/restclientbundle": {
+        "version": "1.0.0"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.11",
         "recipe": {
