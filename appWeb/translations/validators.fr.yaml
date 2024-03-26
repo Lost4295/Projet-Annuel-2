@@ -140,11 +140,11 @@ Error: Erreur
 'Please select a valid option.': 'Veuillez sélectionner une option valide.'
 'Please select a valid range.': 'Veuillez sélectionner une plage valide.'
 'Please enter a valid week.': 'Veuillez entrer une semaine valide.'
-'There is already an account with this email.': '__There is already an account with this email.'
-'The email {{ value }} is not a valid email.': '__The email {{ value }} is not a valid email.'
-'Please enter a name.': '__Please enter a name.'
-'Your name should be at least {{ limit }} characters.': '__Your name should be at least {{ limit }} characters.'
-'You should agree to our terms.': '__You should agree to our terms.'
-'Please enter a password': '__Please enter a password'
-'Your password should be at least {{ limit }} characters': '__Your password should be at least {{ limit }} characters'
-"Your password is too easy to guess. Company's security policy requires to use a stronger password.": "__Your password is too easy to guess. Company's security policy requires to use a stronger password."
+'There is already an account with this email.': 'Il existe déjà un compte avec cette adresse mail.'
+'The email {{ value }} is not a valid email.': "L'adresse mail {{ value }} n'est pas une adresse mail valide."
+'Please enter a name.': "Merci d'entrer un nom."
+'Your name should be at least {{ limit }} characters.': 'Votre nom doit faire au moins {{ limit }} caractères.'
+'You should agree to our terms.': 'Vous devez accepter les conditions, pour accéder au site.'
+'Please enter a password': "Merci d'entrer un mot de passe."
+'Your password should be at least {{ limit }} characters': 'Votre mot de passe doit faire au moins {{ limit }} caractères.'
+"Your password is too easy to guess. Company's security policy requires to use a stronger password.": "Votre mot de passe est trop facile à deviner. La politique de sécurité de l'entreprise requiert un mot de passe plus fort."

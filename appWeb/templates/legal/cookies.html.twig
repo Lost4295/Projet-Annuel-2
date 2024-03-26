@@ -4,4 +4,7 @@
 	<div class="spinner-border display-2" role="status" style="width:700px; height:700px">
 		<span class="visually-hidden">Loading...</span>
 	</div>
+	{% if app.request.locale != 'fr' %}
+	<div class="text-center alert-danger alert">{{'nolang'|trans}}</div>
+{% endif %}
 {% endblock %}

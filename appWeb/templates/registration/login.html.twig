@@ -17,13 +17,11 @@
 	{% endif %}
 	<form action="{{ path('login') }}" method="post">
 		<label for="username">{{username_label|trans([],"admin")}}</label>
-		<input type="text" id="username" name="_username" value="{{ last_username }}">
+		<input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}">
 		<label for="password">{{password_label|trans([], "admin")}}</label>
-		<input
-		type="password" id="password" name="_password">
-		<button type="submit">{{sign_in_label|trans([], "admin")}}</button>
+		<input type="password" id="password" class="form-control" name="_password">
 		<a href="#">{{forgot_password_label|trans([], "admin")}}</a>
-		<input type="checkbox" id="remember_me" name="_remember_me" checked>
+		<input type="checkbox" id="remember_me" class="form-checkbox" name="_remember_me" checked>
 		<label for="remember_me">{{remember_me_label|trans([], "admin")}}</label>
 
 		{# If you want to control the URL the user is redirected to on success

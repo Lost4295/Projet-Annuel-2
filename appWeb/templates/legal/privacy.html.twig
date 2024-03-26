@@ -4,6 +4,9 @@
 	<div class="spinner-border display-2" role="status" style="width:700px; height:700px">
 		<span class="visually-hidden">Loading...</span>
 	</div>
+	{% if app.request.locale != 'fr' %}
+	<div class="text-center alert-danger alert">{{'nolang'|trans}}</div>
+{% endif %}
 	<h1 class="privacy-policy-h1">Privacy Policy
 		<br><span>Last Updated On 20-Mar-2024</span>
 		<br><span>Effective Date 20-Mar-2024</span>

@@ -9,3 +9,12 @@ tarifs : Tarifications
 userrl: Section Utilisateurs
 birthdate: Date de Naissance
 wip: En cours de développement...
+
+terms: Conditions générales d'utilisation
+nolang: Cette page n'est pas encore disponible dans votre langue.
+register: S'inscrire
+nom: Nom
+prenom: Prénom
+emailfield: Email
+password:  Mot de passe
+agree: J'accepte les <a href="/terms">Conditions générales d'utilisation</a>

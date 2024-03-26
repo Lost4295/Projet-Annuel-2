@@ -4,6 +4,9 @@
 	<div class="spinner-border display-2" role="status" style="width:700px; height:700px">
 		<span class="visually-hidden">Loading...</span>
 	</div>
+	{% if app.request.locale != 'fr' %}
+	<div class="text-center alert-danger alert">{{'nolang'|trans}}</div>
+{% endif %}
 	<div modal-render="">
 		<div class="lp-doc-container lp-doc-modal" style="overflow: hidden">
 			<div id="lp-doc-modal" class="lp-doc" style="margin-left: 0px">

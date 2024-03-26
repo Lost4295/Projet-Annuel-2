@@ -56,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'blob', nullable: true)]
     private $avatar;
+
+    #[ORM\OneToOne(inversedBy: 'responsable', cascade: ['persist', 'remove'])]
+    private ?Professionnel $professionnel = null;
     public function __construct()
     {
         $this->creationDate = new \DateTime();
@@ -271,6 +274,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getProfessionnel(): ?Professionnel
+    {
+        return $this->professionnel;
+    }
+
+    public function setProfessionnel(?Professionnel $professionnel): static
+    {
+        $this->professionnel = $professionnel;
 
         return $this;
     }
