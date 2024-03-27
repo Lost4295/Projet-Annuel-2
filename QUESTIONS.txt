@@ -1,0 +1,24 @@
+Voir si côté dev on a le droit à : 
+
+Composer
+Les assets des frameworks en général
+Dockeriser tout ça pour avoir un truc portable et tout petit --> Penser à l'infra
+JQuery
+
+- Sur quoi on fait tourner l'appli WEB ?
+- Faut-il avoir au moins autant de serveurs que mentionné en annexe 5 ?
+- On peut renseigner une traduction ?
+- Réseaux AP etc.. avec Raspberry
+
+
+- Je fais le doc descriptif détaillé ? (demander à sananes commement le faire, c'est en train de me clc)
+
+
+- On installe nginx et Apache ?
+- Accès fausse appli + api sur pc ylan ?
+- Gestion + intégration API
+
+Responsable Déveloopement : Ylan Turin--Kondi
+Responsable Réseau : Benjamin LE BERRE
+
+
