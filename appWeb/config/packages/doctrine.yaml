@@ -1,7 +1,7 @@
 doctrine:
     dbal:
         # url: '%env(resolve:DATABASE_URL)%'
-        driver_class: "Circle\\DoctrineRestDriver\\Driver"
+        driver_class: "\\App\\Service\\Driver"
         host:         "%env(DEFAULT_API_URL)%"
         port:         "%env(DEFAULT_API_PORT)%"
         user:         "%env(DEFAULT_API_USERNAME)%"
