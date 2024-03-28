@@ -12,6 +12,10 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use App\Entity\User;
 use App\Entity\Email;
+use App\Entity\Appartement;
+use App\Entity\Fichier;
+use App\Entity\Professionnel;
+use App\Entity\Service;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -171,6 +175,10 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::section('userrl');
         // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
         yield MenuItem::linkToCrud('users', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('Appartement', 'fa fa-Appartement', Appartement::class);
+        yield MenuItem::linkToCrud('Fichier', 'fa fa-Fichier', Fichier::class);
+        yield MenuItem::linkToCrud('Professionnel', 'fa fa-Professionnel', Professionnel::class);
+        yield MenuItem::linkToCrud('Service', 'fa fa-Service', Service::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
 
     }

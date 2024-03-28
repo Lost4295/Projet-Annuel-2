@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{page_title}}
+{% block title %}
+	{{page_title}}
 {% endblock %}
 
 {% block body %}
@@ -15,18 +16,23 @@
 	{% if error %}
 		<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 	{% endif %}
-	<form action="{{ path('login') }}" method="post">
-		<label for="username">{{username_label|trans([],"admin")}}</label>
-		<input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}">
-		<label for="password">{{password_label|trans([], "admin")}}</label>
-		<input type="password" id="password" class="form-control" name="_password">
-		<a href="#">{{forgot_password_label|trans([], "admin")}}</a>
-		<input type="checkbox" id="remember_me" class="form-checkbox" name="_remember_me" checked>
-		<label for="remember_me">{{remember_me_label|trans([], "admin")}}</label>
-
-		{# If you want to control the URL the user is redirected to on success
-					        <input type="hidden" name="_target_path" value="/account"> #}
-		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-		<button type="submit">{{sign_in_label|trans([], "admin")}}</button>
-	</form>
+	<div class="card bg-info">
+		<div class="card-body">
+			<form action="{{ path('login') }}" method="post">
+				<label for="username">{{username_label|trans([],"admin")}}</label>
+				<input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}">
+				<label for="password">{{password_label|trans([], "admin")}}</label>
+				<input type="password" id="password" class="form-control" name="_password">
+				<a href="#">{{forgot_password_label|trans([], "admin")}}</a>
+				<div class="">
+					<input type="checkbox" id="remember_me" class="form-checkbox" name="_remember_me" checked>
+					<label for="remember_me">{{remember_me_label|trans([], "admin")}}</label>
+				</div>
+				{# If you want to control the URL the user is redirected to on success
+<input type="hidden" name="_target_path" value="/account"> #}
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<button type="submit">{{sign_in_label|trans([], "admin")}}</button>
+			</form>
+		</div>
+	</div>
 {% endblock %}
