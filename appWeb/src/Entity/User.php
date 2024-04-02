@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $admin = false;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable:true )]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(type: 'boolean')]
@@ -56,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'blob', nullable: true)]
     private $avatar;
+
+    #[ORM\Column]
+    private ?string $phoneNumber;
 
     #[ORM\OneToOne(inversedBy: 'responsable', cascade: ['persist', 'remove'])]
     private ?Professionnel $professionnel = null;
@@ -170,7 +173,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->lastConnDate;
     }
 
-    public function setLastConnDate(\DateTimeInterface $lastConnDate): static
+    public function setLastConnDate(?\DateTimeInterface $lastConnDate): static
     {
         $this->lastConnDate = $lastConnDate;
 
@@ -182,7 +185,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTimeInterface $creationDate): static
+    public function setCreationDate(?\DateTimeInterface $creationDate): static
     {
         $this->creationDate = $creationDate;
 
@@ -229,7 +232,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->birthdate;
     }
 
-    public function setBirthdate(\DateTimeInterface $birthdate): static
+    public function setBirthdate(?\DateTimeInterface $birthdate): static
     {
         $this->birthdate = $birthdate;
 
@@ -286,6 +289,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProfessionnel(?Professionnel $professionnel): static
     {
         $this->professionnel = $professionnel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of phoneNumber
+     */ 
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * Set the value of phoneNumber
+     *
+     * @return  self
+     */ 
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }

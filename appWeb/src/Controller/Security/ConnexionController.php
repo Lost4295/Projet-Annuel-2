@@ -3,7 +3,7 @@
 namespace App\Controller\Security;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Security\UserAuthenticator;
@@ -12,6 +12,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Form\ProfessionnelType;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,11 +36,11 @@ class ConnexionController extends AbstractController
             return $this->redirectToRoute('index');
         }
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            dd($form);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,

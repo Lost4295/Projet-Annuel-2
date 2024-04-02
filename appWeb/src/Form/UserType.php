@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class RegistrationFormType extends AbstractType
+class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -32,13 +33,20 @@ class RegistrationFormType extends AbstractType
                     new Email([
                         'message' => 'The email {{ value }} is not a valid email.',
                     ]),
+                    new NotBlank([
+                        'message' => 'Please enter an email.',
+                    ]),
                 ],
+                "label" => 'emailfield'
+
             ])
             ->add('nom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'constraints'=> [
+                "label" => 'nom',
+
+                'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a name.',
                     ]),
@@ -54,7 +62,9 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'constraints'=> [
+                "label" => 'prenom',
+
+                'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a name.',
                     ]),
@@ -65,13 +75,21 @@ class RegistrationFormType extends AbstractType
                         'max' => 80,
                     ]),
                 ],
-            // 
+                // 
             ])
             ->add('birthdate', DateTimeType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
-            //
+                "label" => 'birthdate',
+                'constraints'=> [
+                    new NotBlank([
+                        'message' => 'Please enter a birthdate.',
+                    ]),
+                    new DateTime([
+                        'message' => 'Please enter a valid date.',
+                    ])
+                ]
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
@@ -80,10 +98,33 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
-                'attr'=> [
+                "label_html" => true,
+                "label" => 'agree',
+                'attr' => [
                     'class' => 'form-check-input'
                 ]
             ])
+            ->add('phoneNumber',NumberType::class ,[
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                "label" => 'phone',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter a phone number.',
+                    ]),
+                    new Length([
+                        'min' => 10,
+                        'minMessage' => 'Your phone number should be at least {{ limit }} characters.',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 10,
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[0-9]{10}$/',
+                        'message' => 'Your phone number should contain only numbers.'
+                    ])
+                ],
+            ] )
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -92,6 +133,7 @@ class RegistrationFormType extends AbstractType
                     'autocomplete' => 'new-password',
                     'class' => 'form-control'
                 ],
+                "label" => 'password',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
@@ -107,9 +149,13 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Your password is too easy to guess. Company\'s security policy requires to use a stronger password.'
                     ]),
                 ],
-                
             ])
-        ;
+            ->add('professionnel',ProfessionnelType::class, [
+                'label' => 'pro',
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

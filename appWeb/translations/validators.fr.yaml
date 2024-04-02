@@ -112,6 +112,7 @@ Error: Erreur
 'The CSRF token is invalid. Please try to resubmit the form.': 'Le jeton CSRF est invalide. Veuillez renvoyer le formulaire.'
 'This value is not a valid HTML5 color.': "Cette valeur n'est pas une couleur HTML5 valide."
 'Please enter a valid birthdate.': 'Veuillez entrer une date de naissance valide.'
+'Please enter a birthdate.': 'Veuillez entrer une date de naissance.'
 'The selected choice is invalid.': 'Le choix sélectionné est invalide.'
 'The collection is invalid.': 'La collection est invalide.'
 'Please select a valid color.': 'Veuillez sélectionner une couleur valide.'
@@ -138,6 +139,7 @@ Error: Erreur
 'The checkbox has an invalid value.': 'La case à cocher a une valeur non valide.'
 'Please enter a valid email address.': 'Veuillez saisir une adresse email valide.'
 'Please select a valid option.': 'Veuillez sélectionner une option valide.'
+'Please enter an email.': "Veuillez entrer une adresse email."
 'Please select a valid range.': 'Veuillez sélectionner une plage valide.'
 'Please enter a valid week.': 'Veuillez entrer une semaine valide.'
 'There is already an account with this email.': 'Il existe déjà un compte avec cette adresse mail.'
@@ -148,3 +150,6 @@ Error: Erreur
 'Please enter a password': "Merci d'entrer un mot de passe."
 'Your password should be at least {{ limit }} characters': 'Votre mot de passe doit faire au moins {{ limit }} caractères.'
 "Your password is too easy to guess. Company's security policy requires to use a stronger password.": "Votre mot de passe est trop facile à deviner. La politique de sécurité de l'entreprise requiert un mot de passe plus fort."
+'Please enter a phone number.': "Merci d'entrer un numéro de téléphone."
+'Your phone number should be at least {{ limit }} characters.': 'Votre numéro de téléphone doit faire au moins {{ limit }} caractères.'
+'Your phone number should contain only numbers.': 'Votre numéro de téléphone doit seulement contenir des chiffres.'

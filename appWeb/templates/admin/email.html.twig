@@ -1,5 +1,17 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block page_content %}
+    <h1>{{ "write_email" |trans }}</h1>
 
+
+    {{ form_start(form) }}
+    {{ form_row(form.destinataire) }}
+    {{ form_row(form.cc) }}
+    {{ form_row(form.object) }}
+    {{ form_row(form.body) }}
+    {{ form_row(form.pj) }}
+    {{ form_row(form.date) }}
+    {{ form_row(form.isAutomatic) }}
+    <button class="btn btn-primary btn-lg"> {{ "send" |trans }}</button>
+    {{ form_end(form) }}
 {% endblock %}

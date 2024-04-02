@@ -1,20 +1,51 @@
-homepage: Page d'accueil
-dashboard: Dashboard général
-sendmail: Envoyer un Email
+homepage: "Page d'accueil"
+dashboard: 'Dashboard général'
+sendmail: 'Envoyer un Email'
 apis: APIs
-transaction: Transactions en cours
+transaction: 'Transactions en cours'
 email: Emails
 users: Utilisateurs
-tarifs : Tarifications
-userrl: Section Utilisateurs
-birthdate: Date de Naissance
-wip: En cours de développement...
-
-terms: Conditions générales d'utilisation
-nolang: Cette page n'est pas encore disponible dans votre langue.
-register: S'inscrire
+tarifs: Tarifications
+userrl: 'Section Utilisateurs'
+birthdate: 'Date de Naissance'
+wip: 'En cours de développement...'
+terms: "Conditions générales d'utilisation"
+nolang: "Cette page n'est pas encore disponible dans votre langue."
+register: "S'inscrire"
 nom: Nom
 prenom: Prénom
 emailfield: Email
-password:  Mot de passe
-agree: J'accepte les <a href="/terms">Conditions générales d'utilisation</a>
+password: 'Mot de passe'
+agree: 'J''accepte les <a href="/terms">Conditions générales d''utilisation</a>'
+blog: Blog
+send: Envoyer
+appart: Appartements
+file: Fichiers
+pro: Professionnels
+service: Services
+write_email: 'Ecrire un email'
+destinataire: Destinataire
+cc: 'Copie carbone'
+object: 'Objet du message'
+auto: 'Mail automatique ?'
+date: Date
+body: 'Corps du message'
+pj: 'Pièces jointes'
+societyname: 'Nom de la société'
+siretnumber: 'Numéro de SIRET'
+societyaddress: 'Adresse de la société'
+city: Ville
+postalcode: 'Code postal'
+country: Pays
+responsable: Responsable
+register_choose: 'Veuillez sélectionner le type de compte que vous souhaitez créer. Vous pourrez modifier ce rôle plus tard.'
+register_choose_info: 'Vous pourrez toujours modifier ce rôle plus tard.'
+traveler: "Je souhaite m'inscrire en tant que voyageur"
+bailleur: "Je souhaite m'inscrire en tant que bailleur"
+presta: "Je souhaite m'inscrire en tant que prestataire"
+physic: 'Je suis une personne physique'
+moral: 'Je suis une personne morale'
+register_moral: 'Êtes vous un professionnel ou un particulier ?'
+societyinfo: 'Informations de la société'
+respinfo: 'Informations du responsable'
+phone: 'Numéro de téléphone'

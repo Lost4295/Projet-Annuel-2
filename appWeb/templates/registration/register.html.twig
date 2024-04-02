@@ -1,56 +1,113 @@
 {% extends 'base.html.twig' %}
 
 
-{% block page_title %}{{"register"|trans}}{% endblock %}
+{% block page_title %}
+	{{"register"|trans}}
+{% endblock %}
 {% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-        {% set page_title = block('page_title') %}
-    <div class="login-wrapper" style="margin-top:0px">
-        <header class="main-header">
-            <div id="header-logo">
-                {% block header_logo %}
-                            <div class="py-2 display-4 logo {{ page_title|length > 14 ? 'logo-long' }}">
-                                {{ page_title|raw }}
-                            </div>
-                {% endblock header_logo %}
-            </div>
-        </header>
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+	{% set page_title = block('page_title') %}
+	<div class="login-wrapper" style="margin-top:0px">
+		<header class="main-header">
+			<div id="header-logo">
+				{% block header_logo %}
+					<div class="py-2 display-4 logo {{ page_title|length > 14 ? 'logo-long' }}">
+						{{ page_title|raw }}
+					</div>
+				{% endblock header_logo %}
+			</div>
+		</header>
 
-        <section class="content">
+		<section class="content">
 
-            {% if error|default(false) %}
-                <div class="w-100 alert alert-danger rounded mb-3">
-                    <i class="fas fa-times-circle mr-1"></i>
-                    {{ error.messageKey|trans(error.messageData, 'security') }}
-                </div>
-            {% endif %}
+			{% if error|default(false) %}
+				<div class="w-100 alert alert-danger rounded mb-3">
+					<i class="fas fa-times-circle mr-1"></i>
+					{{ error.messageKey|trans(error.messageData, 'security') }}
+				</div>
+			{% endif %}
+			<div class="card bg-info">
+				<div class="card-body">
+					<h4>{{"register_choose"|trans}}</h4>
+					<div>
+						<div>
+							<input type="radio" id="role1" name="role" value="ROLE_TRAVELER" checked>
+							<label for="role1">{{"traveler"|trans}}</label>
+						</div>
+						<div>
+							<input type="radio" id="role2" name="role" value="ROLE_BAILLEUR">
+							<label for="role2">{{"bailleur"|trans}}</label>
+						</div>
+						<div>
+							<input type="radio" id="role3" name="role" value="ROLE_PRESTA">
+							<label for="role3">{{"presta"|trans}}</label>
+						</div>
+					<small class="text-muted">{{"register_choose_info"|trans}}</small>
+                    </div>
 
-        {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.nom, {
-            label: 'nom'
-        }) }}
-        {{ form_row(registrationForm.prenom, {
-            label: 'prenom'
-        }) }}
-        {{ form_row(registrationForm.birthdate, {
-            label: 'birthdate'
-        }) }}
-        {{ form_row(registrationForm.email, {
-            label: 'emailfield'
-        }) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms, {
-            label: 'agree',
-            label_html: true
-        }) }}
+					<div id="additionnalquestion" class='d-none'>
+						<h4>{{"register_moral"|trans}}</h4>
+						<div>
+							<input type="radio" id="physic" name="type" value="ME_PHYSIC" checked>
+							<label for="physic">{{"physic"|trans}}</label>
+						</div>
+						<div>
+							<input type="radio" id="moral" name="type" value="ME_MORAL">
+							<label for="moral">{{"moral"|trans}}</label>
+						</div>
+					</div>
+					<div id="additionnalform" class='d-none'>
+                        <h4 class="text-center">{{"societyinfo"|trans }}</h4>
+						{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate'}}) }}
+						{{ form_row(registrationForm.professionnel.societyName)}}
+						{{ form_row(registrationForm.professionnel.siretNumber)}}
+						{{ form_row(registrationForm.professionnel.societyAddress)}}
+                        {{ form_row(registrationForm.professionnel.city)}}
+						{{ form_row(registrationForm.professionnel.postalCode)}}
+						{{ form_row(registrationForm.professionnel.country)}}
 
-        <button type="submit" class="btn btn-primary">Register</button>
-    {{ form_end(registrationForm) }}
-        </section>
-    </div>
-{% endblock %}
+                        <h4 class="text-center mt-4">{{"respinfo"|trans }}</h4>
+						</div>
+
+
+						{{ form_row(registrationForm.nom)}}
+						{{ form_row(registrationForm.prenom)}}
+						{{ form_row(registrationForm.birthdate)}}
+						{{ form_row(registrationForm.email)}}
+                        {{ form_row(registrationForm.phoneNumber)}}
+						{{ form_row(registrationForm.plainPassword)}}
+						{{ form_row(registrationForm.agreeTerms)}}
+
+						<button type="submit" class="btn btn-primary">Register</button>
+						{{ form_end(registrationForm) }}
+					</div>
+				</div>
+
+			</section>
+		</div>
+	{% endblock %}
+
+	{% block javascripts %}
+        <script>
+    $("input:radio[name='role']").on('change', function() {
+        if($("#role1").is(":checked")) {
+            document.getElementById('additionnalquestion').classList.add("d-none");
+            document.getElementById('additionnalform').classList.add("d-none");
+        } else {
+            if($("#moral").is(":checked") && (!$("#role1").is(":checked"))) {
+                document.getElementById('additionnalform').classList.remove("d-none");
+            }
+            document.getElementById('additionnalquestion').classList.remove("d-none");
+        }
+    });
+        $("input:radio[name='type']").on('change', function() {
+        if($("#moral").is(":checked") && (!$("#role1").is(":checked"))) {
+            document.getElementById('additionnalform').classList.remove("d-none");
+        } else {
+            document.getElementById('additionnalform').classList.add("d-none");
+        }
+    });
+    </script>{% endblock %}

@@ -148,3 +148,7 @@ Error: Error
 'Please enter a password': 'Please enter a password'
 'Your password should be at least {{ limit }} characters': 'Your password should be at least {{ limit }} characters'
 "Your password is too easy to guess. Company's security policy requires to use a stronger password.": "Your password is too easy to guess. Company's security policy requires to use a stronger password."
+'Please enter a phone number.': 'Please enter a phone number.'
+'Your phone number should be at least {{ limit }} characters.': 'Your phone number should be at least {{ limit }} characters.'
+'Your phone number should contain only numbers.': 'Your phone number should contain only numbers.'
+'Please enter an email.': 'Please enter an email.'

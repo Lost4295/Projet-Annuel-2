@@ -164,21 +164,22 @@ class AdminDashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToUrl("homepage","fa fa-home" , "/" );
         yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
-        yield MenuItem::section('Blog');
+        yield MenuItem::section('blog');
         yield MenuItem::linktoRoute('sendmail', 'fa fa-share-square', 'make_email');
         yield MenuItem::linktoRoute('apis', 'fa fa-robot', 'api_state');
-        yield MenuItem::linktoRoute('tarifs', 'fa fa-list', 'tarifs');
+        yield MenuItem::linktoRoute('tarifs', 'fa fa-shopping-cart', 'tarifs');
         yield MenuItem::linktoRoute('transaction', 'fa fa-list', 'all_states');
         // yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);
         // yield MenuItem::linkToCrud('Blog Posts', 'fa fa-file-text', BlogPost::class);
-        yield MenuItem::linkToCrud('email', 'fa fa-envelope', Email::class);
         yield MenuItem::section('userrl');
         // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
         yield MenuItem::linkToCrud('users', 'fa fa-user', User::class);
-        yield MenuItem::linkToCrud('Appartement', 'fa fa-Appartement', Appartement::class);
-        yield MenuItem::linkToCrud('Fichier', 'fa fa-Fichier', Fichier::class);
-        yield MenuItem::linkToCrud('Professionnel', 'fa fa-Professionnel', Professionnel::class);
-        yield MenuItem::linkToCrud('Service', 'fa fa-Service', Service::class);
+        yield MenuItem::linkToCrud('pro', 'fa fa-id-card', Professionnel::class);
+        yield MenuItem::section('userrl');
+        yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
+        yield MenuItem::linkToCrud('email', 'fa fa-envelope', Email::class);
+        yield MenuItem::linkToCrud('file', 'fa fa-files-o ', Fichier::class);
+        yield MenuItem::linkToCrud('service', 'fa fa-tasks', Service::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
 
     }
