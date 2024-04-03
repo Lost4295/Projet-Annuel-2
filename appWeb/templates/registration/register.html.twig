@@ -31,33 +31,14 @@
 			{% endif %}
 			<div class="card bg-info">
 				<div class="card-body">
-					<h4>{{"register_choose"|trans}}</h4>
+
 					<div>
-						<div>
-							<input type="radio" id="role1" name="role" value="ROLE_TRAVELER" checked>
-							<label for="role1">{{"traveler"|trans}}</label>
-						</div>
-						<div>
-							<input type="radio" id="role2" name="role" value="ROLE_BAILLEUR">
-							<label for="role2">{{"bailleur"|trans}}</label>
-						</div>
-						<div>
-							<input type="radio" id="role3" name="role" value="ROLE_PRESTA">
-							<label for="role3">{{"presta"|trans}}</label>
-						</div>
+						{{ form_row(registrationForm.role)}}
 					<small class="text-muted">{{"register_choose_info"|trans}}</small>
                     </div>
 
 					<div id="additionnalquestion" class='d-none'>
-						<h4>{{"register_moral"|trans}}</h4>
-						<div>
-							<input type="radio" id="physic" name="type" value="ME_PHYSIC" checked>
-							<label for="physic">{{"physic"|trans}}</label>
-						</div>
-						<div>
-							<input type="radio" id="moral" name="type" value="ME_MORAL">
-							<label for="moral">{{"moral"|trans}}</label>
-						</div>
+						{{ form_row(registrationForm.type)}}
 					</div>
 					<div id="additionnalform" class='d-none'>
                         <h4 class="text-center">{{"societyinfo"|trans }}</h4>
@@ -92,19 +73,19 @@
 
 	{% block javascripts %}
         <script>
-    $("input:radio[name='role']").on('change', function() {
-        if($("#role1").is(":checked")) {
+    $("input:radio[name='user[role]']").on('change', function() {
+        if($("#user_role_0").is(":checked")) {
             document.getElementById('additionnalquestion').classList.add("d-none");
             document.getElementById('additionnalform').classList.add("d-none");
         } else {
-            if($("#moral").is(":checked") && (!$("#role1").is(":checked"))) {
+            if($("#user_type_1").is(":checked") && (!$("#user_role_0").is(":checked"))) {
                 document.getElementById('additionnalform').classList.remove("d-none");
             }
             document.getElementById('additionnalquestion').classList.remove("d-none");
         }
     });
-        $("input:radio[name='type']").on('change', function() {
-        if($("#moral").is(":checked") && (!$("#role1").is(":checked"))) {
+        $("input:radio[name='user[type]']").on('change', function() {
+        if($("#user_type_1").is(":checked") && (!$("#user_role_0").is(":checked"))) {
             document.getElementById('additionnalform').classList.remove("d-none");
         } else {
             document.getElementById('additionnalform').classList.add("d-none");

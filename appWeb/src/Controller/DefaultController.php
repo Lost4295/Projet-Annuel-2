@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends AbstractController
@@ -14,8 +15,12 @@ class DefaultController extends AbstractController
 
     #[Route("/index", name: "index")]
     #[Route("/", name: "homepage")]
-    public function index()
+    public function index(TranslatorInterface $translator)
     {
+        $user = $this->getUser();
+        if ($user && !$user->isVerified()) {
+            $this->addFlash('warning', $translator->trans('verify'));
+        }
         return $this->render('index.html.twig', ['message' => 'Hello World!']);
     }
 

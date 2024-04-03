@@ -29,11 +29,31 @@ class ProfessionnelType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
+                'constraints' => [
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'Your society name must be at least {{ limit }} characters long',
+                        'max' => 255,
+                        'maxMessage' => 'Your society name cannot be longer than {{ limit }} characters',
+                    ]),
+                ],
             ])
             ->add('siretNumber', TextType::class, [
                 'label' => 'siretnumber',
                 'attr' => [
                     'class' => 'form-control'
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 14,
+                        'minMessage' => 'Your SIRET number must be at least {{ limit }} characters long',
+                        'max' => 14,
+                        'maxMessage' => 'Your SIRET number cannot be longer than {{ limit }} characters',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[0-9]{14}$/',
+                        'message' => 'Your SIRET number must be 14 digits long',
+                    ]),
                 ],
             ])
             ->add('societyAddress', TextType::class, [
@@ -41,11 +61,27 @@ class ProfessionnelType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
+                'constraints' => [
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'Your society address must be at least {{ limit }} characters long',
+                        'max' => 255,
+                        'maxMessage' => 'Your society address cannot be longer than {{ limit }} characters',
+                    ]),
+                ],
             ])
             ->add('city', TextType::class, [
                 'label' => 'city',
                 'attr' => [
                     'class' => 'form-control'
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'Your city must be at least {{ limit }} characters long',
+                        'max' => 255,
+                        'maxMessage' => 'Your city cannot be longer than {{ limit }} characters',
+                    ]),
                 ],
             ])
             ->add('postalCode', TextType::class, [
@@ -53,11 +89,31 @@ class ProfessionnelType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
+                'constraints' => [
+                    new Length([
+                        'min' => 5,
+                        'minMessage' => 'Your postal code must be at least {{ limit }} characters long',
+                        'max' => 5,
+                        'maxMessage' => 'Your postal code cannot be longer than {{ limit }} characters',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[0-9]{5}$/',
+                        'message' => 'Your postal code must be 5 digits long',
+                    ]),
+                ],
             ])
             ->add('country', TextType::class, [
                 'label' => 'country',
                 'attr' => [
                     'class' => 'form-control'
+                ],
+                'constraints' => [
+                    new Length([
+                        'min' => 3,
+                        'minMessage' => 'Your country must be at least {{ limit }} characters long',
+                        'max' => 255,
+                        'maxMessage' => 'Your country cannot be longer than {{ limit }} characters',
+                    ]),
                 ],
             ]);
         // ->add('responsable', User::class, [

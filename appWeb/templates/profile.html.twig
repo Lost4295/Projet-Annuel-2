@@ -7,26 +7,43 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Home</h1>
 	<div class='row'>
-		<div class="col-2 border border-success ">
+		<div class="col-2 border border-success">
 			<div class="d-flex align-items-start">
 				<div class="nav flex-column nav-pills me-3 w-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<button class=" nav-link fs-3 my-3 p-5 active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</button>
-					<button class=" nav-link fs-3 my-3 p-5" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
-					<button class=" nav-link fs-3 my-3 p-5" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false" disabled>Disabled</button>
-					<button class=" nav-link fs-3 my-3 p-5" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
-					<button class=" nav-link fs-3 my-3 p-5" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+					<button class=" nav-link  my-2 p-4 active" id="v-pills-info-tab" data-bs-toggle="pill" data-bs-target="#v-pills-info" type="button" role="tab" aria-controls="v-pills-info" aria-selected="true">{{"info"|trans}}</button>
+					<button class=" nav-link  my-2 p-4" id="v-pills-docs-tab" data-bs-toggle="pill" data-bs-target="#v-pills-docs" type="button" role="tab" aria-controls="v-pills-docs" aria-selected="false">{{"docs"|trans}}</button>
+					{% if is_granted("ROLE_ADMIN") %}
+						<button class=" nav-link  my-2 p-4" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="false">{{"dashboard"|trans}}</button>
+						{% else %}
+						<button class=" nav-link  my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
+					{% endif %}
+					<button class=" nav-link  my-2 p-4" id="v-pills-notifs-tab" data-bs-toggle="pill" data-bs-target="#v-pills-notifs" type="button" role="tab" aria-controls="v-pills-notifs" aria-selected="false">{{"notifs"|trans}}</button>
+					<button class=" nav-link  my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
+					<button class=" nav-link  my-2 p-4" id="v-pills-conf-tab" data-bs-toggle="pill" data-bs-target="#v-pills-conf" type="button" role="tab" aria-controls="v-pills-conf" aria-selected="false">{{"conf"|trans}}</button>
 				</div>
 			</div>
 		</div>
 		<div class="col-10 border border-danger">
 			<div class="tab-content" id="v-pills-tabContent">
-				<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">{{ dump(app.user) }}</div>
-				<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">profile...</div> é
-				<div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">disabled...</div>
-				<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">messages...</div>
-				<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">settings...</div>
+				<div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab" tabindex="0">{{ dump(app.user) }}</div>
+				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">docs...</div>
+				{% if is_granted("ROLE_ADMIN") %}
+					<div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">dashboard...</div>
+				{% else %}
+					<div class="tab-pane fade" id="v-pills-loca" role="tabpanel" aria-labelledby="v-pills-loca-tab" tabindex="0">loca...</div>
+				{% endif %}
+				<div class="tab-pane fade" id="v-pills-notifs" role="tabpanel" aria-labelledby="v-pills-notifs-tab" tabindex="0">notifs...</div>
+				<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
+				<div class="tab-pane fade" id="v-pills-conf" role="tabpanel" aria-labelledby="v-pills-conf-tab" tabindex="0">
+					conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
+					conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -112,7 +112,6 @@ Error: Erreur
 'The CSRF token is invalid. Please try to resubmit the form.': 'Le jeton CSRF est invalide. Veuillez renvoyer le formulaire.'
 'This value is not a valid HTML5 color.': "Cette valeur n'est pas une couleur HTML5 valide."
 'Please enter a valid birthdate.': 'Veuillez entrer une date de naissance valide.'
-'Please enter a birthdate.': 'Veuillez entrer une date de naissance.'
 'The selected choice is invalid.': 'Le choix sélectionné est invalide.'
 'The collection is invalid.': 'La collection est invalide.'
 'Please select a valid color.': 'Veuillez sélectionner une couleur valide.'
@@ -139,9 +138,10 @@ Error: Erreur
 'The checkbox has an invalid value.': 'La case à cocher a une valeur non valide.'
 'Please enter a valid email address.': 'Veuillez saisir une adresse email valide.'
 'Please select a valid option.': 'Veuillez sélectionner une option valide.'
-'Please enter an email.': "Veuillez entrer une adresse email."
 'Please select a valid range.': 'Veuillez sélectionner une plage valide.'
 'Please enter a valid week.': 'Veuillez entrer une semaine valide.'
+'Please enter a birthdate.': 'Veuillez entrer une date de naissance.'
+'Please enter an email.': 'Veuillez entrer une adresse email.'
 'There is already an account with this email.': 'Il existe déjà un compte avec cette adresse mail.'
 'The email {{ value }} is not a valid email.': "L'adresse mail {{ value }} n'est pas une adresse mail valide."
 'Please enter a name.': "Merci d'entrer un nom."
@@ -153,3 +153,11 @@ Error: Erreur
 'Please enter a phone number.': "Merci d'entrer un numéro de téléphone."
 'Your phone number should be at least {{ limit }} characters.': 'Votre numéro de téléphone doit faire au moins {{ limit }} caractères.'
 'Your phone number should contain only numbers.': 'Votre numéro de téléphone doit seulement contenir des chiffres.'
+'Your society name must be at least {{ limit }} characters long': 'Votre nom de société doit faire au moins {{ limit }} caractères.'
+'Your SIRET number must be at least {{ limit }} characters long': 'Votre numéro de SIRET doit faire au moins {{ limit }} caractères.'
+'Your SIRET number must be 14 digits long': 'Votre numéro de SIRET doit faire 14 caractères.'
+'Your society address must be at least {{ limit }} characters long': "L'adresse de votre société doit comporter au moins {{ limit }} caractères."
+'Your city must be at least {{ limit }} characters long': 'Votre ville doit comporter au moins {{ limit }} caractères.'
+'Your postal code must be at least {{ limit }} characters long': 'Votre code postal doit comporter au moins {{ limit }} caractères.'
+'Your postal code must be 5 digits long': 'Votre code postal doit comporter 5 chiffres.'
+'Your country must be at least {{ limit }} characters long': 'Votre pays doit comporter au moins {{ limit }} caractères.'

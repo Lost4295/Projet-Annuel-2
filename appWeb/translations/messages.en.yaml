@@ -49,3 +49,10 @@ register_moral: 'Are you a professional or an individual?'
 societyinfo: 'Society information'
 respinfo: 'Person in charge information'
 phone: 'Phone number'
+info: 'General information'
+docs: Documents
+notifs: Notifications
+loca: Locations 
+secur: Security
+conf: Configuration
+verify: Please verify your email address

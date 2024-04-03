@@ -20,6 +20,7 @@ security:
                 check_path: login
                 enable_csrf: true
                 provider: app_user_provider
+                success_handler: App\Security\LoginSuccessHandler
             login_throttling:
                     max_attempts: 5
             logout:

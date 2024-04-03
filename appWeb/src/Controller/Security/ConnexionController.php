@@ -40,7 +40,10 @@ class ConnexionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form);
+
+            // $user->getProfessionnel()->setResponsable($user);
+            dd($form->getData(), $form->get("role")->getData(), $form->get("type")->getData(), $form);
+            
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -182,9 +185,10 @@ class ConnexionController extends AbstractController
 
 
     #[Route(path: '/logout', name: 'logout')]
-    public function logout(): void
+    public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        return $this->redirectToRoute('login');
+        // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
 
