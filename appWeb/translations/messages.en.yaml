@@ -52,7 +52,7 @@ phone: 'Phone number'
 info: 'General information'
 docs: Documents
 notifs: Notifications
-loca: Locations 
+loca: Locations
 secur: Security
 conf: Configuration
-verify: Please verify your email address
+verify: 'Please verify your email address'

@@ -40,8 +40,12 @@ class ConnexionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // $user->getProfessionnel()->setResponsable($user);
+            $pro = $user->getProfessionnel();
+            if ($pro->isFilled()){
+                $pro->setResponsable($user);
+            } else {
+                $user->setProfessionnel(null);
+            }
             dd($form->getData(), $form->get("role")->getData(), $form->get("type")->getData(), $form);
             
             $user->setPassword(

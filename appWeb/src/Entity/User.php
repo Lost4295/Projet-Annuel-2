@@ -69,6 +69,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = false;
     }
 
+    public function __toString()
+    {
+        return $this->getFullName();
+    }
+
 
     public function getId(): ?int
     {
@@ -295,7 +300,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Get the value of phoneNumber
-     */ 
+     */
     public function getPhoneNumber()
     {
         return $this->phoneNumber;
@@ -305,7 +310,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Set the value of phoneNumber
      *
      * @return  self
-     */ 
+     */
     public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;

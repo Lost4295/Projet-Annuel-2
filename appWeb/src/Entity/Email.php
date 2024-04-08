@@ -42,7 +42,10 @@ class Email
         $this->pj = new ArrayCollection();
     }
 
-
+    public function __toString(): string
+    {
+        return $this->object;
+    }
 
     public function getId(): ?int
     {

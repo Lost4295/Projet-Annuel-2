@@ -36,6 +36,9 @@ class ProfessionnelType extends AbstractType
                         'max' => 255,
                         'maxMessage' => 'Your society name cannot be longer than {{ limit }} characters',
                     ]),
+                    new NotBlank([
+                        'message' => 'Please enter a society name',
+                    ]),
                 ],
             ])
             ->add('siretNumber', TextType::class, [
@@ -54,6 +57,9 @@ class ProfessionnelType extends AbstractType
                         'pattern' => '/^[0-9]{14}$/',
                         'message' => 'Your SIRET number must be 14 digits long',
                     ]),
+                    new NotBlank([
+                        'message' => 'Please enter a SIRET number',
+                    ]),
                 ],
             ])
             ->add('societyAddress', TextType::class, [
@@ -68,6 +74,9 @@ class ProfessionnelType extends AbstractType
                         'max' => 255,
                         'maxMessage' => 'Your society address cannot be longer than {{ limit }} characters',
                     ]),
+                    new NotBlank([
+                        'message' => 'Please enter a society address',
+                    ]),
                 ],
             ])
             ->add('city', TextType::class, [
@@ -81,6 +90,9 @@ class ProfessionnelType extends AbstractType
                         'minMessage' => 'Your city must be at least {{ limit }} characters long',
                         'max' => 255,
                         'maxMessage' => 'Your city cannot be longer than {{ limit }} characters',
+                    ]),
+                    new NotBlank([
+                        'message' => 'Please enter a city',
                     ]),
                 ],
             ])
@@ -100,6 +112,9 @@ class ProfessionnelType extends AbstractType
                         'pattern' => '/^[0-9]{5}$/',
                         'message' => 'Your postal code must be 5 digits long',
                     ]),
+                    new NotBlank([
+                        'message' => 'Please enter a postal code',
+                    ]),
                 ],
             ])
             ->add('country', TextType::class, [
@@ -113,6 +128,9 @@ class ProfessionnelType extends AbstractType
                         'minMessage' => 'Your country must be at least {{ limit }} characters long',
                         'max' => 255,
                         'maxMessage' => 'Your country cannot be longer than {{ limit }} characters',
+                    ]),
+                    new NotBlank([
+                        'message' => 'Please enter a country',
                     ]),
                 ],
             ]);

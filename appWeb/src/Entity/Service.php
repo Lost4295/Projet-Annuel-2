@@ -25,10 +25,15 @@ class Service
 
     #[ORM\ManyToOne(inversedBy: 'services')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Professionnel $prestataire = null;
+    private ?Professionnel $prestataire;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $tarifs = null;
+
+    public function __toString(): string
+    {
+        return $this->titre;
+    }
 
     public function getId(): ?int
     {
@@ -72,12 +77,12 @@ class Service
         return $this;
     }
 
-    public function getPrestataire(): ?Professionnel
+    public function getPrestataire(): Professionnel
     {
         return $this->prestataire;
     }
 
-    public function setPrestataire(?Professionnel $prestataire): static
+    public function setPrestataire(Professionnel $prestataire): static
     {
         $this->prestataire = $prestataire;
 

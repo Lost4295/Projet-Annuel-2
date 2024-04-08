@@ -14,6 +14,9 @@ class Fichier
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 100)]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
@@ -21,6 +24,11 @@ class Fichier
 
     #[ORM\ManyToOne(inversedBy: 'pj')]
     private ?Email $email = null;
+
+    public function __toString(): string
+    {
+        return $this->nom;
+    }
 
     public function getId(): ?int
     {
@@ -50,7 +58,17 @@ class Fichier
 
         return $this;
     }
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
 
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
     public function getEmail(): ?Email
     {
         return $this->email;

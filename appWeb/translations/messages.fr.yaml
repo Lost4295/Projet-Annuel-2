@@ -49,10 +49,10 @@ register_moral: 'Êtes vous un professionnel ou un particulier ?'
 societyinfo: 'Informations de la société'
 respinfo: 'Informations du responsable'
 phone: 'Numéro de téléphone'
-info: Informations générales
+info: 'Informations générales'
 docs: Documents
 notifs: Notifications
 loca: Locations
 secur: Sécurité
 conf: Configuration
-verify: "Veuillez vérifier votre adresse email"
+verify: 'Veuillez vérifier votre adresse email'

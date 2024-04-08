@@ -19,7 +19,7 @@ class Professionnel
     #[ORM\Column(length: 255)]
     private ?string $societyName = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 14)]
     private ?string $siretNumber = null;
 
     #[ORM\Column(length: 255)]
@@ -44,6 +44,11 @@ class Professionnel
     public function __construct()
     {
         $this->services = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->societyName;
     }
 
     public function getId(): ?int
@@ -173,5 +178,15 @@ class Professionnel
         }
 
         return $this;
+    }
+
+    public function isFilled(): bool
+    {
+        return $this->societyName !== null
+        && $this->siretNumber !== null
+        && $this->societyAddress !== null
+        && $this->city !== null
+        && $this->postalCode !== null
+        && $this->country !== null;
     }
 }
