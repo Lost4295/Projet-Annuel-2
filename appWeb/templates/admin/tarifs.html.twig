@@ -1,49 +1,76 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+
 {% block page_content %}
 	<h2>Contenu actuel</h2>
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover align-middle text-center">
 			<thead>
 				<tr>
-                    <th></th>
-					<th><img src="https://placehold.co/300x200" class="card-img-top" alt="...">Normal</th>
-					<th><img src="https://placehold.co/300x200" class="card-img-top" alt="...">Visiteur</th>
-					<th><img src="https://placehold.co/300x200" class="card-img-top" alt="...">Super-Voyageur</th>
-					<th><img src="https://placehold.co/300x200" class="card-img-top" alt="...">Voyageur professionnel</th>
+					{% for abo, val in abonnements.nom %}
+						{% if loop.first %}
+							<th>Nom</th>
+						{% else %}
+							<th>
+								<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
+								{{ val }}
+							</th>
+						{% endif %}
+					{% endfor %}
 				</tr>
 			</thead>
 			<tbody>
-                <tr>
-                    <td>Gratuit ?</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                </tr>
-                <tr>
-                    <td>Avec avantages ?</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-
-                </tr>
-                <tr>
-                    <td>Compatible VIP ?</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                    <td>{% if random(1,2) == 1 %} <i class="fa fa-check text-success fa-3x"></i>{% else %}<i class="fa fa-times text-danger fa-3x"></i>{% endif %}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><a href="#" class="btn btn-primary">Modifier</a></td>
-                    <td><a href="#" class="btn btn-primary">Modifier</a></td>
-                    <td><a href="#" class="btn btn-primary">Modifier</a></td>
-                    <td><a href="#" class="btn btn-primary">Modifier</a></td>
-            </tbody>
-        </table>
-        <a href="#" class="btn btn-primary">Ajouter un nouveau niveau d'abonnement</a>
-		</div>
-	{% endblock %}
+				<tr>
+					{% for abo,val in abonnements.description %}
+						{% if loop.first %}
+							<td>Description</td>
+						{% else %}
+							<td>
+								{{ val }}
+							</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+				<tr>
+					{% for abo,val in abonnements.prix %}
+						{% if loop.first %}
+							<td>Prix</td>
+						{% else %}
+							<td>{{ val }}</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+				<tr>
+					{% for abo,val in abonnements.duree %}
+						{% if loop.first %}
+							<td>Durée</td>
+						{% else %}
+							{% if random(1,2) == 1 %}
+								<td>
+									<i class="fa fa-check text-success fa-3x"></i>
+								</td>
+							{% else %}
+								<td>
+									<i class="fa fa-times text-danger fa-3x"></i>
+								</td>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+				</tr>
+				<tr>
+					{% for abo,val in abonnements.key %}
+						{% if loop.first %}
+							<td></td>
+						{% else %}
+							<td>
+								<a href="#" class="btn btn-primary">Modifier</a>
+								<a href="#" class="btn btn-danger">Supprimer</a>
+							</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+			</tbody>
+		</table>
+		<a href="#" class="btn btn-primary">Ajouter un nouveau niveau d'abonnement</a>
+	</div>
+{% endblock %}

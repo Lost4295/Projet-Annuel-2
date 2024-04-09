@@ -26,16 +26,20 @@ class ServiceCrudController extends AbstractCrudController
     // ...
     public function configureFields(string $pageName): array|\Traversable
     {
-$id= IdField::new("id");
-$titre= TextField::new("titre");
-$description= TextareaField::new("description");
-$type= ChoiceField::new("type");
-$prestataire= CollectionField::new("prestataire");
-$tarifs= MoneyField::new("tarifs");
-        return [
-            // ...
-            AssociationField::new('serviceCategory'),
-        ];
+        $id = IdField::new("id", 'id');
+        $titre = TextField::new("titre", 'title');
+        $description = TextareaField::new("description", 'description');
+        $type = ChoiceField::new("type", 'type')->setChoices(["service" => "service", "produit" => "produit"]);
+        $prestataire = CollectionField::new("prestataire", 'prestataire');
+        $tarifs = MoneyField::new("tarifs", 'tarif')->setCurrency("EUR");
+        if (Crud::PAGE_INDEX === $pageName) {
+            return [$id, $titre, $description, $type, $prestataire, $tarifs];
+        } elseif (Crud::PAGE_DETAIL === $pageName) {
+            return [$id, $titre, $description, $type, $prestataire, $tarifs];
+        } elseif (Crud::PAGE_EDIT === $pageName) {
+            return [$titre, $description, $type, $prestataire, $tarifs];
+        } elseif (Crud::PAGE_NEW === $pageName) {
+            return [$titre, $description, $type, $prestataire, $tarifs];
+        }
     }
-
 }

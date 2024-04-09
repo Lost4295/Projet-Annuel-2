@@ -108,6 +108,7 @@ class AdminDashboardController extends AbstractDashboardController
 
             // by default, all backend URLs are generated as absolute URLs. If you
             // need to generate relative URLs instead, call this method
+            
             ->generateRelativeUrls()
 
             // set this option if you want to enable locale switching in dashboard.
@@ -115,13 +116,12 @@ class AdminDashboardController extends AbstractDashboardController
             // parameter in the admin dashboard URL (e.g. '/admin/{_locale}').
             // the name of each locale will be rendered in that locale
             // (in the following example you'll see: "English", "Polski")
-            ->setLocales(['en', 'pl', 'fr'])
+            ->setLocales(['en', 'fr'])
             // to customize the labels of locales, pass a key => value array
             // (e.g. to display flags; although it's not a recommended practice,
             // because many languages/locales are not associated to a single country)
             ->setLocales([
                 'en' => '🇬🇧 English',
-                'pl' => '🇵🇱 Polski',
                 'fr'=>  '🇫🇷 Français'
             ])
             // to further customize the locale option, pass an instance of
@@ -175,7 +175,7 @@ class AdminDashboardController extends AbstractDashboardController
         // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
         yield MenuItem::linkToCrud('users', 'fa fa-user', User::class);
         yield MenuItem::linkToCrud('pro', 'fa fa-id-card', Professionnel::class);
-        yield MenuItem::section('userrl');
+        yield MenuItem::section('obrl');
         yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
         yield MenuItem::linkToCrud('email', 'fa fa-envelope', Email::class);
         yield MenuItem::linkToCrud('file', 'fa fa-files-o ', Fichier::class);

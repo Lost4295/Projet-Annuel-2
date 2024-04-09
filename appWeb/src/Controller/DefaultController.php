@@ -13,7 +13,7 @@ class DefaultController extends AbstractController
 {
 
 
-    #[Route("/index", name: "index")]
+    #[Route("/", name: "index")]
     #[Route("/", name: "homepage")]
     public function index(TranslatorInterface $translator)
     {

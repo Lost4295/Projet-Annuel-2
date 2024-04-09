@@ -11,7 +11,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use Symfony\Component\DomCrawler\Field\FileFormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -25,30 +28,28 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-$id= IdField::new("id");
-$email= TextField::new("email");
-$roles= ChoiceField::new("roles");
-$password= TextField::new("password");
-$nom= TextField::new("nom");
-$prenom= TextField::new("prenom");
-$lastConnDate= DateField::new("lastConnDate");
-$creationDate= DateField::new("creationDate");
-$admin= BooleanField::new("admin");
-$birthdate= DateField::new("birthdate");
-$isVerified= BooleanField::new("isVerified");
-$avatar= ImageField::new("avatar");
-$phoneNumber= TextField::new("phoneNumber");
-$professionnel= CollectionField::new("professionnel");
-        return [
-            IdField::new('id'),
-            TextField::new('nom'),
-            TextField::new('prenom'),
-            TextField::new('email'),
-            DateField::new('creationDate'),
-            DateField::new('lastConnDate'),
-            BooleanField::new('isVerified'),
-            BooleanField::new('admin'),
-        ];
+        $id = IdField::new("id", "id");
+        $email = EmailField::new("email", "email");
+        $roles = ChoiceField::new("roles", "roles")->allowMultipleChoices()->setChoices(["user" => "ROLE_USER", "admin" => "ROLE_ADMIN"]); // TODO : faire une fonction pour récup ça dans le fichier de config
+        $password = TextField::new("password", "password");
+        $nom = TextField::new("nom", 'nom');
+        $prenom = TextField::new("prenom", 'prenom');
+        $lastConnDate = DateField::new("lastConnDate", 'lastcdate');
+        $creationDate = DateField::new("creationDate", 'crdate');
+        $admin = BooleanField::new("admin", "admin");
+        $birthdate = DateField::new("birthdate", "birthdate");
+        $isVerified = BooleanField::new("isVerified", "verified");
+        $avatar = ImageField::new("avatar", "avatar")->setUploadDir("/var/uploads/avatars")->setBasePath("uploads/avatars");
+        $phoneNumber = TelephoneField::new("phoneNumber", 'phone');
+        $abonnement = AssociationField::new("abonnement", 'abo');
+        if (Crud::PAGE_INDEX === $pageName) {
+            return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $phoneNumber, $abonnement];
+        } elseif (Crud::PAGE_DETAIL === $pageName) {
+            return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement];
+        } elseif (Crud::PAGE_EDIT === $pageName) {
+            return [$email, $roles, $nom, $prenom, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement];
+        } elseif (Crud::PAGE_NEW === $pageName) {
+            return [$email, $roles, $password, $nom, $prenom, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement];
+        }
     }
-
 }

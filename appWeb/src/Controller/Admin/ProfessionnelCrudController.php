@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use App\Entity\Professionnel;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ProfessionnelCrudController extends AbstractCrudController
@@ -20,17 +21,24 @@ class ProfessionnelCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): array|\Traversable
     {
-        
-            $responsable= AssociationField::new('responsable')->setRequired(true),
-            $services= AssociationField::new('services'),
-            $societyName= TextField::new("societyName")->setRequired(true),
-            $siretNumber= TextField::new("siretNumber")->setRequired(true)->setMaxLength(14),
-            $societyAddress= TextField::new("societyAddress")->setRequired(true),
-            $city= TextField::new("city")->setRequired(true),
-            $postalCode= TextField::new("postalCode")->setRequired(true)->setMaxLength(5),
-            $country= TextField::new("country")->setRequired(true),
-            return [
-        ];
+            $id = IdField::new("id", 'id');
+            $responsable= AssociationField::new('responsable', "responsable")->setRequired(true);
+            $services= AssociationField::new('services', "services");
+            $societyName= TextField::new("societyName", "societyname")->setRequired(true);
+            $siretNumber= TextField::new("siretNumber", "siretnumber")->setRequired(true)->setMaxLength(14);
+            $societyAddress= TextField::new("societyAddress", "societyaddress")->setRequired(true);
+            $city= TextField::new("city", "city")->setRequired(true);
+            $postalCode= TextField::new("postalCode", "postalcode")->setRequired(true)->setMaxLength(5);
+            $country= TextField::new("country", "country")->setRequired(true);
+            if (Crud::PAGE_INDEX === $pageName) {
+                return [$id, $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services];
+            } elseif(Crud::PAGE_DETAIL === $pageName) {
+                return [$id, $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services];
+            } elseif(Crud::PAGE_EDIT === $pageName) {
+                return [ $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services];
+            } elseif(Crud::PAGE_NEW === $pageName) {
+                return [ $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services];
+            }
     }
 
     // ...

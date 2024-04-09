@@ -26,7 +26,20 @@
 		</div>
 		<div class="col-10 border border-danger">
 			<div class="tab-content" id="v-pills-tabContent">
-				<div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab" tabindex="0">{{ dump(app.user) }}</div>
+				<div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab" tabindex="0">
+					{{ dump(app.user) }}
+					<h2>{{'profile'|trans }}</h2>
+					{{ form_start(user) }}
+					{{ form_row(user.nom) }}
+					{{ form_row(user.prenom) }}
+					{{ form_row(user.birthdate) }}
+					{{ form_row(user.phoneNumber) }}
+					{# {{ form_row(user.password) }} #}
+					{{ form_row(user.email) }}
+	
+
+					{{ form_end(user) }}
+				</div>
 				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">docs...</div>
 				{% if is_granted("ROLE_ADMIN") %}
 					<div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">dashboard...</div>

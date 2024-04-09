@@ -60,8 +60,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $phoneNumber;
 
-    #[ORM\OneToOne(inversedBy: 'responsable', cascade: ['persist', 'remove'])]
-    private ?Professionnel $professionnel = null;
+
+    #[ORM\ManyToOne(inversedBy: 'subscribers')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Abonnement $abonnement = null;
     public function __construct()
     {
         $this->creationDate = new \DateTime();
@@ -286,17 +288,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getProfessionnel(): ?Professionnel
-    {
-        return $this->professionnel;
-    }
-
-    public function setProfessionnel(?Professionnel $professionnel): static
-    {
-        $this->professionnel = $professionnel;
-
-        return $this;
-    }
 
     /**
      * Get the value of phoneNumber
@@ -314,6 +305,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getAbonnement(): ?Abonnement
+    {
+        return $this->abonnement;
+    }
+
+    public function setAbonnement(?Abonnement $abonnement): static
+    {
+        $this->abonnement = $abonnement;
 
         return $this;
     }

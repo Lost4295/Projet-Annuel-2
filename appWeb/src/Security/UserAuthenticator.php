@@ -54,28 +54,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 // 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-// 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
-        $user->setLastConnDate(new \DateTime());
-        dd($user);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        if (!$user->isVerified()) {
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('toto@titi.com', 'Administrateur Site')) //FIXME À changer
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-        }
-        // For example:
-        throw new \Exception(' TODO : provide a valid redirect inside ' . __FILE__);
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
-        return parent::onAuthenticationSuccess($request, $token, $firewallName);
-        return new RedirectResponse($this->urlGenerator->generate('index'));
+        $log = new LoginSuccessHandler($this->entityManager, $this->emailVerifier, $this->urlGenerator);
+        return $log->onAuthenticationSuccess($request, $token);
     }
 // 
     protected function getLoginUrl(Request $request): string

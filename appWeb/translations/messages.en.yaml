@@ -56,3 +56,25 @@ loca: Locations
 secur: Security
 conf: Configuration
 verify: 'Please verify your email address'
+user: User
+id: ID
+roles: Roles
+lastcdate: 'Last connection date'
+crdate: 'Creation date'
+admin: Administrator
+verified: Is verified
+abo: Subscription
+obrl: 'Objects section'
+description: Description
+shdesc: 'Short description'
+price: Price 
+address: Address 
+nbrooms: 'Number of rooms'
+note: Note
+state: Status
+title: Title
+type: Type
+produit: Product
+prestataire: Provider
+tarif: Price
+services: Services

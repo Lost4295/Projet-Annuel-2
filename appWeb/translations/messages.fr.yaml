@@ -7,6 +7,7 @@ email: Emails
 users: Utilisateurs
 tarifs: Tarifications
 userrl: 'Section Utilisateurs'
+obrl: 'Section Objets'
 birthdate: 'Date de Naissance'
 wip: 'En cours de développement...'
 terms: "Conditions générales d'utilisation"
@@ -56,3 +57,24 @@ loca: Locations
 secur: Sécurité
 conf: Configuration
 verify: 'Veuillez vérifier votre adresse email'
+user: Utilisateur
+id: ID
+roles: Rôles
+lastcdate: 'Dernière date de connexion'
+crdate: Date de création
+admin: Admin
+verified: Est vérifié
+abo: Abonnement
+description: Description
+shdesc: 'Description courte'
+price: Prix
+address: Adresse
+nbrooms: 'Nombre de pièces'
+note: Note
+state: Statut
+title: Titre
+type: Type
+produit: Produit
+prestataire: Prestataire
+tarif: Tarif
+services: Services

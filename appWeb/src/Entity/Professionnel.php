@@ -6,7 +6,7 @@ use App\Repository\ProfessionnelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping\JoinColumns;
 
 #[ORM\Entity(repositoryClass: ProfessionnelRepository::class)]
 class Professionnel
@@ -31,11 +31,11 @@ class Professionnel
     #[ORM\Column(length: 10)]
     private ?string $postalCode = null;
 
-    #[Assert\Country()]
     #[ORM\Column(length: 100)]
     private ?string $country = null;
 
-    #[ORM\OneToOne(mappedBy: 'professionnel', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity:User::class)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $responsable = null;
 
     #[ORM\OneToMany(targetEntity: Service::class, mappedBy: 'prestataire', orphanRemoval: true)]
@@ -136,9 +136,9 @@ class Professionnel
     public function setResponsable(?User $responsable): static
     {
         // unset the owning side of the relation if necessary
-        if ($responsable === null && $this->responsable !== null) {
-            $this->responsable->setProfessionnel(null);
-        }
+        // if ($responsable === null && $this->responsable !== null) {
+        //     $this->responsable->setProfessionnel(null);
+        // }
 
         // set the owning side of the relation if necessary
         if ($responsable !== null && $responsable->getProfessionnel() !== $this) {

@@ -10,9 +10,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use App\Entity\Appartement;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Validator\Constraints\Choice;
 
 class AppartementCrudController extends AbstractCrudController
 {
@@ -25,15 +26,23 @@ class AppartementCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): array|\Traversable
     {
-        $id = IdField::new("id");
-        $description = TextField::new("description");
-        $shortDesc = TextField::new("shortDesc");
-        $price = NumberField::new("price");
-        $adress = TextField::new("adress");
-        $nbRooms = NumberField::new("nbRooms");
-        $note = NumberField::new("note");
-        $state = ChoiceField::new("state");
+        $id = IdField::new("id", "id");
+        $description = TextareaField::new("description", "description");
+        $shortDesc = TextField::new("shortDesc", "shdesc");
+        $price = MoneyField::new("price", "price")->setCurrency("EUR");
+        $adress = TextField::new("address", "address");
+        $nbRooms = NumberField::new("nbRooms", "nbrooms");
+        $note = NumberField::new("note", "note");
+        $state = ChoiceField::new("state", "state")->setChoices(["Disponible" => "Disponible", "En attente" => "En attente", "Loué" => "Loué"]); // TODO : faire une fonction pour récup ça dans le fichier de config
         
-        return [];
+        if (Crud::PAGE_INDEX === $pageName) {
+            return [$id, $shortDesc, $price, $adress, $nbRooms, $note, $state];
+        } elseif(Crud::PAGE_DETAIL === $pageName) {
+            return [$id, $description, $shortDesc, $price, $adress, $nbRooms, $note, $state];
+        } elseif(Crud::PAGE_EDIT === $pageName) {
+            return [$shortDesc, $description, $price, $adress, $nbRooms, $state];
+        } elseif(Crud::PAGE_NEW === $pageName) {
+            return [$shortDesc, $description, $price, $adress, $nbRooms, $state];
+        }
     }
 }

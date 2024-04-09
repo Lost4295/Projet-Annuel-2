@@ -82,7 +82,7 @@ class Service
         return $this->prestataire;
     }
 
-    public function setPrestataire(Professionnel $prestataire): static
+    public function setPrestataire(?Professionnel $prestataire): static
     {
         $this->prestataire = $prestataire;
 
