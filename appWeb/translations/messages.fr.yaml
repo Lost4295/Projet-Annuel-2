@@ -20,6 +20,7 @@ password: 'Mot de passe'
 agree: 'J''accepte les <a href="/terms">Conditions générales d''utilisation</a>'
 blog: Blog
 send: Envoyer
+profile: Profil
 appart: Appartements
 file: Fichiers
 pro: Professionnels
@@ -82,3 +83,6 @@ helpreset: 'Si vous avez oublié votre mot de passe, veuillez saisir votre adres
 reset: 'Réinitialiser le mot de passe'
 sendreset: Envoyer le mail de rénitialisation de mot de passe
 resetpwd: 'Réinitialiser le mot de passe'
+size: Taille 
+action: Action
+no_docs: 'Aucun document'

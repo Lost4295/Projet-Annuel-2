@@ -15,7 +15,7 @@
 					<button class=" nav-link  my-2 p-4" id="v-pills-docs-tab" data-bs-toggle="pill" data-bs-target="#v-pills-docs" type="button" role="tab" aria-controls="v-pills-docs" aria-selected="false">{{"docs"|trans}}</button>
 					{% if is_granted("ROLE_ADMIN") %}
 						<button class=" nav-link  my-2 p-4" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="false">{{"dashboard"|trans}}</button>
-						{% else %}
+					{% else %}
 						<button class=" nav-link  my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
 					{% endif %}
 					<button class=" nav-link  my-2 p-4" id="v-pills-notifs-tab" data-bs-toggle="pill" data-bs-target="#v-pills-notifs" type="button" role="tab" aria-controls="v-pills-notifs" aria-selected="false">{{"notifs"|trans}}</button>
@@ -27,37 +27,84 @@
 		<div class="col-10 border border-danger">
 			<div class="tab-content" id="v-pills-tabContent">
 				<div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab" tabindex="0">
-					{{ dump(app.user) }}
 					<h2>{{'profile'|trans }}</h2>
 					{{ form_start(user) }}
-					{{ form_row(user.nom) }}
-					{{ form_row(user.prenom) }}
-					{{ form_row(user.birthdate) }}
-					{{ form_row(user.phoneNumber) }}
-					{# {{ form_row(user.password) }} #}
-					{{ form_row(user.email) }}
-
-
+					<div class="d-flex justify-content-around">
+						<div class="col-5">
+							{{ form_row(user.nom) }}
+						</div>
+						<div class="col-5">
+							{{ form_row(user.prenom) }}
+						</div>
+					</div>
+					<div class="d-flex justify-content-around">
+						<div class="col-5">
+							{{ form_row(user.birthdate) }}
+						</div>
+						<div class="col-5">
+							{{ form_row(user.phoneNumber) }}
+						</div>
+					</div>
+					<div class="d-flex justify-content-around">
+						<div
+							class="col-5">
+							{# {{ form_row(user.password) }} #}
+							{{ form_row(user.email) }}
+						</div>
+					</div>
 					{{ form_end(user) }}
 				</div>
-				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">docs...</div>
-				{% if is_granted("ROLE_ADMIN") %}
-					<div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">dashboard...</div>
-				{% else %}
-					<div class="tab-pane fade" id="v-pills-loca" role="tabpanel" aria-labelledby="v-pills-loca-tab" tabindex="0">loca...</div>
-				{% endif %}
-				<div class="tab-pane fade" id="v-pills-notifs" role="tabpanel" aria-labelledby="v-pills-notifs-tab" tabindex="0">notifs...</div>
-				<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
-				<div class="tab-pane fade" id="v-pills-conf" role="tabpanel" aria-labelledby="v-pills-conf-tab" tabindex="0">
-					conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
-					conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
+				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">
+					<h2>{{'docs'|trans }}</h2>
+					<div class="d-flex justify-content-around">
+						<table class="table table-bordered">
+							<tr>
+								<th>{{'nom'|trans }}</th>
+								<th>{{'date'|trans }}</th>
+								<th>{{'size'|trans }}</th>
+								<th>{{'type'|trans }}</th>
+								<th>{{'action'|trans }}</th>
+							</tr>
+							{% if docs is defined %}
+								{% for doc in docs %}
+									<tr>
+										<td>{{ doc.name }}</td>
+										<td>{{ doc.date|date('d/m/Y') }}</td>
+										<td>{{ doc.size }}</td>
+										<td>{{ doc.type }}</td>
+										<td>
+											<a href="{{ path('download', {'id': doc.id}) }}">{{'download'|trans }}</a>
+											<a href="{{ path('delete', {'id': doc.id}) }}">{{'delete'|trans }}</a>
+										</td>
+									</tr>
+								{% endfor %}
+							{% else %}
+								<tr>
+									<td colspan="5">{{'no_docs'|trans }}</td>
+								</tr>
+							{% endif %}
+						</table>
+						</div>
+					</div>
+					{% if is_granted("ROLE_ADMIN") %}
+						<div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">dashboard...</div>
+					{% else %}
+						<div class="tab-pane fade" id="v-pills-loca" role="tabpanel" aria-labelledby="v-pills-loca-tab" tabindex="0">
+							<h2>{{'loca'|trans }}</h2>
+						</div>
+					{% endif %}
+					<div class="tab-pane fade" id="v-pills-notifs" role="tabpanel" aria-labelledby="v-pills-notifs-tab" tabindex="0">notifs...</div>
+					<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
+					<div class="tab-pane fade" id="v-pills-conf" role="tabpanel" aria-labelledby="v-pills-conf-tab" tabindex="0">
+						conf...<br>conf...<br>conf...<br>conf...<br>conf...
+						<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+						<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+						<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+						<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+						<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
+						conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}

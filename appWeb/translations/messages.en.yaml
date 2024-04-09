@@ -59,6 +59,7 @@ verify: 'Please verify your email address'
 user: User
 id: ID
 roles: Roles
+profile: Profile
 lastcdate: 'Last connection date'
 crdate: 'Creation date'
 admin: Administrator
@@ -82,3 +83,6 @@ helpreset: Enter your email address, and we will send you a link to reset your p
 reset: Reset your password
 sendreset: Send password reset email
 resetpwd: Reset your password
+size: Size 
+action: Action
+no_docs: No documents.
