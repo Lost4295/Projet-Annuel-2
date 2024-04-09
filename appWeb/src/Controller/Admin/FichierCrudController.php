@@ -13,6 +13,8 @@ use App\Entity\Fichier;
 use App\Form\EmailType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
 class FichierCrudController extends AbstractCrudController
 {
@@ -20,7 +22,13 @@ class FichierCrudController extends AbstractCrudController
     {
         return Fichier::class;
     }
-
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            // ...
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+        ;
+    }
     public function configureFields(string $pageName): array|\Traversable
     {
         $id= IdField::new("id", "id");

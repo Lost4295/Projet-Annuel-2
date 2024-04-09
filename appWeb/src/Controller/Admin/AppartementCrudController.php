@@ -14,6 +14,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
 class AppartementCrudController extends AbstractCrudController
 {
@@ -23,7 +25,13 @@ class AppartementCrudController extends AbstractCrudController
     }
 
     // ...
-
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            // ...
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+        ;
+    }
     public function configureFields(string $pageName): array|\Traversable
     {
         $id = IdField::new("id", "id");
