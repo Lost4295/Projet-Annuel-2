@@ -181,6 +181,7 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
+                'mapped' => false,
             ]);
     }
 

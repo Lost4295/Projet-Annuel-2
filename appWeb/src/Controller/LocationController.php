@@ -21,7 +21,7 @@ class LocationController extends AbstractController
             $number = $routeName;
         }
 
-        return $this->render('dashboard.html.twig', [
+        return $this->render('locations.html.twig', [
             'text' => $number,
         ]);
     }
