@@ -78,3 +78,7 @@ produit: Product
 prestataire: Provider
 tarif: Price
 services: Services
+helpreset: Enter your email address, and we will send you a link to reset your password.
+reset: Reset your password
+sendreset: Send password reset email
+resetpwd: Reset your password

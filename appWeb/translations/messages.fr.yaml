@@ -78,3 +78,7 @@ produit: Produit
 prestataire: Prestataire
 tarif: Tarif
 services: Services
+helpreset: 'Si vous avez oublié votre mot de passe, veuillez saisir votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.'
+reset: 'Réinitialiser le mot de passe'
+sendreset: Envoyer le mail de rénitialisation de mot de passe
+resetpwd: 'Réinitialiser le mot de passe'

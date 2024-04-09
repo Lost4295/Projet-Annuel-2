@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{"reset"|trans}}
+{% endblock %}
+
+{% block body %}
+	{% for flash_error in app.flashes('reset_password_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+	<h1>{{"reset"|trans}}</h1>
+	<div class="card bg-info">
+		<div class="card-body">
+			{{ form_start(requestForm) }}
+			{{ form_row(requestForm.email) }}
+			<div>
+				<small>
+					{{"helpreset"|trans}}
+				</small>
+			</div>
+
+			<button class="btn btn-primary">{{"sendreset"|trans }}</button>
+
+			{{ form_end(requestForm) }}
+		</div>
+	</div>
+{% endblock %}

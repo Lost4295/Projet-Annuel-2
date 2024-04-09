@@ -20,7 +20,38 @@ class UserController extends AbstractController
     public function profile(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        $form= $this->createFormBuilder($user)->add('email')->add('nom')->add('prenom')->add('birthdate')->add('phoneNumber')->add('email')->getForm()->handleRequest($request);
+        $form = $this->createFormBuilder($user)
+            ->add('nom', null, [
+                "attr"=>[
+                    "class"=>"form-control",
+                    "disabled"=>"disabled"
+                ]
+            ])
+            ->add('prenom', null, [
+                "attr"=>[
+                    "class"=>"form-control",
+                    "disabled"=>"disabled"
+                ]
+            ])
+            ->add('birthdate', null, [
+                "attr"=>[
+                    "class"=>"form-control",
+                    "disabled"=>"disabled"
+                ]
+            ])
+            ->add('phoneNumber', null, [
+                "attr"=>[
+                    "class"=>"form-control",
+                    "disabled"=>"disabled"
+                ]
+            ])
+            ->add('email', null, [
+                "attr"=>[
+                    "class"=>"form-control",
+                    "disabled"=>"disabled"
+                ]
+            ])
+            ->getForm()->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($user);
             $em->flush();
@@ -29,5 +60,4 @@ class UserController extends AbstractController
         // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
         return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $form]);
     }
-
 }

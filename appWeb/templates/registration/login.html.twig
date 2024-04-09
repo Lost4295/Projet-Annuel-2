@@ -23,7 +23,7 @@
 				<input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}">
 				<label for="password">{{password_label|trans([], "admin")}}</label>
 				<input type="password" id="password" class="form-control" name="_password">
-				<a href="#">{{forgot_password_label|trans([], "admin")}}</a>
+				<a href="{{path("app_forgot_password_request") }}">{{forgot_password_label|trans([], "admin")}}</a>
 				<div class="">
 					<input type="checkbox" id="remember_me" class="form-checkbox" name="_remember_me" checked>
 					<label for="remember_me">{{remember_me_label|trans([], "admin")}}</label>
