@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Api;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -164,9 +165,10 @@ class AdminDashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToUrl("homepage","fa fa-home" , "/" );
         yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
-        yield MenuItem::section('blog');
+        yield MenuItem::section('adminside');
         yield MenuItem::linktoRoute('sendmail', 'fa fa-share-square', 'make_email');
-        yield MenuItem::linktoRoute('apis', 'fa fa-robot', 'api_state');
+        yield MenuItem::linktoRoute('apistate', 'fa fa-robot', 'api_state');
+        yield MenuItem::linkToCrud('apis', 'fa fa-robot', Api::class);
         yield MenuItem::linktoRoute('tarifs', 'fa fa-shopping-cart', 'tarifs');
         yield MenuItem::linktoRoute('transaction', 'fa fa-list', 'all_states');
         // yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);

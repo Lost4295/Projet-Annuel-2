@@ -4,22 +4,45 @@
 	<h1>APIs</h1>
 	<table class="table table-bordered table-hover" >
 		<tr>
-			<th>Id</th>
-			<th>Name</th>
-			<th>State</th>
+			<th>{{"id"|trans}}</th>
+			<th>{{"nom"|trans}}</th>
+			<th>{{'state'|trans}}</th>
+			<th>{{"action"|trans }}</th>
 		</tr>
 		{% if apis is not defined or apis is empty %}
 			<tr>
-				<td colspan="3">No APIs found</td>
+				<td colspan="4">No APIs found</td>
 			</tr>
 		{% else %}
 			{% for api in apis %}
 				<tr>
 					<td>{{ api.id }}</td>
 					<td>{{ api.name }}</td>
-					<td>{{ api.state == "ok" ? "<i class='fa fa-check fa-2x text-success'></i>":"<i class='fa fa-times fa-2x text-danger'></i>" }}</td>
+					<td id="api-{{api.id }}">{{ api.isDown ? "<i class='fa fa-times fa-2x text-danger'></i>":"<i class='fa fa-check fa-2x text-success'></i>" }}</td>
+					<td>
+						<a href="{{path("api_state_update") }}" id="{{api.id }}" class="btn btn-primary">{{"change"|trans}}</a>
+						<a href="{{api.url }}" class="btn btn-info">{{"test"|trans}}</a>
+					</td>
 				</tr>
 			{% endfor %}
 		{% endif %}
     </table>
+	https://aws.amazon.com/fr/rekognition/
+	https://imagga.com/auth/signup
+	https://cloud.google.com/vision?hl=fr
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$(".btn-primary").click(function(){
+				$.ajax({
+					url: $(this).attr("href"),
+					data: {id: $(this).attr("id")},
+					success: function(data){
+						$("#api-"+data.id).html(data.isDown ? "<i class='fa fa-times fa-2x text-danger'></i>":"<i class='fa fa-check fa-2x text-success'></i>");
+					}
+				});
+				return false;
+			})
+		});
+	</script>
 	{% endblock %}

@@ -86,3 +86,9 @@ resetpwd: Reset your password
 size: Size 
 action: Action
 no_docs: No documents.
+url: URL
+isdown: Is down
+apistate: APIs state
+adminside: Admin side
+change: Change
+test: Test

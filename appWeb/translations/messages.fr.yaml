@@ -86,3 +86,9 @@ resetpwd: 'Réinitialiser le mot de passe'
 size: Taille 
 action: Action
 no_docs: 'Aucun document'
+apistate: 'Etat des APIs'
+adminside: 'Côté Admin'
+url: URL
+change: 'Changer'
+test: 'Tester'
+isdown: 'Est en panne'
