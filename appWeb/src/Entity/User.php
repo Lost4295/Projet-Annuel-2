@@ -265,7 +265,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getInitials(): string
     {
-        return substr($this->getPrenom(), 0, 1) . substr($this->getNom(), 0, 1);
+        return strtoupper( substr($this->getPrenom(), 0, 1) . substr($this->getNom(), 0, 1));
     }
 
     /**

@@ -31,15 +31,15 @@ class LoginSuccessHandler extends CustomAuthenticationSuccessHandler
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
-
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $request->request->get('_username')]);
+        $email= $request->request->get('_username') ?? $request->request->all()['user']['email'];
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
         $user->setLastConnDate(new \DateTime('now'));
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         if (!$user->isVerified()) {
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('toto@titi.com', 'Administrateur Site')) //FIXME À changer
+                    ->from(new Address('toto@titi.com', 'Administrateur Site')) //FIXME À changer, quand on envoira de vrais mails
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')

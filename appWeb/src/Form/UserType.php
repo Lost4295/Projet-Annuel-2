@@ -26,29 +26,25 @@ class UserType extends AbstractType
     {
         $builder
             ->add("role", ChoiceType::class, [
-                'mapped' => false,
                 'required' => true,
                 'label' => 'register_choose',
-                'multiple' => false,
                 'expanded' => true,
+                'empty_data' => "t",
                 'choices' => [
-                    'traveler' => 0,
-                    'bailleur' => 1,
-                    'presta' => 2,
+                    'traveler' => "t",
+                    'bailleur' => "b",
+                    'presta' => "p",
                 ],
-                'placeholder' => false,
             ])
             ->add("type", ChoiceType::class, [
-                'mapped' => false,
                 'required' => true,
                 'label' => 'register_moral',
-                'multiple' => false,
                 'expanded' => true,
+                'empty_data' => "p",
                 'choices' => [
-                    'physic' => 0,
-                    'moral' => 1,
+                    'physic' => "p",
+                    'moral' => "m",
                 ],
-                'placeholder' => false,
             ])
             ->add('email', EmailType::class, [
                 'attr' => [
@@ -181,14 +177,6 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'mapped' => false,
             ]);
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
     }
 }

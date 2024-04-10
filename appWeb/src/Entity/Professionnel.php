@@ -135,18 +135,7 @@ class Professionnel
 
     public function setResponsable(?User $responsable): static
     {
-        // unset the owning side of the relation if necessary
-        // if ($responsable === null && $this->responsable !== null) {
-        //     $this->responsable->setProfessionnel(null);
-        // }
-
-        // set the owning side of the relation if necessary
-        if ($responsable !== null && $responsable->getProfessionnel() !== $this) {
-            $responsable->setProfessionnel($this);
-        }
-
         $this->responsable = $responsable;
-
         return $this;
     }
 

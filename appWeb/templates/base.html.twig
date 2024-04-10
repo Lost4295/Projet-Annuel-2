@@ -35,8 +35,8 @@
 				<button
 					class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
 					{# <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-																																																								<use href="#circle-half"></use>
-																																																							</svg> #}
+																																																													<use href="#circle-half"></use>
+																																																												</svg> #}
 					<i class="bi bi-chat-text"></i>
 					<span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
 				</button>
@@ -93,20 +93,33 @@
 						<nav class="navbar-nav mb-2 mb-lg-0 nav-fill">
 							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'locations' %} active {%endif%}" {% if app.request.get('_route') == 'locations' %} aria-current="page" {% endif %} href="{{path('locations') }}">{{'locations' |trans }}</a>
 							{# Je triche oui #}
-							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'services' %} active {%endif%}" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} href="{{path('services') }}">{{'services' |trans }}</a>
+							<div class="dropdown">
+								<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'services' %} active {%endif%} dropdown-toogle" role="button" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} data-bs-toggle="sdropdown" aria-expanded="false" href="{{path('services') }}">{{'services' |trans }}</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a class="dropdown-item" href="#">Action</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="#">Another action</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="#">Something else here</a>
+									</li>
+								</ul>
+							</div>
 							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'prestataires' %} active {%endif%}" {% if app.request.get('_route') == 'prestataires' %} aria-current="page" {% endif %} href="{{path('prestataires') }}">{{'prestataires' |trans }}</a>
 							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'contact' %} active {%endif%}" {% if app.request.get('_route') == 'contact' %} aria-current="page" {% endif %} href="{{path('contact') }}">{{'contacter' |trans }}</a>
 							{#
-																																																																													<a class="nav-link" href="{{path('rps_index') }}">RPS</a>
-																																																																													<a class="nav-link" href="#">Link</a>
-																																																																													#}
+																																																																																				<a class="nav-link" href="{{path('rps_index') }}">RPS</a>
+																																																																																				<a class="nav-link" href="#">Link</a>
+																																																																																				#}
 						</nav>
 						{#
-																																																																									<form class="d-flex m-auto" role="search" action="{{path('results') }}">
-																																																																			<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-																																																																			<button class="btn btn-outline-success" type="submit">Search</button>
-																																																																		</form>
-																																																																		#}
+																																																																															<form class="d-flex m-auto" role="search" action="{{path('results') }}">
+																																																																									<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+																																																																									<button class="btn btn-outline-success" type="submit">Search</button>
+																																																																								</form>
+																																																																								#}
 						<div class="d-flex flex-row">
 							{% if app.user %}
 								<div class="dropdown">
@@ -144,8 +157,8 @@
 					</div>
 				</nav>
 				{# <div class="nav-scroller bg-body shadow-sm">
-																																																				<nav class="nav" aria-label="Secondary navigation"></nav>
-																																																				</div> #}
+																																																								<nav class="nav" aria-label="Secondary navigation"></nav>
+																																																								</div> #}
 				<main class="container-fluid mb-5 pb-5">
 					<div aria-live="polite" aria-atomic="true" class="position-relative">
 						<div class="toast-container top-0 end-0 p-3">
@@ -185,12 +198,13 @@
 				<script src="{{ asset('js/color-modes.js') }}"></script>
 				<script src="{{ asset('js/jquery.js') }}"></script>
 				<script>
-					window.onload = function () {
-var toastLiveExample = document.getElementById( 'liveToast' )
-if ( toastLiveExample ) {
-toastLiveExample.classList.add( 'show' );
-}
-}
+					$( document ).ready( function () {
+$( '.dropdown' ).hover( function () {
+$( this ).find( '.dropdown-menu' ).stop( true, true ).delay( 100 ).fadeIn( 200 );
+}, function () {
+$( this ).find( '.dropdown-menu' ).stop( true, true ).delay( 100 ).fadeOut( 200 );
+} );
+} );
 				</script>
 				{% block javascripts %}{% endblock %}
 			</body>

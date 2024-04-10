@@ -29,20 +29,19 @@
 					{{ error.messageKey|trans(error.messageData, 'security') }}
 				</div>
 			{% endif %}
+
 			<div class="card bg-info">
 				<div class="card-body">
-
+						{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate'}}) }}
 					<div>
 						{{ form_row(registrationForm.role)}}
 					<small class="text-muted">{{"register_choose_info"|trans}}</small>
                     </div>
-
 					<div id="additionnalquestion" class='d-none'>
 						{{ form_row(registrationForm.type)}}
 					</div>
 					<div id="additionnalform" class='d-none'>
                         <h4 class="text-center">{{"societyinfo"|trans }}</h4>
-						{{ form_start(registrationForm, {attr: {'novalidate': 'novalidate'}}) }}
 						{{ form_row(registrationForm.professionnel.societyName)}}
 						{{ form_row(registrationForm.professionnel.siretNumber)}}
 						{{ form_row(registrationForm.professionnel.societyAddress)}}
@@ -73,6 +72,16 @@
 
 	{% block javascripts %}
         <script>
+	{% if registrationForm.vars.value.type is defined and registrationForm.vars.value.role is defined %}
+	$(document).ready(function() {
+		if ( "{{registrationForm.vars.value.type}}" !="p" && "{{registrationForm.vars.value.role}}" != "v") {
+			document.getElementById('additionnalform').classList.remove("d-none");
+		} else {
+			document.getElementById('additionnalform').classList.add("d-none");
+		}
+	})
+	{% endif %}
+
     $("input:radio[name='user[role]']").on('change', function() {
         if($("#user_role_0").is(":checked")) {
             document.getElementById('additionnalquestion').classList.add("d-none");

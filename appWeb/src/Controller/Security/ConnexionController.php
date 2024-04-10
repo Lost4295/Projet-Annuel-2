@@ -12,7 +12,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Form\ProfessionnelType;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,17 +36,22 @@ class ConnexionController extends AbstractController
             return $this->redirectToRoute('index');
         }
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, null);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $pro = $user->getProfessionnel();
-            if ($pro->isFilled()){
+            dump($form->getData());
+            $user->setEmail($form->get('email')->getData());;
+            $user->setNom($form->get('nom')->getData());
+            $user->setPrenom($form->get('prenom')->getData());
+            $user->setPhoneNumber($form->get('phoneNumber')->getData());
+            $user->setBirthdate($form->get('birthdate')->getData());
+            if ($form->get("type")->getData() == "m"){
+                $pro = $form->get("professionnel")->getData();
                 $pro->setResponsable($user);
-            } else {
-                $user->setProfessionnel(null);
+                $entityManager->persist($pro);
             }
-            dd($form->getData(), $form->get("role")->getData(), $form->get("type")->getData(), $form);
+//            dd($pro, $user);
             
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
