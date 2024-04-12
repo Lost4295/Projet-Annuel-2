@@ -90,5 +90,7 @@ url: URL
 isdown: Is down
 apistate: APIs state
 adminside: Admin side
+futureloca: Future rents
+pastloca: Past rents
 change: Change
 test: Test

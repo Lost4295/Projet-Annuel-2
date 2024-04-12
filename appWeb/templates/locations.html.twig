@@ -35,12 +35,13 @@
 			width: 22%;
 		}
 
-		input[type="text"] {
+		input[type="text"],
+		input[type="date"] {
 			background: none;
 			border: none;
 			padding: 0.2rem 0 0;
-            position: relative;
-            top: -15px;
+			position: relative;
+			top: -15px;
 		}
 
 		input[type="text"]:focus {
@@ -103,11 +104,11 @@
 			</div>
 			<div class="check-in">
 				<p>Check in</p>
-				<input type="text" placeholder="Add dates">
+				<input type="date" id="startdate" placeholder="Add dates">
 			</div>
 			<div class="check-out">
 				<p>Check out</p>
-				<input type="text" placeholder="Add dates">
+				<input type="date" id="enddate" placeholder="Add dates">
 			</div>
 			<div class="guests">
 				<p>Guests</p>
@@ -159,4 +160,17 @@
 		</div>
 	</div>
 
+{% endblock %}
+
+{% block javascripts %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
+	<script>
+		$( "#startdate" ).flatpickr( {
+"plugins": [new rangePlugin(
+{ input: "#enddate" }
+)]
+} );
+	</script>
 {% endblock %}
