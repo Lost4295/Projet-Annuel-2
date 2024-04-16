@@ -18,7 +18,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -47,7 +46,9 @@ class UserCrudController extends AbstractCrudController
     {
         $id = IdField::new("id", "id");
         $email = EmailField::new("email", "email");
-        $roles = ChoiceField::new("roles", "roles")->allowMultipleChoices()->setChoices(["user" => "ROLE_USER", "admin" => "ROLE_ADMIN"]); // TODO : faire une fonction pour récup ça dans le fichier de config
+        $roles = ChoiceField::new("roles", "roles")
+            ->allowMultipleChoices()
+            ->setChoices(User::getPossibleRoles());
         $password = TextField::new("password", "password");
         $nom = TextField::new("nom", 'nom');
         $prenom = TextField::new("prenom", 'prenom');
@@ -56,7 +57,9 @@ class UserCrudController extends AbstractCrudController
         $admin = BooleanField::new("admin", "admin");
         $birthdate = DateField::new("birthdate", "birthdate");
         $isVerified = BooleanField::new("isVerified", "verified");
-        $avatar = ImageField::new("avatar", "avatar")->setUploadDir("/var/uploads/avatars")->setBasePath("uploads/avatars");
+        $avatar = ImageField::new("avatar", "avatar")
+            ->setUploadDir("/var/uploads/avatars")
+            ->setBasePath("uploads/avatars");
         $phoneNumber = TelephoneField::new("phoneNumber", 'phone');
         $abonnement = AssociationField::new("abonnement", 'abo');
         if (Crud::PAGE_INDEX === $pageName) {

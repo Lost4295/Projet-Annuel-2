@@ -14,6 +14,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 use App\Entity\User;
 use App\Entity\Email;
 use App\Entity\Appartement;
+use App\Entity\Commentaire;
 use App\Entity\Fichier;
 use App\Entity\Professionnel;
 use App\Entity\Service;
@@ -171,7 +172,6 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('apis', 'fa fa-robot', Api::class);
         yield MenuItem::linktoRoute('tarifs', 'fa fa-shopping-cart', 'tarifs');
         yield MenuItem::linktoRoute('transaction', 'fa fa-list', 'all_states');
-        // yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);
         // yield MenuItem::linkToCrud('Blog Posts', 'fa fa-file-text', BlogPost::class);
         yield MenuItem::section('userrl');
         // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
@@ -179,6 +179,7 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('pro', 'fa fa-id-card', Professionnel::class);
         yield MenuItem::section('obrl');
         yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
+        yield MenuItem::linkToCrud('commentaire', 'fa fa-comment', Commentaire::class);
         yield MenuItem::linkToCrud('email', 'fa fa-envelope', Email::class);
         yield MenuItem::linkToCrud('file', 'fa fa-files-o ', Fichier::class);
         yield MenuItem::linkToCrud('service', 'fa fa-tasks', Service::class);

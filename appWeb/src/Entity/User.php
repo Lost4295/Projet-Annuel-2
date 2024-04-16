@@ -5,9 +5,11 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
@@ -48,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $admin = false;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable:true )]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(type: 'boolean')]
@@ -64,11 +66,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'subscribers')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Abonnement $abonnement = null;
+
+    #[OneToMany(targetEntity: Commentaire::class, mappedBy: 'user')]
+    private $commentaires;
+
+
     public function __construct()
     {
         $this->creationDate = new \DateTime();
         $this->roles = ['ROLE_USER'];
         $this->isVerified = false;
+        $this->commentaires = new ArrayCollection();
     }
 
     public function __toString()
@@ -265,7 +273,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getInitials(): string
     {
-        return strtoupper( substr($this->getPrenom(), 0, 1) . substr($this->getNom(), 0, 1));
+        return strtoupper(substr($this->getPrenom(), 0, 1) . substr($this->getNom(), 0, 1));
     }
 
     /**
@@ -319,5 +327,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->abonnement = $abonnement;
 
         return $this;
+    }
+
+    public function getCommentaires()
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getUser() === $this) {
+                $commentaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public static function getPossibleRoles(): array
+    {
+        return [
+            'Utilisateur' => 'ROLE_USER',
+            'Administrateur' => 'ROLE_ADMIN',
+        ];
     }
 }

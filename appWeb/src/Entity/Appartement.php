@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AppartementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,10 +37,23 @@ class Appartement
     #[ORM\Column(length: 50)]
     private ?string $state = null;
 
+    /**
+     * @var Collection<int, Fichier>
+     */
+    #[ORM\OneToMany(targetEntity: Fichier::class, mappedBy: 'appartement')]
+    private Collection $images;
+
+    #[ORM\ManyToOne(inversedBy: 'appartements')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Professionnel $bailleur = null;
+
+
+
     public function __construct()
     {
         $this->state = "En attente";
         $this->note = 0;
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +146,48 @@ class Appartement
     public function setState(string $state): static
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Fichier>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Fichier $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setAppartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Fichier $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getAppartement() === $this) {
+                $image->setAppartement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getBailleur(): ?Professionnel
+    {
+        return $this->bailleur;
+    }
+
+    public function setBailleur(?Professionnel $bailleur): static
+    {
+        $this->bailleur = $bailleur;
 
         return $this;
     }

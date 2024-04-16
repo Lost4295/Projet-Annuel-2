@@ -91,6 +91,8 @@ adminside: 'Côté Admin'
 url: URL
 change: 'Changer'
 test: 'Tester'
+baill: Bailleur
 futureloca: 'Locations futures'
 pastloca: 'Locations passées'
 isdown: 'Est en panne'
+commentaire: Commentaires

@@ -27,7 +27,8 @@ class ProfessionnelType extends AbstractType
             ->add('societyName', TextType::class, [
                 'label' =>  'societyname',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'autocomplete'=> "organization-title"
                 ],
                 'constraints' => [
                     new Length([
@@ -41,7 +42,7 @@ class ProfessionnelType extends AbstractType
             ->add('siretNumber', TextType::class, [
                 'label' => 'siretnumber',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
                 ],
                 'constraints' => [
                     new Length([
@@ -59,7 +60,8 @@ class ProfessionnelType extends AbstractType
             ->add('societyAddress', TextType::class, [
                 'label' => 'societyaddress',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'autocomplete'=> "street-address"
                 ],
                 'constraints' => [
                     new Length([
@@ -73,7 +75,8 @@ class ProfessionnelType extends AbstractType
             ->add('city', TextType::class, [
                 'label' => 'city',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'autocomplete'=> "address-level2"
                 ],
                 'constraints' => [
                     new Length([
@@ -87,7 +90,8 @@ class ProfessionnelType extends AbstractType
             ->add('postalCode', TextType::class, [
                 'label' => 'postalcode',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'autocomplete'=> "postal-code"
                 ],
                 'constraints' => [
                     new Length([
@@ -105,7 +109,8 @@ class ProfessionnelType extends AbstractType
             ->add('country', TextType::class, [
                 'label' => 'country',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'autocomplete'=> "country-name"
                 ],
                 'constraints' => [
                     new Length([

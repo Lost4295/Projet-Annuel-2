@@ -147,10 +147,10 @@
 							</div>
 							<div class="d-flex flex-row">
 								<div class="mx-2">
-									<a class="link-primary" href="{{ path(app.request.attributes.get('_route'), {_locale: 'fr'}) }}"><img src="{{asset('brand/flag_fr.png') }}" width="40" alt="Français"/></a>
+									<a class="link-primary" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'fr'})) }}"><img src="{{asset('brand/flag_fr.png') }}" width="40" alt="Français"/></a>
 								</div>
 								<div class="mx-2">
-									<a class="link-primary" href="{{ path(app.request.attributes.get('_route'), {_locale: 'en'}) }}"><img src="{{asset('brand/flag_en.png') }}" width="40" alt="English"/></a>
+									<a class="link-primary" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'en'})) }}"><img src="{{asset('brand/flag_en.png') }}" width="40" alt="English"/></a>
 								</div>
 							</div>
 						</div>

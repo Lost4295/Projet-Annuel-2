@@ -41,9 +41,16 @@ class Professionnel
     #[ORM\OneToMany(targetEntity: Service::class, mappedBy: 'prestataire', orphanRemoval: true)]
     private Collection $services;
 
+    /**
+     * @var Collection<int, Appartement>
+     */
+    #[ORM\OneToMany(targetEntity: Appartement::class, mappedBy: 'bailleur', orphanRemoval: true)]
+    private Collection $appartements;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
+        $this->appartements = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -177,5 +184,35 @@ class Professionnel
         && $this->city !== null
         && $this->postalCode !== null
         && $this->country !== null;
+    }
+
+    /**
+     * @return Collection<int, Appartement>
+     */
+    public function getAppartements(): Collection
+    {
+        return $this->appartements;
+    }
+
+    public function addAppartement(Appartement $appartement): static
+    {
+        if (!$this->appartements->contains($appartement)) {
+            $this->appartements->add($appartement);
+            $appartement->setBailleur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppartement(Appartement $appartement): static
+    {
+        if ($this->appartements->removeElement($appartement)) {
+            // set the owning side to null (unless already changed)
+            if ($appartement->getBailleur() === $this) {
+                $appartement->setBailleur(null);
+            }
+        }
+
+        return $this;
     }
 }

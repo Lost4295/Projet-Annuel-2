@@ -71,6 +71,21 @@
 	{% endblock %}
 
 	{% block javascripts %}
+	<script
+        id="search-js"
+        defer
+        src="https://api.mapbox.com/search-js/v1.0.0-beta.19/web.js"
+    >
+    </script>
+    <script>        
+        const script = document.getElementById('search-js');
+        script.onload = function() {
+            mapboxsearch.autofill({
+                accessToken: 'pk.eyJ1IjoiYnlxIiwiYSI6ImNsdjBza2E2ajFxcHkycW53bXBheGd4cGUifQ.THaHqpyg1zDpdAcCWTQsjQ'
+            });
+        };
+    </script>
+
         <script>
 	{% if registrationForm.vars.value.type is defined and registrationForm.vars.value.role is defined %}
 	$(document).ready(function() {

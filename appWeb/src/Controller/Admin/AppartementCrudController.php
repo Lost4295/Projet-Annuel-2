@@ -4,9 +4,6 @@ namespace App\Controller\Admin;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use App\Entity\Appartement;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -16,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class AppartementCrudController extends AbstractCrudController
 {
@@ -42,15 +40,14 @@ class AppartementCrudController extends AbstractCrudController
         $nbRooms = NumberField::new("nbRooms", "nbrooms");
         $note = NumberField::new("note", "note");
         $state = ChoiceField::new("state", "state")->setChoices(["Disponible" => "Disponible", "En attente" => "En attente", "Loué" => "Loué"]); // TODO : faire une fonction pour récup ça dans le fichier de config
-        
+        $bailleur= AssociationField::new('bailleur', "baill")->setRequired(true);
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $shortDesc, $price, $adress, $nbRooms, $note, $state];
+            return [$id, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur];
         } elseif(Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $description, $shortDesc, $price, $adress, $nbRooms, $note, $state];
-        } elseif(Crud::PAGE_EDIT === $pageName) {
-            return [$shortDesc, $description, $price, $adress, $nbRooms, $state];
-        } elseif(Crud::PAGE_NEW === $pageName) {
-            return [$shortDesc, $description, $price, $adress, $nbRooms, $state];
+            return [$id, $description, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur];
+        } else {
+            return [$shortDesc, $description, $price, $adress, $nbRooms, $state, $bailleur];
         }
+
     }
 }

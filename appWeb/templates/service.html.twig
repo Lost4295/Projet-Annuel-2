@@ -12,62 +12,39 @@
 			<button class="nav-link fs-3 my-3 p-5" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
 		</div>
 		<div class="tab-content w-100" id="v-pills-tabContent">
-			<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+			<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 				<div class="card-deck d-flex justify-content-around flex-row">
-					<div class="card" style="width: 18rem;">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
+					{% for service in services %}
+						<div class="card">
+							<div class="card-body">
+								<div class="col d-flex justify-content-center">
+									<img src="https://placehold.co/500x300" alt="">
+								</div>
+								<h5 class="card-title">{{service.titre}}</h5>
+								<h6 class="card-subtitle mb-2 text-body-secondary">{{service.description|slice(0,50)~"..."}}</h6>
+							</div>
 						</div>
-					</div>
-					<div class="card" style="width: 18rem;">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
-						</div>
-					</div>
+					{% endfor %}
 				</div>
 			</div>
-			<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+			<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 				<div class="card-deck d-flex justify-content-around flex-row">
-					<div class="card" style="width: 18rem;">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
+					{% for produit in produits %}
+						<div class="card">
+							<div class="card-body">
+								<div class="col d-flex justify-content-center">
+									<img src="https://placehold.co/500x300" alt="">
+								</div>
+								<h5 class="card-title">{{produit.titre}}</h5>
+								<h6 class="card-subtitle mb-2 text-body-secondary">{{produit.description|slice(0,50)~"..."}}</h6>
+							</div>
 						</div>
-					</div>
-					<div class="card" style="width: 18rem;">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
-						</div>
-					</div>
-					<div class="card" style="width: 18rem;">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
-						</div>
-					</div>
+					{% endfor %}
 				</div>
 			</div>
-			<div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">
+			<div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab">
 				<div class="card-deck d-flex justify-content-around flex-row">
-					<div class="card" style="width: 18rem;">
+					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">Card title</h5>
 							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
@@ -75,7 +52,7 @@
 							<a href="#" class="card-link">Card link</a>
 							<a href="#" class="card-link">Another link</a>
 						</div>
-						<div class="card" style="width: 18rem;">
+						<div class="card">
 							<div class="card-body">
 								<h5 class="card-title">Card title</h5>
 								<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
@@ -83,7 +60,7 @@
 								<a href="#" class="card-link">Card link</a>
 								<a href="#" class="card-link">Another link</a>
 							</div>
-							<div class="card" style="width: 18rem;">
+							<div class="card">
 								<div class="card-body">
 									<h5 class="card-title">Card title</h5>
 									<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
@@ -96,37 +73,37 @@
 					</div>
 				</div>
 			</div>
-			<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">
+			<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
 				<div class="card-deck d-flex justify-content-around flex-row">
-					<div class="card" style="width: 18rem;">
+					<div class="card">
 						<div class="card-body">
+							<div class="col d-flex justify-content-center">
+								<img src="https://placehold.co/500x300" alt="">
+							</div>
 							<h5 class="card-title">Card title</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
+							<h6 class="card-subtitle mb-2 text-body-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</h6>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
+			<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 				<div class="card-deck d-flex justify-content-around flex-row">
-					<div class="card" style="width: 18rem;">
+					<div class="card">
 						<div class="card-body">
+							<div class="col d-flex justify-content-center">
+								<img src="https://placehold.co/500x300" alt="">
+							</div>
 							<h5 class="card-title">Card title</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
+							<h6 class="card-subtitle mb-2 text-body-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</h6>
 						</div>
 					</div>
-					<div class="card" style="width: 18rem;">
+					<div class="card">
 						<div class="card-body">
+							<div class="col d-flex justify-content-center">
+								<img src="https://placehold.co/500x300" alt="">
+							</div>
 							<h5 class="card-title">Card title</h5>
-							<h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
+							<h6 class="card-subtitle mb-2 text-body-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</h6>
 						</div>
 					</div>
 				</div>
