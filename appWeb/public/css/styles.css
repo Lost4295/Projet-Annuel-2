@@ -403,3 +403,7 @@
 .bg-info {
   color: var(--bs-light);
 }
+
+.bg-orange {
+  color: var(--bs-orange);
+}
