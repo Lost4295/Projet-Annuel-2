@@ -28,11 +28,21 @@ class Appartement
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $postalCode = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $country = null;
+
+
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $nbRooms = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $note = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2)]
+    private ?float $note = null;
 
     #[ORM\Column(length: 50)]
     private ?string $state = null;
@@ -189,6 +199,33 @@ class Appartement
     {
         $this->bailleur = $bailleur;
 
+        return $this;
+    }
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+    public function  setCity(?string $city): static
+    {
+        $this->city = $city;
+        return $this;
+    }
+    public function  setPostalCode(?string $postalCode): static
+    {
+        $this->postalCode = $postalCode;
+        return $this;
+    }
+    public function  setCountry(?string $country): static
+    {
+        $this->country = $country;
         return $this;
     }
 }
