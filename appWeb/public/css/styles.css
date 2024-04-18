@@ -405,10 +405,14 @@
   color: var(--bs-light);
 }
 
-.banner {
-  background-color: #3976AE;
+.banner, .nav .active {
+  background-color: #3976AE !important;
 }
 
 .bg-orange {
   background-color: var(--bs-orange);
+}
+
+.servicesNav button, .servicesNav button:hover {
+  color: #3976AE;
 }
