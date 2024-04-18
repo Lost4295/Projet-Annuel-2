@@ -9,6 +9,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 class Service
 {
+const SERVICE =1;
+const PRODUIT =2;
+    const TYPE_LIST=
+
+    [
+        self::SERVICE => "service",
+        self::PRODUIT => "produit"
+    ];
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -99,5 +109,9 @@ class Service
         $this->tarifs = $tarifs;
 
         return $this;
+    }
+    public static function getTypes(): array
+    {
+        return self::TYPE_LIST;
     }
 }

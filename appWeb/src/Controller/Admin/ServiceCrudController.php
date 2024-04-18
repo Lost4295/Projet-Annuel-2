@@ -37,7 +37,7 @@ class ServiceCrudController extends AbstractCrudController
         $id = IdField::new("id", 'id');
         $titre = TextField::new("titre", 'title');
         $description = TextareaField::new("description", 'description');
-        $type = ChoiceField::new("type", 'type')->setChoices(["service" => "service", "produit" => "produit"]);
+        $type = ChoiceField::new("type", 'type')->setChoices(Service::getTypes());
         $prestataire = AssociationField::new("prestataire", 'prestataire');
         $tarifs = MoneyField::new("tarifs", 'tarif')->setCurrency("EUR");
         if (Crud::PAGE_INDEX === $pageName || Crud::PAGE_DETAIL === $pageName) {
