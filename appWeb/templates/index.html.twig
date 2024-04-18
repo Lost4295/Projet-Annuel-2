@@ -17,38 +17,16 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-4">
-      <a href="{{ path('index') }}" class="col-md-4 py-1 text-decoration-none">
+    {% for appart in apparts %}
+      <a href="{{ path('appart_detail', {'id': appart.id}) }}" class="col-md-4 py-1 text-decoration-none">
         <div class="card">
           <div class="card-body">
             <img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-            <h4></h4>
-            <small></small>
+            <h4>{{appart.shortDesc}}</h4>
+            <small>{{appart.description|slice(0,50)~"..."}}</small>
           </div>
         </div>
-		  </a>
-    </div>
-    <div class="col-4">
-      <a href="{{ path('index') }}" class="col-md-4 py-1 text-decoration-none">
-        <div class="card">
-          <div class="card-body">
-            <img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-            <h4></h4>
-            <small></small>
-          </div>
-        </div>
-		  </a>
-    </div>
-    <div class="col-4">
-      <a href="{{ path('index') }}" class="col-md-4 py-1 text-decoration-none">
-        <div class="card">
-          <div class="card-body">
-            <img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-            <h4></h4>
-            <small></small>
-          </div>
-        </div>
-		  </a>
-    </div>
+      </a>
+    {% endfor %}
   </div>  
 {% endblock %}
