@@ -97,6 +97,11 @@ class Commentaire
         return $this;
     }
 
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
     public static function getTypes(): array
     {
         return self::TYPE_LIST;
