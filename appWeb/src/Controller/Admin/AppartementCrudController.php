@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 
 class AppartementCrudController extends AbstractCrudController
 {
@@ -41,6 +42,7 @@ class AppartementCrudController extends AbstractCrudController
         $note = NumberField::new("note", "note");
         $state = ChoiceField::new("state", "state")->setChoices(["Disponible" => "Disponible", "En attente" => "En attente", "Loué" => "Loué"]); // TODO : faire une fonction pour récup ça dans le fichier de config
         $bailleur= AssociationField::new('bailleur', "baill")->setRequired(true);
+        $photos = ImageField::new('appartement', "photos")->setRequired(true)->setUploadDir("/public/images/appartements")->setBasePath("/images/appartements");
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur];
         } elseif(Crud::PAGE_DETAIL === $pageName) {

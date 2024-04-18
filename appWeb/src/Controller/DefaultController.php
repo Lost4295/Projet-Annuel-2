@@ -4,6 +4,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Appartement;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,13 +17,14 @@ class DefaultController extends AbstractController
 
     #[Route("/", name: "index")]
     #[Route("/", name: "homepage")]
-    public function index(TranslatorInterface $translator)
+    public function index(TranslatorInterface $translator,EntityManagerInterface $em)
     {
         $user = $this->getUser();
         if ($user && !$user->isVerified()) {
             $this->addFlash('warning', $translator->trans('verify'));
         }
-        return $this->render('index.html.twig', ['message' => 'Hello World!']);
+        $apparts = $em->getRepository(Appartement::class)->findAll();
+        return $this->render('index.html.twig', ['apparts' => $apparts]);
     }
 
 
