@@ -102,6 +102,9 @@
 									<li>
 										<a class="dropdown-item" href={{path("create_devis")}}>Demande de Devis</a>
 									</li>
+									<li>
+										<a class="dropdown-item" href="">Abonnement</a>
+									</li>
 								</ul>
 							</div>
 							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'prestataires' %} active {%endif%}" {% if app.request.get('_route') == 'prestataires' %} aria-current="page" {% endif %} href="{{path('prestataires') }}">{{'prestataires' |trans }}</a>

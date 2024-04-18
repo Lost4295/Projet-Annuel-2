@@ -18,11 +18,11 @@ class ServiceController extends AbstractController
     public function table(Request $request, EntityManagerInterface $em)
     {
 
-        $nettoyage = $em->getRepository(Service::class)->findBy(["type" => "nettoyage"]);
-        $electricite = $em->getRepository(Service::class)->findBy(["type" => "electricite"]);
-        $plomberie = $em->getRepository(Service::class)->findBy(["type" => "plomberie"]);
-        $peinture = $em->getRepository(Service::class)->findBy(["type" => "peinture"]);
-        $bricolage = $em->getRepository(Service::class)->findBy(["type" => "bricolage"]);
+        $nettoyage = $em->getRepository(Service::class)->findBy(["type" => Service::NETTOYAGE]);
+        $electricite = $em->getRepository(Service::class)->findBy(["type" => Service::ELECTRICITE]);
+        $plomberie = $em->getRepository(Service::class)->findBy(["type" => Service::PLOMBERIE]);
+        $peinture = $em->getRepository(Service::class)->findBy(["type" => Service::PEINTURE]);
+        $bricolage = $em->getRepository(Service::class)->findBy(["type" => Service::BRICOLAGE]);
 
         return $this->render('service.html.twig', [
             'nettoyage' => $nettoyage,
