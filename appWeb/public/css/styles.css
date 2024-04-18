@@ -410,5 +410,5 @@
 }
 
 .bg-orange {
-  color: var(--bs-orange);
+  background-color: var(--bs-orange);
 }
