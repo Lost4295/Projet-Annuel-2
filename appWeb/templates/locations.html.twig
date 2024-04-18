@@ -118,17 +118,20 @@
 		</div>
 	</div>
 	<div class="row">
-		{% for appart in apparts %}
+	{% for appart in apparts %}
 		<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="col-md-4 py-1 text-decoration-none">
 			<div class="card">
-				<div class="card-body">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<h4>{{appart.shortDesc}}</h4>
-					<small>{{appart.description|slice(0,50)~"..."}}</small>
-				</div>
+			<div class="card-body">
+				<img src={{asset("images/appartements/apt1_1.jpeg")}} class="card-img-top" alt="...">
+				<h5>{{appart.shortDesc|slice(0,30)~"..."}}</h5>
+				<small>{{appart.description|slice(0,50)~"..."}}</small>
+				<div style="display: flex; justify-content: space-between; width: 100%;">
+				<p>{{appart.price}} € / Nuit</p> 
+				<p>{{appart.note}} / 5</p></div>
+			</div>
 			</div>
 		</a>
-		{% endfor %}
+    {% endfor %}
 
 		<div class="col-md-4 py-1">
 			<div class="card">
