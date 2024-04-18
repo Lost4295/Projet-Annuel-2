@@ -5,6 +5,7 @@
 namespace App\Controller;
 
 use App\Entity\Service;
+use App\Form\DevisType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,11 +17,19 @@ class ServiceController extends AbstractController
     #[Route("/service", name: "services")]
     public function table(Request $request, EntityManagerInterface $em)
     {
-        $services= $em->getRepository(Service::class)->findBy(["type" => "service"]);
-        $produits = $em->getRepository(Service::class)->findBy(["type" => "produit"]);
+
+        $nettoyage = $em->getRepository(Service::class)->findBy(["type" => "nettoyage"]);
+        $electricite = $em->getRepository(Service::class)->findBy(["type" => "electricite"]);
+        $plomberie = $em->getRepository(Service::class)->findBy(["type" => "plomberie"]);
+        $peinture = $em->getRepository(Service::class)->findBy(["type" => "peinture"]);
+        $bricolage = $em->getRepository(Service::class)->findBy(["type" => "bricolage"]);
+
         return $this->render('service.html.twig', [
-            'services' => $services,
-            'produits' => $produits
+            'nettoyage' => $nettoyage,
+            'electricite' => $electricite,
+            'plomberie' => $plomberie,
+            'peinture' => $peinture,
+            'bricolage' => $bricolage
         ]);
     }
 }

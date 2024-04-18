@@ -9,13 +9,19 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 class Service
 {
-const SERVICE =1;
-const PRODUIT =2;
-    const TYPE_LIST=
+const NETTOYAGE =1;
+const ELECTRICITE =2;
+const PLOMBERIE =3;
+const PEINTURE =4;
 
+const BRICOLAGE = 5;
+    const TYPE_LIST=
     [
-        self::SERVICE => "service",
-        self::PRODUIT => "produit"
+        "nettoyage" => self::NETTOYAGE  ,
+        "electricité" =>self::ELECTRICITE ,
+        "plomberie"=> self::PLOMBERIE,
+        "peinture"=> self::PEINTURE,
+        "bricolage" => self::BRICOLAGE
     ];
 
 
