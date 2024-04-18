@@ -1,7 +1,46 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-	<h1>{{'wip'|trans}}</h1>
-	<div class="spinner-border display-2" role="status" style="width:700px; height:700px">
-		<span class="visually-hidden">Loading...</span>
-	</div>
+<div class="row text-white py-5 d-flex justify-content-center bg-info">
+        <div class="fs-1 mt-5  text-center pt-5">
+        Besoin d’aide ?
+        </div>
+		<div class="fs-1 mb-5 text-center col-4">
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="search" placeholder="Trouvez les réponses à toutes vos questions" aria-label="Search">
+				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+			</form>
+        </div>
+</div>
+		<div class="row text-center fs-1">
+			<div>
+			Questions fréquentes
+			</div>	
+		</div>
+		<div class="row pt-5">
+			<div class="col-8 fs-2">
+			Comment s’inscrire sur le site ?
+			</div>
+			<div class="col-4 fs-2 ">
+			Comment être bailleur ?
+			</div>	
+		</div>
+		<div class="row pt-5">
+			<div class="col-8 fs-2">
+			Comment supprimer mon compte ?
+			</div>
+			<div class="col-4 fs-2 ">
+			Comment devenir prestataire ? 
+			</div>	
+		</div>
+		<div class="row pt-5">
+			<div class="col-8 fs-2">
+			Quelles sont les moyens de paiement disponibles ?
+			</div>
+			<div class="col-4 fs-2 ">
+			Comment récupérer les clés ?
+			</div>	
+		</div>
+		
+    
+	
 {% endblock %}
