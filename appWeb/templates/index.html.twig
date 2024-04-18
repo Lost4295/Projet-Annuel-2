@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block title %}{% endblock %}
 {% block body %}
-  <div class="row bg-info">
+  <div class="row banner">
     <div class="col-4 " >
       <img src="{{ asset('brand/PCS_Logo/White_Full.png') }}" alt="logo" class="img-fluid">
     </div>
     <div class="col-8 d-flex align-items-center">
-      <p>Paris Caretaker Services (PCS) est une chaîne de conciergeries immobilières assurant une offre de
+      <p class="text-white">Paris Caretaker Services (PCS) est une chaîne de conciergeries immobilières assurant une offre de
       gestion locative saisonnière (type AirBnB), créée à Paris en 2018. La société a connu une croissance
       rapide depuis sa création, principalement en raison de la qualité de son accueil et de la richesse de ses
       prestations.
@@ -16,14 +16,17 @@
       </p>
     </div>
   </div>
-  <div class="row">
+  <div class="row mt-4">
     {% for appart in apparts %}
       <a href="{{ path('appart_detail', {'id': appart.id}) }}" class="col-md-4 py-1 text-decoration-none">
         <div class="card">
           <div class="card-body">
-            <img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-            <h4>{{appart.shortDesc}}</h4>
+            <img src={{asset("images/appartements/apt1_1.jpeg")}} class="card-img-top" alt="...">
+            <h5>{{appart.shortDesc|slice(0,30)~"..."}}</h5>
             <small>{{appart.description|slice(0,50)~"..."}}</small>
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+              <p>{{appart.price}} € / Nuit</p> 
+              <p>{{appart.note}} / 5</p></div>
           </div>
         </div>
       </a>
