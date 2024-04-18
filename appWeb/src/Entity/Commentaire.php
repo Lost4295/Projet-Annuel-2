@@ -16,11 +16,14 @@ class Commentaire
     const SERVICE = 2;
     const PRODUIT = 3;
 
+    const TICKET = 4;
+
     private const TYPE_LIST = [
         'blog' => self::BLOG,
         'appartement' => self::APPART,
         'service' => self::SERVICE,
         'produit' => self::PRODUIT,
+        'ticket' => self::TICKET
     ];
 
 

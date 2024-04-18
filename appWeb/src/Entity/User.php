@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
@@ -70,6 +71,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[OneToMany(targetEntity: Commentaire::class, mappedBy: 'user')]
     private $commentaires;
 
+    /**
+     * @var Collection<int, Ticket>
+     */
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'demandeur')]
+    private Collection $tickets;
+
+    /**
+     * @var Collection<int, Ticket>
+     */
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'resolveur')]
+    private Collection $ticketsAttribues;
+
 
     public function __construct()
     {
@@ -77,6 +90,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = ['ROLE_USER'];
         $this->isVerified = false;
         $this->commentaires = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+        $this->ticketsAttribues = new ArrayCollection();
     }
 
     public function __toString()
@@ -362,5 +377,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'Utilisateur' => 'ROLE_USER',
             'Administrateur' => 'ROLE_ADMIN',
         ];
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): static
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setDemandeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): static
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getDemandeur() === $this) {
+                $ticket->setDemandeur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTicketsAttribues(): Collection
+    {
+        return $this->ticketsAttribues;
+    }
+
+    public function addTicketsAttribue(Ticket $ticketsAttribue): static
+    {
+        if (!$this->ticketsAttribues->contains($ticketsAttribue)) {
+            $this->ticketsAttribues->add($ticketsAttribue);
+            $ticketsAttribue->setResolveur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicketsAttribue(Ticket $ticketsAttribue): static
+    {
+        if ($this->ticketsAttribues->removeElement($ticketsAttribue)) {
+            // set the owning side to null (unless already changed)
+            if ($ticketsAttribue->getResolveur() === $this) {
+                $ticketsAttribue->setResolveur(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -28,6 +28,9 @@ class Fichier
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?Appartement $appartement = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pj')]
+    private ?Ticket $ticket = null;
+
     public function __toString(): string
     {
         return $this->nom;
@@ -92,6 +95,18 @@ class Fichier
     public function setAppartement(?Appartement $appartement): static
     {
         $this->appartement = $appartement;
+
+        return $this;
+    }
+
+    public function getTicket(): ?Ticket
+    {
+        return $this->ticket;
+    }
+
+    public function setTicket(?Ticket $ticket): static
+    {
+        $this->ticket = $ticket;
 
         return $this;
     }
