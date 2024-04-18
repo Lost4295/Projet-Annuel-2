@@ -1,0 +1,42 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Créer un appartement
+{% endblock %}
+{% block page_actions %}{% endblock %}
+{% block page_headline %}Créer un appartement
+{% endblock %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block page_content %}
+
+	{{form(form) }}
+		<script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.19/web.js"></script>
+		<script>
+			const ACCESS_TOKEN = 'pk.eyJ1IjoiYnlxIiwiYSI6ImNsdjBza2E2ajFxcHkycW53bXBheGd4cGUifQ.THaHqpyg1zDpdAcCWTQsjQ';
+
+document.getElementById( "search-js" ).onload = () => {
+mapboxsearch.config.accessToken = ACCESS_TOKEN;
+const collection = mapboxsearch.autofill( { accessToken: ACCESS_TOKEN } );
+
+// Add confirmation prompt to shipping address
+const form = document.querySelector( "form" );
+form.addEventListener( "submit", async ( e ) => {
+e.preventDefault();
+const result = await mapboxsearch.confirmAddress( form, {
+theme: {
+variables: {
+border: '3px solid rgba(0,0,0,0.35)',
+borderRadius: '18px'
+}
+},
+minimap: {
+defaultMapStyle: [
+'mapbox', 'outdoors-v11'
+],
+satelliteToggle: true
+},
+skipConfirmModal: ( feature ) => false // overrides default behavior, show dialog every time
+} );
+console.log( result );
+} );
+}
+		</script>
+	{% endblock %}

@@ -178,13 +178,14 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('users', 'fa fa-user', User::class);
         yield MenuItem::linkToCrud('pro', 'fa fa-id-card', Professionnel::class);
         yield MenuItem::section('obrl');
-        yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
         yield MenuItem::linkToCrud('commentaire', 'fa fa-comment', Commentaire::class);
         yield MenuItem::linkToCrud('email', 'fa fa-envelope', Email::class);
         yield MenuItem::linkToCrud('file', 'fa fa-files-o ', Fichier::class);
         yield MenuItem::linkToCrud('service', 'fa fa-tasks', Service::class);
+        yield MenuItem::section('obrl');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
-
+        yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
+        yield MenuItem::linktoRoute('crappart', 'fa fa-chart-bar', 'appartement_create');
     }
 
 }
