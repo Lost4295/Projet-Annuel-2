@@ -38,4 +38,6 @@ class LocationController extends AbstractController
             'appart' => $appart
         ]);
     }
+
+    
 }
