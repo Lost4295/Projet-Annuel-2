@@ -1,37 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div class="row d-flex">
-		<div class="col">
-			<div class="fs-1">{{appart.shortDesc}}</div>
+	<div class"p-8">
+		<div class="row d-flex">
+			<div class="col">
+				<div class="fs-1">{{appart.titre}}</div>
+			</div>
+			<div class="col-2 pull-right">
+				<a href="#">
+					<i class="bi-heart"></i>
+					J'aime</a>
+				<a href="{{ path('appart_detail', {'id': appart.id}) }}">
+					<i class="bi-send"></i>Je partage</a>
+			</div>
 		</div>
-		<div class="col-2 pull-right">
-			<a href="#">
-				<i class="bi-heart"></i>
-				J'aime</a>
-			<a href="{{ path('appart_detail', {'id': appart.id}) }}">
-				<i class="bi-send"></i>Je partage</a>
+		<div class="row d-flex justify-content-center">
+			<div class="d-flex justify-content-center">
+				<img src="{#{{ asset('images/' ~ appart.image) }}#} https://placehold.co/1000x500" alt="">
+			</div>
 		</div>
-	</div>
-	<div class="row d-flex justify-content-center">
-		<div class="d-flex justify-content-center">
-			<img src="{#{{ asset('images/' ~ appart.image) }}#} https://placehold.co/1000x500" alt="">
-		</div>
-	</div>
-	<div class="row">
-		<div><b>{{appart.shortDesc}}</b></div>
-		<div style="display: flex; justify-content: space-between; width: 100%;">
-			
-			<p>{{appart.Nbrooms}} Voyageurs - {{appart.Nbrooms}} Chambres - {#{{appart.Nbrooms}} Lits - {{appart.Nbrooms}} Salle de bain#}</p>
-			<p class="">{{appart.note}} / 5</p>
-		</div>
-		<hr class="text-info">
 		<div class="row">
-			<div class="d-flex">
-					<img class="me-3 mb-3" src="https://placehold.co/90x90">
-				<div>
-					<p>{#{{appart.description}}#}<b>Hôte :</b> Jean-Francis</p>					
-					<p>		{{appart.description}}</p>
+			<div><b>{{appart.shortDesc}}</b></div>
+			<div style="display: flex; justify-content: space-between; width: 100%;">
+				
+				<p>{{appart.Nbrooms}} Voyageurs - {{appart.nbchambers}} Chambres - {{appart.nbBeds}} Lits - {{appart.nbbathrooms}} Salle de bain</p>
+				<p class="">{{appart.note}} / 5</p>
+			</div>
+			<hr class="text-info">
+			<div class="row">
+				<div class="d-flex">
+						<img class="me-3 mb-3" src="https://placehold.co/90x90" alt="">
+					<div>
+						<p>{#{{appart.description}}#}<b>Hôte :</b> {{appart.bailleur.responsable.prenom}} {{appart.bailleur.responsable.nom}}</p>					
+						<p>		{{appart.description}}</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -83,29 +85,30 @@
 				</div>
 			</div>
 		</div>
-	{% endblock %}
-	{% block stylesheets %}
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-		<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet'/>
-		<style>
-			.marker {
-				background-image: url('{{ asset("marker.jpg") }}');
-				background-size: cover;
-				width: 20px;
-				height: 20px;
-				border-radius: 50%;
-				cursor: pointer;
-			}
-			.mapboxgl-popup {
-				max-width: 200px;
-			}
+	</div>
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet'/>
+	<style>
+		.marker {
+			background-image: url('{{ asset("marker.jpg") }}');
+			background-size: cover;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			cursor: pointer;
+		}
+		.mapboxgl-popup {
+			max-width: 200px;
+		}
 
-			.mapboxgl-popup-content {
-				text-align: center;
-				font-family: 'Open Sans', sans-serif;
-			}
-		</style>
-	{% endblock %}
+		.mapboxgl-popup-content {
+			text-align: center;
+			font-family: 'Open Sans', sans-serif;
+		}
+	</style>
+{% endblock %}
 	{% block javascripts %}
 		<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
 		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
