@@ -12,6 +12,7 @@
 			<button class="nav-link fs-3 my-3 p-5" id="v-pills-plomberie-tab" data-bs-toggle="pill" data-bs-target="#v-pills-plomberie" type="button" role="tab" aria-controls="v-pills-plomberie" aria-selected="false">Plomberie</button>
 			<button class="nav-link fs-3 my-3 p-5" id="v-pills-peinture-tab" data-bs-toggle="pill" data-bs-target="#v-pills-peinture" type="button" role="tab" aria-controls="v-pills-peinture" aria-selected="false">Peinture</button>			
 			<button class="nav-link fs-3 my-3 p-5" id="v-pills-bricolage-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bricolage" type="button" role="tab" aria-controls="v-pills-bricolage" aria-selected="false">Bricolage</button>
+			<button class="nav-link fs-3 my-3 p-5" id="v-pills-chauffeur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-chauffeur" type="button" role="tab" aria-controls="v-pills-chauffeur" aria-selected="false">Chauffeur</button>
 		</div>
 		<div class="tab-content w-100" id="v-pills-tabContent bs-info">
 			<div class="tab-pane fade show active" id="v-pills-nettoyage" role="tabpanel" aria-labelledby="v-pills-nettoyage-tab">
@@ -74,20 +75,21 @@
 					{% endfor %}
 				</div>
 			</div>
-			<div class="tab-pane fade" id="v-pills-bricolage" role="tabpanel" aria-labelledby="v-pills-bricolage-tab">
+			<div class="tab-pane fade" id="v-pills-chauffeur" role="tabpanel" aria-labelledby="v-pills-chauffeur-tab">
 				<div class="card-deck d-flex justify-content-around flex-row">
-					{% for bric in bricolage %}
+					{% for chauf in chauffeur %}
 						<div class="card">
 							<div class="card-body">
 								<div class="col d-flex justify-content-center">
 									<img src="https://placehold.co/500x300" alt="">
 								</div>
-								<h5 class="card-title">{{bric.titre}}</h5>
-								<h6 class="card-subtitle mb-2 text-body-secondary">{{bric.description|slice(0,50)~"..."}}</h6>
+								<h5 class="card-title">{{chauf.titre}}</h5>
+								<h6 class="card-subtitle mb-2 text-body-secondary">{{chauf.description|slice(0,50)~"..."}}</h6>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
+				
 			</div>
 		</div>
 	</div>

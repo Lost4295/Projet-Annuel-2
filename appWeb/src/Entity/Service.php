@@ -15,13 +15,16 @@ class Service
     const PEINTURE = 4;
 
     const BRICOLAGE = 5;
+
+    const CHAUFFEUR = 6;
     const TYPE_LIST =
         [
             "nettoyage" => self::NETTOYAGE,
             "electricité" => self::ELECTRICITE,
             "plomberie" => self::PLOMBERIE,
             "peinture" => self::PEINTURE,
-            "bricolage" => self::BRICOLAGE
+            "bricolage" => self::BRICOLAGE,
+            "chauffeur" => self::CHAUFFEUR
         ];
 
 
