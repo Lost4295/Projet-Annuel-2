@@ -138,7 +138,9 @@ style: 'mapbox://styles/mapbox/streets-v11',
 center: [
 2.3856312, 48.8461429
 ],
-zoom: 12
+zoom: 12,
+  maxZoom: 15,
+  minZoom: 13
 } );
 const geojson = {
 type: 'FeatureCollection',
@@ -175,15 +177,13 @@ map.addControl( new mapboxgl.NavigationControl() );
 		</script>
 
 		<script>
-		var d = new Date().toLocaleDateString("us-US");
-		var e = new Date()
 			$( "#startdate" ).daterangepicker( {
-				"positionElement": "#dates",
 				"locale": "fr",
 				"minDate": new Date(),
 				"disable": [],
 				"autoApply": true,
-
 				} );
+
+
 		</script>
 	{% endblock %}
