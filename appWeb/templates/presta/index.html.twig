@@ -2,19 +2,19 @@
 {% block body %}
 
 
-	<div class="row py-2 d-flex bg-orange mb-5">
-        <div class="fs-1 text-center ">
-        Vous pouvez faire votre demande de devis ici
+	<div class="row py-2 d-flex bg-orange ">
+        <div class="fs-2 text-center ">
+        Vous pouvez faire votre demande de devis <a href={{path("create_devis")}}>ici</a>
         </div>	
 	</div>
 	
-	<div class="row">
+	<div class="row mt-5">
 	{% for presta in prestas %}
-		<a href="{{ path('cacaporut', {'id': presta.id}) }}" class="col-md-4 py-1 text-decoration-none">
+		<a href="{{ path('detail_presta', {'id': presta.id}) }}" class="col-md-4 py-1 text-decoration-none">
 			<div class="card">
 			<div class="card-body">
 				<img src={{asset("images/presta/menage.jpg")}} class="card-img-top" alt="...">
-				<h5>{{presta.societyName|slice(0,30)}}</h5>
+				<h5 class="text-center">{{presta.societyName|slice(0,30)}} </h5>
 			</div>
 			</div>
 		</a>

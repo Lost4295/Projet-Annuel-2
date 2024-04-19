@@ -24,8 +24,8 @@ class PrestataireController extends AbstractController
 
         ]);
     }
-    #[Route("/jesuislemeilleur", name: "cacaporut")]
-    public function juridfgijyhtdijkygdkyftkyft(Request $request, EntityManagerInterface $em)
+    #[Route("/detail", name: "detail_presta")]
+    public function show(Request $request, EntityManagerInterface $em)
     {
         return $this->render('presta/index.html.twig');
     }
