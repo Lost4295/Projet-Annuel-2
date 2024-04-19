@@ -22,7 +22,7 @@
         <div class="card">
           <div class="card-body">
             <img src={{asset("images/appartements/apt1_1.jpeg")}} class="card-img-top" alt="...">
-            <h5>{{appart.shortDesc|slice(0,30)~"..."}}</h5>
+            <h5>{{appart.city}} - {{appart.country}}</h5>
             <small>{{appart.description|slice(0,50)~"..."}}</small>
             <div style="display: flex; justify-content: space-between; width: 100%;">
               <p>{{appart.price}} € / Nuit</p> 
