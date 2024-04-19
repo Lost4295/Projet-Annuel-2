@@ -14,38 +14,26 @@
 		</div>
 	</div>
 	<div class="row d-flex justify-content-center">
-		<div class="col-5">
-			<img src="{#{{ asset('images/' ~ appart.image) }}#} https://placehold.co/500x300" alt="">
+		<div class="d-flex justify-content-center">
+			<img src="{#{{ asset('images/' ~ appart.image) }}#} https://placehold.co/1000x500" alt="">
 		</div>
 	</div>
-	<hr class="text-info">
 	<div class="row">
-		<div class="col-3">
-			<div class="fs-3">{{appart.price}}€</div>
-			<small>/nuit</small>
-		</div>
-		<div class="col-3">
-			<div
-				class="fs-3">
-				{#{{appart.capacity}}#}
-				personnes</div>
-			<small>/logement</small>
-		</div>
-		<div class="col-3">
-			<div
-				class="fs-3">
-				{#{{appart.rooms}}#}
-				chambres</div>
-			<small>/logement</small>
-		</div>
-		<div class="col-3">
-			Noté
-			<div class="fs-3">{{appart.note}}</div>
-			<small>/5</small>
+		<div><b>{{appart.shortDesc}}</b></div>
+		<div style="display: flex; justify-content: space-between; width: 100%;">
+			
+			<p>{{appart.Nbrooms}} Voyageurs - {{appart.Nbrooms}} Chambres - {#{{appart.Nbrooms}} Lits - {{appart.Nbrooms}} Salle de bain#}</p>
+			<p class="">{{appart.note}} / 5</p>
 		</div>
 		<hr class="text-info">
 		<div class="row">
-			<div>{{appart.description}}</div>
+			<div class="d-flex">
+					<img class="me-3 mb-3" src="https://placehold.co/90x90">
+				<div>
+					<p>{#{{appart.description}}#}<b>Hôte :</b> Jean-Francis</p>					
+					<p>		{{appart.description}}</p>
+				</div>
+			</div>
 		</div>
 		<hr class="text-info">
 		<div class="row">
@@ -62,14 +50,14 @@
 		</div>
 		<hr class="text-info">
 		<div class="d-flex">
-			<div class="col-5 mx-2">
+			<div class="col-5 mx-2 text-center">
 				<h3>Adresse</h3>
-				<div id='map' style='width: 400px; height: 300px;'></div>
+				<div id='map' style='width: 400px; height: 300px; margin: auto;'></div>
 			</div>
 			<div class="vr"></div>
-			<div class="col-6 p-3">
+			<div class="col-6 p-3 text-center">
 				<h3>Sélectionnez la date d'arrivée</h3>
-				<div class="d-inline" id="dates">
+				<div class="d-inline d-flex justify-content-center" id="dates"  >
 					<input class="visually-hidden" type="date" id="startdate" placeholder="Add dates">
 					<input class="visually-hidden" type="text" id="enddate" placeholder="Add dates">
 				</div>

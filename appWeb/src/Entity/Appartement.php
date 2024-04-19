@@ -57,6 +57,18 @@ class Appartement
     #[ORM\JoinColumn(nullable: false)]
     private ?Professionnel $bailleur = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $titre = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $nbchambers = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $nbbathrooms = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $nbBeds = null;
+
 
 
     public function __construct()
@@ -226,6 +238,54 @@ class Appartement
     public function  setCountry(?string $country): static
     {
         $this->country = $country;
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getNbchambers(): ?int
+    {
+        return $this->nbchambers;
+    }
+
+    public function setNbchambers(int $nbchambers): static
+    {
+        $this->nbchambers = $nbchambers;
+
+        return $this;
+    }
+
+    public function getNbbathrooms(): ?int
+    {
+        return $this->nbbathrooms;
+    }
+
+    public function setNbbathrooms(int $nbbathrooms): static
+    {
+        $this->nbbathrooms = $nbbathrooms;
+
+        return $this;
+    }
+
+    public function getNbBeds(): ?int
+    {
+        return $this->nbBeds;
+    }
+
+    public function setNbBeds(int $nbBeds): static
+    {
+        $this->nbBeds = $nbBeds;
+
         return $this;
     }
 }
