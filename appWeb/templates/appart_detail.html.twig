@@ -60,8 +60,7 @@
 			<div class="col-6 p-3 text-center">
 				<h3>Sélectionnez la date d'arrivée</h3>
 				<div class="d-inline d-flex justify-content-center" id="dates"  >
-					<input class="visually-hidden" type="date" id="startdate" placeholder="Add dates">
-					<input class="visually-hidden" type="text" id="enddate" placeholder="Add dates">
+					<input id="startdate" placeholder="Add dates">
 				</div>
 			</div>
 		</div>
@@ -71,15 +70,15 @@
 			<div class="d-flex">
 				<div class="col-4">
 					<p>Adultes(+18ans)</p>
-					<input id ="NbAdultes" type="number" class="form-control" value="0">
+					<input id ="NbAdultes" type="number" class="form-control"  value="0" min="0">
 				</div>
 				<div class="col-4">
 					<p>Enfants (+10ans)</p>
-					<input id ="NbEnfants" type="number" class="form-control" value="0">
+					<input id ="NbEnfants" type="number" class="form-control" value="0" min="0">
 				</div>
 				<div class="col-4">
 					<p>Bébés (+0ans)</p>
-					<input id="NbBebes" type="number" class="form-control" value="0">
+					<input id="NbBebes" type="number" class="form-control" value="0" min="0">
 				</div>
 			</div>
 		</div>
@@ -110,11 +109,10 @@
 	<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet'/>
 	<style>
 		.marker {
-			background-image: url('{{ asset("marker.jpg") }}');
-			background-size: cover;
-			width: 20px;
-			height: 20px;
-			border-radius: 50%;
+			background-image: url('{{ asset("marker.png") }}');
+			background-size: 100%;
+			width: 30px;
+			height: 45px;
 			cursor: pointer;
 		}
 		.mapboxgl-popup {
@@ -129,9 +127,9 @@
 {% endblock %}
 	{% block javascripts %}
 		<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-		<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 		<script>
 			mapboxgl.accessToken = 'pk.eyJ1IjoiYnlxIiwiYSI6ImNsdjBza2E2ajFxcHkycW53bXBheGd4cGUifQ.THaHqpyg1zDpdAcCWTQsjQ';
 var map = new mapboxgl.Map( {
@@ -177,15 +175,15 @@ map.addControl( new mapboxgl.NavigationControl() );
 		</script>
 
 		<script>
-			$( "#startdate" ).flatpickr( {
-"positionElement": "#dates",
-"locale": "fr",
-"plugins": [new rangePlugin(
-{ input: "#enddate" }
-)],
-"inline": true,
-"minDate": "today",
-"disable": []
-} );
+		var d = new Date().toLocaleDateString("us-US");
+		var e = new Date()
+			$( "#startdate" ).daterangepicker( {
+				"positionElement": "#dates",
+				"locale": "fr",
+				"minDate": new Date(),
+				"disable": [],
+				"autoApply": true,
+
+				} );
 		</script>
 	{% endblock %}
