@@ -23,13 +23,15 @@ class ServiceController extends AbstractController
         $plomberie = $em->getRepository(Service::class)->findBy(["type" => Service::PLOMBERIE]);
         $peinture = $em->getRepository(Service::class)->findBy(["type" => Service::PEINTURE]);
         $bricolage = $em->getRepository(Service::class)->findBy(["type" => Service::BRICOLAGE]);
+        $chauffeur = $em->getRepository(Service::class)->findBy(["type" => Service::CHAUFFEUR]);
 
         return $this->render('service.html.twig', [
             'nettoyage' => $nettoyage,
             'electricite' => $electricite,
             'plomberie' => $plomberie,
             'peinture' => $peinture,
-            'bricolage' => $bricolage
+            'bricolage' => $bricolage,
+            'chauffeur' => $chauffeur
         ]);
     }
 }
