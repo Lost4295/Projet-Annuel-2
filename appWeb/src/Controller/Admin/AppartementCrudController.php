@@ -36,7 +36,7 @@ class AppartementCrudController extends AbstractCrudController
         $id = IdField::new("id", "id");
         $description = TextareaField::new("description", "description");
         $shortDesc = TextField::new("shortDesc", "shdesc");
-        $price = MoneyField::new("price", "price")->setCurrency("EUR");
+        $price = MoneyField::new("price", "price")->setCurrency("EUR")->setCustomOption('storedAsCents', false);
         $adress = TextField::new("address", "address");
         $nbRooms = NumberField::new("nbRooms", "nbrooms");
         $note = NumberField::new("note", "note");
