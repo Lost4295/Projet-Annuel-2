@@ -131,4 +131,10 @@ class UserController extends AbstractController
         // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
         return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $form]);
     }
+    
+    #[Route("/create_appart", name: "create_appart")]
+    public function createAppart(Request $request, EntityManagerInterface $em)
+    {
+        return $this->render('create_appart.html.twig');
+    }
 }
