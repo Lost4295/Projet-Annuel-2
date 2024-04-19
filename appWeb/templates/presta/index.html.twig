@@ -9,63 +9,17 @@
 	</div>
 	
 	<div class="row">
-			<div class="col-4 py-3 d-flex justify-content-center ">
-				<div class="card" style="width: 18rem;">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<div class="card-body text-center">
-						<h5 class="card-title">Tornado Bath</h5>
-						
-					</div>
-				</div>
+	{% for presta in prestas %}
+		<a href="{{ path('cacaporut', {'id': presta.id}) }}" class="col-md-4 py-1 text-decoration-none">
+			<div class="card">
+			<div class="card-body">
+				<img src={{asset("images/presta/menage.jpg")}} class="card-img-top" alt="...">
+				<h5>{{presta.societyName|slice(0,30)}}</h5>
 			</div>
-			<div class="col-4 py-3 d-flex justify-content-center">
-				<div class="card" style="width: 18rem;">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<div class="card-body text-center">
-						<h5 class="card-title">Toilet Fast</h5>
-						
-					</div>
-				</div>
 			</div>
-			<div class="col-4 py-3 d-flex justify-content-center">
-				<div class="card" style="width: 18rem;">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<div class="card-body text-center">
-						<h5 class="card-title">Clear Eclair</h5>
-						
-					</div>
-				</div>
-			</div>
-	</div>
-	<div class="row mb-5">
-		<div class="col-4 py-3 d-flex justify-content-center">
-				<div class="card" style="width: 18rem;">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<div class="card-body text-center">
-						<h5 class="card-title">Laurent Plomberie</h5>
-						
-					</div>
-				</div>
-			</div>
-			<div class="col-4 py-3 d-flex justify-content-center">
-				<div class="card" style="width: 18rem;">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<div class="card-body text-center">
-						<h5 class="card-title">RDV Electric</h5>
-						
-					</div>
-				</div>
-			</div>
-			<div class="col-4 py-3 d-flex justify-content-center">
-				<div class="card" style="width: 18rem;">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<div class="card-body text-center">
-						<h5 class="card-title">Fuites Fix</h5>
-						
-					</div>
-				</div>
-			</div>
-	</div>
+		</a>
+    {% endfor %}
+			
 	<div class="row d-flex justify-content-center mt-5">
         <div class="fs-3 text-center col-6 bg-info rounded pb-2 pt-2">
         Voir les autres prestataires disponibles en cliquant ici
