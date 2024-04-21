@@ -46,6 +46,7 @@ class Commentaire
     #[ORM\Column(type: Types::INTEGER)]
     private $entityId;
 
+    
 
     public function getId(): ?int
     {

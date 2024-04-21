@@ -69,6 +69,12 @@ class Appartement
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $nbBeds = null;
 
+    /**
+     * @var Collection<int, AppartPlus>
+     */
+    #[ORM\ManyToMany(targetEntity: AppartPlus::class, mappedBy: 'appartement')]
+    private Collection $appartPluses;
+
 
 
     public function __construct()
@@ -76,6 +82,7 @@ class Appartement
         $this->state = "En attente";
         $this->note = 0;
         $this->images = new ArrayCollection();
+        $this->appartPluses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -285,6 +292,30 @@ class Appartement
     public function setNbBeds(int $nbBeds): static
     {
         $this->nbBeds = $nbBeds;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AppartPlus>
+     */
+    public function getAppartPluses(): Collection
+    {
+        return $this->appartPluses;
+    }
+
+    public function addAppartPlus(AppartPlus $appartPlus): static
+    {
+        if (!$this->appartPluses->contains($appartPlus)) {
+            $this->appartPluses->add($appartPlus);
+        }
+
+        return $this;
+    }
+
+    public function removeAppartPlus(AppartPlus $appartPlus): static
+    {
+        $this->appartPluses->removeElement($appartPlus);
 
         return $this;
     }

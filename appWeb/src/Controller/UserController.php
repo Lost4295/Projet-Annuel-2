@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -32,7 +33,6 @@ class UserController extends AbstractController
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'readonly' => true,
                 ],
                 'constraints' => [
                     new Email([
@@ -82,7 +82,7 @@ class UserController extends AbstractController
                         'max' => 80,
                     ]),
                 ],
-                // 
+                //
             ])
             ->add('birthdate', DateType::class, [
                 'attr' => [
@@ -103,7 +103,6 @@ class UserController extends AbstractController
             ->add('phoneNumber', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'readonly' => true,
                 ],
                 "label" => 'phone',
                 'constraints' => [

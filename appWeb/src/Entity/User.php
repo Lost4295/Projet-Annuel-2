@@ -376,6 +376,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return [
             'Utilisateur' => 'ROLE_USER',
             'Administrateur' => 'ROLE_ADMIN',
+            "Bailleur" => "ROLE_BAILLEUR",
+            "Prestataire" => "ROLE_PRESTA"
         ];
     }
 

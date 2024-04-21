@@ -55,7 +55,7 @@ class AdminDashboardController extends AbstractDashboardController
         return $this->render('admin/dashboard.html.twig', [
             'chart' => $chart,
         ]);
-        return parent::index();
+        // return parent::index();
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -186,6 +186,7 @@ class AdminDashboardController extends AbstractDashboardController
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
         yield MenuItem::linktoRoute('crappart', 'fa fa-chart-bar', 'appartement_create');
+        yield MenuItem::linktoRoute('croplus', 'fa fa-chart-bar', 'create_plus');
     }
 
 }

@@ -1,0 +1,17 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}
+	Créer un "Plus"
+{% endblock %}
+{% block page_actions %}{% endblock %}
+{% block page_headline %}
+	Créer un "Plus"
+{% endblock %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block page_content %}
+	{{ form_start(form) }}
+	{{ form_row(form.nom) }}
+	{{ form_row(form.icon) }}
+	{{ form_rest(form) }}
+	<input type="submit" class="btn btn-primary" value="{{'submit'|trans }}"
+	{{ form_end(form) }}
+{% endblock %}
