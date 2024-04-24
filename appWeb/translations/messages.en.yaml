@@ -97,3 +97,8 @@ test: Test
 baill: Lessor
 commentaire: Comments
 resa: Reservations
+adults: Adults(+18)
+kids: Kids(-18)
+babies: Babies(-2)
+travelernum: Number of travelers
+chdate: Choose your dates

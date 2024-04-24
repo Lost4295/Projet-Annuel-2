@@ -5,11 +5,14 @@
 namespace App\Controller;
 
 use App\Entity\Appartement;
+use App\Entity\Location;
+use App\Form\LocationFirstType;
+use App\Form\LocationTestType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class LocationController extends AbstractController
 {
@@ -30,14 +33,55 @@ class LocationController extends AbstractController
         ]);
     }
 
-    #[Route("/locations/{id}", name: "appart_detail")]
-    public function show($id, EntityManagerInterface $em)
+    #[Route("/locations/{id}", name: "appart_detail", requirements: ['id' => '\d+'])]
+    public function show($id, EntityManagerInterface $em, Request $request)
     {
         $appart = $em->getRepository(Appartement::class)->find($id);
+
+        $location = new Location();
+        $form = $this->createForm(LocationFirstType::class, null, [
+            'action' => $this->generateUrl('appart_confirm'),
+            'method' => 'POST',
+        ]);
+        $form->handleRequest($request);
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     return $this->redirectToRoute('appart_confirm');
+        // }
         return $this->render('appart_detail.html.twig', [
-            'appart' => $appart
+            'appart' => $appart,
+            'form' => $form
         ]);
     }
 
-    
+    #[Route("/locations/confirm", name: "appart_confirm")]
+    public function confirm(Request $request)
+    {
+        $firstForm = $this->createForm(LocationFirstType::class, null, [
+            'method' => 'POST',
+        ]);
+        $firstForm->handleRequest($request);
+        if ($firstForm->isSubmitted() && !$firstForm->isValid()) {
+            return $this->redirectToRoute('appart_detail', ['id' => 1]);
+        }
+        return $this->render('confirm_appart.html.twig', [
+            'firstForm' => $firstForm
+        ]);
+    }
+
+    #[Route("/create/location", name: "test_location_create")]
+    #[IsGranted("ROLE_USER")]
+    public function createLocation(Request $request, EntityManagerInterface $em)
+    {
+        $location = new Location();
+        $form = $this->createForm(LocationTestType::class, $location);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($location);
+            $em->flush();
+            return $this->redirectToRoute('profile');
+        }
+        return $this->render('create_location.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 }

@@ -4,6 +4,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Professionnel;
+use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +31,11 @@ class UserController extends AbstractController
     public function profile(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
+        $appartements = [];
+        if ($user->hasRole(User::ROLE_BAILLEUR)){
+            $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable"=>$user->getId()]);
+            $appartements = $pro->getAppartements();
+        }
         $form = $this->createFormBuilder($user)
             ->add('email', EmailType::class, [
                 'attr' => [
@@ -128,7 +135,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('profile');
         }
         // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
-        return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $form]);
+        return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $form, 'appartements' => $appartements]);
     }
     
     #[Route("/create_appart", name: "create_appart")]

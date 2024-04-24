@@ -15,6 +15,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class LocationCrudController extends AbstractCrudController
 {
@@ -31,19 +35,20 @@ class LocationCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): array|\Traversable
     {
+        $dateDebut= DateField::new("dateDebut", "dateDebut");
+        $dateFin= DateField::new("dateFin", "dateFin");
+        $appartement= AssociationField::new("appartement","appartement");
+        $locataire= AssociationField::new("locataire","locataire");
+        $adults= NumberField::new("adults", "adults");
+        $kids= NumberField::new("kids", "kids");
+        $babies= NumberField::new("babies", "babies");
+        $price= MoneyField::new("price", "price")->setCurrency("EUR")->setCustomOption('storedAsCents', false);
+        $services= AssociationField::new("services","services" );
         $id= IdField::new("id", "id");
-        $nom= TextField::new("nom", "title");
-        $type= ChoiceField::new("type", "type")->setChoices(["image" => "image", "pdf" => "pdf", "word" => "word", "excel" => "excel", "powerpoint" => "powerpoint", "autre" => "autre"]);
-        $path= TextField::new("path", "path");
-        //$email= CollectionField::new("email")->setEntryType(EmailType::class)->setEntryIsComplex();
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $nom, $type];
-        } elseif(Crud::PAGE_DETAIL === $pageName) {
-        return [$id, $nom, $type, $path/*, $email*/];
-        } elseif(Crud::PAGE_EDIT === $pageName) {
-        return [$nom, $type, $path/*, $email*/];
-        } elseif(Crud::PAGE_NEW === $pageName) {
-        return [$nom, $type, $path/*, $email*/];
+        if (Crud::PAGE_INDEX === $pageName || Crud::PAGE_DETAIL === $pageName) {
+            return [$id, $dateDebut, $dateFin, $appartement, $locataire, $adults, $kids, $babies, $price, $services];
+        } else {
+            return [$dateDebut, $dateFin, $appartement, $locataire, $adults, $kids, $babies, $price, $services];
         }
     }
     // ...

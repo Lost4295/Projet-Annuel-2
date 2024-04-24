@@ -97,3 +97,8 @@ pastloca: 'Locations passées'
 isdown: 'Est en panne'
 commentaire: Commentaires
 resa: Réservations
+adults: Adultes(+18 ans)
+kids: Enfants(-18 ans)
+babies: Bébés(-2 ans)
+travelernum: Nombre de Voyageurs
+chdate: Choisisssez vos dates
