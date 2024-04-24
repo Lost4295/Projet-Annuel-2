@@ -16,8 +16,10 @@ use App\Entity\Email;
 use App\Entity\Appartement;
 use App\Entity\Commentaire;
 use App\Entity\Fichier;
+use App\Entity\Location;
 use App\Entity\Professionnel;
 use App\Entity\Service;
+use App\Entity\Ticket;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -172,6 +174,7 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('apis', 'fa fa-robot', Api::class);
         yield MenuItem::linktoRoute('tarifs', 'fa fa-shopping-cart', 'tarifs');
         yield MenuItem::linktoRoute('transaction', 'fa fa-list', 'all_states');
+        yield MenuItem::linkToCrud('ticket', 'fa fa-plus', Ticket::class);
         // yield MenuItem::linkToCrud('Blog Posts', 'fa fa-file-text', BlogPost::class);
         yield MenuItem::section('userrl');
         // yield MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class);
@@ -184,6 +187,8 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('service', 'fa fa-tasks', Service::class);
         yield MenuItem::section('obrl');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
+        yield MenuItem::linkToCrud('loca', 'fa fa-plus', Location::class);
         yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
         yield MenuItem::linktoRoute('crappart', 'fa fa-chart-bar', 'appartement_create');
         yield MenuItem::linktoRoute('croplus', 'fa fa-chart-bar', 'create_plus');

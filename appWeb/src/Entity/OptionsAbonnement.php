@@ -2,15 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\OptionsRepository;
+use App\Repository\OptionsAbonnementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 
-#[ORM\Entity(repositoryClass: OptionsRepository::class)]
-#[ApiResource]
-class Options
+#[ORM\Entity(repositoryClass: OptionsAbonnementRepository::class)]
+class OptionsAbonnement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

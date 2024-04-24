@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ServiceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -48,6 +50,17 @@ class Service
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $tarifs = null;
+
+    /**
+     * @var Collection<int, Location>
+     */
+    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'services')]
+    private Collection $locations;
+
+    public function __construct()
+    {
+        $this->locations = new ArrayCollection();
+    }
 
     public function __toString(): string
     {
@@ -122,5 +135,35 @@ class Service
     public static function getTypes(): array
     {
         return self::TYPE_LIST;
+    }
+
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): static
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->setServices($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): static
+    {
+        if ($this->locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getServices() === $this) {
+                $location->setServices(null);
+            }
+        }
+
+        return $this;
     }
 }

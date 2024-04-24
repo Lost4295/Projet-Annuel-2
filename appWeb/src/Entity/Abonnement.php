@@ -25,7 +25,7 @@ class Abonnement
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'abonnement')]
     private Collection $subscribers;
 
-    #[ORM\ManyToMany(targetEntity: Options::class, mappedBy: 'abonnement')]
+    #[ORM\ManyToMany(targetEntity: OptionsAbonnement::class, mappedBy: 'abonnement')]
     private Collection $options;
 
     public function __construct()

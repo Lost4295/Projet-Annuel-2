@@ -16,6 +16,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_BAILLEUR = 'ROLE_BAILLEUR';
+    public const ROLE_PRESTA = 'ROLE_PRESTA';
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -83,15 +89,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'resolveur')]
     private Collection $ticketsAttribues;
 
+    /**
+     * @var Collection<int, Location>
+     */
+    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'locataire')]
+    private Collection $locations;
+
 
     public function __construct()
     {
         $this->creationDate = new \DateTime();
-        $this->roles = ['ROLE_USER'];
+        $this->roles = [self::ROLE_USER];
         $this->isVerified = false;
         $this->commentaires = new ArrayCollection();
         $this->tickets = new ArrayCollection();
         $this->ticketsAttribues = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     public function __toString()
@@ -374,10 +387,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public static function getPossibleRoles(): array
     {
         return [
-            'Utilisateur' => 'ROLE_USER',
-            'Administrateur' => 'ROLE_ADMIN',
-            "Bailleur" => "ROLE_BAILLEUR",
-            "Prestataire" => "ROLE_PRESTA"
+            'Utilisateur' => self::ROLE_USER,
+            'Administrateur' => self::ROLE_ADMIN,
+            "Bailleur" => self::ROLE_BAILLEUR,
+            "Prestataire" => self::ROLE_PRESTA
         ];
     }
 
@@ -435,6 +448,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($ticketsAttribue->getResolveur() === $this) {
                 $ticketsAttribue->setResolveur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): static
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->setLocataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): static
+    {
+        if ($this->locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getLocataire() === $this) {
+                $location->setLocataire(null);
             }
         }
 

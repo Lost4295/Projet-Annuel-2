@@ -29,8 +29,4 @@ class PrefixNamingStrategy extends UnderscoreNamingStrategy
         return parent::propertyToColumnName($propertyName, $className);
     }
 
-    public function joinTableName(string $sourceEntity, string $targetEntity, string $propertyName): string
-    {
-        return $this->prefix . '_' . parent::joinTableName($sourceEntity, $targetEntity, $propertyName);
-    }
 }
