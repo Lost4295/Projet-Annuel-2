@@ -8,6 +8,7 @@ use App\Entity\Professionnel;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -31,11 +33,32 @@ class UserController extends AbstractController
     public function profile(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
+        
         $appartements = [];
-        if ($user->hasRole(User::ROLE_BAILLEUR)){
-            $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable"=>$user->getId()]);
+        if ($user->hasRole(User::ROLE_BAILLEUR)) {
+            $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
             $appartements = $pro->getAppartements();
         }
+        if ($user->hasRole(User::ROLE_VOYAGEUR)) {
+            
+        }
+
+        // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
+        return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $user, 'appartements' => $appartements]);
+    }
+
+    #[Route("/create_appart", name: "create_appart")]
+    public function createAppart(Request $request, EntityManagerInterface $em)
+    {
+        return $this->render('create_appart.html.twig');
+    }
+
+    #[Route("profile/modify/", name: "check_infos")]
+    #[IsGranted("ROLE_USER")]
+    
+    public function checkInfos(Request $request, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
         $form = $this->createFormBuilder($user)
             ->add('email', EmailType::class, [
                 'attr' => [
@@ -55,7 +78,7 @@ class UserController extends AbstractController
             ->add('nom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'readonly' => true,
+                    'disabled'=>'disabled',
                 ],
                 "label" => 'nom',
 
@@ -74,7 +97,7 @@ class UserController extends AbstractController
             ->add('prenom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'readonly' => true,
+                    'disabled'=>'disabled',
                 ],
                 "label" => 'prenom',
 
@@ -94,7 +117,7 @@ class UserController extends AbstractController
             ->add('birthdate', DateType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'readonly' => true,
+                    'disabled'=>'disabled',
                 ],
                 "label" => 'birthdate',
                 'constraints' => [
@@ -130,17 +153,13 @@ class UserController extends AbstractController
             ])
             ->getForm()->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setIsVerified(false);
             $em->persist($user);
             $em->flush();
+            $this->addFlash('success', 'Your profile has been updated successfully. However, you need to verify your email address.');
             return $this->redirectToRoute('profile');
         }
-        // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
-        return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $form, 'appartements' => $appartements]);
-    }
-    
-    #[Route("/create_appart", name: "create_appart")]
-    public function createAppart(Request $request, EntityManagerInterface $em)
-    {
-        return $this->render('create_appart.html.twig');
+
+        return $this->render('modprofile.html.twig', ['user' => $form]);
     }
 }

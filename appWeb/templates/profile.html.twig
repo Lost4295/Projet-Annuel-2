@@ -30,21 +30,21 @@
 		<div class="col-2 border border-success">
 			<div class="d-flex align-items-start">
 				<div class="nav flex-column nav-pills me-3 w-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-					<button class=" nav-link  my-2 p-4 active" id="v-pills-info-tab" data-bs-toggle="pill" data-bs-target="#v-pills-info" type="button" role="tab" aria-controls="v-pills-info" aria-selected="true">{{"info"|trans}}</button>
-					<button class=" nav-link  my-2 p-4" id="v-pills-docs-tab" data-bs-toggle="pill" data-bs-target="#v-pills-docs" type="button" role="tab" aria-controls="v-pills-docs" aria-selected="false">{{"docs"|trans}}</button>
+					<button class="nav-link my-2 p-4 active" id="v-pills-info-tab" data-bs-toggle="pill" data-bs-target="#v-pills-info" type="button" role="tab" aria-controls="v-pills-info" aria-selected="true">{{"info"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-docs-tab" data-bs-toggle="pill" data-bs-target="#v-pills-docs" type="button" role="tab" aria-controls="v-pills-docs" aria-selected="false">{{"docs"|trans}}</button>
 					{% if is_granted("ROLE_BAILLEUR") %}
-						<button class=" nav-link  my-2 p-4" id="v-pills-baill-tab" data-bs-toggle="pill" data-bs-target="#v-pills-baill" type="button" role="tab" aria-controls="v-pills-baill" aria-selected="false">{{"baill"|trans}}</button>
+						<button class="nav-link my-2 p-4" id="v-pills-baill-tab" data-bs-toggle="pill" data-bs-target="#v-pills-baill" type="button" role="tab" aria-controls="v-pills-baill" aria-selected="false">{{"baill"|trans}}</button>
 					{% endif %}
 					{% if is_granted("ROLE_PRESTA") %}
-						<button class=" nav-link  my-2 p-4" id="v-pills-presta-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta" type="button" role="tab" aria-controls="v-pills-presta" aria-selected="false">{{"prestataire"|trans}}</button>
+						<button class="nav-link my-2 p-4" id="v-pills-presta-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta" type="button" role="tab" aria-controls="v-pills-presta" aria-selected="false">{{"prestataire"|trans}}</button>
 					{% endif %}
 					{% if is_granted("ROLE_ADMIN") %}
-						<button class=" nav-link  my-2 p-4" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="false">{{"dashboard"|trans}}</button>
+						<button class="nav-link my-2 p-4" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="false">{{"dashboard"|trans}}</button>
 					{% endif %}
-					<button class=" nav-link  my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
-					<button class=" nav-link  my-2 p-4" id="v-pills-resa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-resa" type="button" role="tab" aria-controls="v-pills-resa" aria-selected="false">{{"resa"|trans}}</button>
-					<button class=" nav-link  my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
-					<button class=" nav-link  my-2 p-4" id="v-pills-conf-tab" data-bs-toggle="pill" data-bs-target="#v-pills-conf" type="button" role="tab" aria-controls="v-pills-conf" aria-selected="false">{{"conf"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-resa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-resa" type="button" role="tab" aria-controls="v-pills-resa" aria-selected="false">{{"resa"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-conf-tab" data-bs-toggle="pill" data-bs-target="#v-pills-conf" type="button" role="tab" aria-controls="v-pills-conf" aria-selected="false">{{"conf"|trans}}</button>
 				</div>
 			</div>
 		</div>
@@ -52,36 +52,51 @@
 			<div class="tab-content" id="v-pills-tabContent">
 				<div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab" tabindex="0">
 					<h2>{{'profile'|trans }}</h2>
-					{{ form_start(user) }}
-					<div class="d-flex justify-content-around">
-						<div class="col-5">
-							{{ form_row(user.nom) }}
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "nom"|trans }}
 						</div>
-						<div class="col-5">
-							{{ form_row(user.prenom) }}
+						<div class="col-6">
+							{{ user.nom }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "prenom"|trans }}
+						</div>
+						<div class="col-6">
+							{{ user.prenom }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "birthdate"|trans }}
+						</div>
+						<div class="col-6">
+							{{ user.birthdate|date('d/m/Y') }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "phone"|trans }}
+						</div>
+						<div class="col-6">
+							{{ user.phoneNumber }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "mail" |trans }}
+						</div>
+						<div class="col-6">
+							{{ user.email }}
 						</div>
 					</div>
 					<div class="d-flex justify-content-around">
 						<div class="col-5">
-							{{ form_row(user.birthdate) }}
-						</div>
-						<div class="col-5">
-							{{ form_row(user.phoneNumber) }}
+							<a href="{{path("check_infos")}}" class="btn btn-primary">{{'modifymyinfo'|trans }}</a>
 						</div>
 					</div>
-					<div class="d-flex justify-content-around">
-						<div
-							class="col-5">
-							{# {{ form_row(user.password) }} #}
-							{{ form_row(user.email) }}
-						</div>
-					</div>
-					<div class="d-flex justify-content-around">
-						<div class="col-5">
-							<input type="submit" id="submit" class="btn btn-primary d-none" value="{{'submit'|trans }}">
-						</div>
-					</div>
-					{{ form_end(user) }}
 				</div>
 				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">
 					<h2>{{'docs'|trans }}</h2>
@@ -133,19 +148,19 @@
 							{% endfor %}
 						</div>
 					</div>
-				</div>
 
 			{% endif %}
 			{% if is_granted("ROLE_PRESTA") %}
 				<div class="tab-pane fade" id="v-pills-presta" role="tabpanel" aria-labelledby="v-pills-presta-tab" tabindex="0">
-					<h1>??????</h1>
+					<h2>??????</h2>
 				</div>
 
 			{% endif %}
 			{% if is_granted("ROLE_ADMIN") %}
-				<div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">dashboard...</div>
+				<div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
+					dashboard...
+				</div>
 			{% endif %}
-
 			<div class="tab-pane fade" id="v-pills-loca" role="tabpanel" aria-labelledby="v-pills-loca-tab" tabindex="0">
 				<h2>{{'loca'|trans }}</h2>
 				<h3>{{"futureloca"|trans }}</h3>
@@ -246,13 +261,4 @@
 			</div>
 		</div>
 	</div>
-</div>{% endblock %}{% block javascripts %}
-<script>
-	$( "#form_email" ).on( "change", function () {
-$( "#submit" ).removeClass( "d-none" );
-} );
-
-$( "#form_phoneNumber" ).on( "change", function () {
-$( "#submit" ).removeClass( "d-none" );
-} );
-</script>{% endblock %}
+</div>{% endblock %}

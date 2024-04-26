@@ -20,6 +20,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_BAILLEUR = 'ROLE_BAILLEUR';
     public const ROLE_PRESTA = 'ROLE_PRESTA';
+    public const ROLE_VOYAGEUR = 'ROLE_VOYAGEUR';
+    public const ROLE_NON_USER = 'ROLE_NON_USER';
 
 
     #[ORM\Id]
@@ -390,7 +392,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'Utilisateur' => self::ROLE_USER,
             'Administrateur' => self::ROLE_ADMIN,
             "Bailleur" => self::ROLE_BAILLEUR,
-            "Prestataire" => self::ROLE_PRESTA
+            "Prestataire" => self::ROLE_PRESTA,
+            "Voyageur" => self::ROLE_VOYAGEUR,
+            "Non Utilisateur" => self::ROLE_NON_USER
         ];
     }
 
