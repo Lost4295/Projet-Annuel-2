@@ -1,0 +1,25 @@
+R_DEF: Internal format may change without notice
+local
+array planets_array
+color black
+color blue_project
+color dark_blue_project
+color orange_project
+color white
+color white_project
+drawable appart1
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable profil
+id main
+id planets_spinner
+id spinner
+layout activity_check_in
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.MyApplication
+style Theme.MyApplication
+xml backup_rules
+xml data_extraction_rules
