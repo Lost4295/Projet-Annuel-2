@@ -8,7 +8,8 @@ name: Symfony ( APP WEB)
 on:
   push:
     branches: [ "main" ]
-    paths: [ '/appWeb/**' ]
+    paths:
+    - '/appWeb/**'
   pull_request:
     branches: [ "main" ]
 
