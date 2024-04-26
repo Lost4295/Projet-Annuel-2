@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths: 
-    - '/appAndroidV2/**'
+    - 'appAndroidV2/**'
   pull_request:
     branches: [ "main" ]
 
