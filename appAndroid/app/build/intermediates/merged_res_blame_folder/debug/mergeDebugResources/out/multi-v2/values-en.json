@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.example.myapplication.app-mergeDebugResources-2:/values-en/values-en.xml",
+            "map": [
+                {
+                    "source": "C:\\Quentin\\git\\ProjetAnnuelle\\Projet-Annuel-2\\appAndroid\\app\\src\\main\\res\\values-en\\strings.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "57",
+                        "endColumns": "51",
+                        "endOffsets": "104"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "51",
+                        "endOffsets": "102"
+                    }
+                }
+            ]
+        }
+    ]
+}
