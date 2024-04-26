@@ -3,11 +3,12 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Symfony
+name: Symfony ( APP WEB)
 
 on:
   push:
     branches: [ "main" ]
+    paths: [ './appWeb/**' ]
   pull_request:
     branches: [ "main" ]
 
