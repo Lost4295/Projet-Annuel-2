@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
+// TODO : Make a command to check if emails need to be sent
 #[ORM\Entity(repositoryClass: EmailRepository::class)]
 class Email
 {

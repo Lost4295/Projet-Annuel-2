@@ -33,13 +33,13 @@ class EmailCrudController extends AbstractCrudController
     public function configureFields(string $pageName): array|\Traversable
     {
         $id= IdField::new("id", 'id');
-        $destinataire= TextField::new("destinataire","destinataire");
-        $body= TextareaField::new("body","body");
-        $cc= TextField::new("cc","cc");
+        $destinataire= TextField::new("destinataire","destinataire")->setRequired(true);
+        $body= TextareaField::new("body","body")->setRequired(true);
+        $cc= TextField::new("cc","cc")->setRequired(true);
         $pj= CollectionField::new("pj","pj");
-        $object= TextField::new("object","object");
+        $object= TextField::new("object","object")->setRequired(true);
         $isAutomatic= BooleanField::new("isAutomatic","auto");
-        $date= DateField::new("date","date");
+        $date= DateField::new("date","date")->setRequired(true);
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $object, $destinataire, $cc, $isAutomatic, $date];
         } elseif(Crud::PAGE_DETAIL === $pageName) {

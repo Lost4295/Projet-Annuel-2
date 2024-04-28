@@ -45,22 +45,22 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $id = IdField::new("id", "id");
-        $email = EmailField::new("email", "email");
+        $email = EmailField::new("email", "email")->setRequired(true);
         $roles = ChoiceField::new("roles", "roles")
             ->allowMultipleChoices()
             ->setChoices(User::getPossibleRoles());
-        $password = TextField::new("password", "password");
-        $nom = TextField::new("nom", 'nom');
-        $prenom = TextField::new("prenom", 'prenom');
+        $password = TextField::new("password", "password")->setRequired(true);
+        $nom = TextField::new("nom", 'nom')->setRequired(true);
+        $prenom = TextField::new("prenom", 'prenom')->setRequired(true);
         $lastConnDate = DateField::new("lastConnDate", 'lastcdate');
         $creationDate = DateField::new("creationDate", 'crdate');
         $admin = BooleanField::new("admin", "admin");
-        $birthdate = DateField::new("birthdate", "birthdate");
+        $birthdate = DateField::new("birthdate", "birthdate")->setRequired(true);
         $isVerified = BooleanField::new("isVerified", "verified");
         $avatar = ImageField::new("avatar", "avatar")
             ->setUploadDir("/var/uploads/avatars")
             ->setBasePath("uploads/avatars");
-        $phoneNumber = TelephoneField::new("phoneNumber", 'phone');
+        $phoneNumber = TelephoneField::new("phoneNumber", 'phone')->setRequired(true);
         $abonnement = AssociationField::new("abonnement", 'abo');
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $phoneNumber, $abonnement];

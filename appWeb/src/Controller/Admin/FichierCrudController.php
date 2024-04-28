@@ -32,9 +32,9 @@ class FichierCrudController extends AbstractCrudController
     public function configureFields(string $pageName): array|\Traversable
     {
         $id= IdField::new("id", "id");
-        $nom= TextField::new("nom", "title");
+        $nom= TextField::new("nom", "title")->setRequired(true);
         $type= ChoiceField::new("type", "type")->setChoices(["image" => "image", "pdf" => "pdf", "word" => "word", "excel" => "excel", "powerpoint" => "powerpoint", "autre" => "autre"]);
-        $path= TextField::new("path", "path");
+        $path= TextField::new("path", "path")->setRequired(true);
         //$email= CollectionField::new("email")->setEntryType(EmailType::class)->setEntryIsComplex();
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $nom, $type];

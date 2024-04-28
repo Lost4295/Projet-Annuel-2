@@ -35,14 +35,14 @@ class LocationCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): array|\Traversable
     {
-        $dateDebut= DateField::new("dateDebut", "dateDebut");
-        $dateFin= DateField::new("dateFin", "dateFin");
-        $appartement= AssociationField::new("appartement","appartement");
-        $locataire= AssociationField::new("locataire","locataire");
-        $adults= NumberField::new("adults", "adults");
-        $kids= NumberField::new("kids", "kids");
-        $babies= NumberField::new("babies", "babies");
-        $price= MoneyField::new("price", "price")->setCurrency("EUR")->setCustomOption('storedAsCents', false);
+        $dateDebut= DateField::new("dateDebut", "dateDebut")->setRequired(true);
+        $dateFin= DateField::new("dateFin", "dateFin")->setRequired(true);
+        $appartement= AssociationField::new("appartement","appartement")->setRequired(true);
+        $locataire= AssociationField::new("locataire","locataire")->setRequired(true);
+        $adults= NumberField::new("adults", "adults")->setRequired(true);
+        $kids= NumberField::new("kids", "kids")->setRequired(true);
+        $babies= NumberField::new("babies", "babies")->setRequired(true);
+        $price= MoneyField::new("price", "price")->setCurrency("EUR")->setCustomOption('storedAsCents', false)->setRequired(true);
         $services= AssociationField::new("services","services" );
         $id= IdField::new("id", "id");
         if (Crud::PAGE_INDEX === $pageName || Crud::PAGE_DETAIL === $pageName) {
