@@ -70,18 +70,51 @@
 		</div>
 		<div class=" row d-flex">
 			<h3>{{"travelernum"|trans }}</h3>
-			<div class="d-flex">
-				<div class="col-4">
-					{# <input id ="NbAdultes" type="number" class="form-control"  value="0" min="0"> #}
-					{{ form_row(form.adults) }}
+			<div class="d-flex justify-content-between">
+				<div class="d-flex justify-content-around">
+					<div class="col-2">
+						<div class="d-flex flex-row">
+							{{ form_label(form.adults) }}
+						</div>
+						<div class="d-flex flex-row">
+							<i class="bi bi-dash-circle moins fs-1"></i>
+							{# <input id="NbBebes" type="number" class="form-control" value="0" min="0"> #}
+							{{ form_widget(form.adults) }}
+							<i class="bi bi-plus-circle plus fs-1"></i>
+						</div>
+					</div>
+					<div class="col-2">
+						<div class="d-flex flex-row">
+							{{ form_label(form.kids) }}
+						</div>
+						<div class="d-flex flex-row">
+							<i class="bi bi-dash-circle moins fs-1"></i>
+							{# <input id="NbBebes" type="number" class="form-control" value="0" min="0"> #}
+							{{ form_widget(form.kids) }}
+							<i class="bi bi-plus-circle plus fs-1"></i>
+						</div>
+					</div>
+					<div class="col-2">
+						<div class="d-flex flex-row">
+							{{ form_label(form.babies) }}
+						</div>
+						<div class="d-flex flex-row">
+							<i class="bi bi-dash-circle moins fs-1"></i>
+							{# <input id="NbBebes" type="number" class="form-control" value="0" min="0"> #}
+							{{ form_widget(form.babies) }}
+							<i class="bi bi-plus-circle plus fs-1"></i>
+						</div>
+					</div>
 				</div>
+				<div class="vr"></div>
 				<div class="col-4">
-					{# <input id ="NbEnfants" type="number" class="form-control" value="0" min="0"> #}
-					{{ form_row(form.kids) }}
-				</div>
-				<div class="col-4">
-					{# <input id="NbBebes" type="number" class="form-control" value="0" min="0"> #}
-					{{ form_row(form.babies) }}
+					<h3>{{"prevmont"|trans}}</h3>
+						<div class="col-6">
+							<p id="price">{{"price"|trans}} : {{appart.price}} €/ {{"nuit"|trans }}<span id="tprice"></span><span id="sprice"></span></p>
+							<p id="people">{{"people"|trans}} : <span id="speople"></span> €</p>
+							<p id="tax">{{"tax"|trans}} : <span id="stax"></span> €</p>
+							<p id="total">{{"total"|trans}} : <span id="stotal"></span> €</p>
+					</div>
 				</div>
 			</div>
 			<div class="col-12 my-3">
@@ -89,6 +122,7 @@
 			</div>
 		</div>
 		{{ form_end(form) }}
+
 		<hr class="text-info">
 		<h3>{{"comms"|trans}}</h3>
 		<div class="row">
@@ -198,15 +232,42 @@ new mapboxgl.Marker(el)
   )
   .addTo(map);}
 map.addControl( new mapboxgl.NavigationControl() );
-
 			$( "#location_first_date" ).daterangepicker( {
 				"locale": "fr",
 				"minDate": new Date(),
 				"disable": [],
 				"autoApply": true,
-				} );
+				}, function(start, end, label) {
+				$("#tprice").text(" du "+start.format('DD/MM/YYYY')+" au "+end.format('DD/MM/YYYY')
+				+ ' ('+end.diff(start, 'days')+" jours) = ");
+				$("#sprice").text(end.diff(start, 'days')*{{appart.price}});
+				});
+		$('.plus').click(function () {
+			$(this).prev().val(+$(this).prev().val() + 1);
+			var total = +$("#location_first_adults").val() + +$("#location_first_kids").val()+ +$("#location_first_babies").val();
+			var travel = " voyageurs";
+			if (total <= 1) {
+				travel =" voyageur";
+			}
+			$("#speople").text(total +travel +"* xxx " )
+			var tax = total*0.2;
+			$("#stax").text(tax)
+			$("#stotal").text(total*{{appart.price}}+tax)
+		});
 
-
+		$('.moins').click(function () {
+			if ($(this).next().val() > 0) $(this).next().val(+$(this).next().val() - 1);
+			var total = +$("#location_first_adults").val() + +$("#location_first_kids").val()+ +$("#location_first_babies").val();
+			console.log(total, $("#location_first_adults").val(), $("#location_first_kids").val(), $("#location_first_babies").val());
+			var travel = " voyageurs";
+			if (total <= 1) {
+				travel =" voyageur";
+			}
+			$("#speople").text(total +travel +"* xxx " )
+			var tax = total*0.2;
+			$("#stax").text(tax)
+			$("#stotal").text(total*{{appart.price}}+tax)
+		});
 
 		</script>
 	{% endblock %}

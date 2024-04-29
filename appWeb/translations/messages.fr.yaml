@@ -63,7 +63,7 @@ id: ID
 roles: Rôles
 lastcdate: 'Dernière date de connexion'
 crdate: 'Date de création'
-admin: Admin
+admin: Administrateur
 verified: 'Est vérifié'
 abo: Abonnement
 description: Description
@@ -124,3 +124,11 @@ checkin: 'Date d''arrivée'
 when: Quand ? 
 checkout: 'Date de départ'
 guests: Voyageurs
+ticket: Tickets
+crappart: Créer un appartement
+croplus: Créer un service lié à un appartement
+myprofile: Mon Profil
+settings: Paramètres
+logout: Déconnexion
+voyageur: Voyageur
+nouser: Non Utilisateur

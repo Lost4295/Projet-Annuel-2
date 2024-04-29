@@ -5,13 +5,12 @@ namespace App\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Email;
+use App\Entity\Professionnel;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -40,25 +39,25 @@ class AppartementType extends AbstractType
             ->add('address', TextType::class, [
                 'attr' => [
                     "class" => "my-2",
-                    'autocomplete'=> "street-address"
+                    'autocomplete' => "street-address"
                 ], "label" => "address"
             ])
             ->add('city', TextType::class, [
                 'attr' => [
                     "class" => "my-2",
-                    'autocomplete'=> "address-level2"
+                    'autocomplete' => "address-level2"
                 ], "label" => "city"
             ])
             ->add('postalCode', TextType::class, [
                 'attr' => [
                     "class" => "my-2",
-                    'autocomplete'=> "postal-code"
+                    'autocomplete' => "postal-code"
                 ], "label" => "postalCode"
             ])
             ->add('country', TextType::class, [
                 'attr' => [
                     "class" => "my-2",
-                    'autocomplete'=> "country-name"
+                    'autocomplete' => "country-name"
                 ], "label" => "country"
             ])
             ->add('nbRooms', NumberType::class, [
@@ -76,16 +75,31 @@ class AppartementType extends AbstractType
                     "class" => "my-2"
                 ], "label" => "state"
             ])
-            // ->add('bailleur', EntityType::class, [
-            //     'attr' => [
-            //         "class" => "my-2"
-            //     ], "label" => "bailleur"
-            // ])
+            ->add('bailleur', EntityType::class, [
+                'attr' => [
+                    "class" => "my-2"
+                ], "label" => "bailleur",
+                "class" => Professionnel::class,
+                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    return $er->createQueryBuilder('p')
+                        ->join('p.responsable', 'u')
+                        ->where('u.roles like :responsable')
+                        ->setParameter('responsable', '%' . User::ROLE_BAILLEUR . '%');
+                },
+            ])
+            ->add("images", FileType::class, [
+                "multiple" => true,
+                "label" => "images",
+                "attr" => [
+                    "class" => "my-2",
+                    "accept" => "image/*"
+                ]
+            ])
+
             ->add("submit", SubmitType::class, [
                 "attr" => [
                     "class" => "btn btn-primary my-2"
                 ], "label" => "submit"
-            ])
-            ;
+            ]);
     }
 }

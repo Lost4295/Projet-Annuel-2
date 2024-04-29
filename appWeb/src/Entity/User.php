@@ -389,12 +389,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public static function getPossibleRoles(): array
     {
         return [
-            'Utilisateur' => self::ROLE_USER,
-            'Administrateur' => self::ROLE_ADMIN,
-            "Bailleur" => self::ROLE_BAILLEUR,
-            "Prestataire" => self::ROLE_PRESTA,
-            "Voyageur" => self::ROLE_VOYAGEUR,
-            "Non Utilisateur" => self::ROLE_NON_USER
+            'user' => self::ROLE_USER,
+            'admin' => self::ROLE_ADMIN,
+            "baill" => self::ROLE_BAILLEUR,
+            "prestataire" => self::ROLE_PRESTA,
+            "voyageur" => self::ROLE_VOYAGEUR,
+            "nouser" => self::ROLE_NON_USER
         ];
     }
 

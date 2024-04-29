@@ -157,10 +157,10 @@ class AdminDashboardController extends AbstractDashboardController
 
             // you can use any type of menu item, except submenus
             ->setMenuItems([
-                MenuItem::linkToRoute('My Profile', 'fa fa-id-card', '...', ['...' => '...']),
-                MenuItem::linkToRoute('Settings', 'fa fa-user-cog', '...', ['...' => '...']),
+                MenuItem::linkToRoute('myprofile', 'fa fa-id-card', '...', ['...' => '...']),
+                MenuItem::linkToRoute('settings', 'fa fa-user-cog', '...', ['...' => '...']),
                 MenuItem::section(),
-                MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
+                MenuItem::linkToLogout('logout', 'fa fa-sign-out'),
             ]);
     }
     public function configureMenuItems(): iterable
@@ -188,7 +188,7 @@ class AdminDashboardController extends AbstractDashboardController
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
         yield MenuItem::linkToCrud('loca', 'fa fa-plus', Location::class);
-        yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
+        // yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
         yield MenuItem::linktoRoute('crappart', 'fa fa-chart-bar', 'appartement_create');
         yield MenuItem::linktoRoute('croplus', 'fa fa-chart-bar', 'create_plus');
     }
