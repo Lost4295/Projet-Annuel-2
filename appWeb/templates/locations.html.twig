@@ -7,7 +7,7 @@
 
 		.bar {
 			width: 650px;
-			background: white;
+			background: #002349;
 			box-shadow: 0 0 5px hsl(0 0% 78%);
 			height: 55px;
 			border-radius: 100vw;
@@ -23,7 +23,7 @@
 		}
 
 		.bar div:hover {
-			background: hsl(0 0% 94%);
+			background: #25486E;
 		}
 
 		.location {
@@ -36,7 +36,7 @@
 		}
 
 		input[type="text"],
-		input[type="date"] {
+		input[type="date"], p.djf {
 			background: none;
 			border: none;
 			padding: 0.2rem 0 0;
@@ -58,18 +58,19 @@
 		.guests span {
 			position: absolute;
 			top: 50%;
-			right: 10px;
+			right: 8px;
 			transform: translateY(-50%);
-			background: #FF385C;
-			color: white;
+			background: #3976AE;
+			color: #fff;
 			font-size: 0.8rem;
-			padding: 0.7rem;
+			padding: 0.8rem;
 			border-radius: 50%;
 		}
 
 		.bar > div {
 			position: relative;
 		}
+
 
 
 		.bar > div::before {
@@ -80,40 +81,73 @@
 			transform: translateY(-50%);
 			width: 1px;
 			height: 55%;
-			background: hsl(0 0% 90%);
+			background: white;
 		}
 
 		.bar>div:nth-of-type(1)::before {
 			background: transparent;
 		}
 
-
 		.bar>div:hover::before {
 			background: transparent;
 		}
 	</style>
+
 {% endblock %}
+
 {% block body %}
 	<div class="m-3 d-flex align-items-center justify-content-center">
 		<div class="bar">
-			<div class="location">
-				<p>Location</p>
-				<input type="text" placeholder="Where are you going?">
+			<div class="text-light location">
+				<p>{{'destination'|trans }}</p>
+				<input type="text" class="text-light" placeholder="{{'dest'|trans}}">
 			</div>
-			<div class="check-in">
-				<p>Check in</p>
-				<input type="date" id="startdate" placeholder="Add dates">
+			<div class="text-light check-in">
+				<p>{{'checkin'|trans}}</p>
+				<input type="date" id="startdate" class="text-light" placeholder="{{'when'|trans }}">
 			</div>
-			<div class="check-out">
-				<p>Check out</p>
-				<input type="date" id="enddate" placeholder="Add dates">
+			<div class="text-light check-out">
+				<p>{{'checkout'|trans}}</p>
+				<input type="date" id="enddate" class="text-light" placeholder="{{'when'|trans }}">
 			</div>
-			<div class="guests">
-				<p>Guests</p>
-				<input type="text" placeholder="Add guests">
+			<div class="text-light guests">
+				<p>{{"guests"|trans }}</p>
+				<p class="djf" data-bs-toggle="collapse" data-bs-target="#card" aria-expanded="false" aria-controls="card">0 voyageur</p>
 				<span>
-					<i class="bi-search"></i>
+					<i class="bi-search" onclick="alert('hey, faut m\'implémenter')"></i>
 				</span>
+			</div>
+		</div>
+	</div>
+	<div class="collapse" id="card">
+		<div class=" d-flex justify-content-center">
+			<div class="card col-5">
+				<div class="card-body">
+					<div class="form-group">
+						<label for="adults">{{"adults"|trans }}</label>
+						<div class="d-flex flex-row justify-content-between align-items-center">
+							<i class="bi bi-dash-circle moins"></i>
+							<input type="number" class="form-control" id="adults" min="0" max="6">
+							<i class="bi bi-plus-circle plus"></i>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="children">{{"kids"|trans }}</label>
+						<div class="d-flex flex-row justify-content-between align-items-center">
+							<i class="bi bi-dash-circle moins"></i>
+							<input type="number" class="form-control" id="children" min="0" max="6">
+							<i class="bi bi-plus-circle plus"></i>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="Babies">{{"babies"|trans}}</label>
+						<div class="d-flex flex-row justify-content-between align-items-center">
+							<i class="bi bi-dash-circle moins"></i>
+							<input type="number" class="form-control" id="Babies" min="0" max="6">
+							<i class="bi bi-plus-circle plus"></i>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -171,9 +205,34 @@
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
 	<script>
 		$( "#startdate" ).flatpickr( {
-"plugins": [new rangePlugin(
-{ input: "#enddate" }
-)]
-} );
+			"plugins": [new rangePlugin(
+				{ input: "#enddate" }
+			)]
+		});
+	</script>
+	<script>
+		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+		$('.plus').click(function () {
+			$(this).prev().val(+$(this).prev().val() + 1);
+			var total = +$("#adults").val() + +$("#children").val()+ +$("#Babies").val();
+			var travel = " voyageurs";
+			if (total <= 1) {
+				travel =" voyageur";
+			}
+			$(".djf").text(total+travel);
+		});
+
+		$('.moins').click(function () {
+			if ($(this).next().val() > 0) $(this).next().val(+$(this).next().val() - 1);
+			var total = +$("#adults").val() + +$("#children").val()+ +$("#Babies").val();
+			var travel = " voyageurs";
+			if (total <= 1) {
+				travel =" voyageur";
+			}
+			$(".djf").text(total+travel);
+		});
+
 	</script>
 {% endblock %}

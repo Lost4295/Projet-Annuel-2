@@ -35,6 +35,24 @@ class LocationRepository extends ServiceEntityRepository
     //            ->getResult()
     //        ;
     //    }
+    /**
+     * @return Location[] Returns an array of Location objects
+     */
+    public function findPassedLocations($value) : array
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.id = :val')
+            ->andWhere('l.dateFin <= :val2')
+            ->setParameter('val', $value)
+            ->setParameter('val2', new \DateTime())
+            ->orderBy('l.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
 
     //    public function findOneBySomeField($value): ?Location
     //    {

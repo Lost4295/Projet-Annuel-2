@@ -5,7 +5,9 @@
 namespace App\Controller;
 
 use App\Entity\Appartement;
+use App\Entity\Commentaire;
 use App\Entity\Location;
+use App\Form\CommentaireType;
 use App\Form\LocationFirstType;
 use App\Form\LocationTestType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,7 +39,18 @@ class LocationController extends AbstractController
     public function show($id, EntityManagerInterface $em, Request $request)
     {
         $appart = $em->getRepository(Appartement::class)->find($id);
+        $passedlocs = $em->getRepository(Location::class)->findPassedLocations($appart->getId());
+        $canComm = false;
+        $commentaires = [];
 
+        if ($passedlocs) {
+            $canComm = true;
+            $commentaires = $em->getRepository(Commentaire::class)->findComments("appartement",$appart->getId());
+            $formComm = $this->createForm(CommentaireType::class, null, [
+                'action' => $this->generateUrl('commentaire_create'),
+                'method' => 'POST',
+            ]);
+        }
         $location = new Location();
         $form = $this->createForm(LocationFirstType::class, null, [
             'action' => $this->generateUrl('appart_confirm'),
@@ -49,7 +62,11 @@ class LocationController extends AbstractController
         // }
         return $this->render('appart_detail.html.twig', [
             'appart' => $appart,
-            'form' => $form
+            'form' => $form,
+            'canComm' => $canComm,
+            'commentaires' => $commentaires,
+            'formComm' => $formComm ?? null,
+            'type'=> Commentaire::APPART
         ]);
     }
 
@@ -84,4 +101,24 @@ class LocationController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+
+    #[Route("/create/commentaire", name: "commentaire_create")]
+    #[IsGranted("ROLE_USER")]
+    public function createCommentaire(Request $request, EntityManagerInterface $em)
+    {
+        $commentaire = new Commentaire();
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $commentaire->setDate(new \DateTime())
+            ->setUser($user);
+            $em->persist($commentaire);
+            $em->flush();
+            return $this->redirectToRoute('appart_detail', ['id' => $commentaire->getEntityId()]);
+        }
+    }
 }
+
+

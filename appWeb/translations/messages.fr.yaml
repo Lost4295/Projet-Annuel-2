@@ -110,3 +110,17 @@ delete: Supprimer
 crticket: 'Afin de pouvoir modifier vos informations telles que le nom, le prénom ou la date de naissance, veuillez <a href="#"> 	créer un ticket. </a>'
 modmdp: 'Pour modifier votre mot de passe, veuillez <a href="#">passer par ici. </a>'
 mail: Email
+reserv: 'Réserver'
+comm: Commentaire
+comms: Commentaires
+comment: 'Commenter'
+yourcomm: 'Votre commentaire'
+wrby: 'Ecrit par'
+apartproposes: "Ce que propose ce logement :"
+nocomm: Pas de commentaire.
+destination: Destination
+dest: Sélectionnez votre destination
+checkin: 'Date d''arrivée'
+when: Quand ? 
+checkout: 'Date de départ'
+guests: Voyageurs

@@ -110,4 +110,17 @@ delete: Delete
 mail: Email
 crticket: 'To modify your information such as your name, first name or date of birth, please <a href="#"> create a ticket. </a>'
 modmdp: 'To change your password, please <a href="#"> click here. </a>'
-
+comm: Comment
+reserv: Book
+comms: 'Comments'
+comment: 'Comment'
+yourcomm: 'Your comment'
+wrby: 'Written by'
+apartproposes: 'What this appartment offers:'
+nocomm: 'No comment.'
+destination: Destination
+dest: Select a destination
+checkin: Check-in 
+checkout: Check-out
+when: When
+guests: Guests

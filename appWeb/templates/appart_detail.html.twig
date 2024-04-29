@@ -40,7 +40,7 @@
 		</div>
 		<hr class="text-info">
 		<div class="row">
-			<h3>Ce que propose ce logement :</h3>
+			<h3>{{"apartproposes"|trans }}</h3>
 			<div class="col-4">
 				<ul>
 					<li>Wifi</li>
@@ -53,7 +53,7 @@
 		<hr class="text-info">
 		<div class="d-flex">
 			<div class=" col-12 mx-2 text-center">
-				<h3>Adresse</h3>
+				<h3>{{"address"|trans}}</h3>
 				<div id='map' style='width: 600px; height: 500px; margin: auto;'></div>
 			</div>
 		</div>
@@ -85,30 +85,47 @@
 				</div>
 			</div>
 			<div class="col-12 my-3">
-				<button id="confirm" class="btn btn-primary">Réserver</button>
+				<button id="confirm" class="btn btn-primary">{{"reserv"|trans}}</button>
 			</div>
 		</div>
 		{{ form_end(form) }}
 		<hr class="text-info">
-		<h3>Commentaires</h3>
+		<h3>{{"comms"|trans}}</h3>
 		<div class="row">
-			<div class="col-6">
+		{% if canComm %}
+			<div class="col-12">
+				{{ form_start(formComm) }}
+				{{ form_row(formComm.commentaire) }}
+				{{ form_row(formComm.type, {value:type}) }}
+				{{ form_row(formComm.entityId, {value:appart.id}) }}
+				<button class="btn btn-primary">{{"comment"|trans}}</button>
+				{{ form_end(formComm) }}
+			</div>
+		{% endif %}
+		{% for comm in commentaires %}
+			<div class="col-6 my-2">
 				<div class="card">
 					<div class="card-body">
-						<h5 class="card-title">Commentaire 1</h5>
-						<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos, quae.</p>
+					<div class="d-flex justify-content-between w-100">
+						<h5 class="card-title">{{"comm"|trans}} {{ loop.index }}</h5>
+						<small class="text-muted">{{ comm.date|date('d/m/Y') }}</small>
+					</div>
+						<p class="card-text mb-1">{{ comm.commentaire }}</p>
+						<small class="text-muted">{{"wrby"|trans }} {{ comm.user }}</small>
 					</div>
 				</div>
 			</div>
-			<div class="col-6">
+		{% else %}
+			<div class="col-12">
 				<div class="card">
 					<div class="card-body">
-						<h5 class="card-title">Commentaire 2</h5>
-						<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos, quae.</p>
+						<h5 class="card-title">{{'nocomm'|trans}}</h5>
 					</div>
 				</div>
 			</div>
 		</div>
+		{% endfor %}
+
 	</div>
 {% endblock %}
 {% block stylesheets %}

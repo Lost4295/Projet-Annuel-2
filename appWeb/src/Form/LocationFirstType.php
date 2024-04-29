@@ -23,6 +23,7 @@ class LocationFirstType extends AbstractType
                 "class" => "form-control",
                 "id" => "startdate",
             ],
+            "label" => false
         ])->add('adults',NumberType::class, [
             "attr"=>[
                 "class"=>"form-control",

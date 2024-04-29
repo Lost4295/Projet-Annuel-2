@@ -132,18 +132,6 @@ class Email
         return $this;
     }
 
-    public function isIsAutomatic(): ?bool
-    {
-        return $this->isAutomatic;
-    }
-
-    public function setIsAutomatic(bool $isAutomatic): static
-    {
-        $this->isAutomatic = $isAutomatic;
-
-        return $this;
-    }
-
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
@@ -152,6 +140,18 @@ class Email
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function isAutomatic(): ?bool
+    {
+        return $this->isAutomatic;
+    }
+
+    public function setAutomatic(bool $isAutomatic): static
+    {
+        $this->isAutomatic = $isAutomatic;
 
         return $this;
     }

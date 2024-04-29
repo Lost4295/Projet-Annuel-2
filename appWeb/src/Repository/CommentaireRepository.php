@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Commentaire;
+use App\Entity\Service;
+use App\Entity\Ticket;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,6 +38,18 @@ class CommentaireRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+    public function findComments($entity, $id) : array
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.entityId = :id')
+            ->andWhere('l.type = :type')
+            ->setParameter('id', $id)
+            ->setParameter('type', Commentaire::getTypes()[$entity])
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     //    public function findOneBySomeField($value): ?Commentaire
     //    {
     //        return $this->createQueryBuilder('c')
