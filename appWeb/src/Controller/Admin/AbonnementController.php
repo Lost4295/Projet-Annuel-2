@@ -16,6 +16,7 @@ class AbonnementController extends AbstractController
     {
         $abos = $em->getRepository(Abonnement::class)->findAll();
         $transform = [];
+        $options = [];
         $transform["key"] = [null];
         $transform["nom"] = [null];
         $transform["prix"] = [null];
@@ -25,18 +26,16 @@ class AbonnementController extends AbstractController
             $transform["prix"][] =  $abo->getTarif();
             $transform["nom"][] =  $abo->getNom();
             foreach ($abo->getOptions() as $option) {
-                if (!isset($transform[$option->getOption()->getNom()])) {
-                    $transform[$option->getOption()->getNom()] = [null];
-                }
-                $transform[$option->getOption()->getNom()][] = ($option->isPresence())? "1" : "0";
+                $options[$option->getOption()->getNom()][] = ($option->isPresence())? "1" : "0";
             }
 
             // $transform["description"][] =  $abo["description"];
             $transform["duree"][] = boolval(rand(0,1));
         }
-        dump($transform, $abos);
+        dump($transform, $abos, $options);
         return $this->render('admin/tarifs.html.twig', [
             'abonnements'=> $transform,
+            'options' => $options
         ]);
     }
     // ...
