@@ -21,22 +21,28 @@
 			</thead>
 			<tbody>
 				<tr>
-					{% for abo,val in abonnements.description %}
-						{% if loop.first %}
-							<td>Description</td>
-						{% else %}
-							<td>
-								{{ val }}
-							</td>
-						{% endif %}
-					{% endfor %}
-				</tr>
-				<tr>
 					{% for abo,val in abonnements.prix %}
 						{% if loop.first %}
 							<td>Prix</td>
 						{% else %}
 							<td>{{ val }}</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+				<tr>
+					{% for abo,val in abonnements.pub %}
+						{% if loop.first %}
+							<td>Pubs</td>
+						{% else %}
+							{% if val == 1 %}
+								<td>
+									<i class="fa fa-check text-success fa-3x"></i>
+								</td>
+							{% else %}
+								<td>
+									<i class="fa fa-times text-danger fa-3x"></i>
+								</td>
+							{% endif %}
 						{% endif %}
 					{% endfor %}
 				</tr>

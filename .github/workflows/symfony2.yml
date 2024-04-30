@@ -9,7 +9,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-    - 'appWeb/**'
+    - 'pcs_api/**'
     - '.github/workflows/symfony2.yml'
   pull_request:
     branches: [ "main" ]

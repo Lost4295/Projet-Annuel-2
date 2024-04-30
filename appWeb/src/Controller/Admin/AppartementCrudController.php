@@ -40,15 +40,16 @@ class AppartementCrudController extends AbstractCrudController
         $adress = TextField::new("address", "address")->setRequired(true);
         $nbRooms = NumberField::new("nbRooms", "nbrooms")->setRequired(true);
         $note = NumberField::new("note", "note");
-        $state = ChoiceField::new("state", "state")->setChoices(["Disponible" => "Disponible", "En attente" => "En attente", "Loué" => "Loué"]); // TODO : faire une fonction pour récup ça dans le fichier de config
+        $state = ChoiceField::new("state", "state")->setChoices(["Disponible" => "Disponible", "En attente" => "En attente", "Loué" => "Loué"])->setRequired(false); // TODO : faire une fonction pour récup ça dans le fichier de config
         $bailleur= AssociationField::new('bailleur', "baill")->setRequired(true);
-        $photos = ImageField::new('appartement', "photos")->setRequired(true)->setUploadDir("/public/images/appartements")->setBasePath("/images/appartements");
+        $photos = AssociationField::new('images', "photos")->setRequired(false);
+        $pluses = AssociationField::new('appartPluses', "pluses");
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur];
+            return [$id, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur, $pluses];
         } elseif(Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $description, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur];
+            return [$id, $description, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur, $photos, $pluses];
         } else {
-            return [$shortDesc, $description, $price, $adress, $nbRooms, $state, $bailleur];
+            return [$shortDesc, $description, $price, $adress, $nbRooms, $state, $bailleur, $photos, $pluses];
         }
 
     }

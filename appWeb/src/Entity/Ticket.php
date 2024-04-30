@@ -38,12 +38,6 @@ class Ticket
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $priority = null;
 
-    /**
-     * @var Collection<int, Commentaire>
-     */
-    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'ticket')]
-    private Collection $commentaires;
-
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
@@ -157,35 +151,6 @@ class Ticket
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commentaire>
-     */
-    public function getCommentaires(): Collection
-    {
-        return $this->commentaires;
-    }
-
-    public function addCommentaire(Commentaire $commentaire): static
-    {
-        if (!$this->commentaires->contains($commentaire)) {
-            $this->commentaires->add($commentaire);
-            $commentaire->setTicket($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommentaire(Commentaire $commentaire): static
-    {
-        if ($this->commentaires->removeElement($commentaire)) {
-            // set the owning side to null (unless already changed)
-            if ($commentaire->getTicket() === $this) {
-                $commentaire->setTicket(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getTitre(): ?string
     {

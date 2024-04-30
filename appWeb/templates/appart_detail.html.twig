@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{"appart"|trans}}{% endblock %}
 {% block body %}
 	<div>
 		<div class="row d-flex">
@@ -41,14 +42,18 @@
 		<hr class="text-info">
 		<div class="row">
 			<h3>{{"apartproposes"|trans }}</h3>
-			<div class="col-4">
-				<ul>
-					<li>Wifi</li>
-					<li>Cuisine</li>
-					<li>Chauffage</li>
-					<li>TV</li>
-				</ul>
-			</div>
+
+			{% for plus in appart.appartPluses %}
+				<div class="col-4">
+					<div class="d-flex">
+							<i class="{{constant('ICONS', plus)[constant('LIST_PLUSES', plus)[plus.icon]]['data-icon']}}"></i>
+						<div>
+							&nbsp; {{constant('LIST_PLUSES', plus)[plus.icon] }}
+							{# Joli bordel juste pour une simple icône de merde #}
+						</div>
+					</div>
+				</div>
+			{% endfor %}
 		</div>
 		<hr class="text-info">
 		<div class="d-flex">
@@ -182,6 +187,7 @@
 			font-family: 'Open Sans', sans-serif;
 		}
 	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 {% endblock %}
 	{% block javascripts %}
 		<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>

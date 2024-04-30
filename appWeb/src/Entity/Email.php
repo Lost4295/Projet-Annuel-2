@@ -9,7 +9,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 
-// TODO : Make a command to check if emails need to be sent
 #[ORM\Entity(repositoryClass: EmailRepository::class)]
 class Email
 {
@@ -24,17 +23,11 @@ class Email
     #[ORM\Column(type: Types::TEXT)]
     private ?string $body = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $cc = null;
-
     #[ORM\OneToMany(targetEntity: Fichier::class, mappedBy: 'email')]
     private Collection $pj;
 
     #[ORM\Column(length: 255)]
     private ?string $object = null;
-
-    #[ORM\Column]
-    private ?bool $isAutomatic = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -74,18 +67,6 @@ class Email
     public function setBody(string $body): static
     {
         $this->body = $body;
-
-        return $this;
-    }
-
-    public function getCc(): ?string
-    {
-        return $this->cc;
-    }
-
-    public function setCc(?string $cc): static
-    {
-        $this->cc = $cc;
 
         return $this;
     }
@@ -140,18 +121,6 @@ class Email
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function isAutomatic(): ?bool
-    {
-        return $this->isAutomatic;
-    }
-
-    public function setAutomatic(bool $isAutomatic): static
-    {
-        $this->isAutomatic = $isAutomatic;
 
         return $this;
     }

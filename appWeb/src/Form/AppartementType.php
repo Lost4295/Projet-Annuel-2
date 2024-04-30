@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\AppartPlus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -86,6 +87,16 @@ class AppartementType extends AbstractType
                         ->where('u.roles like :responsable')
                         ->setParameter('responsable', '%' . User::ROLE_BAILLEUR . '%');
                 },
+            ])
+            ->add("services", EntityType::class, [
+                "class" => AppartPlus::class,
+                "choice_label" => "nom",
+                "multiple" => true,
+                "expanded" => true,
+                "label" => "pluses",
+                "attr" => [
+                    "class" => "my-2"
+                ]
             ])
             ->add("images", FileType::class, [
                 "multiple" => true,
