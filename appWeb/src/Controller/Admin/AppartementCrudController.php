@@ -29,6 +29,7 @@ class AppartementCrudController extends AbstractCrudController
         return $actions
             // ...
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
         ;
     }
     public function configureFields(string $pageName): array|\Traversable

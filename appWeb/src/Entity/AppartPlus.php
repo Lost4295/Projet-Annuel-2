@@ -43,12 +43,12 @@ class AppartPlus
     private ?int $id = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
-    private ?string $icon = null;
+    private ?int $icon = null;
 
     /**
      * @var Collection<int, appartement>
      */
-    #[ORM\ManyToMany(targetEntity: appartement::class)]
+    #[ORM\ManyToMany(targetEntity: appartement::class, mappedBy: "appartPluses")]
     private Collection $appartement;
 
     public function __construct()

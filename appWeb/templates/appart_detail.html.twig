@@ -111,6 +111,7 @@
 						</div>
 					</div>
 				</div>
+				{{ form_row(form.appart, {value:appart.id})}}
 				<div class="vr"></div>
 				<div class="col-4">
 					<h3>{{"prevmont"|trans}}</h3>
@@ -122,9 +123,16 @@
 					</div>
 				</div>
 			</div>
+			{% if is_granted("ROLE_USER")  %}
 			<div class="col-12 my-3">
 				<button id="confirm" class="btn btn-primary">{{"reserv"|trans}}</button>
 			</div>
+			{% else %}
+			<div class="col-3 my-3 d-flex flex-column">
+				<a href="{{ path('login') }}" class="btn btn-primary">{{"login"|trans}}</a>
+				<small class="text-muted">{{"loginmsg"|trans}}</small>
+			</div>
+			{% endif %}
 		</div>
 		{{ form_end(form) }}
 

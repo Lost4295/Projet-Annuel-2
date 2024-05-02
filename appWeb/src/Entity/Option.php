@@ -74,7 +74,6 @@ class Option
         if (!$this->abonnement->contains($abonnement)) {
             $this->abonnement->add($abonnement);
         }
-
         return $this;
     }
 
@@ -84,5 +83,4 @@ class Option
 
         return $this;
     }
-
 }

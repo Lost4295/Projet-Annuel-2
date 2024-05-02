@@ -8,6 +8,7 @@ use App\Entity\Appartement;
 use App\Entity\Commentaire;
 use App\Entity\Location;
 use App\Form\CommentaireType;
+use App\Form\ConfirmLocationType;
 use App\Form\LocationFirstType;
 use App\Form\LocationTestType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -71,17 +72,25 @@ class LocationController extends AbstractController
     }
 
     #[Route("/locations/confirm", name: "appart_confirm")]
-    public function confirm(Request $request)
+    #[IsGranted("ROLE_USER")]
+    public function confirm(Request $request, EntityManagerInterface $em)
     {
         $firstForm = $this->createForm(LocationFirstType::class, null, [
             'method' => 'POST',
         ]);
         $firstForm->handleRequest($request);
+        $id = $firstForm->get('appart')->getData();
         if ($firstForm->isSubmitted() && !$firstForm->isValid()) {
-            return $this->redirectToRoute('appart_detail', ['id' => 1]);
+            return $this->redirectToRoute('appart_detail', ['id' => $id]);
         }
+        $appart = $em->getRepository(Appartement::class)->find($id);
+        $secondForm = $this->createForm(ConfirmLocationType::class, null, [
+            'method' => 'POST',
+        ]);
         return $this->render('confirm_appart.html.twig', [
-            'firstForm' => $firstForm
+            'firstForm' => $firstForm,
+            'appart' => $appart,
+            'secondForm'=> $secondForm
         ]);
     }
 

@@ -90,7 +90,9 @@ class AppartementType extends AbstractType
             ])
             ->add("services", EntityType::class, [
                 "class" => AppartPlus::class,
-                "choice_label" => "nom",
+                "choice_label" =>  function (AppartPlus $appart): string {
+                    return $appart->__toString();
+                },
                 "multiple" => true,
                 "expanded" => true,
                 "label" => "pluses",
