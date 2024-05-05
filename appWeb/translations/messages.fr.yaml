@@ -107,9 +107,12 @@ back: Retour au profil
 modifymyinfo: Modifier mes informations
 download: Télécharger
 delete: Supprimer
-crticket: 'Afin de pouvoir modifier vos informations telles que le nom, le prénom ou la date de naissance, veuillez <a href="#"> 	créer un ticket. </a>'
-modmdp: 'Pour modifier votre mot de passe, veuillez <a href="#">passer par ici. </a>'
+crticket: 'Afin de pouvoir modifier vos informations telles que le nom, le prénom ou la date de naissance, veuillez '
+modmdp: 'Pour modifier votre mot de passe, veuillez '
+here : "créer un ticket."
+clhere: "passer par ici."
 mail: Email
+
 reserv: 'Réserver'
 comm: Commentaire
 comms: Commentaires

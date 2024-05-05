@@ -11,6 +11,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserFixtures extends Fixture
 {
     private $encoder;
+    public const ADMIN_USER_REFERENCE = 'bailleur-user';
+
     public function __construct(UserPasswordHasherInterface $encoder)
     {
         $this->encoder = $encoder;
@@ -18,17 +20,19 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $voyageur = new User();
-        $voyageur->setEmail('voyageur@pcs.fr');
-        $voyageur->setRoles([User::ROLE_USER]);
-        $voyageur->setPassword($this->encoder->hashPassword($voyageur, 'voyageur'));
-        $voyageur->setNom('Voyageur');
-        $voyageur->setPrenom('Voyageur');
-        $voyageur->setPhoneNumber('0606060606');
-        $voyageur->setBirthdate(new \DateTime('1990-01-01'));
-        $voyageur->setIsVerified(true);
+        $voyageur->setEmail('voyageur@pcs.fr')
+            ->setAbonnement($this->getReference(AbonnementFixtures::GRATUIT))
+            ->setRoles([User::ROLE_USER, User::ROLE_VOYAGEUR])
+            ->setPassword($this->encoder->hashPassword($voyageur, 'voyageur'))
+            ->setNom('Voyageur')
+            ->setPrenom('Voyageur')
+            ->setPhoneNumber('0606060606')
+            ->setBirthdate(new \DateTime('1990-01-01'))
+            ->setIsVerified(true);
         $manager->persist($voyageur);
         $bailleur = new User();
         $bailleur->setEmail('bailleur@pcs.fr')
+            ->setAbonnement($this->getReference(AbonnementFixtures::GRATUIT))
             ->setRoles([User::ROLE_USER, User::ROLE_BAILLEUR])
             ->setPassword($this->encoder->hashPassword($bailleur, 'bailleur'))
             ->setNom('Bailleur')
@@ -44,10 +48,13 @@ class UserFixtures extends Fixture
         $bailleurpro->setPostalCode('75000');
         $bailleurpro->setCity('Paris');
         $bailleurpro->setCountry('France');
+        $this->addReference(self::ADMIN_USER_REFERENCE, $bailleurpro);
+
         $manager->persist($bailleurpro);
         $manager->persist($bailleur);
         $admin = new User();
         $admin->setEmail('admin@pcs.fr')
+            ->setAbonnement($this->getReference(AbonnementFixtures::GRATUIT))
             ->setRoles([User::ROLE_ADMIN, User::ROLE_USER,])
             ->setPassword($this->encoder->hashPassword($admin, 'admin'))
             ->setNom('Admin')
@@ -58,6 +65,7 @@ class UserFixtures extends Fixture
         $manager->persist($admin);
         $prestaire = new User();
         $prestaire->setEmail('presta@pcs.fr')
+            ->setAbonnement($this->getReference(AbonnementFixtures::GRATUIT))
             ->setRoles([User::ROLE_USER, User::ROLE_PRESTA])
             ->setPassword($this->encoder->hashPassword($prestaire, 'presta'))
             ->setNom('Prestataire')
@@ -75,7 +83,12 @@ class UserFixtures extends Fixture
         $prestapro->setCity('Paris');
         $prestapro->setCountry('France');
         $manager->persist($prestapro);
-
         $manager->flush();
+    }
+    public function getDependencies()
+    {
+        return [
+            AbonnementFixtures::class,
+        ];
     }
 }

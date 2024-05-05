@@ -24,17 +24,11 @@ class Email
     #[ORM\Column(type: Types::TEXT)]
     private ?string $body = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $cc = null;
-
     #[ORM\OneToMany(targetEntity: Fichier::class, mappedBy: 'email')]
     private Collection $pj;
 
     #[ORM\Column(length: 255)]
     private ?string $object = null;
-
-    #[ORM\Column]
-    private ?bool $isAutomatic = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -74,18 +68,6 @@ class Email
     public function setBody(string $body): static
     {
         $this->body = $body;
-
-        return $this;
-    }
-
-    public function getCc(): ?string
-    {
-        return $this->cc;
-    }
-
-    public function setCc(?string $cc): static
-    {
-        $this->cc = $cc;
 
         return $this;
     }
@@ -131,19 +113,6 @@ class Email
 
         return $this;
     }
-
-    public function isIsAutomatic(): ?bool
-    {
-        return $this->isAutomatic;
-    }
-
-    public function setIsAutomatic(bool $isAutomatic): static
-    {
-        $this->isAutomatic = $isAutomatic;
-
-        return $this;
-    }
-
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;

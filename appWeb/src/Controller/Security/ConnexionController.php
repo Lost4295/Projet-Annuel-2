@@ -2,6 +2,8 @@
 
 namespace App\Controller\Security;
 
+use App\Entity\Abonnement;
+use App\Entity\Ticket;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -23,10 +25,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class ConnexionController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
+    private EntityManagerInterface $em;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(EmailVerifier $emailVerifier, EntityManagerInterface $em)
     {
         $this->emailVerifier = $emailVerifier;
+        $this->em = $em;
     }
 
     #[Route('/register', name: 'app_register')]
@@ -41,30 +45,38 @@ class ConnexionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             dump($form->getData());
-            $user->setEmail($form->get('email')->getData());;
+            $g = $this->em->getRepository(Abonnement::class)->findOneBy(["nom" => "Gratuit"]);
+            if (!$g) {
+                $this->addFlash("error", "errorabt");
+                createErrorTicket();
+            }
+            $user->setEmail($form->get('email')->getData());
             $user->setNom($form->get('nom')->getData());
+            $user->setAbonnement($g);
             $user->setPrenom($form->get('prenom')->getData());
             $user->setPhoneNumber($form->get('phoneNumber')->getData());
             $user->setBirthdate($form->get('birthdate')->getData());
-            if ($form->get("type")->getData() == "m"){
+            if ($form->get("type")->getData() == "m") {
                 $pro = $form->get("professionnel")->getData();
                 $pro->setResponsable($user);
                 $entityManager->persist($pro);
             }
-//            dd($pro, $user);
-            
+
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
-                    )
-                );
-                
+                )
+            );
+
             $entityManager->persist($user);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
                     ->from(new Address('toto@titi.com', 'Administrateur Site')) //FIXME À changer
                     ->to($user->getEmail())
@@ -192,6 +204,18 @@ class ConnexionController extends AbstractController
         ]);
     }
 
+    public function createErrorTicket()
+    {
+        $tick = new Ticket();
+        $tick->setTitre("Problème d'abonnement")
+            ->setDateOuverture(new \DateTime("now"))
+            ->setDescription("Impossible de créer un utilisateur. Lancer les fixtures.")
+            ->setPriority(1)
+            ->setUrgence(1);
+        $this->em->persist($tick);
+        $this->em->flush();
+    }
+
 
     #[Route(path: '/logout', name: 'logout')]
     public function logout()
@@ -200,4 +224,3 @@ class ConnexionController extends AbstractController
         // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
-

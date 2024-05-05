@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Options;
+use App\Entity\Option;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Options>
+ * @extends ServiceEntityRepository<Option>
  *
- * @method Options|null find($id, $lockMode = null, $lockVersion = null)
- * @method Options|null findOneBy(array $criteria, array $orderBy = null)
- * @method Options[]    findAll()
- * @method Options[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Option|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Option|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Option[]    findAll()
+ * @method Option[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OptionsRepository extends ServiceEntityRepository
+class OptionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Options::class);
+        parent::__construct($registry, Option::class);
     }
 
     //    /**
-    //     * @return Options[] Returns an array of Options objects
+    //     * @return Option[] Returns an array of Option objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -36,7 +36,7 @@ class OptionsRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Options
+    //    public function findOneBySomeField($value): ?Option
     //    {
     //        return $this->createQueryBuilder('o')
     //            ->andWhere('o.exampleField = :val')

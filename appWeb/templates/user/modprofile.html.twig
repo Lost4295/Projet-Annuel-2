@@ -60,10 +60,10 @@
 			</div>
 			{{ form_end(user) }}
 			<p class="text-muted">
-				{{"crticket"|trans|raw}}
+				{{"crticket"|trans|raw}} <a href="{{ path('create_ticket') }}">{{"here"|trans}}</a>
 			</p>
 			<p class="text-muted">
-				{{'modmdp'|trans|raw}}
+				{{'modmdp'|trans|raw}} <a href="{{ path('app_forgot_password_request') }}">{{'clhere'|trans}}</a>
 			</p>
 		</div>
 	{% endblock %}

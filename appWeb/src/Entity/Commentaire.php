@@ -15,7 +15,6 @@ class Commentaire
     const APPART = 1;
     const SERVICE = 2;
     const PRODUIT = 3;
-
     const TICKET = 4;
 
     private const TYPE_LIST = [
@@ -25,9 +24,6 @@ class Commentaire
         'produit' => self::PRODUIT,
         'ticket' => self::TICKET
     ];
-
-
-
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -67,7 +63,7 @@ class Commentaire
         return $this;
     }
 
-    public function getUser(): string
+    public function getUser(): User
     {
         return $this->user;
     }

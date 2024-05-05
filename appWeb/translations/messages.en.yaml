@@ -108,8 +108,10 @@ modifymyinfo: Modify my information
 download: Download
 delete: Delete
 mail: Email
-crticket: 'To modify your information such as your name, first name or date of birth, please <a href="#"> create a ticket. </a>'
-modmdp: 'To change your password, please <a href="#"> click here. </a>'
+crticket: 'To modify your information such as your name, first name or date of birth, '
+modmdp: 'To change your password, please '
+here: "please create a ticket."
+clhere: "click here."
 comm: Comment
 reserv: Book
 comms: 'Comments'

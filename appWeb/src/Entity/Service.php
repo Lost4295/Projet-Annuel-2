@@ -15,9 +15,7 @@ class Service
     const ELECTRICITE = 2;
     const PLOMBERIE = 3;
     const PEINTURE = 4;
-
     const BRICOLAGE = 5;
-
     const CHAUFFEUR = 6;
     const TYPE_LIST =
         [

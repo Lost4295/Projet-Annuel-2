@@ -23,7 +23,7 @@ class Appartement
     #[ORM\Column(length: 100)]
     private ?string $shortDesc = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
@@ -42,7 +42,7 @@ class Appartement
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $nbRooms = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     private ?float $note = null;
 
     #[ORM\Column(length: 50)]
@@ -74,8 +74,7 @@ class Appartement
      * @var Collection<int, AppartPlus>
      */
     #[ORM\ManyToMany(targetEntity: AppartPlus::class, inversedBy: 'appartement')]
-    #[ORM\JoinTable(name: 'appartement_appart_plus')]
-
+    #[ORM\JoinTable(name: 'scp_appartement_appart_plus')]
     private Collection $appartPluses;
 
     #[ORM\Column(nullable: true)]

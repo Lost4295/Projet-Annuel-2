@@ -20,18 +20,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class LocationController extends AbstractController
 {
     #[Route("/locations", name: "locations")]
-    public function createPage(Request $request, EntityManagerInterface $em)
+    public function createPage(EntityManagerInterface $em)
     {
-        $routeName = $request->attributes->get("_route");
-
-        if ($routeName === "number") {
-            $number = random_int(0, 100);
-        } else {
-            $number = $routeName;
-        }
         $apparts = $em->getRepository(Appartement::class)->findAll();
-        return $this->render('locations.html.twig', [
-            'text' => $number,
+        return $this->render('appartements/locations.html.twig', [
             'apparts' => $apparts
         ]);
     }
@@ -61,7 +53,7 @@ class LocationController extends AbstractController
         // if ($form->isSubmitted() && $form->isValid()) {
         //     return $this->redirectToRoute('appart_confirm');
         // }
-        return $this->render('appart_detail.html.twig', [
+        return $this->render('appartements/appart_detail.html.twig', [
             'appart' => $appart,
             'form' => $form,
             'canComm' => $canComm,
@@ -87,7 +79,7 @@ class LocationController extends AbstractController
         $secondForm = $this->createForm(ConfirmLocationType::class, null, [
             'method' => 'POST',
         ]);
-        return $this->render('confirm_appart.html.twig', [
+        return $this->render('appartements/confirm_appart.html.twig', [
             'firstForm' => $firstForm,
             'appart' => $appart,
             'secondForm'=> $secondForm
@@ -106,14 +98,14 @@ class LocationController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('profile');
         }
-        return $this->render('create_location.html.twig', [
+        return $this->render('location/create_location.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
 
     #[Route("/create/commentaire", name: "commentaire_create")]
-    #[IsGranted("ROLE_USER")]
+    #[IsGranted("ROLE_VOYAGEUR")]
     public function createCommentaire(Request $request, EntityManagerInterface $em)
     {
         $commentaire = new Commentaire();
@@ -127,6 +119,24 @@ class LocationController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('appart_detail', ['id' => $commentaire->getEntityId()]);
         }
+    }
+    #[Route("/create_appart", name: "create_appart_bailleur")]
+    #[IsGranted("ROLE_BAILLEUR")]
+    public function createAppart(Request $request, EntityManagerInterface $em)
+    {
+        return $this->render('appart"ements/create_appart.html.twig');
+    }
+    
+    #[Route("/location/{id}", name:"location_info", requirements: ["id"=> "\d+"])]
+    #[IsGranted("ROLE_VOYAGEUR")]
+    public function locationInfo($id, EntityManagerInterface $em){
+        $uid =$this->getUser()->getUserIdentifier();
+        $loc =$em->getRepository(Location::class)->find($id);
+        if (!$loc){
+            $this->addFlash("danger","noaccess" );
+            return $this->redirectToRoute('profile');
+        }
+
     }
 }
 

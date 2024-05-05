@@ -61,7 +61,7 @@ class UserCrudController extends AbstractCrudController
             ->setUploadDir("/var/uploads/avatars")
             ->setBasePath("uploads/avatars");
         $phoneNumber = TelephoneField::new("phoneNumber", 'phone')->setRequired(true);
-        $abonnement = AssociationField::new("abonnement", 'abo');
+        $abonnement = AssociationField::new("abonnement", 'abo')->setRequired(true);
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $phoneNumber, $abonnement];
         } elseif (Crud::PAGE_DETAIL === $pageName) {

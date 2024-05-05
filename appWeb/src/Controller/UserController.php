@@ -4,8 +4,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Location;
 use App\Entity\Professionnel;
 use App\Entity\User;
+use App\Form\TicketType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -33,21 +35,33 @@ class UserController extends AbstractController
     public function profile(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        
-        $appartements = [];
+
+        $appartements = $locations = $pastlocas = [];
         if ($user->hasRole(User::ROLE_BAILLEUR)) {
             $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
             $appartements = $pro->getAppartements();
         }
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
-            
+            $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);
+            foreach ($locations as $key => $location) {
+                if ($location->getDateDebut() < new \DateTime('now') && $location->getDateFin() < new \DateTime('now')) {
+                    $pastlocas[] = $location;
+                    unset($locations[$key]);
+                }
+            }
         }
 
         // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
-        return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $user, 'appartements' => $appartements]);
+        return $this->render('user/profile.html.twig', [
+            'message' => 'Hello World!',
+            'user' => $user,
+            'appartements' => $appartements,
+            'locations' => $locations,
+            'pastlocations' => $pastlocas
+        ]);
     }
 
-    #[Route("/create_appart", name: "create_appart")]
+    #[Route("/create_appart/f", name: "create_appart")]
     public function createAppart(Request $request, EntityManagerInterface $em)
     {
         return $this->render('create_appart.html.twig');
@@ -55,7 +69,7 @@ class UserController extends AbstractController
 
     #[Route("profile/modify/", name: "check_infos")]
     #[IsGranted("ROLE_USER")]
-    
+
     public function checkInfos(Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser();
@@ -78,7 +92,7 @@ class UserController extends AbstractController
             ->add('nom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'disabled'=>'disabled',
+                    'disabled' => 'disabled',
                 ],
                 "label" => 'nom',
 
@@ -97,7 +111,7 @@ class UserController extends AbstractController
             ->add('prenom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'disabled'=>'disabled',
+                    'disabled' => 'disabled',
                 ],
                 "label" => 'prenom',
 
@@ -117,7 +131,7 @@ class UserController extends AbstractController
             ->add('birthdate', DateType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'disabled'=>'disabled',
+                    'disabled' => 'disabled',
                 ],
                 "label" => 'birthdate',
                 'constraints' => [
@@ -160,6 +174,14 @@ class UserController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
-        return $this->render('modprofile.html.twig', ['user' => $form]);
+        return $this->render('user/modprofile.html.twig', ['user' => $form]);
+    }
+
+    #[Route("/ticket", name: "create_ticket")]
+    #[IsGranted("ROLE_USER")]
+    public function createTicket(Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(TicketType::class, null);
+        return $this->render('user/create_ticket.html.twig', ['form' => $form]);
     }
 }

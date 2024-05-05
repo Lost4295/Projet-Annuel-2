@@ -10,6 +10,7 @@ use App\Entity\OptionsAbonnement;
 
 class AbonnementFixtures extends Fixture
 {
+    public const GRATUIT= "gratuit";
     public function load(ObjectManager $manager):void
     {
         $opt1= new Option();
@@ -24,6 +25,7 @@ class AbonnementFixtures extends Fixture
         $abonnement = new Abonnement();
         $abonnement->setNom("Gratuit")
         ->setTarif("0");
+        $this->addReference(self::GRATUIT, $abonnement);
 
         $abonnement2 = new Abonnement();
         $abonnement2->setNom("baladeur")

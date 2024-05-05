@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\OptionsAbonnementRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OptionsAbonnementRepository::class)]
@@ -15,38 +13,18 @@ class OptionsAbonnement
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
-
     #[ORM\Column]
     private ?bool $presence = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $info = null;
+    #[ORM\ManyToOne(targetEntity: Abonnement::class, inversedBy: 'options')]
+    private Abonnement $abonnement;
 
-    #[ORM\ManyToMany(targetEntity: Abonnement::class, inversedBy: 'options')]
-    private Collection $abonnement;
-
-    public function __construct()
-    {
-        $this->abonnement = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(targetEntity: Option::class, inversedBy: 'abonnement')]
+    private Option $option;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): static
-    {
-        $this->nom = $nom;
-
-        return $this;
     }
 
     public function isPresence(): ?bool
@@ -61,38 +39,33 @@ class OptionsAbonnement
         return $this;
     }
 
-    public function getInfo(): ?string
-    {
-        return $this->info;
-    }
-
-    public function setInfo(string $info): static
-    {
-        $this->info = $info;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Abonnement>
+     * @return Abonnement
      */
-    public function getAbonnement(): Collection
+    public function getAbonnement(): Abonnement
     {
         return $this->abonnement;
     }
 
-    public function addAbonnement(Abonnement $abonnement): static
+    /**
+     * @return Option
+     */
+    public function getOption(): Option
     {
-        if (!$this->abonnement->contains($abonnement)) {
-            $this->abonnement->add($abonnement);
-        }
+        return $this->option;
+    }
+
+
+    public function setAbonnement(?Abonnement $abonnement): static
+    {
+        $this->abonnement = $abonnement;
 
         return $this;
     }
 
-    public function removeAbonnement(Abonnement $abonnement): static
+    public function setOption(?Option $option): static
     {
-        $this->abonnement->removeElement($abonnement);
+        $this->option = $option;
 
         return $this;
     }
