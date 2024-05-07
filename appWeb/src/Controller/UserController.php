@@ -192,7 +192,8 @@ class UserController extends AbstractController
             'user' => $user,
             'appartements' => $appartements,
             'locations' => $locations,
-            'pastlocations' => $pastlocas
+            'pastlocations' => $pastlocas,
+            'reservation' => $reservation
         ]);
     }
 
@@ -309,7 +310,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
-        return $this->render('user/modprofile.html.twig', ['user' => $form, 'reservation' => $reservation]);
+        return $this->render('user/modprofile.html.twig', ['user' => $form]);
     }
 
     #[Route("/ticket", name: "create_ticket")]

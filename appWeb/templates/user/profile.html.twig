@@ -216,7 +216,46 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="tab-pane fade" id="v-pills-resa" role="tabpanel" aria-labelledby="v-pills-resa-tab" tabindex="0">resa...</div>
+				<div class="tab-pane fade" id="v-pills-resa" role="tabpanel" aria-labelledby="v-pills-resa-tab" tabindex="0">resa...
+				<h2>{{'resa'|trans }}</h2>
+				{{ form_start(reservation) }}
+
+			
+				{{form_row(reservation.adresse)}}
+				{{form_row(reservation.room)}}
+				{{form_row(reservation.bed)}}
+				<div>
+					<label for="lits">Nombre de Lits:</label><br>
+					<input type="number" id="lits" name="lits" min="1" required><br><br>
+				</div>
+				<div>
+					<label for="salle_de_bain">Nombre de Salles de Bain:</label><br>
+					<input type="number" id="salle_de_bain" name="salle_de_bain" min="1" required><br><br>
+				</div>
+				<div>
+					<label for="voyageurs">Nombre de Voyageurs:</label><br>
+					<input type="number" id="voyageurs" name="voyageurs" min="1" required><br><br>
+				</div>
+				<div>
+					<label for="photos">Upload des Photos:</label><br>
+					<input type="file" id="photos" name="photos" accept="image/*" multiple><br><br>
+				</div>
+				<div>
+					<label>Cochez les Equipements:</label><br>
+					<input type="checkbox" id="television" name="equipements" value="television">
+					<label for="television">Télévision</label><br>
+					<input type="checkbox" id="climatisation" name="equipements" value="climatisation">
+					<label for="climatisation">Climatisation</label><br>
+					<input type="checkbox" id="wifi" name="equipements" value="wifi">
+					<label for="wifi">Wifi</label><br>
+					<input type="checkbox" id="piscine" name="equipements" value="piscine">
+					<label for="piscine">Piscine</label><br><br>
+				</div>
+				<button type="submit">Soumettre</button>
+				{{form_row(reservation.submit)}}
+				{{ form_end(reservation) }}
+			</form>
+			</div>
 				<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
 				<div class="tab-pane fade" id="v-pills-conf" role="tabpanel" aria-labelledby="v-pills-conf-tab" tabindex="0">
 					conf...<br>conf...<br>conf...<br>conf...<br>conf...
