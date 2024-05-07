@@ -8,6 +8,7 @@ use App\Entity\Professionnel;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,6 +36,73 @@ class UserController extends AbstractController
         if ($user->hasRole(User::ROLE_BAILLEUR)){
             $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable"=>$user->getId()]);
             $appartements = $pro->getAppartements();
+        }
+        $reservation = $this ->createFormBuilder(null)
+        ->add('adresse', TextType::class, [
+            'attr' => [
+                "class" => "my-2 form-control "
+            ], "label" => "Choisir Adresse:"
+            , "row_attr" => ["class" => "col-2"]
+
+        ])
+        ->add('room', NumberType::class, [
+            'attr' => [
+                "class" => "my-2 form-control "
+            ], "label" => "Nombre de Chambres:"
+            , "row_attr" => ["class" => "col-2"]
+
+        ])
+        ->add('bed', NumberType::class, [
+            'attr' => [
+                
+                "class" => "my-2 form-control ",
+                "min"=>0,
+                "max"=>6
+            ], "label" => "Nombre de Lits:"
+            , "row_attr" => ["class" => "col-2"]
+            
+
+        ])
+        ->add('bathroom', TextType::class, [
+            'attr' => [
+                "class" => "my-2 form-control "
+            ], "label" => "Choisir Adresse:"
+            , "row_attr" => ["class" => "col-2"]
+
+        ])
+        ->add('voyageur', TextType::class, [
+            'attr' => [
+                "class" => "my-2 form-control "
+            ], "label" => "Choisir Adresse:"
+            , "row_attr" => ["class" => "col-2"]
+
+        ])
+        ->add('picture', TextType::class, [
+            'attr' => [
+                "class" => "my-2 form-control "
+            ], "label" => "Choisir Adresse:"
+            , "row_attr" => ["class" => "col-2"]
+
+        ])
+        ->add('equipement', TextType::class, [
+            'attr' => [
+                "class" => "my-2 form-control "
+            ], "label" => "Choisir Adresse:"
+            , "row_attr" => ["class" => "col-2"]
+
+        ])
+        ->add("submit", SubmitType::class, [
+            "attr" => [
+                "class" => "btn btn-primary my-2"
+            ], "label" => "submit"
+        ])->getForm();
+        $reservation->handleRequest($request);
+        if ($reservation->isSubmitted() && $reservation->isValid()) {
+            $appartement = $reservation->getData();
+            dd($appartement);
+            $em->persist($appartement);
+            $em->flush();
+
         }
         $form = $this->createFormBuilder($user)
             ->add('email', EmailType::class, [
@@ -135,7 +203,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('profile');
         }
         // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
-        return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $form, 'appartements' => $appartements]);
+        return $this->render('profile.html.twig', ['message' => 'Hello World!', 'user' => $form, 'appartements' => $appartements, 'reservation' => $reservation]);
     }
     
     #[Route("/create_appart", name: "create_appart")]
