@@ -1,0 +1,287 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{"appart"|trans}}{% endblock %}
+{% block body %}
+	<div>
+		<div class="row d-flex">
+			<div class="col">
+				<div class="fs-1">{{appart.titre}}</div>
+			</div>
+			<div class="col-2 pull-right">
+				<a href="#">
+					<i class="bi-heart"></i>
+					J'aime</a>
+				<a href="{{ path('appart_detail', {'id': appart.id}) }}">
+					<i class="bi-send"></i>Je partage</a>
+			</div>
+		</div>
+		<div class="row d-flex justify-content-center">
+			<div class="d-flex justify-content-center">
+				<img src="{#{{ asset('images/' ~ appart.image) }}#} https://placehold.co/1000x500" alt="">
+			</div>
+		</div>
+		<div class="row">
+			<div><b>{{appart.shortDesc}}</b></div>
+			<div style="display: flex; justify-content: space-between; width: 100%;">
+				
+				<p>{{appart.Nbrooms}} Voyageurs - {{appart.nbchambers}} Chambres - {{appart.nbBeds}} Lits - {{appart.nbbathrooms}} Salle de bain</p>
+				<p class="">{{appart.note}} / 5</p>
+			</div>
+			<hr class="text-info">
+			<div class="row">
+				<div class="d-flex">
+						<img class="me-3 mb-3" src="https://placehold.co/90x90" alt="">
+					<div>
+						<p><b>Hôte :</b> {{appart.bailleur.responsable.prenom}} {{appart.bailleur.responsable.nom}}</p>		
+						
+						<p><b>Commentaire :</b><br>{{appart.description}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="text-info">
+		<div class="row">
+			<h3>{{"apartproposes"|trans }}</h3>
+
+			{% for plus in appart.appartPluses %}
+				<div class="col-4">
+					<div class="d-flex">
+							<i class="{{constant('ICONS', plus)[constant('LIST_PLUSES', plus)[plus.icon]]['data-icon']}}"></i>
+						<div>
+							&nbsp; {{constant('LIST_PLUSES', plus)[plus.icon] }}
+							{# Joli bordel juste pour une simple icône de merde #}
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<hr class="text-info">
+		<div class="d-flex">
+			<div class=" col-12 mx-2 text-center">
+				<h3>{{"address"|trans}}</h3>
+				<div id='map' style='width: 600px; height: 500px; margin: auto;'></div>
+			</div>
+		</div>
+		<hr class="text-info">
+		{{ form_start(form) }}
+		<div class="row">
+			<div class=" p-3 text-center">
+				<h3>{{'chdate'|trans}}</h3>
+				<div class="d-inline d-flex justify-content-center" id="dates"  >
+					{# <input id="startdate" placeholder="Add dates"> #}
+					{{ form_row(form.date) }}
+				</div>
+			</div>
+		</div>
+		<div class=" row d-flex">
+			<h3>{{"travelernum"|trans }}</h3>
+			<div class="d-flex justify-content-between">
+				<div class="d-flex justify-content-around">
+					<div class="col-2">
+						<div class="d-flex flex-row">
+							{{ form_label(form.adults) }}
+						</div>
+						<div class="d-flex flex-row">
+							<i class="bi bi-dash-circle moins fs-1"></i>
+							{# <input id="NbBebes" type="number" class="form-control" value="0" min="0"> #}
+							{{ form_widget(form.adults) }}
+							<i class="bi bi-plus-circle plus fs-1"></i>
+						</div>
+					</div>
+					<div class="col-2">
+						<div class="d-flex flex-row">
+							{{ form_label(form.kids) }}
+						</div>
+						<div class="d-flex flex-row">
+							<i class="bi bi-dash-circle moins fs-1"></i>
+							{# <input id="NbBebes" type="number" class="form-control" value="0" min="0"> #}
+							{{ form_widget(form.kids) }}
+							<i class="bi bi-plus-circle plus fs-1"></i>
+						</div>
+					</div>
+					<div class="col-2">
+						<div class="d-flex flex-row">
+							{{ form_label(form.babies) }}
+						</div>
+						<div class="d-flex flex-row">
+							<i class="bi bi-dash-circle moins fs-1"></i>
+							{# <input id="NbBebes" type="number" class="form-control" value="0" min="0"> #}
+							{{ form_widget(form.babies) }}
+							<i class="bi bi-plus-circle plus fs-1"></i>
+						</div>
+					</div>
+				</div>
+				{{ form_row(form.appart, {value:appart.id})}}
+				<div class="vr"></div>
+				<div class="col-4">
+					<h3>{{"prevmont"|trans}}</h3>
+						<div class="col-6">
+							<p id="price">{{"price"|trans}} : {{appart.price}} €/ {{"nuit"|trans }}<span id="tprice"></span><span id="sprice"></span></p>
+							<p id="people">{{"people"|trans}} : <span id="speople"></span> €</p>
+							<p id="tax">{{"tax"|trans}} : <span id="stax"></span> €</p>
+							<p id="total">{{"total"|trans}} : <span id="stotal"></span> €</p>
+					</div>
+				</div>
+			</div>
+			{% if is_granted("ROLE_USER")  %}
+			<div class="col-12 my-3">
+				<button id="confirm" class="btn btn-primary">{{"reserv"|trans}}</button>
+			</div>
+			{% else %}
+			<div class="col-3 my-3 d-flex flex-column">
+				<a href="{{ path('login') }}" class="btn btn-primary">{{"login"|trans}}</a>
+				<small class="text-muted">{{"loginmsg"|trans}}</small>
+			</div>
+			{% endif %}
+		</div>
+		{{ form_end(form) }}
+
+		<hr class="text-info">
+		<h3>{{"comms"|trans}}</h3>
+		<div class="row">
+		{% if canComm %}
+			<div class="col-12">
+				{{ form_start(formComm) }}
+				{{ form_row(formComm.commentaire) }}
+				{{ form_row(formComm.type, {value:type}) }}
+				{{ form_row(formComm.entityId, {value:appart.id}) }}
+				<button class="btn btn-primary">{{"comment"|trans}}</button>
+				{{ form_end(formComm) }}
+			</div>
+		{% endif %}
+		{% for comm in commentaires %}
+			<div class="col-6 my-2">
+				<div class="card">
+					<div class="card-body">
+					<div class="d-flex justify-content-between w-100">
+						<h5 class="card-title">{{"comm"|trans}} {{ loop.index }}</h5>
+						<small class="text-muted">{{ comm.date|date('d/m/Y') }}</small>
+					</div>
+						<p class="card-text mb-1">{{ comm.commentaire }}</p>
+						<small class="text-muted">{{"wrby"|trans }} {{ comm.user }}</small>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">{{'nocomm'|trans}}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+
+	</div>
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet'/>
+	<style>
+		.marker {
+			background-image: url('{{ asset("marker.png") }}');
+			background-size: 100%;
+			width: 30px;
+			height: 45px;
+			cursor: pointer;
+		}
+		.mapboxgl-popup {
+			max-width: 200px;
+		}
+
+		.mapboxgl-popup-content {
+			text-align: center;
+			font-family: 'Open Sans', sans-serif;
+		}
+	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% endblock %}
+	{% block javascripts %}
+		<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+		<script>
+			mapboxgl.accessToken = 'pk.eyJ1IjoiYnlxIiwiYSI6ImNsdjBza2E2ajFxcHkycW53bXBheGd4cGUifQ.THaHqpyg1zDpdAcCWTQsjQ';
+var map = new mapboxgl.Map( {
+container: 'map',
+style: 'mapbox://styles/mapbox/streets-v11',
+center: [
+2.3856312, 48.8461429
+],
+zoom: 12,
+  maxZoom: 20,
+  minZoom: 10
+} );
+const geojson = {
+type: 'FeatureCollection',
+features: [
+{
+type: 'Feature',
+geometry: {
+type: 'Point',
+coordinates: [ 2.3856312, 48.8461429 ]
+},
+properties: {
+title: 'Mapbox',
+description: 'Washington, D.C.'
+}
+},
+]
+};
+// add markers to map
+for ( const feature of geojson.features ) { // create a HTML element for each feature
+const el = document.createElement( 'div' );
+el.className = 'marker';
+
+// make a marker for each feature and add to the map
+new mapboxgl.Marker(el)
+  .setLngLat(feature.geometry.coordinates)
+  .setPopup(
+    new mapboxgl.Popup({ offset: 25 }) // add popups
+      .setHTML(
+        `<h5>${feature.properties.title}</h5><p>${feature.properties.description}</p>`
+      )
+  )
+  .addTo(map);}
+map.addControl( new mapboxgl.NavigationControl() );
+			$( "#location_first_date" ).daterangepicker( {
+				"locale": "fr",
+				"minDate": new Date(),
+				"disable": [],
+				"autoApply": true,
+				}, function(start, end, label) {
+				$("#tprice").text(" du "+start.format('DD/MM/YYYY')+" au "+end.format('DD/MM/YYYY')
+				+ ' ('+end.diff(start, 'days')+" jours) = ");
+				$("#sprice").text(end.diff(start, 'days')*{{appart.price}});
+				});
+		$('.plus').click(function () {
+			$(this).prev().val(+$(this).prev().val() + 1);
+			var total = +$("#location_first_adults").val() + +$("#location_first_kids").val()+ +$("#location_first_babies").val();
+			var travel = " voyageurs";
+			if (total <= 1) {
+				travel =" voyageur";
+			}
+			$("#speople").text(total +travel +"* xxx " )
+			var tax = total*0.2;
+			$("#stax").text(tax)
+			$("#stotal").text(total*{{appart.price}}+tax)
+		});
+
+		$('.moins').click(function () {
+			if ($(this).next().val() > 0) $(this).next().val(+$(this).next().val() - 1);
+			var total = +$("#location_first_adults").val() + +$("#location_first_kids").val()+ +$("#location_first_babies").val();
+			console.log(total, $("#location_first_adults").val(), $("#location_first_kids").val(), $("#location_first_babies").val());
+			var travel = " voyageurs";
+			if (total <= 1) {
+				travel =" voyageur";
+			}
+			$("#speople").text(total +travel +"* xxx " )
+			var tax = total*0.2;
+			$("#stax").text(tax)
+			$("#stotal").text(total*{{appart.price}}+tax)
+		});
+
+		</script>
+	{% endblock %}

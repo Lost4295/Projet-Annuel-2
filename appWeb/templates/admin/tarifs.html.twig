@@ -21,17 +21,6 @@
 			</thead>
 			<tbody>
 				<tr>
-					{% for abo,val in abonnements.description %}
-						{% if loop.first %}
-							<td>Description</td>
-						{% else %}
-							<td>
-								{{ val }}
-							</td>
-						{% endif %}
-					{% endfor %}
-				</tr>
-				<tr>
 					{% for abo,val in abonnements.prix %}
 						{% if loop.first %}
 							<td>Prix</td>
@@ -40,12 +29,11 @@
 						{% endif %}
 					{% endfor %}
 				</tr>
-				<tr>
-					{% for abo,val in abonnements.duree %}
-						{% if loop.first %}
-							<td>Durée</td>
-						{% else %}
-							{% if random(1,2) == 1 %}
+				{% for key, val in options %}
+					<tr>
+						<td>{{key}}</td>
+						{% for abo,aboVal in val %}
+							{% if aboVal == 1 %}
 								<td>
 									<i class="fa fa-check text-success fa-3x"></i>
 								</td>
@@ -54,9 +42,9 @@
 									<i class="fa fa-times text-danger fa-3x"></i>
 								</td>
 							{% endif %}
-						{% endif %}
-					{% endfor %}
-				</tr>
+						{% endfor %}
+					</tr>
+				{% endfor %}
 				<tr>
 					{% for abo,val in abonnements.key %}
 						{% if loop.first %}
@@ -72,5 +60,6 @@
 			</tbody>
 		</table>
 		<a href="#" class="btn btn-primary">Ajouter un nouveau niveau d'abonnement</a>
+		<a href="#" class="btn btn-primary">Ajouter une option</a>
 	</div>
 {% endblock %}

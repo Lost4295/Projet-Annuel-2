@@ -167,3 +167,8 @@ Error: Error
 'Please enter a city': 'Please enter a city'
 'Please enter a postal code': 'Please enter a postal code'
 'Please enter a country': 'Please enter a country'
+'Please enter a password.': 'Please enter a password.'
+'Your password should be at least {{ limit }} characters.': 'Your password should be at least {{ limit }} characters.'
+'Please confirm your password.': 'Please confirm your password.'
+'The password does not match the confirmation.': 'The password does not match the confirmation.'
+'Please enter your email': 'Please enter your email'

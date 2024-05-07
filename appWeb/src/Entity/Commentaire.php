@@ -15,7 +15,6 @@ class Commentaire
     const APPART = 1;
     const SERVICE = 2;
     const PRODUIT = 3;
-
     const TICKET = 4;
 
     private const TYPE_LIST = [
@@ -25,9 +24,6 @@ class Commentaire
         'produit' => self::PRODUIT,
         'ticket' => self::TICKET
     ];
-
-
-
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,7 +42,9 @@ class Commentaire
     #[ORM\Column(type: Types::INTEGER)]
     private $entityId;
 
-    
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
+
 
     public function getId(): ?int
     {
@@ -65,7 +63,7 @@ class Commentaire
         return $this;
     }
 
-    public function getUser(): string
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -106,5 +104,17 @@ class Commentaire
     public static function getTypes(): array
     {
         return self::TYPE_LIST;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
+
+        return $this;
     }
 }

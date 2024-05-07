@@ -5,7 +5,10 @@
 namespace App\Controller;
 
 use App\Entity\Appartement;
+use App\Entity\Commentaire;
 use App\Entity\Location;
+use App\Form\CommentaireType;
+use App\Form\ConfirmLocationType;
 use App\Form\LocationFirstType;
 use App\Form\LocationTestType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,18 +20,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class LocationController extends AbstractController
 {
     #[Route("/locations", name: "locations")]
-    public function createPage(Request $request, EntityManagerInterface $em)
+    public function createPage(EntityManagerInterface $em)
     {
-        $routeName = $request->attributes->get("_route");
-
-        if ($routeName === "number") {
-            $number = random_int(0, 100);
-        } else {
-            $number = $routeName;
-        }
         $apparts = $em->getRepository(Appartement::class)->findAll();
-        return $this->render('locations.html.twig', [
-            'text' => $number,
+        return $this->render('appartements/locations.html.twig', [
             'apparts' => $apparts
         ]);
     }
@@ -37,7 +32,18 @@ class LocationController extends AbstractController
     public function show($id, EntityManagerInterface $em, Request $request)
     {
         $appart = $em->getRepository(Appartement::class)->find($id);
+        $passedlocs = $em->getRepository(Location::class)->findPassedLocations($appart->getId());
+        $canComm = false;
+        $commentaires = [];
 
+        if ($passedlocs) {
+            $canComm = true;
+            $commentaires = $em->getRepository(Commentaire::class)->findComments("appartement",$appart->getId());
+            $formComm = $this->createForm(CommentaireType::class, null, [
+                'action' => $this->generateUrl('commentaire_create'),
+                'method' => 'POST',
+            ]);
+        }
         $location = new Location();
         $form = $this->createForm(LocationFirstType::class, null, [
             'action' => $this->generateUrl('appart_confirm'),
@@ -47,24 +53,36 @@ class LocationController extends AbstractController
         // if ($form->isSubmitted() && $form->isValid()) {
         //     return $this->redirectToRoute('appart_confirm');
         // }
-        return $this->render('appart_detail.html.twig', [
+        return $this->render('appartements/appart_detail.html.twig', [
             'appart' => $appart,
-            'form' => $form
+            'form' => $form,
+            'canComm' => $canComm,
+            'commentaires' => $commentaires,
+            'formComm' => $formComm ?? null,
+            'type'=> Commentaire::APPART
         ]);
     }
 
     #[Route("/locations/confirm", name: "appart_confirm")]
-    public function confirm(Request $request)
+    #[IsGranted("ROLE_USER")]
+    public function confirm(Request $request, EntityManagerInterface $em)
     {
         $firstForm = $this->createForm(LocationFirstType::class, null, [
             'method' => 'POST',
         ]);
         $firstForm->handleRequest($request);
+        $id = $firstForm->get('appart')->getData();
         if ($firstForm->isSubmitted() && !$firstForm->isValid()) {
-            return $this->redirectToRoute('appart_detail', ['id' => 1]);
+            return $this->redirectToRoute('appart_detail', ['id' => $id]);
         }
-        return $this->render('confirm_appart.html.twig', [
-            'firstForm' => $firstForm
+        $appart = $em->getRepository(Appartement::class)->find($id);
+        $secondForm = $this->createForm(ConfirmLocationType::class, null, [
+            'method' => 'POST',
+        ]);
+        return $this->render('appartements/confirm_appart.html.twig', [
+            'firstForm' => $firstForm,
+            'appart' => $appart,
+            'secondForm'=> $secondForm
         ]);
     }
 
@@ -80,8 +98,46 @@ class LocationController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('profile');
         }
-        return $this->render('create_location.html.twig', [
+        return $this->render('location/create_location.html.twig', [
             'form' => $form->createView()
         ]);
     }
+
+
+    #[Route("/create/commentaire", name: "commentaire_create")]
+    #[IsGranted("ROLE_VOYAGEUR")]
+    public function createCommentaire(Request $request, EntityManagerInterface $em)
+    {
+        $commentaire = new Commentaire();
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $commentaire->setDate(new \DateTime())
+            ->setUser($user);
+            $em->persist($commentaire);
+            $em->flush();
+            return $this->redirectToRoute('appart_detail', ['id' => $commentaire->getEntityId()]);
+        }
+    }
+    #[Route("/create_appart", name: "create_appart_bailleur")]
+    #[IsGranted("ROLE_BAILLEUR")]
+    public function createAppart(Request $request, EntityManagerInterface $em)
+    {
+        return $this->render('appart"ements/create_appart.html.twig');
+    }
+    
+    #[Route("/location/{id}", name:"location_info", requirements: ["id"=> "\d+"])]
+    #[IsGranted("ROLE_VOYAGEUR")]
+    public function locationInfo($id, EntityManagerInterface $em){
+        $uid =$this->getUser()->getUserIdentifier();
+        $loc =$em->getRepository(Location::class)->find($id);
+        if (!$loc){
+            $this->addFlash("danger","noaccess" );
+            return $this->redirectToRoute('profile');
+        }
+
+    }
 }
+
+

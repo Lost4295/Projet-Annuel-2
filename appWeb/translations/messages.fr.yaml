@@ -62,9 +62,9 @@ user: Utilisateur
 id: ID
 roles: Rôles
 lastcdate: 'Dernière date de connexion'
-crdate: Date de création
-admin: Admin
-verified: Est vérifié
+crdate: 'Date de création'
+admin: Administrateur
+verified: 'Est vérifié'
 abo: Abonnement
 description: Description
 shdesc: 'Description courte'
@@ -81,24 +81,57 @@ tarif: Tarif
 services: Services
 helpreset: 'Si vous avez oublié votre mot de passe, veuillez saisir votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.'
 reset: 'Réinitialiser le mot de passe'
-sendreset: Envoyer le mail de rénitialisation de mot de passe
+sendreset: 'Envoyer le mail de rénitialisation de mot de passe'
 resetpwd: 'Réinitialiser le mot de passe'
-size: Taille 
+size: Taille
 action: Action
 no_docs: 'Aucun document'
 apistate: 'Etat des APIs'
 adminside: 'Côté Admin'
 url: URL
-change: 'Changer'
-test: 'Tester'
+change: Changer
+test: Tester
 baill: Bailleur
 futureloca: 'Locations futures'
 pastloca: 'Locations passées'
 isdown: 'Est en panne'
 commentaire: Commentaires
 resa: Réservations
-adults: Adultes(+18 ans)
-kids: Enfants(-18 ans)
-babies: Bébés(-2 ans)
-travelernum: Nombre de Voyageurs
-chdate: Choisisssez vos dates
+adults: 'Adultes(+18 ans)'
+kids: 'Enfants(-18 ans)'
+babies: 'Bébés(-2 ans)'
+travelernum: 'Nombre de Voyageurs'
+chdate: 'Choisisssez vos dates'
+submit: Valider les modifications
+back: Retour au profil
+modifymyinfo: Modifier mes informations
+download: Télécharger
+delete: Supprimer
+crticket: 'Afin de pouvoir modifier vos informations telles que le nom, le prénom ou la date de naissance, veuillez '
+modmdp: 'Pour modifier votre mot de passe, veuillez '
+here : "créer un ticket."
+clhere: "passer par ici."
+mail: Email
+
+reserv: 'Réserver'
+comm: Commentaire
+comms: Commentaires
+comment: 'Commenter'
+yourcomm: 'Votre commentaire'
+wrby: 'Ecrit par'
+apartproposes: "Ce que propose ce logement :"
+nocomm: Pas de commentaire.
+destination: Destination
+dest: Sélectionnez votre destination
+checkin: 'Date d''arrivée'
+when: Quand ? 
+checkout: 'Date de départ'
+guests: Voyageurs
+ticket: Tickets
+crappart: Créer un appartement
+croplus: Créer un service lié à un appartement
+myprofile: Mon Profil
+settings: Paramètres
+logout: Déconnexion
+voyageur: Voyageur
+nouser: Non Utilisateur

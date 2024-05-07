@@ -6,7 +6,6 @@ use App\Repository\ProfessionnelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumns;
 
 #[ORM\Entity(repositoryClass: ProfessionnelRepository::class)]
 class Professionnel

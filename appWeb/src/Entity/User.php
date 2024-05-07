@@ -20,6 +20,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_BAILLEUR = 'ROLE_BAILLEUR';
     public const ROLE_PRESTA = 'ROLE_PRESTA';
+    public const ROLE_VOYAGEUR = 'ROLE_VOYAGEUR';
+    public const ROLE_NON_USER = 'ROLE_NON_USER';
 
 
     #[ORM\Id]
@@ -148,7 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -387,10 +389,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public static function getPossibleRoles(): array
     {
         return [
-            'Utilisateur' => self::ROLE_USER,
-            'Administrateur' => self::ROLE_ADMIN,
-            "Bailleur" => self::ROLE_BAILLEUR,
-            "Prestataire" => self::ROLE_PRESTA
+            'user' => self::ROLE_USER,
+            'admin' => self::ROLE_ADMIN,
+            "baill" => self::ROLE_BAILLEUR,
+            "prestataire" => self::ROLE_PRESTA,
+            "voyageur" => self::ROLE_VOYAGEUR,
+            "nouser" => self::ROLE_NON_USER
         ];
     }
 

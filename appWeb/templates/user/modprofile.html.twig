@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{ parent() }}
+	- Home
+{% endblock %}
+{% block body %}
+	<div class="row">
+		<div class="col border border-danger">
+			<h2>
+				{{ 'profile'|trans }}
+			</h2>
+			{{ form_start(user) }}
+			<div class="row">
+				<div class="col-2">
+					{{ form_label(user.nom) }}
+				</div>
+				<div class="col-6">
+					{{ form_widget(user.nom) }}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-2">
+					{{ form_label(user.prenom) }}
+				</div>
+				<div class="col-6">
+					{{ form_widget(user.prenom) }}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-2">
+					{{ form_label(user.birthdate) }}
+				</div>
+				<div class="col-6">
+					{{ form_widget(user.birthdate) }}
+				</div>
+			</div>
+			<div class="row mt-2">
+				<div class="col-2">
+					{{ form_label(user.phoneNumber) }}
+				</div>
+				<div class="col-6">
+					{{ form_widget(user.phoneNumber) }}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-2">
+					{{ form_label(user.email) }}
+				</div>
+				<div class="col-6">
+					{{ form_widget(user.email) }}
+				</div>
+			</div>
+			<div class=" my-2 d-flex justify-content-around">
+				<div class="col-5">
+					<input type="submit" id="submit" class="btn btn-primary" value="{{ 'submit'|trans }}">
+					<a href="{{ path('profile') }}" class="btn btn-primary">
+						{{ 'back'|trans }}
+					</a>
+				</div>
+			</div>
+			{{ form_end(user) }}
+			<p class="text-muted">
+				{{"crticket"|trans|raw}} <a href="{{ path('create_ticket') }}">{{"here"|trans}}</a>
+			</p>
+			<p class="text-muted">
+				{{'modmdp'|trans|raw}} <a href="{{ path('app_forgot_password_request') }}">{{'clhere'|trans}}</a>
+			</p>
+		</div>
+	{% endblock %}

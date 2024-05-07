@@ -24,7 +24,7 @@ class Appartement
     #[ORM\Column(length: 100)]
     private ?string $shortDesc = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
+    #[ORM\Column]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
@@ -43,7 +43,7 @@ class Appartement
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $nbRooms = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2)]
+    #[ORM\Column]
     private ?float $note = null;
 
     #[ORM\Column(length: 50)]
@@ -60,12 +60,49 @@ class Appartement
     private ?Professionnel $bailleur = null;
 
 
+    #[ORM\Column(length: 255)]
+    private ?string $titre = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $nbchambers = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $nbbathrooms = null;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $nbBeds = null;
+
+    
+    /**
+     * @var Collection<int, AppartPlus>
+     */
+    #[ORM\ManyToMany(targetEntity: AppartPlus::class, inversedBy: 'appartement')]
+    #[ORM\JoinTable(name: 'scp_appartement_appart_plus')]
+    private Collection $appartPluses;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $updatedAt = null;
+
+    #[ORM\Column]
+    private ?float $surface = null;
+
+    /**
+     * @var Collection<int, Location>
+     */
+    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'appartement')]
+    private Collection $locations;
+
 
     public function __construct()
     {
         $this->state = "En attente";
         $this->note = 0;
         $this->images = new ArrayCollection();
+        $this->appartPluses = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -228,6 +265,145 @@ class Appartement
     public function  setCountry(?string $country): static
     {
         $this->country = $country;
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getNbchambers(): ?int
+    {
+        return $this->nbchambers;
+    }
+
+    public function setNbchambers(int $nbchambers): static
+    {
+        $this->nbchambers = $nbchambers;
+
+        return $this;
+    }
+
+    public function getNbbathrooms(): ?int
+    {
+        return $this->nbbathrooms;
+    }
+
+    public function setNbbathrooms(int $nbbathrooms): static
+    {
+        $this->nbbathrooms = $nbbathrooms;
+
+        return $this;
+    }
+
+    public function getNbBeds(): ?int
+    {
+        return $this->nbBeds;
+    }
+
+    public function setNbBeds(int $nbBeds): static
+    {
+        $this->nbBeds = $nbBeds;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AppartPlus>
+     */
+    public function getAppartPluses(): Collection
+    {
+        return $this->appartPluses;
+    }
+
+    public function addAppartPlus(AppartPlus $appartPlus): static
+    {
+        if (!$this->appartPluses->contains($appartPlus)) {
+            $this->appartPluses->add($appartPlus);
+            $appartPlus->addAppartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppartPlus(AppartPlus $appartPlus): static
+    {
+        $this->appartPluses->removeElement($appartPlus);
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTime $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getSurface(): ?float
+    {
+        return $this->surface;
+    }
+
+    public function setSurface(float $surface): static
+    {
+        $this->surface = $surface;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): static
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->setAppartement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): static
+    {
+        if ($this->locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getAppartement() === $this) {
+                $location->setAppartement(null);
+            }
+        }
+
         return $this;
     }
 }

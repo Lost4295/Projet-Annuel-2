@@ -37,9 +37,9 @@ class APICrudController extends AbstractCrudController
     public function configureFields(string $pageName): array|\Traversable
     {
         $id = IdField::new("id", "id");
-        $name = TextField::new("name", "nom");
+        $name = TextField::new("name", "nom")->setRequired(true);
         $url = UrlField::new("url", "url");
-        $isDown = BooleanField::new("isdown", "isdown");
+        $isDown = BooleanField::new("isdown", "isdown")->setRequired(true);
 
         $return = [$name, $url, $isDown];
         if (Crud::PAGE_INDEX === $pageName||Crud::PAGE_DETAIL === $pageName) {

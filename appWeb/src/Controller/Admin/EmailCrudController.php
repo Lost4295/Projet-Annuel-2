@@ -33,21 +33,17 @@ class EmailCrudController extends AbstractCrudController
     public function configureFields(string $pageName): array|\Traversable
     {
         $id= IdField::new("id", 'id');
-        $destinataire= TextField::new("destinataire","destinataire");
-        $body= TextareaField::new("body","body");
-        $cc= TextField::new("cc","cc");
+        $destinataire= TextField::new("destinataire","destinataire")->setRequired(true);
+        $body= TextareaField::new("body","body")->setRequired(true);
         $pj= CollectionField::new("pj","pj");
-        $object= TextField::new("object","object");
-        $isAutomatic= BooleanField::new("isAutomatic","auto");
-        $date= DateField::new("date","date");
+        $object= TextField::new("object","object")->setRequired(true);
+        $date= DateField::new("date","date")->setRequired(true);
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $object, $destinataire, $cc, $isAutomatic, $date];
+            return [$id, $object, $destinataire, $date];
         } elseif(Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $object, $destinataire, $body, $cc, $pj, $isAutomatic, $date];
-        } elseif(Crud::PAGE_EDIT === $pageName) {
-            return [$object, $destinataire, $body, $cc, $pj, $isAutomatic, $date];
-        } elseif(Crud::PAGE_NEW === $pageName) {
-            return [$object, $destinataire, $body, $cc, $pj, $isAutomatic, $date];
+            return [$id, $object, $destinataire, $body, $pj, $date];
+        } else {
+            return [$object, $destinataire, $body, $pj, $date];
         }
     }
     // ...

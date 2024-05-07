@@ -167,3 +167,8 @@ Error: Erreur
 'Please enter a city': 'Veuillez entrer une ville'
 'Please enter a postal code': 'Veuillez entrer un code postal'
 'Please enter a country': 'Veuillez entrer un pays'
+'Please enter a password.': "Merci d'entrer un mot de passe."
+'Your password should be at least {{ limit }} characters.': 'Votre mot de passe devrait avoir au moins {{ limit }} caractères.'
+'Please confirm your password.': 'Veuillez confirmer votre mot de passe.'
+'The password does not match the confirmation.': 'Les mots de passe ne sont pas identiques.'
+'Please enter your email': "Veuillez entrer votre adresse email"

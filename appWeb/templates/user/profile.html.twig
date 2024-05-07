@@ -1,0 +1,233 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+	{{ parent() }}
+	- Home
+{% endblock %}
+
+{% block stylesheets %}
+	<style>
+		.past {
+			-webkit-filter: blur(8px);
+			-moz-filter: blur(8px);
+			-o-filter: blur(8px);
+			-ms-filter: blur(8px);
+			filter: blur(8px);
+		}
+		.past:hover {
+			-webkit-filter: blur(0px);
+			-moz-filter: blur(0px);
+			-o-filter: blur(0px);
+			-ms-filter: blur(0px);
+			filter: blur(0px);
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<div class='row'>
+		<div class="col-2 border border-success">
+			<div class="d-flex align-items-start">
+				<div class="nav flex-column nav-pills me-3 w-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+					<button class="nav-link my-2 p-4 active" id="v-pills-info-tab" data-bs-toggle="pill" data-bs-target="#v-pills-info" type="button" role="tab" aria-controls="v-pills-info" aria-selected="true">{{"info"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-docs-tab" data-bs-toggle="pill" data-bs-target="#v-pills-docs" type="button" role="tab" aria-controls="v-pills-docs" aria-selected="false">{{"docs"|trans}}</button>
+					{% if is_granted("ROLE_BAILLEUR") %}
+						<button class="nav-link my-2 p-4" id="v-pills-baill-tab" data-bs-toggle="pill" data-bs-target="#v-pills-baill" type="button" role="tab" aria-controls="v-pills-baill" aria-selected="false">{{"baill"|trans}}</button>
+					{% endif %}
+					{% if is_granted("ROLE_PRESTA") %}
+						<button class="nav-link my-2 p-4" id="v-pills-presta-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta" type="button" role="tab" aria-controls="v-pills-presta" aria-selected="false">{{"prestataire"|trans}}</button>
+					{% endif %}
+					{% if is_granted("ROLE_VOYAGEUR") %}
+						<button class="nav-link my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
+					{% endif %}
+					<button class="nav-link my-2 p-4" id="v-pills-resa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-resa" type="button" role="tab" aria-controls="v-pills-resa" aria-selected="false">{{"resa"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-conf-tab" data-bs-toggle="pill" data-bs-target="#v-pills-conf" type="button" role="tab" aria-controls="v-pills-conf" aria-selected="false">{{"conf"|trans}}</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-10 border border-danger">
+			<div class="tab-content" id="v-pills-tabContent">
+				<div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab" tabindex="0">
+					<h2>{{'profile'|trans }}</h2>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "nom"|trans }}
+						</div>
+						<div class="col-6">
+							{{ user.nom }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "prenom"|trans }}
+						</div>
+						<div class="col-6">
+							{{ user.prenom }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "birthdate"|trans }}
+						</div>
+						<div class="col-6">
+							{{ user.birthdate|date('d/m/Y') }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "phone"|trans }}
+						</div>
+						<div class="col-6">
+							{{ user.phoneNumber }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4 my-2">
+							{{ "mail" |trans }}
+						</div>
+						<div class="col-6">
+							{{ user.email }}
+						</div>
+					</div>
+					<div class="d-flex justify-content-around">
+						<div class="col-5">
+							<a href="{{path("check_infos")}}" class="btn btn-primary">{{'modifymyinfo'|trans }}</a>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">
+					<h2>{{'docs'|trans }}</h2>
+					<div class="d-flex justify-content-around">
+						<table class="table table-bordered">
+							<tr>
+								<th>{{'nom'|trans }}</th>
+								<th>{{'date'|trans }}</th>
+								<th>{{'size'|trans }}</th>
+								<th>{{'type'|trans }}</th>
+								<th>{{'action'|trans }}</th>
+							</tr>
+							{% if docs is defined %}
+								{% for doc in docs %}
+									<tr>
+										<td>{{ doc.name }}</td>
+										<td>{{ doc.date|date('d/m/Y') }}</td>
+										<td>{{ doc.size }}</td>
+										<td>{{ doc.type }}</td>
+										<td>
+											<a href="{{ path('download', {'id': doc.id}) }}">{{'download'|trans }}</a>
+											<a href="{{ path('delete', {'id': doc.id}) }}">{{'delete'|trans }}</a>
+										</td>
+									</tr>
+								{% endfor %}
+							{% else %}
+								<tr>
+									<td colspan="5">{{'no_docs'|trans }}</td>
+								</tr>
+							{% endif %}
+						</table>
+					</div>
+				</div>
+				{% if is_granted("ROLE_BAILLEUR") %}
+					<div class="tab-pane fade" id="v-pills-baill" role="tabpanel" aria-labelledby="v-pills-baill-tab" tabindex="0">
+						<h1>Appartements</h1>
+						<a href="#" class="btn btn-primary">Nouveau</a>
+						<div class="row">
+							{% for appart in appartements %}
+								<div class="col-3 my-3">
+									<div class="card">
+										<div class="card-body">
+											<img src="{#{{ appart.image }}#}http://placehold.it/300x200" class="card-img-top" alt="...">
+											<h5 class="card-title">{{ appart.shortDesc }}</h5>
+											<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="btn btn-primary">Voir</a>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+
+				{% endif %}
+				{% if is_granted("ROLE_PRESTA") %}
+					<div class="tab-pane fade" id="v-pills-presta" role="tabpanel" aria-labelledby="v-pills-presta-tab" tabindex="0">
+						<h2>??????</h2>
+					</div>
+
+				{% endif %}
+				{% if is_granted("ROLE_VOYAGEUR") %}
+					<div class="tab-pane fade" id="v-pills-loca" role="tabpanel" aria-labelledby="v-pills-loca-tab" tabindex="0">
+						<h2>{{'loca'|trans }}</h2>
+						<h3>{{"futureloca"|trans }}</h3>
+						<div class="row d-flex justify-content-around">
+							{% for location in locations %}
+								<div class="col-4 my-2">
+									<a href="{{path("location_info", {id:location.id} ) }}" class="text-decoration-none">
+										<div class="card">
+											<div class="card-body">
+												<img src="https://placehold.co/100x50" class="card-img-top" alt="...">
+												<h4>{{location.appartement.shortDesc }}</h4>
+												<small class="placeholder-glow">
+													<div class="d-flex justify-content-between">
+														<span class="">{{location.dateDebut|date("d-m-Y")}}
+															-
+															{{location.dateFin|date("d-m-Y")}}</span>
+														<span class=" col-3"></span>
+													</div>
+													<div class="d-flex justify-content-between">
+														<span class="placeholder col-5"></span>
+														<span class="">{{location.price }}
+															€</span>
+													</div>
+												</small>
+											</div>
+										</div>
+									</a>
+								</div>
+							{% endfor %}
+							<h3>{{"pastloca"|trans }}</h3>
+							<div class="row d-flex justify-content-around">
+								{% for location in pastlocations %}
+									<div class="col-4 my-2">
+										<a href="{{path("location_info", {id:location.id} ) }}" class="text-decoration-none">
+											<div class="card past">
+												<div class="card-body">
+													<img src="https://placehold.co/100x50" class="card-img-top" alt="...">
+													<h4>{{location.appartement.shortDesc }}</h4>
+													<small class="placeholder-glow">
+														<div class="d-flex justify-content-between">
+															<span class="">{{location.dateDebut|date("d-m-Y")}}
+																-
+																{{location.dateFin|date("d-m-Y")}}</span>
+															<span class=" col-3"></span>
+														</div>
+														<div class="d-flex justify-content-between">
+															<span class="placeholder col-5"></span>
+															<span class="">{{location.price }}
+																€</span>
+														</div>
+													</small>
+												</div>
+											</div>
+										</a>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				{% endif %}
+				<div class="tab-pane fade" id="v-pills-resa" role="tabpanel" aria-labelledby="v-pills-resa-tab" tabindex="0">resa...</div>
+				<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
+				<div class="tab-pane fade" id="v-pills-conf" role="tabpanel" aria-labelledby="v-pills-conf-tab" tabindex="0">
+					conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
+					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
+					conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

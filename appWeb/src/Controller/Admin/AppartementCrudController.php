@@ -29,26 +29,28 @@ class AppartementCrudController extends AbstractCrudController
         return $actions
             // ...
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
         ;
     }
     public function configureFields(string $pageName): array|\Traversable
     {
         $id = IdField::new("id", "id");
-        $description = TextareaField::new("description", "description");
-        $shortDesc = TextField::new("shortDesc", "shdesc");
-        $price = MoneyField::new("price", "price")->setCurrency("EUR")->setCustomOption('storedAsCents', false);
-        $adress = TextField::new("address", "address");
-        $nbRooms = NumberField::new("nbRooms", "nbrooms");
+        $description = TextareaField::new("description", "description")->setRequired(true);
+        $shortDesc = TextField::new("shortDesc", "shdesc")->setMaxLength(120)->setRequired(true);
+        $price = MoneyField::new("price", "price")->setCurrency("EUR")->setCustomOption('storedAsCents', false)->setRequired(true);
+        $adress = TextField::new("address", "address")->setRequired(true);
+        $nbRooms = NumberField::new("nbRooms", "nbrooms")->setRequired(true);
         $note = NumberField::new("note", "note");
-        $state = ChoiceField::new("state", "state")->setChoices(["Disponible" => "Disponible", "En attente" => "En attente", "Loué" => "Loué"]); // TODO : faire une fonction pour récup ça dans le fichier de config
+        $state = ChoiceField::new("state", "state")->setChoices(["Disponible" => "Disponible", "En attente" => "En attente", "Loué" => "Loué"])->setRequired(false); // TODO : faire une fonction pour récup ça dans le fichier de config
         $bailleur= AssociationField::new('bailleur', "baill")->setRequired(true);
-        $photos = ImageField::new('appartement', "photos")->setRequired(true)->setUploadDir("/public/images/appartements")->setBasePath("/images/appartements");
+        $photos = AssociationField::new('images', "photos")->setRequired(false);
+        $pluses = AssociationField::new('appartPluses', "pluses");
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur];
+            return [$id, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur, $pluses];
         } elseif(Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $description, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur];
+            return [$id, $description, $shortDesc, $price, $adress, $nbRooms, $note, $state, $bailleur, $photos, $pluses];
         } else {
-            return [$shortDesc, $description, $price, $adress, $nbRooms, $state, $bailleur];
+            return [$shortDesc, $description, $price, $adress, $nbRooms, $state, $bailleur, $photos, $pluses];
         }
 
     }

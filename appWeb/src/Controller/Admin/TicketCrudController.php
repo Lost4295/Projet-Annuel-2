@@ -15,6 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
 class TicketCrudController extends AbstractCrudController
 {
@@ -31,19 +34,28 @@ class TicketCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): array|\Traversable
     {
-        $id= IdField::new("id", "id");
-        $nom= TextField::new("nom", "title");
-        $type= ChoiceField::new("type", "type")->setChoices(["image" => "image", "pdf" => "pdf", "word" => "word", "excel" => "excel", "powerpoint" => "powerpoint", "autre" => "autre"]);
-        $path= TextField::new("path", "path");
-        //$email= CollectionField::new("email")->setEntryType(EmailType::class)->setEntryIsComplex();
+        $id= IdField::new("id","id");
+        $dateOuverture= DateField::new("dateOuverture","dateOuverture");
+        $dateFermeture= DateField::new("dateFermeture","dateFermeture");
+        $demandeur= AssociationField::new("demandeur","demandeur");
+        $lastUpdateDate= DateField::new("lastUpdateDate","lastUpdateDate");
+        $category= ChoiceField::new("category","category");
+        $type= ChoiceField::new("type","type");
+        $status= ChoiceField::new("status","status");
+        $priority= ChoiceField::new("priority","priority");
+        $description= TextareaField::new("description","description");
+        $pj= AssociationField::new("pj","pj");
+        $urgence= ChoiceField::new("urgence","urgence");
+        $resolveur= AssociationField::new("resolveur","resolveur");
+        
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $nom, $type];
+            return [$id, $dateOuverture, $dateFermeture, $demandeur, $category, $type, $status, $priority, $urgence, $resolveur];
         } elseif(Crud::PAGE_DETAIL === $pageName) {
-        return [$id, $nom, $type, $path/*, $email*/];
+        return [$id, $dateOuverture, $dateFermeture, $demandeur, $lastUpdateDate, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
         } elseif(Crud::PAGE_EDIT === $pageName) {
-        return [$nom, $type, $path/*, $email*/];
+        return [$dateOuverture, $dateFermeture, $demandeur, $lastUpdateDate, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
         } elseif(Crud::PAGE_NEW === $pageName) {
-        return [$nom, $type, $path/*, $email*/];
+        return [$dateOuverture, $dateFermeture, $demandeur, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
         }
     }
     // ...

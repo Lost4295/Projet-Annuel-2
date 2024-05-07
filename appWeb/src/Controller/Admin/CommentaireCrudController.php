@@ -37,7 +37,7 @@ class CommentaireCrudController extends AbstractCrudController
     public function configureFields(string $pageName): array|\Traversable
     {
         $id = IdField::new("id", "id");
-        $commentaire = TextareaField::new("commentaire", "nom");
+        $commentaire = TextareaField::new("commentaire", "nom")->setRequired(true);
         $type = ChoiceField::new("type", "type")->setChoices(Commentaire::getTypes());
 
         $return = [$commentaire, $type];

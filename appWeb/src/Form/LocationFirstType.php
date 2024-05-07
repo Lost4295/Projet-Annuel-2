@@ -8,6 +8,7 @@ use App\Entity\Service;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,13 +24,15 @@ class LocationFirstType extends AbstractType
                 "class" => "form-control",
                 "id" => "startdate",
             ],
+            "label" => false
         ])->add('adults',NumberType::class, [
             "attr"=>[
                 "class"=>"form-control",
-                "min"=>0,
+                "min"=>1,
                 "max"=>6
             ],
-            'label'=>"adults"
+            'label'=>"adults",
+            "scale"=>0,
         ])
             ->add('kids',NumberType::class, [
                 "attr"=>[
@@ -37,7 +40,8 @@ class LocationFirstType extends AbstractType
                     "min"=>0,
                     "max"=>6
                 ],
-                'label'=>"kids"
+                'label'=>"kids",
+                "scale"=>0,
             ])
             ->add('babies',NumberType::class, [
                 "attr"=>[
@@ -45,7 +49,12 @@ class LocationFirstType extends AbstractType
                     "min"=>0,
                     "max"=>6
                 ],
-                'label'=>"babies"
-            ]);
+                'label'=>"babies",
+                "scale"=>0,
+
+            ])
+            ->add("appart", HiddenType::class, [])
+            ;
+
     }
 }

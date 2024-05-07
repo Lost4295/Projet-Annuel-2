@@ -21,6 +21,9 @@ class Ticket
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateOuverture = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateFermeture = null;
+
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $demandeur = null;
@@ -257,6 +260,26 @@ class Ticket
     public function setResolveur(?User $resolveur): static
     {
         $this->resolveur = $resolveur;
+
+        return $this;
+    }
+    
+    /**
+     * Get the value of dateFermeture
+     */ 
+    public function getDateFermeture() : ?\DateTimeInterface
+    {
+        return $this->dateFermeture;
+    }
+
+    /**
+     * Set the value of dateFermeture
+     *
+     * @return  self
+     */ 
+    public function setDateFermeture($dateFermeture) : static
+    {
+        $this->dateFermeture = $dateFermeture;
 
         return $this;
     }

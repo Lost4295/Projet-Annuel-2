@@ -63,13 +63,13 @@ profile: Profile
 lastcdate: 'Last connection date'
 crdate: 'Creation date'
 admin: Administrator
-verified: Is verified
+verified: 'Is verified'
 abo: Subscription
 obrl: 'Objects section'
 description: Description
 shdesc: 'Short description'
-price: Price 
-address: Address 
+price: Price
+address: Address
 nbrooms: 'Number of rooms'
 note: Note
 state: Status
@@ -79,19 +79,19 @@ produit: Product
 prestataire: Provider
 tarif: Price
 services: Services
-helpreset: Enter your email address, and we will send you a link to reset your password.
-reset: Reset your password
-sendreset: Send password reset email
-resetpwd: Reset your password
-size: Size 
+helpreset: 'Enter your email address, and we will send you a link to reset your password.'
+reset: 'Reset your password'
+sendreset: 'Send password reset email'
+resetpwd: 'Reset your password'
+size: Size
 action: Action
-no_docs: No documents.
+no_docs: 'No documents.'
 url: URL
-isdown: Is down
-apistate: APIs state
-adminside: Admin side
-futureloca: Future rents
-pastloca: Past rents
+isdown: 'Is down'
+apistate: 'APIs state'
+adminside: 'Admin side'
+futureloca: 'Future rents'
+pastloca: 'Past rents'
 change: Change
 test: Test
 baill: Lessor
@@ -100,5 +100,37 @@ resa: Reservations
 adults: Adults(+18)
 kids: Kids(-18)
 babies: Babies(-2)
-travelernum: Number of travelers
-chdate: Choose your dates
+travelernum: 'Number of travelers'
+chdate: 'Choose your dates'
+submit: Submit the modifications
+back: Back to profile
+modifymyinfo: Modify my information
+download: Download
+delete: Delete
+mail: Email
+crticket: 'To modify your information such as your name, first name or date of birth, '
+modmdp: 'To change your password, please '
+here: "please create a ticket."
+clhere: "click here."
+comm: Comment
+reserv: Book
+comms: 'Comments'
+comment: 'Comment'
+yourcomm: 'Your comment'
+wrby: 'Written by'
+apartproposes: 'What this appartment offers:'
+nocomm: 'No comment.'
+destination: Destination
+dest: Select a destination
+checkin: Check-in 
+checkout: Check-out
+when: When
+guests: Guests
+ticket: Tickets
+crappart: Create an appartment
+croplus: Create a appartment linked service
+myprofile: My Profile
+settings: Settings
+logout: Logout
+voyageur: Traveler
+nouser: 'Non user'

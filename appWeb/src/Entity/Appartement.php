@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: AppartementRepository::class)]
 class Appartement
@@ -22,7 +23,7 @@ class Appartement
     #[ORM\Column(length: 100)]
     private ?string $shortDesc = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
@@ -41,7 +42,7 @@ class Appartement
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $nbRooms = null;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     private ?float $note = null;
 
     #[ORM\Column(length: 50)]
@@ -72,7 +73,8 @@ class Appartement
     /**
      * @var Collection<int, AppartPlus>
      */
-    #[ORM\ManyToMany(targetEntity: AppartPlus::class, mappedBy: 'appartement')]
+    #[ORM\ManyToMany(targetEntity: AppartPlus::class, inversedBy: 'appartement')]
+    #[ORM\JoinTable(name: 'scp_appartement_appart_plus')]
     private Collection $appartPluses;
 
     #[ORM\Column(nullable: true)]
@@ -324,6 +326,7 @@ class Appartement
     {
         if (!$this->appartPluses->contains($appartPlus)) {
             $this->appartPluses->add($appartPlus);
+            $appartPlus->addAppartement($this);
         }
 
         return $this;
