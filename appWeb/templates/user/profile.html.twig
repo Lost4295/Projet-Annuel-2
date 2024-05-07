@@ -224,22 +224,13 @@
 				{{form_row(reservation.adresse)}}
 				{{form_row(reservation.room)}}
 				{{form_row(reservation.bed)}}
-				<div>
-					<label for="lits">Nombre de Lits:</label><br>
-					<input type="number" id="lits" name="lits" min="1" required><br><br>
-				</div>
-				<div>
-					<label for="salle_de_bain">Nombre de Salles de Bain:</label><br>
-					<input type="number" id="salle_de_bain" name="salle_de_bain" min="1" required><br><br>
-				</div>
-				<div>
-					<label for="voyageurs">Nombre de Voyageurs:</label><br>
-					<input type="number" id="voyageurs" name="voyageurs" min="1" required><br><br>
-				</div>
+				{{form_row(reservation.bathroom)}}
+				{{form_row(reservation.voyageur)}}
 				<div>
 					<label for="photos">Upload des Photos:</label><br>
 					<input type="file" id="photos" name="photos" accept="image/*" multiple><br><br>
 				</div>
+				{#{form_row(reservation.equipement)}#}
 				<div>
 					<label>Cochez les Equipements:</label><br>
 					<input type="checkbox" id="television" name="equipements" value="television">

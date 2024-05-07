@@ -10,8 +10,9 @@ use App\Entity\User;
 use App\Form\TicketType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,14 +51,14 @@ class UserController extends AbstractController
             , "row_attr" => ["class" => "col-2"]
 
         ])
-        ->add('room', NumberType::class, [
+        ->add('room', IntegerType::class, [
             'attr' => [
                 "class" => "my-2 form-control "
             ], "label" => "Nombre de Chambres:"
             , "row_attr" => ["class" => "col-2"]
 
         ])
-        ->add('bed', NumberType::class, [
+        ->add('bed', IntegerType::class, [
             'attr' => [
                 
                 "class" => "my-2 form-control ",
@@ -117,14 +118,14 @@ class UserController extends AbstractController
             , "row_attr" => ["class" => "col-2"]
 
         ])
-        ->add('room', NumberType::class, [
+        ->add('room', IntegerType::class, [
             'attr' => [
                 "class" => "my-2 form-control "
             ], "label" => "Nombre de Chambres:"
             , "row_attr" => ["class" => "col-2"]
 
         ])
-        ->add('bed', NumberType::class, [
+        ->add('bed', IntegerType::class, [
             'attr' => [
                 
                 "class" => "my-2 form-control ",
@@ -135,34 +136,32 @@ class UserController extends AbstractController
             
 
         ])
-        ->add('bathroom', TextType::class, [
+        ->add('bathroom', IntegerType::class, [
             'attr' => [
                 "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
+            ], "label" => "Nombre de Salles de Bain:"
             , "row_attr" => ["class" => "col-2"]
 
         ])
-        ->add('voyageur', TextType::class, [
+        ->add('voyageur', IntegerType::class, [
             'attr' => [
                 "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
+            ], "label" => "Nombre de Voyageurs:"
             , "row_attr" => ["class" => "col-2"]
 
         ])
-        ->add('picture', TextType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('equipement', TextType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
+        #->add('equipement', CheckboxType::class, [
+        #   'label' => 'Cochez les Equipements',
+        #   'required' => false,
+        #    'expanded' => true,
+        #    'multiple' => true,
+        #    'choices' => [
+        #        'Télévision' => 'television',
+        #        'Climatisation' => 'climatisation',
+        #        'Wifi' => 'wifi',
+        #        'Piscine' => 'piscine',
+        #    ],
+        #])
         ->add("submit", SubmitType::class, [
             "attr" => [
                 "class" => "btn btn-primary my-2"
