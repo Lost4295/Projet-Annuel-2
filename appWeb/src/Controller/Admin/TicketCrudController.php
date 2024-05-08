@@ -35,6 +35,7 @@ class TicketCrudController extends AbstractCrudController
     public function configureFields(string $pageName): array|\Traversable
     {
         $id= IdField::new("id","id");
+        $titre = TextField::new("titre", "titre")->setRequired(true);
         $dateOuverture= DateField::new("dateOuverture","dateOuverture");
         $dateFermeture= DateField::new("dateFermeture","dateFermeture");
         $demandeur= AssociationField::new("demandeur","demandeur");
@@ -49,13 +50,13 @@ class TicketCrudController extends AbstractCrudController
         $resolveur= AssociationField::new("resolveur","resolveur");
         
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $dateOuverture, $dateFermeture, $demandeur, $category, $type, $status, $priority, $urgence, $resolveur];
+            return [$id, $titre, $dateOuverture, $dateFermeture, $demandeur, $category, $type, $status, $priority, $urgence, $resolveur];
         } elseif(Crud::PAGE_DETAIL === $pageName) {
-        return [$id, $dateOuverture, $dateFermeture, $demandeur, $lastUpdateDate, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
+        return [$id, $titre, $dateOuverture, $dateFermeture, $demandeur, $lastUpdateDate, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
         } elseif(Crud::PAGE_EDIT === $pageName) {
-        return [$dateOuverture, $dateFermeture, $demandeur, $lastUpdateDate, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
+        return [$titre, $dateOuverture, $dateFermeture, $demandeur, $lastUpdateDate, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
         } elseif(Crud::PAGE_NEW === $pageName) {
-        return [$dateOuverture, $dateFermeture, $demandeur, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
+        return [$titre, $dateOuverture, $dateFermeture, $demandeur, $category, $type, $status, $priority, $description, $pj, $urgence, $resolveur];
         }
     }
     // ...

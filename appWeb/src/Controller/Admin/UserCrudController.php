@@ -62,12 +62,16 @@ class UserCrudController extends AbstractCrudController
             ->setBasePath("uploads/avatars");
         $phoneNumber = TelephoneField::new("phoneNumber", 'phone')->setRequired(true);
         $abonnement = AssociationField::new("abonnement", 'abo')->setRequired(true);
+        $tickets = AssociationField::new("tickets", 'tickets')->setRequired(false);
+        $ticketsAttribues = AssociationField::new("ticketsAttribues", 'ticketsa')->setRequired(false);
+        $locations = AssociationField::new("locations", 'locations')->setRequired(false);
+
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $phoneNumber, $abonnement];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement];
+            return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement, $locations, $tickets, $ticketsAttribues];
         } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$email, $roles, $nom, $prenom, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement];
+            return [$email, $roles, $nom, $prenom, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement, $locations, $tickets, $ticketsAttribues];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [$email, $roles, $password, $nom, $prenom, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement];
         }
