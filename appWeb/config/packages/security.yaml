@@ -18,6 +18,7 @@ security:
                 # "app_login" is the name of the route created previously
                 login_path: login
                 check_path: login
+                use_referer: true
                 enable_csrf: true
                 provider: app_user_provider
                 success_handler: App\Security\LoginSuccessHandler
@@ -38,7 +39,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:
