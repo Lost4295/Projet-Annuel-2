@@ -22,7 +22,7 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $appartement->setCity('Paris');
             $appartement->setCountry('France');
             $appartement->setSurface(50);
-            $appartement->setNbRooms(2);
+            $appartement->setNbVoyageurs(2);
             $appartement->setNbchambers($i);
             $appartement->setBailleur($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
             $appartement->setNbBeds(1);
