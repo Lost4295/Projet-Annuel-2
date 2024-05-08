@@ -7,10 +7,13 @@ namespace App\Controller;
 use App\Entity\Location;
 use App\Entity\Professionnel;
 use App\Entity\User;
+use App\Form\AppartementType;
 use App\Form\TicketType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,137 +46,15 @@ class UserController extends AbstractController
             $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
             $appartements = $pro->getAppartements();
         }
-        $reservation = $this ->createFormBuilder(null)
-        ->add('adresse', TextType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('room', IntegerType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Nombre de Chambres:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('bed', IntegerType::class, [
-            'attr' => [
-                
-                "class" => "my-2 form-control ",
-                "min"=>0,
-                "max"=>6
-            ], "label" => "Nombre de Lits:"
-            , "row_attr" => ["class" => "col-2"]
-            
-
-        ])
-        ->add('bathroom', TextType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('voyageur', TextType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('picture', TextType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('equipement', TextType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add("submit", SubmitType::class, [
-            "attr" => [
-                "class" => "btn btn-primary my-2"
-            ], "label" => "submit"
-        ])->getForm();
+        
+        $reservation = $this->createForm(AppartementType::class);
         $reservation->handleRequest($request);
         if ($reservation->isSubmitted() && $reservation->isValid()) {
             $appartement = $reservation->getData();
             dd($appartement);
             $em->persist($appartement);
             $em->flush();
-
-        }
-        $reservation = $this ->createFormBuilder(null)
-        ->add('adresse', TextType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Choisir Adresse:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('room', IntegerType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Nombre de Chambres:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('bed', IntegerType::class, [
-            'attr' => [
-                
-                "class" => "my-2 form-control ",
-                "min"=>0,
-                "max"=>6
-            ], "label" => "Nombre de Lits:"
-            , "row_attr" => ["class" => "col-2"]
-            
-
-        ])
-        ->add('bathroom', IntegerType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Nombre de Salles de Bain:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        ->add('voyageur', IntegerType::class, [
-            'attr' => [
-                "class" => "my-2 form-control "
-            ], "label" => "Nombre de Voyageurs:"
-            , "row_attr" => ["class" => "col-2"]
-
-        ])
-        #->add('equipement', CheckboxType::class, [
-        #   'label' => 'Cochez les Equipements',
-        #   'required' => false,
-        #    'expanded' => true,
-        #    'multiple' => true,
-        #    'choices' => [
-        #        'Télévision' => 'television',
-        #        'Climatisation' => 'climatisation',
-        #        'Wifi' => 'wifi',
-        #        'Piscine' => 'piscine',
-        #    ],
-        #])
-        ->add("submit", SubmitType::class, [
-            "attr" => [
-                "class" => "btn btn-primary my-2"
-            ], "label" => "submit"
-        ])->getForm();
-        $reservation->handleRequest($request);
-        if ($reservation->isSubmitted() && $reservation->isValid()) {
-            $appartement = $reservation->getData();
-            dd($appartement);
-            $em->persist($appartement);
-            $em->flush();
-
+            return $this->redirectToRoute('appartement_create');
         }
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
             $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);

@@ -41,7 +41,7 @@
 					{% if is_granted("ROLE_VOYAGEUR") %}
 						<button class="nav-link my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
 					{% endif %}
-					<button class="nav-link my-2 p-4" id="v-pills-resa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-resa" type="button" role="tab" aria-controls="v-pills-resa" aria-selected="false">{{"resa"|trans}}</button>
+					<button class="nav-link my-2 p-4" id="v-pills-resa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-resa" type="button" role="tab" aria-controls="v-pills-resa" aria-selected="false">{{"crappart"|trans}}</button>
 					<button class="nav-link my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
 					<button class="nav-link my-2 p-4" id="v-pills-conf-tab" data-bs-toggle="pill" data-bs-target="#v-pills-conf" type="button" role="tab" aria-controls="v-pills-conf" aria-selected="false">{{"conf"|trans}}</button>
 				</div>
@@ -216,36 +216,56 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="tab-pane fade" id="v-pills-resa" role="tabpanel" aria-labelledby="v-pills-resa-tab" tabindex="0">resa...
-				<h2>{{'resa'|trans }}</h2>
-				{{ form_start(reservation) }}
+				<div class="tab-pane fade" id="v-pills-resa" role="tabpanel" aria-labelledby="v-pills-resa-tab" tabindex="0">
+				<h2>{{'crappart'|trans }}</h2>
+				{% form_theme reservation 'bootstrap_5_layout.html.twig' %}
+				{{form_start(reservation) }}
+				{{form_row(reservation.description) }}
+				{{form_row(reservation.shortDesc) }}
+				{{form_row(reservation.price) }}
+				{{form_row(reservation.address) }}
+				{{form_row(reservation.city) }}
+				{{form_row(reservation.postalCode) }}
+				{{form_row(reservation.country) }}
+				{{form_row(reservation.nbRooms) }}
+				{{form_row(reservation.services) }}
+				{{form_row(reservation.images) }}
+				{{form_row(reservation.submit) }}
+				{{form_end(reservation,{render_rest:false}) }}
+				
+						<script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.19/web.js"></script>
+						<script>
+							const ACCESS_TOKEN = 'pk.eyJ1IjoiYnlxIiwiYSI6ImNsdjBza2E2ajFxcHkycW53bXBheGd4cGUifQ.THaHqpyg1zDpdAcCWTQsjQ';
 
-			
-				{{form_row(reservation.adresse)}}
-				{{form_row(reservation.room)}}
-				{{form_row(reservation.bed)}}
-				{{form_row(reservation.bathroom)}}
-				{{form_row(reservation.voyageur)}}
-				<div>
-					<label for="photos">Upload des Photos:</label><br>
-					<input type="file" id="photos" name="photos" accept="image/*" multiple><br><br>
-				</div>
-				{#{form_row(reservation.equipement)}#}
-				<div>
-					<label>Cochez les Equipements:</label><br>
-					<input type="checkbox" id="television" name="equipements" value="television">
-					<label for="television">Télévision</label><br>
-					<input type="checkbox" id="climatisation" name="equipements" value="climatisation">
-					<label for="climatisation">Climatisation</label><br>
-					<input type="checkbox" id="wifi" name="equipements" value="wifi">
-					<label for="wifi">Wifi</label><br>
-					<input type="checkbox" id="piscine" name="equipements" value="piscine">
-					<label for="piscine">Piscine</label><br><br>
-				</div>
-				<button type="submit">Soumettre</button>
-				{{form_row(reservation.submit)}}
-				{{ form_end(reservation) }}
-			</form>
+				document.getElementById( "search-js" ).onload = () => {
+				mapboxsearch.config.accessToken = ACCESS_TOKEN;
+				const collection = mapboxsearch.autofill( { accessToken: ACCESS_TOKEN } );
+
+				// Add confirmation prompt to shipping address
+				const form = document.querySelector( "form" );
+				form.addEventListener( "submit", async ( e ) => {
+				e.preventDefault();
+				const result = await mapboxsearch.confirmAddress( form, {
+				theme: {
+				variables: {
+				border: '3px solid rgba(0,0,0,0.35)',
+				borderRadius: '18px'
+				}
+				},
+				minimap: {
+				defaultMapStyle: [
+				'mapbox', 'outdoors-v11'
+				],
+				satelliteToggle: true
+				},
+				skipConfirmModal: ( feature ) => false // overrides default behavior, show dialog every time
+				} );
+				console.log( result );
+				} );
+				}
+				</script>
+				
+
 			</div>
 				<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
 				<div class="tab-pane fade" id="v-pills-conf" role="tabpanel" aria-labelledby="v-pills-conf-tab" tabindex="0">
