@@ -109,7 +109,7 @@ input::-webkit-inner-spin-button {
 		<div class="bar">
 			<div class="text-light location">
 				<p>{{'destination'|trans }}</p>
-				<input type="text" class="text-light" placeholder="{{'dest'|trans}}">
+				<input type="text" id="dest" class="text-light" placeholder="{{'dest'|trans}}">
 			</div>
 			<div class="text-light check-in">
 				<p>{{'checkin'|trans}}</p>
@@ -122,8 +122,8 @@ input::-webkit-inner-spin-button {
 			<div class="text-light guests">
 				<p>{{"guests"|trans }}</p>
 				<p class="djf" data-bs-toggle="collapse" data-bs-target="#card" aria-expanded="false" aria-controls="card">0 voyageur</p>
-				<span>
-					<i class="bi-search" onclick="alert('hey, faut m\'implémenter')"></i>
+				<span id="search">
+					<i class="bi-search"></i>
 				</span>
 			</div>
 		</div>
@@ -149,10 +149,10 @@ input::-webkit-inner-spin-button {
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="Babies">{{"babies"|trans}}</label>
+						<label for="babies">{{"babies"|trans}}</label>
 						<div class="d-flex flex-row justify-content-between align-items-center">
 							<i class="bi bi-dash-circle moins fs-1"></i>
-							<input type="number" class="onlynum form-control" id="Babies" min="0" value="0" max="6">
+							<input type="number" class="onlynum form-control" id="babies" min="0" value="0" max="6">
 							<i class="bi bi-plus-circle plus fs-1"></i>
 						</div>
 					</div>
@@ -176,36 +176,6 @@ input::-webkit-inner-spin-button {
 		</a>
     {% endfor %}
 
-		<div class="col-md-4 py-1">
-			<div class="card">
-				<div class="card-body">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<h4>Card title</h4>
-					<small>Some quick example text to build on the card title and make up the bulk of the card's content.</small>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-4 py-1">
-			<div class="card">
-				<div class="card-body">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<h4>Card title</h4>
-					<small>Some quick example text to build on the card title and make up the bulk of the card's content.</small>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4 py-1">
-			<div class="card">
-				<div class="card-body">
-					<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
-					<h4>Card title</h4>
-					<small>Some quick example text to build on the card title and make up the bulk of the card's content.</small>
-				</div>
-			</div>
-		</div>
-	</div>
-
 {% endblock %}
 
 {% block javascripts %}
@@ -216,7 +186,7 @@ input::-webkit-inner-spin-button {
 		$( "#startdate" ).flatpickr( {
 			"plugins": [new rangePlugin(
 				{ input: "#enddate" }
-			)]
+			)], 
 		});
 	</script>
 	<script>
@@ -225,7 +195,7 @@ input::-webkit-inner-spin-button {
 
 		$('.plus').click(function () {
 			$(this).prev().val(+$(this).prev().val() + 1);
-			var total = +$("#adults").val() + +$("#children").val()+ +$("#Babies").val();
+			var total = +$("#adults").val() + +$("#children").val()+ +$("#babies").val();
 			var travel = " voyageurs";
 			if (total <= 1) {
 				travel =" voyageur";
@@ -235,13 +205,41 @@ input::-webkit-inner-spin-button {
 
 		$('.moins').click(function () {
 			if ($(this).next().val() > 0) $(this).next().val(+$(this).next().val() - 1);
-			var total = +$("#adults").val() + +$("#children").val()+ +$("#Babies").val();
+			var total = +$("#adults").val() + +$("#children").val()+ +$("#babies").val();
 			var travel = " voyageurs";
 			if (total <= 1) {
 				travel =" voyageur";
 			}
 			$(".djf").text(total+travel);
 		});
+
+
+		$('#search').click(function () {
+			if ($("#dest").val() == "" || $("#startdate").val() == "" || $("#enddate").val() == "" || $("#adults").val() == 0) {
+				console.error("Veuillez remplir tous les champs");
+				return;
+			}
+			console.log($("#dest").val(), $("#startdate").val(), $("#enddate").val(), $("#adults").val(), $("#children").val(), $("#babies").val());
+			$.ajax({
+				url: "{{ path('search') }}",
+				type: "POST",
+				data: {
+					'dest': $("#dest").val(),
+					'startdate': $("#startdate").val(),
+					'enddate': $("#enddate").val(),
+					'adults': $("#adults").val(),
+					'children': $("#children").val(),
+					'babies': $("#babies").val()
+				},
+				success: function (data) {
+					console.log(data);
+				},
+				error: function (error) {
+					console.error(error);
+				}
+			});
+		});
+
 
 	</script>
 {% endblock %}

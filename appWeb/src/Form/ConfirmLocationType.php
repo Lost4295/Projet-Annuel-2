@@ -23,7 +23,8 @@ class ConfirmLocationType extends AbstractType
                 'label' => false,
                 "attr" => [
                     "class" => "selectpicker"
-                ]
+                ],
+                "required" => false
             ])
         ;
     }

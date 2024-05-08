@@ -22,6 +22,11 @@ class AppartementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('titre', TextType::class, [
+                'attr' => [
+                    "class" => "my-2"
+                ], "label" => "shortDesc"
+            ])
             ->add('description', TextareaType::class, [
                 'attr' => [
                     "class" => "my-2"
@@ -76,6 +81,28 @@ class AppartementType extends AbstractType
                     "class" => "my-2"
                 ], "label" => "state"
             ])
+            ->add('nbchambers', NumberType::class, [
+                'attr' => [
+                    "class" => "my-2"
+                ], "label" => "chambers"
+            ])
+            ->add('nbbathrooms', NumberType::class, [
+                'attr' => [
+                    "class" => "my-2"
+                ], "label" => "bathrooms"
+            ])
+            ->add('nbBeds', NumberType::class, [
+                'attr' => [
+                    "class" => "my-2"
+                ], "label" => "beds "
+            ])
+            ->add('createdAt', null, [
+                'widget' => 'single_text',
+            ])
+            ->add('updatedAt', null, [
+                'widget' => 'single_text',
+            ])
+            ->add('surface')
             ->add('bailleur', EntityType::class, [
                 'attr' => [
                     "class" => "my-2"
@@ -88,7 +115,7 @@ class AppartementType extends AbstractType
                         ->setParameter('responsable', '%' . User::ROLE_BAILLEUR . '%');
                 },
             ])
-            ->add("services", EntityType::class, [
+            ->add('appartPluses', EntityType::class, [
                 "class" => AppartPlus::class,
                 "choice_label" =>  function (AppartPlus $appart): string {
                     return $appart->__toString();
@@ -115,4 +142,5 @@ class AppartementType extends AbstractType
                 ], "label" => "submit"
             ]);
     }
+
 }

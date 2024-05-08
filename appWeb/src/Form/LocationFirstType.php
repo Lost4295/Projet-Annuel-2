@@ -29,7 +29,8 @@ class LocationFirstType extends AbstractType
             "attr"=>[
                 "class"=>"form-control",
                 "min"=>1,
-                "max"=>6
+                "max"=>6,
+                "value"=>1
             ],
             'label'=>"adults",
             "scale"=>0,
@@ -38,7 +39,8 @@ class LocationFirstType extends AbstractType
                 "attr"=>[
                     "class"=>"form-control",
                     "min"=>0,
-                    "max"=>6
+                    "max"=>6,
+                    "value"=>0
                 ],
                 'label'=>"kids",
                 "scale"=>0,
@@ -47,7 +49,8 @@ class LocationFirstType extends AbstractType
                 "attr"=>[
                     "class"=>"form-control",
                     "min"=>0,
-                    "max"=>6
+                    "max"=>6,
+                    "value"=>0
                 ],
                 'label'=>"babies",
                 "scale"=>0,
