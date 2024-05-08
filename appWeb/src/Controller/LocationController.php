@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class LocationController extends AbstractController
 {
-    #[Route("/locations", name: "locations")]
+    #[Route("/appartements", name: "appartements")]
     public function createPage(EntityManagerInterface $em)
     {
         $apparts = $em->getRepository(Appartement::class)->findAll();
@@ -45,7 +45,7 @@ class LocationController extends AbstractController
         return $this->json($apparts);
     }
 
-    #[Route("/locations/{id}", name: "appart_detail", requirements: ['id' => '\d+'])]
+    #[Route("/appartements/{id}", name: "appart_detail", requirements: ['id' => '\d+'])]
     public function show($id, EntityManagerInterface $em, Request $request)
     {
         $appart = $em->getRepository(Appartement::class)->find($id);
@@ -78,11 +78,12 @@ class LocationController extends AbstractController
             'action' => $this->generateUrl('appart_confirm'),
             'method' => 'POST',
         ]);
+        dump($appart->getImages());
         $form->handleRequest($request);
         return $this->render('appartements/appart_detail.html.twig', [
             'appart' => $appart,
             'form' => $form,
-            'dates' => $dates,
+            'dates' => $dates?? null,
             'canComm' => $canComm,
             'commentaires' => $commentaires,
             'formComm' => $formComm ?? null,
@@ -94,6 +95,7 @@ class LocationController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function confirm(Request $request, EntityManagerInterface $em)
     {
+        
         $secondForm = $this->createForm(ConfirmLocationType::class, null, [
             'method' => 'POST',
             'action' => $this->generateUrl('app_stripe')
@@ -107,6 +109,10 @@ class LocationController extends AbstractController
             $this->addFlash("danger", "noaccess");
             return $this->redirectToRoute('locations');
         }
+
+        $locs = $em->getRepository(Location::class)->findBy(["id" => $id]);
+
+
         $dates = explode("-", $firstForm->get('date')->getData());
         $dates = array_map(function ($date) {
             return new \DateTime($date);
@@ -166,7 +172,7 @@ class LocationController extends AbstractController
     #[IsGranted("ROLE_BAILLEUR")]
     public function createAppart(Request $request, EntityManagerInterface $em)
     {
-        return $this->render('appart"ements/create_appart.html.twig');
+        return $this->render('appartements/create_appart.html.twig');
     }
 
     #[Route("/location/{id}", name: "location_info", requirements: ["id" => "\d+"])]

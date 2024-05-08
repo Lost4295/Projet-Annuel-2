@@ -58,7 +58,7 @@ class UserCrudController extends AbstractCrudController
         $birthdate = DateField::new("birthdate", "birthdate")->setRequired(true);
         $isVerified = BooleanField::new("isVerified", "verified");
         $avatar = ImageField::new("avatar", "avatar")
-            ->setUploadDir("/var/uploads/avatars")
+            ->setUploadDir("public/uploads/avatars")
             ->setBasePath("uploads/avatars");
         $phoneNumber = TelephoneField::new("phoneNumber", 'phone')->setRequired(true);
         $abonnement = AssociationField::new("abonnement", 'abo')->setRequired(true);
@@ -67,7 +67,7 @@ class UserCrudController extends AbstractCrudController
         $locations = AssociationField::new("locations", 'locations')->setRequired(false);
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $phoneNumber, $abonnement];
+            return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $phoneNumber];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement, $locations, $tickets, $ticketsAttribues];
         } elseif (Crud::PAGE_EDIT === $pageName) {

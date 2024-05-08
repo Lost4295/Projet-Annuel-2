@@ -66,10 +66,10 @@ class AppartementType extends AbstractType
                     'autocomplete' => "country-name"
                 ], "label" => "country"
             ])
-            ->add('nbRooms', NumberType::class, [
+            ->add('nbVoyageurs', NumberType::class, [
                 'attr' => [
                     "class" => "my-2"
-                ], "label" => "nbRooms"
+                ], "label" => "nbVoyageurs"
             ])
             ->add('note', NumberType::class, [
                 'attr' => [

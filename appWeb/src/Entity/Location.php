@@ -45,6 +45,10 @@ class Location
     #[ORM\ManyToOne(inversedBy: 'locations')]
     private ?Service $services = null;
 
+    public function __toString(): string
+    {
+        return $this->id . ' ' . $this->dateDebut->format('d/m/Y') . ' - ' . $this->dateFin->format('d/m/Y') . ' ' . $this->appartement->getTitre() . ' ' . $this->locataire->getFullName();
+    }
     public function getId(): ?int
     {
         return $this->id;

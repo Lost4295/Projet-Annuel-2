@@ -46,12 +46,12 @@
 					</tr>
 				{% endfor %}
 				<tr>
-					{% for abo,val in abonnements.key %}
+					{% for abo,val in abonnements.url %}
 						{% if loop.first %}
 							<td></td>
 						{% else %}
 							<td>
-								<a href="#" class="btn btn-primary">Modifier</a>
+								<a href="{{val }}" class="btn btn-primary">Modifier</a>
 								<a href="#" class="btn btn-danger">Supprimer</a>
 							</td>
 						{% endif %}

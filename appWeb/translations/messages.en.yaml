@@ -55,7 +55,6 @@ notifs: Notifications
 loca: Locations
 secur: Security
 conf: Configuration
-verify: 'Please verify your email address'
 user: User
 id: ID
 roles: Roles

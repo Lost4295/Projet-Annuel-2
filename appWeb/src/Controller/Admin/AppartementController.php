@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AppartementController extends AbstractController
 {
 
-    #[Route("/create_appart", name: "appartement_create")]
+    #[Route("/createappart", name: "appartement_create")]
 
     public function index(Request $request, EntityManagerInterface $em): Response
     {

@@ -21,7 +21,7 @@ class DefaultController extends AbstractController
     {
         $user = $this->getUser();
         if ($user && !$user->isVerified()) {
-            $this->addFlash('warning', $translator->trans('verify'));
+            $this->addFlash('warning', "plsverif");
         }
         $apparts = $em->getRepository(Appartement::class)->findAll();
         return $this->render('index.html.twig', ['apparts' => $apparts]);

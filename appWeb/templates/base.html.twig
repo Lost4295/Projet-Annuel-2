@@ -91,7 +91,7 @@
 					</button>
 					<div class="navbar-collapse offcanvas-collapse justify-content-between" id="navbarsExampleDefault">
 						<nav class="navbar-nav mb-2 mb-lg-0 nav-fill">
-							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'locations' %} active {%endif%}" {% if app.request.get('_route') == 'locations' %} aria-current="page" {% endif %} href="{{path('locations') }}">{{'locations' |trans }}</a>
+							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'appartements' %} active {%endif%}" {% if app.request.get('_route') == 'appartements' %} aria-current="page" {% endif %} href="{{path('appartements') }}">{{'appartements' |trans }}</a>
 							{# Je triche oui #}
 							<div class="dropdown">
 								<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'services' %} active {%endif%} dropdown-toogle" role="button" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} data-bs-toggle="sdropdown" aria-expanded="false" href="{{path('services') }}">{{'services' |trans }}</a>

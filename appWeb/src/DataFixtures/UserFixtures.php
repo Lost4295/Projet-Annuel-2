@@ -83,6 +83,17 @@ class UserFixtures extends Fixture
         $prestapro->setCity('Paris');
         $prestapro->setCountry('France');
         $manager->persist($prestapro);
+
+        $api = new User();
+        $api->setEmail('api@pcs.fr')
+            ->setAbonnement($this->getReference(AbonnementFixtures::GRATUIT))
+            ->setRoles([User::ROLE_NON_USER])
+            ->setPassword($this->encoder->hashPassword($api, 'api'))
+            ->setNom('Api')
+            ->setPrenom('Api')
+            ->setPhoneNumber('0606060606')
+            ->setBirthdate(new \DateTime('1990-01-01'))
+            ->setIsVerified(true);
         $manager->flush();
     }
     public function getDependencies()

@@ -39,7 +39,7 @@ class AppartementCrudController extends AbstractCrudController
         $shortDesc = TextField::new("shortDesc", "shdesc")->setMaxLength(120)->setRequired(true);
         $price = MoneyField::new("price", "price")->setCurrency("EUR")->setCustomOption('storedAsCents', false)->setRequired(true);
         $adress = TextField::new("address", "address")->setRequired(true);
-        $nbRooms = NumberField::new("nbRooms", "nbrooms")->setRequired(true);
+        $nbRooms = NumberField::new("nbvoyageurs", "nbrooms")->setRequired(true);
         $note = NumberField::new("note", "note");
         $state = ChoiceField::new("state", "state")->setChoices(["Disponible" => "Disponible", "En attente" => "En attente", "Loué" => "Loué"])->setRequired(false); // TODO : faire une fonction pour récup ça dans le fichier de config
         $bailleur = AssociationField::new('bailleur', "baill")->setRequired(true);
@@ -66,7 +66,7 @@ class AppartementCrudController extends AbstractCrudController
         } else {
             return [
                 $titre, $description, $shortDesc, $price, $adress, $city, $postalCode, $country, $nbRooms, $nbchambers,
-                $nbbathrooms, $nbBeds, $createdAt, $updatedAt, $surface, $note, $state, $bailleur, $photos, $pluses, $locations
+                $nbbathrooms, $nbBeds, $createdAt, $updatedAt, $surface, $state, $bailleur, $photos, $pluses, $locations
             ];
         }
     }

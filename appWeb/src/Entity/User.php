@@ -241,6 +241,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isAdmin(): ?bool
     {
+        if ($this->admin){
+            $this->grantAdmin();
+        } else {
+            $this->removeAdmin();
+        }
         return $this->admin;
     }
 
