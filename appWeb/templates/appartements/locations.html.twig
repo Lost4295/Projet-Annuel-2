@@ -215,8 +215,8 @@ input::-webkit-inner-spin-button {
 
 
 		$('#search').click(function () {
-			if ($("#dest").val() == "" || $("#startdate").val() == "" || $("#enddate").val() == "" || $("#adults").val() == 0) {
-				console.error("Veuillez remplir tous les champs");
+			if ($("#dest").val() == "" && $("#startdate").val() == "" && $("#enddate").val() == "" && $("#adults").val() == 0) {
+				console.error("Veuillez remplir au moins un champ");
 				return;
 			}
 			console.log($("#dest").val(), $("#startdate").val(), $("#enddate").val(), $("#adults").val(), $("#children").val(), $("#babies").val());
