@@ -29,7 +29,7 @@ class AbonnementFixtures extends Fixture
 
         $abonnement2 = new Abonnement();
         $abonnement2->setNom("baladeur")
-        ->setTarif("9,90");
+        ->setTarif("9.90");
 
         $abonnement3 = new Abonnement();
         $abonnement3->setNom("Explorateur")
