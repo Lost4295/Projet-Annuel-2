@@ -16,7 +16,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class CommentaireCrudController extends AbstractCrudController
@@ -39,8 +41,11 @@ class CommentaireCrudController extends AbstractCrudController
         $id = IdField::new("id", "id");
         $commentaire = TextareaField::new("commentaire", "nom")->setRequired(true);
         $type = ChoiceField::new("type", "type")->setChoices(Commentaire::getTypes());
+        $user = AssociationField::new("user", "user")->setRequired(true);
+        $entityId = NumberField::new("entityId", "entityId")->setRequired(true);
+        $date = DateField::new("date", "date")->setRequired(true);
 
-        $return = [$commentaire, $type];
+        $return = [$commentaire, $type, $date, $user, $entityId];
         if (Crud::PAGE_INDEX === $pageName||Crud::PAGE_DETAIL === $pageName) {
             array_unshift($return, $id);
         } 

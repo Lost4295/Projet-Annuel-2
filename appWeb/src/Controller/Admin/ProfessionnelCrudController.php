@@ -24,29 +24,25 @@ class ProfessionnelCrudController extends AbstractCrudController
     {
         return $actions
             // ...
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
-        ;
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
     public function configureFields(string $pageName): array|\Traversable
     {
-            $id = IdField::new("id", 'id');
-            $responsable= AssociationField::new('responsable', "responsable")->setRequired(true);
-            $services= AssociationField::new('services', "services");
-            $societyName= TextField::new("societyName", "societyname")->setRequired(true);
-            $siretNumber= TextField::new("siretNumber", "siretnumber")->setRequired(true)->setMaxLength(14);
-            $societyAddress= TextField::new("societyAddress", "societyaddress")->setRequired(true);
-            $city= TextField::new("city", "city")->setRequired(true);
-            $postalCode= TextField::new("postalCode", "postalcode")->setRequired(true)->setMaxLength(5);
-            $country= TextField::new("country", "country")->setRequired(true);
-            if (Crud::PAGE_INDEX === $pageName) {
-                return [$id, $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services];
-            } elseif(Crud::PAGE_DETAIL === $pageName) {
-                return [$id, $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services];
-            } elseif(Crud::PAGE_EDIT === $pageName) {
-                return [ $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services];
-            } elseif(Crud::PAGE_NEW === $pageName) {
-                return [ $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services];
-            }
+        $id = IdField::new("id", 'id');
+        $responsable = AssociationField::new('responsable', "responsable")->setRequired(true);
+        $services = AssociationField::new('services', "services");
+        $appartements = AssociationField::new('appartements', "appartements");
+        $societyName = TextField::new("societyName", "societyname")->setRequired(true);
+        $siretNumber = TextField::new("siretNumber", "siretnumber")->setRequired(true)->setMaxLength(14);
+        $societyAddress = TextField::new("societyAddress", "societyaddress")->setRequired(true);
+        $city = TextField::new("city", "city")->setRequired(true);
+        $postalCode = TextField::new("postalCode", "postalcode")->setRequired(true)->setMaxLength(5);
+        $country = TextField::new("country", "country")->setRequired(true);
+        if (Crud::PAGE_INDEX === $pageName || Crud::PAGE_DETAIL === $pageName) {
+            return [$id, $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services, $appartements];
+        } else {
+            return [$responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services, $appartements];
+        }
     }
 
     // ...

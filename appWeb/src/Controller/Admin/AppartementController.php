@@ -26,11 +26,13 @@ class AppartementController extends AbstractController
     public function index(Request $request, EntityManagerInterface $em): Response
     {
 
-        $form = $this->createForm(AppartementType::class);
+        $app = new Appartement();
+        $form = $this->createForm(AppartementType::class, $app);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $appartement = $form->getData();
-            dd($appartement);
+            dd($appartement, $app);
+
             $em->persist($appartement);
             $em->flush();
             return $this->redirectToRoute('appartement_create');

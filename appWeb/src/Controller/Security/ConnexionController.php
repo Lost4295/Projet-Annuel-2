@@ -48,7 +48,7 @@ class ConnexionController extends AbstractController
             $g = $this->em->getRepository(Abonnement::class)->findOneBy(["nom" => "Gratuit"]);
             if (!$g) {
                 $this->addFlash("error", "errorabt");
-                createErrorTicket();
+                $this->createErrorTicket();
             }
             $user->setEmail($form->get('email')->getData());
             $user->setNom($form->get('nom')->getData());
@@ -165,7 +165,7 @@ class ConnexionController extends AbstractController
             'csrf_token_intention' => 'authenticate',
 
             // the URL users are redirected to after the login (default: '/admin')
-            'target_path' => $this->generateUrl('homepage'),
+            // 'target_path' => $this->generateUrl('homepage'),
 
             // the label displayed for the username form field (the |trans filter is applied to it)
             'username_label' => 'login_page.username',

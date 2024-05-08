@@ -40,7 +40,7 @@ class Appartement
 
 
     #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $nbRooms = null;
+    private ?int $nbVoyageurs = null;
 
     #[ORM\Column]
     private ?float $note = null;
@@ -161,14 +161,14 @@ class Appartement
         return $this;
     }
 
-    public function getNbRooms(): ?int
+    public function getNbVoyageurs(): ?int
     {
-        return $this->nbRooms;
+        return $this->nbVoyageurs;
     }
 
-    public function setNbRooms(int $nbRooms): static
+    public function setNbVoyageurs(int $nbVoyageurs): static
     {
-        $this->nbRooms = $nbRooms;
+        $this->nbVoyageurs = $nbVoyageurs;
 
         return $this;
     }

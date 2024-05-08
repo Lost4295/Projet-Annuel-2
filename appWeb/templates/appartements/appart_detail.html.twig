@@ -17,14 +17,17 @@
 		</div>
 		<div class="row d-flex justify-content-center">
 			<div class="d-flex justify-content-center">
-				<img src="{#{{ asset('images/' ~ appart.image) }}#} https://placehold.co/1000x500" alt="">
+			{{dump(appart.images) }}
+			{% for image in appart.images %}
+				<img src='{{ asset("uploads/" ~ image) }}' alt="">
+			{% endfor %}
 			</div>
 		</div>
 		<div class="row">
 			<div><b>{{appart.shortDesc}}</b></div>
 			<div style="display: flex; justify-content: space-between; width: 100%;">
 				
-				<p>{{appart.Nbrooms}} Voyageurs - {{appart.nbchambers}} Chambres - {{appart.nbBeds}} Lits - {{appart.nbbathrooms}} Salle de bain</p>
+				<p>{{appart.NbVoyageurs}} Voyageurs - {{appart.nbchambers}} Chambres - {{appart.nbBeds}} Lits - {{appart.nbbathrooms}} Salle de bain</p>
 				<p class="">{{appart.note}} / 5</p>
 			</div>
 			<hr class="text-info">
@@ -123,16 +126,9 @@
 					</div>
 				</div>
 			</div>
-			{% if is_granted("ROLE_USER")  %}
 			<div class="col-12 my-3">
 				<button id="confirm" class="btn btn-primary">{{"reserv"|trans}}</button>
 			</div>
-			{% else %}
-			<div class="col-3 my-3 d-flex flex-column">
-				<a href="{{ path('login') }}" class="btn btn-primary">{{"login"|trans}}</a>
-				<small class="text-muted">{{"loginmsg"|trans}}</small>
-			</div>
-			{% endif %}
 		</div>
 		{{ form_end(form) }}
 
@@ -246,11 +242,20 @@ new mapboxgl.Marker(el)
   )
   .addTo(map);}
 map.addControl( new mapboxgl.NavigationControl() );
+
+var dates = {{ dates|json_encode|raw }};
 			$( "#location_first_date" ).daterangepicker( {
 				"locale": "fr",
 				"minDate": new Date(),
 				"disable": [],
 				"autoApply": true,
+				"isInvalidDate": function(date) {
+					if ($.inArray(date.format('YYYY-MM-DD'), dates) != -1) {
+						return true;
+					} else {
+						return false;
+					}
+				}
 				}, function(start, end, label) {
 				$("#tprice").text(" du "+start.format('DD/MM/YYYY')+" au "+end.format('DD/MM/YYYY')
 				+ ' ('+end.diff(start, 'days')+" jours) = ");
@@ -272,7 +277,6 @@ map.addControl( new mapboxgl.NavigationControl() );
 		$('.moins').click(function () {
 			if ($(this).next().val() > 0) $(this).next().val(+$(this).next().val() - 1);
 			var total = +$("#location_first_adults").val() + +$("#location_first_kids").val()+ +$("#location_first_babies").val();
-			console.log(total, $("#location_first_adults").val(), $("#location_first_kids").val(), $("#location_first_babies").val());
 			var travel = " voyageurs";
 			if (total <= 1) {
 				travel =" voyageur";

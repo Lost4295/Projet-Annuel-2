@@ -11,6 +11,7 @@ use App\Form\CommentaireType;
 use App\Form\ConfirmLocationType;
 use App\Form\LocationFirstType;
 use App\Form\LocationTestType;
+use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +29,22 @@ class LocationController extends AbstractController
         ]);
     }
 
+    #[Route("/ajax/search/appart", name: "search")]
+    public function search(Request $request, EntityManagerInterface $em)
+    {
+        $dest = $request->request->get('dest');
+        $startdate = $request->request->get('startdate');
+        $enddate = $request->request->get('enddate');
+        $adults = $request->request->get('adults');
+        $children = $request->request->get('children');
+        $babies = $request->request->get('babies');
+
+        $apparts = $em->getRepository(Appartement::class)->findAppart($dest, $startdate, $enddate, $adults, $children, $babies);
+
+        dump($apparts);
+        return $this->json($apparts);
+    }
+
     #[Route("/locations/{id}", name: "appart_detail", requirements: ['id' => '\d+'])]
     public function show($id, EntityManagerInterface $em, Request $request)
     {
@@ -38,28 +55,38 @@ class LocationController extends AbstractController
 
         if ($passedlocs) {
             $canComm = true;
-            $commentaires = $em->getRepository(Commentaire::class)->findComments("appartement",$appart->getId());
+            $commentaires = $em->getRepository(Commentaire::class)->findComments("appartement", $appart->getId());
             $formComm = $this->createForm(CommentaireType::class, null, [
                 'action' => $this->generateUrl('commentaire_create'),
                 'method' => 'POST',
             ]);
         }
-        $location = new Location();
+        $locs = $em->getRepository(Location::class)->findBy(["id" => $appart->getId()]);
+        foreach ($locs as $loc) {
+            $startDate = $loc->getDateDebut();
+            $endDate = $loc->getDateFin();
+            $dates[] = $startDate->format('Y-m-d');
+            $dates[] = $endDate->format('Y-m-d');
+            $interval = $startDate->diff($endDate);
+            $numDays = $interval->days;
+            for ($i = 1; $i < $numDays; $i++) {
+                $date = $startDate->add(new DateInterval('P1D'))->format('Y-m-d');
+                $dates[] = $date;
+            }
+        }
         $form = $this->createForm(LocationFirstType::class, null, [
             'action' => $this->generateUrl('appart_confirm'),
             'method' => 'POST',
         ]);
         $form->handleRequest($request);
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     return $this->redirectToRoute('appart_confirm');
-        // }
         return $this->render('appartements/appart_detail.html.twig', [
             'appart' => $appart,
             'form' => $form,
+            'dates' => $dates,
             'canComm' => $canComm,
             'commentaires' => $commentaires,
             'formComm' => $formComm ?? null,
-            'type'=> Commentaire::APPART
+            'type' => Commentaire::APPART
         ]);
     }
 
@@ -67,22 +94,37 @@ class LocationController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function confirm(Request $request, EntityManagerInterface $em)
     {
+        $secondForm = $this->createForm(ConfirmLocationType::class, null, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('app_stripe')
+        ]);
         $firstForm = $this->createForm(LocationFirstType::class, null, [
             'method' => 'POST',
         ]);
         $firstForm->handleRequest($request);
         $id = $firstForm->get('appart')->getData();
+        if (!$id) {
+            $this->addFlash("danger", "noaccess");
+            return $this->redirectToRoute('locations');
+        }
+        $dates = explode("-", $firstForm->get('date')->getData());
+        $dates = array_map(function ($date) {
+            return new \DateTime($date);
+        }, $dates);
+        if ($dates[0] == $dates[1]) {
+            $this->addFlash("danger", "samedate");
+            return $this->redirectToRoute('appart_detail', ['id' => $id]);
+        }
         if ($firstForm->isSubmitted() && !$firstForm->isValid()) {
             return $this->redirectToRoute('appart_detail', ['id' => $id]);
         }
         $appart = $em->getRepository(Appartement::class)->find($id);
-        $secondForm = $this->createForm(ConfirmLocationType::class, null, [
-            'method' => 'POST',
-        ]);
+
         return $this->render('appartements/confirm_appart.html.twig', [
             'firstForm' => $firstForm,
             'appart' => $appart,
-            'secondForm'=> $secondForm
+            'secondForm' => $secondForm,
+            'dates' => $dates
         ]);
     }
 
@@ -114,7 +156,7 @@ class LocationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
             $commentaire->setDate(new \DateTime())
-            ->setUser($user);
+                ->setUser($user);
             $em->persist($commentaire);
             $em->flush();
             return $this->redirectToRoute('appart_detail', ['id' => $commentaire->getEntityId()]);
@@ -126,18 +168,17 @@ class LocationController extends AbstractController
     {
         return $this->render('appart"ements/create_appart.html.twig');
     }
-    
-    #[Route("/location/{id}", name:"location_info", requirements: ["id"=> "\d+"])]
+
+    #[Route("/location/{id}", name: "location_info", requirements: ["id" => "\d+"])]
     #[IsGranted("ROLE_VOYAGEUR")]
-    public function locationInfo($id, EntityManagerInterface $em){
-        $uid =$this->getUser()->getUserIdentifier();
-        $loc =$em->getRepository(Location::class)->find($id);
-        if (!$loc){
-            $this->addFlash("danger","noaccess" );
+    public function locationInfo($id, EntityManagerInterface $em)
+    {
+        $uid = $this->getUser();
+        $loc = $em->getRepository(Location::class)->find($id);
+        if (!$loc || $uid !== $loc->getLocataire()) {
+            $this->addFlash("danger", "noaccess");
             return $this->redirectToRoute('profile');
         }
-
+        return $this->render("location/location_detail.html.twig", ['location' => $loc]);
     }
 }
-
-

@@ -22,16 +22,16 @@
 							Date :
 						</div>
 						<div>
-							<a href="{{ '#' }}" class="link-light">Modifier</a>
+							<a href="{{ path("appart_detail",{id: appart.id})}}" class="link-light">Modifier</a>
 						</div>
 					</div>
-					<p>{{ firstForm.vars.value.date }}</p>
+					<p>{{ dates[0]|date("d/m/Y")}} - {{ dates[1]|date("d/m/Y")}}</p>
 					<div class='d-flex justify-content-between mb-2'>
 						<div>
 							Voyageurs :
 						</div>
 						<div>
-							<a href="{{ '#' }}" class="link-light">Modifier</a>
+							<a href="{{ path("appart_detail",{id: appart.id})}}" class="link-light">Modifier</a>
 						</div>
 					</div>
 					{% set num = firstForm.vars.value.adults + firstForm.vars.value.kids + firstForm.vars.value.babies %}
@@ -99,6 +99,8 @@
 					{{ form_widget(secondForm.firstForm.kids, {value: firstForm.vars.value.kids, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{ form_widget(secondForm.firstForm.adults, {value: firstForm.vars.value.adults, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{ form_widget(secondForm.firstForm.babies, {value: firstForm.vars.value.babies, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
+					{{ form_widget(secondForm.firstForm.date, {value: firstForm.vars.value.date, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
+					{{ form_widget(secondForm.firstForm.appart, {value: firstForm.vars.value.appart, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{form_row(secondForm._token) }}
 				</div>
 			</div>
@@ -106,7 +108,7 @@
 	</div>
 	<div class="row">
 		<div class="col">
-			<a href="{{ path('index') }}" class="btn btn-primary">Procéder au paiement</a>
+			<button class="btn btn-primary">Procéder au paiement</button>
 		</div>
 	</div>
 	{{ form_end(secondForm, {render_rest: false}) }}

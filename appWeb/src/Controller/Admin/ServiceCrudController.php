@@ -40,10 +40,12 @@ class ServiceCrudController extends AbstractCrudController
         $type = ChoiceField::new("type", 'type')->setChoices(Service::getTypes())->setRequired(true);
         $prestataire = AssociationField::new("prestataire", 'prestataire')->setRequired(true);
         $tarifs = MoneyField::new("tarifs", 'tarif')->setCurrency("EUR")->setCustomOption('storedAsCents', false)->setRequired(true);
+        $location = AssociationField::new("locations", 'locations');
+
         if (Crud::PAGE_INDEX === $pageName || Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $titre, $description, $type, $prestataire, $tarifs];
+            return [$id, $titre, $description, $type, $prestataire, $tarifs, $location];
         } else {
-            return [$titre, $description, $type, $prestataire, $tarifs];
+            return [$titre, $description, $type, $prestataire, $tarifs, $location];
         }
     }
 }

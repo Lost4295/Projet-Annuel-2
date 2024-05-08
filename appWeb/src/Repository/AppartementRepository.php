@@ -36,6 +36,46 @@ class AppartementRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+    public function findAppart ( string $dest= null, string $startdate= null, string $enddate= null, string $adults= null, string $children= null, string $babies= null)
+    {
+        $qb = $this->createQueryBuilder('a');
+        if (isset($dest) && $dest !== '') {
+            $qb
+                ->where('a.city LIKE :dest')
+                ->setParameter('dest', '%' . $dest . '%')
+                ->orWhere('a.country LIKE :dest2')
+                ->setParameter('dest2', '%' . $dest . '%');
+        }
+        if (isset($adults) && $adults !== '') {
+            if (isset($children) && $children !== '') {
+                if (isset($babies) && $babies !== '') {
+                    $voyageurs = $adults + $children + $babies;
+                } else {
+                    $voyageurs = $adults + $children;
+                }
+            } else {
+                $voyageurs = $adults;
+            }
+            $qb
+                ->andWhere('a.nbVoyageurs >= :adults')
+                ->setParameter('adults', $voyageurs);
+        }
+        if (isset($startdate) && $startdate !== '') {
+            $qb
+                ->leftJoin('a.locations', 'l')
+                ->andWhere('l.dateDebut NOT BETWEEN :startdate AND :enddate')
+                ->setParameter('startdate', $startdate)
+                ->setParameter('enddate', $enddate)
+                ->andWhere('l.dateFin NOT BETWEEN :startdate AND :enddate')
+                ->setParameter('startdate', $startdate)
+                ->setParameter('enddate', $enddate);
+        }
+        $qb
+            ->getQuery()
+            ->getResult();
+        return $qb;
+    }
+
     //    public function findOneBySomeField($value): ?Appartement
     //    {
     //        return $this->createQueryBuilder('a')

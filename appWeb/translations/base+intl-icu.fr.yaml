@@ -13,7 +13,9 @@ Register: Inscription
 Notification: Notification
 Maintenant: Maintenant
 cookies: 'Utilisation des Cookies'
+modpref: Modifier les préférences de cookies
 privacy: Confidentialité
 cgu: 'Conditions générales'
 about: 'Infos sur l’entreprise'
 noaccess: Vous n'avez pas accès à cette ressource.
+samedate: "La date de début et la date de fin sont identiques."
