@@ -48,7 +48,7 @@ class ConnexionController extends AbstractController
             $g = $this->em->getRepository(Abonnement::class)->findOneBy(["nom" => "Gratuit"]);
             if (!$g) {
                 $this->addFlash("error", "errorabt");
-                createErrorTicket();
+                $this->createErrorTicket();
             }
             $user->setEmail($form->get('email')->getData());
             $user->setNom($form->get('nom')->getData());
