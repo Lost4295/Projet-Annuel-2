@@ -94,6 +94,7 @@ class UserFixtures extends Fixture
             ->setPhoneNumber('0606060606')
             ->setBirthdate(new \DateTime('1990-01-01'))
             ->setIsVerified(true);
+        $manager->persist($api);
         $manager->flush();
     }
     public function getDependencies()
