@@ -39,7 +39,7 @@ class LocationController extends AbstractController
         $children = $request->request->get('children');
         $babies = $request->request->get('babies');
 
-        $apparts = $em->getRepository(Appartement::class)->findApparts($dest, $startdate, $enddate, $adults, $children, $babies);
+        $apparts = $em->getRepository(Appartement::class)->findAppart($dest, $startdate, $enddate, $adults, $children, $babies);
 
         dump($apparts);
         return $this->json($apparts);
