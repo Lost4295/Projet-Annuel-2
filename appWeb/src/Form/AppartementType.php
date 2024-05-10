@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -96,11 +97,13 @@ class AppartementType extends AbstractType
                     "class" => "my-2"
                 ], "label" => "beds "
             ])
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
+            ->add('createdAt', DateType::class, [
+                'attr'=> ["class"=> "my-2"],
+                "label"=>'createdAt'
             ])
-            ->add('updatedAt', null, [
-                'widget' => 'single_text',
+            ->add('updatedAt', DateType::class, [
+                'attr'=> ["class"=> "my-2"],
+                "label"=>'updatedAt'
             ])
             ->add('surface')
             ->add('bailleur', EntityType::class, [
