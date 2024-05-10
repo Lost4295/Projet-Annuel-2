@@ -7,11 +7,13 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     private $encoder;
     public const ADMIN_USER_REFERENCE = 'bailleur-user';
+    public const SUP_ADMIN_USER_REFERENCE = 'admin-user';
 
     public function __construct(UserPasswordHasherInterface $encoder)
     {
@@ -55,13 +57,14 @@ class UserFixtures extends Fixture
         $admin = new User();
         $admin->setEmail('admin@pcs.fr')
             ->setAbonnement($this->getReference(AbonnementFixtures::GRATUIT))
-            ->setRoles([User::ROLE_ADMIN, User::ROLE_USER,])
+            ->setRoles([User::ROLE_ADMIN, User::ROLE_USER])
             ->setPassword($this->encoder->hashPassword($admin, 'admin'))
             ->setNom('Admin')
             ->setPrenom('Admin')
             ->setPhoneNumber('0606060606')
             ->setBirthdate(new \DateTime('1990-01-01'))
             ->setIsVerified(true);
+        $this->addReference(self::SUP_ADMIN_USER_REFERENCE, $admin);
         $manager->persist($admin);
         $prestaire = new User();
         $prestaire->setEmail('presta@pcs.fr')

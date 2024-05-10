@@ -29,21 +29,6 @@ class LocationController extends AbstractController
         ]);
     }
 
-    #[Route("/ajax/search/appart", name: "search")]
-    public function search(Request $request, EntityManagerInterface $em)
-    {
-        $dest = $request->request->get('dest');
-        $startdate = $request->request->get('startdate');
-        $enddate = $request->request->get('enddate');
-        $adults = $request->request->get('adults');
-        $children = $request->request->get('children');
-        $babies = $request->request->get('babies');
-
-        $apparts = $em->getRepository(Appartement::class)->findAppart($dest, $startdate, $enddate, $adults, $children, $babies);
-
-        dump($apparts);
-        return $this->json($apparts);
-    }
 
     #[Route("/appartements/{id}", name: "appart_detail", requirements: ['id' => '\d+'])]
     public function show($id, EntityManagerInterface $em, Request $request)

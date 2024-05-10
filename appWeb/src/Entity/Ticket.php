@@ -11,6 +11,69 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 class Ticket
 {
+    public const TYPE_EPIC = 1;
+    public const TYPE_TASK = 2;
+    public const TYPE_STORY = 3;
+    public const TYPE_BUG = 4;
+    public const TYPE_SUBTASK = 5;
+    public const TYPE_LIST = [
+        self::TYPE_EPIC => "epic",
+        self::TYPE_TASK => "task",
+        self::TYPE_STORY => "story",
+        self::TYPE_BUG => "bug",
+        self::TYPE_SUBTASK => "subtask"
+    ];
+
+    public const CATEGORY_TECHNIQUE = 1;
+    public const CATEGORY_FONCTIONNEL = 2;
+    public const CATEGORY_DEMANDE = 3;
+    public const CATEGORY_INCIDENT = 4;
+    public const CATEGORY_AUTRE = 5;
+    public const CATEGORY_LIST = [
+        self::CATEGORY_TECHNIQUE => "technique",
+        self::CATEGORY_FONCTIONNEL => "fonctionnel",
+        self::CATEGORY_DEMANDE => "demande",
+        self::CATEGORY_INCIDENT => "incident",
+        self::CATEGORY_AUTRE => "autre"
+    ];
+
+    public const STATUS_NOUVEAU = 1;
+    public const STATUS_EN_COURS = 2;
+    public const STATUS_RESOLU = 3;
+    public const STATUS_FERME = 4;
+    public const STATUS_EN_ATTENTE = 5;
+    public const STATUS_REJETE = 6;
+    public const STATUS_LIST = [
+        self::STATUS_NOUVEAU => "nouveau",
+        self::STATUS_EN_COURS=>"encours",
+        self::STATUS_RESOLU=>"resolu",
+        self::STATUS_FERME=>"ferme",
+        self::STATUS_EN_ATTENTE=>"enattente",
+        self::STATUS_REJETE=>"rejete",
+    ];
+
+    public const PRIORITY_BASSE = 1;
+    public const PRIORITY_NORMALE = 2;
+    public const PRIORITY_HAUTE = 3;
+    public const PRIORITY_URGENTE = 4;
+    public const PRIORITY_LIST = [
+        self::PRIORITY_BASSE=>"basse",
+        self::PRIORITY_NORMALE=>"normale",
+        self::PRIORITY_HAUTE=>"haute",
+        self::PRIORITY_URGENTE=>"urgente",
+    ];
+
+    public const URGENCE_BASSE = 1;
+    public const URGENCE_NORMALE = 2;
+    public const URGENCE_HAUTE = 3;
+    public const URGENCE_URGENTE = 4;
+    public const URGENCE_LIST = [
+        self::URGENCE_BASSE=>"basse",
+        self::URGENCE_NORMALE=>"normale",
+        self::URGENCE_HAUTE=>"haute",
+        self::URGENCE_URGENTE=>"urgente",
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -235,8 +298,8 @@ class Ticket
 
     /**
      * Get the value of dateFermeture
-     */ 
-    public function getDateFermeture() : ?\DateTimeInterface
+     */
+    public function getDateFermeture(): ?\DateTimeInterface
     {
         return $this->dateFermeture;
     }
@@ -245,8 +308,8 @@ class Ticket
      * Set the value of dateFermeture
      *
      * @return  self
-     */ 
-    public function setDateFermeture($dateFermeture) : static
+     */
+    public function setDateFermeture($dateFermeture): static
     {
         $this->dateFermeture = $dateFermeture;
 

@@ -30,7 +30,8 @@ class AbonnementController extends AbstractController
             foreach ($abo->getOptions() as $option) {
                 $options[$option->getOption()->getNom()][] = ($option->isPresence()) ? "1" : "0";
             }
-            $transform["url"][] = $urlgen->setRoute("tarifs_modify", ["id" => $abo->getId()])->generateUrl();
+            $transform["url"][$abo->getId()]["upd"] = $urlgen->setRoute("tarifs_modify", ["id" => $abo->getId()])->generateUrl();
+            $transform["url"][$abo->getId()]["del"] = $urlgen->setRoute("del_abonnement", ["id" => $abo->getId()])->generateUrl();
             // $transform["description"][] =  $abo["description"];
             $transform["duree"][] = boolval(rand(0, 1));
         }
@@ -41,7 +42,7 @@ class AbonnementController extends AbstractController
             'options' => $options
         ]);
     }
-    #[Route("/adm_tarification{id}", name: "tarifs_modify")]
+    #[Route("/adm_tarification/{id}", name: "tarifs_modify")]
     public function TarifModify(EntityManagerInterface $em, Request $request, $id): Response
     {
         $abo = $em->getRepository(Abonnement::class)->find($id);
@@ -49,6 +50,12 @@ class AbonnementController extends AbstractController
         foreach ($abo->getOptions() as $option) {
             $options[$option->getOption()->getNom()] = $option->isPresence();
         }
+        $id = $abo->getId();
+        $form = $this->createFormBuilder($abo)
+            ->add('tarif', null, ["attr"=>["class"=>'form-control my-2']])
+            ->add('nom', null, ["attr"=>["class"=>'form-control my-2']])
+            ->getForm();
+
         if ($request->isMethod('POST')) {
             $abo->setTarif($request->request->get('tarif'));
             $abo->setNom($request->request->get('nom'));
@@ -64,8 +71,32 @@ class AbonnementController extends AbstractController
         }
         return $this->render('admin/tarif.html.twig', [
             'abo' => $abo,
-            'options' => $options
+            'options' => $options,
+            'form'=> $form,
+            'id' => $id
         ]);
+    }
+    #[Route("/adm_update_tarif", name: "update_abonnement")]
+    public function updateAbonnement(EntityManagerInterface $em, Request $request, AdminUrlGenerator $urlgen): Response
+    {
+        $id = $request->get('id');
+        $abo = $em->getRepository(Abonnement::class)->find($id);
+        $form = $request->request->all()["form"];
+        $abo->setTarif($form["tarif"]);
+        $abo->setNom($form["nom"]);
+        $em->persist($abo);
+        $em->flush();
+        return $this->redirect($urlgen->setRoute("tarifs")->generateUrl());
+    }
+
+    #[Route("/adm_del_tarif", name: "del_abonnement")]
+    public function delAbonnement(EntityManagerInterface $em, Request $request, AdminUrlGenerator $urlgen): Response
+    {
+        $id = $request->get('id');
+        $abo = $em->getRepository(Abonnement::class)->find($id);
+        $em->remove($abo);
+        $em->flush();
+        return $this->redirect($urlgen->setRoute("tarifs")->generateUrl());
     }
     // ...
 }

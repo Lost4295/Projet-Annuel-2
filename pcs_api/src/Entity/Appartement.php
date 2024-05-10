@@ -175,12 +175,12 @@ class Appartement
         return $this;
     }
 
-    public function getNote(): ?int
+    public function getNote(): ?float
     {
         return $this->note;
     }
 
-    public function setNote(int $note): static
+    public function setNote(float $note): static
     {
         $this->note = $note;
 

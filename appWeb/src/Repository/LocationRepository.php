@@ -42,7 +42,7 @@ class LocationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('l')
             ->andWhere('l.id = :val')
-            ->andWhere('l.dateFin <= :val2')
+            ->andWhere('l.dateDebut <= :val2')
             ->setParameter('val', $value)
             ->setParameter('val2', new \DateTime())
             ->orderBy('l.id', 'ASC')

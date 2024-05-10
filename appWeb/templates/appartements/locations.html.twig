@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{"loca"|trans}}
+{% block title %}
+	{{"loca"|trans}}
 {% endblock %}
 {% block stylesheets %}
 	<style>
@@ -19,7 +20,7 @@
 		.bar div {
 			border-radius: inherit;
 			padding: 0.8rem 1.5rem;
-			transition:  250ms ease;
+			transition: 250ms ease;
 		}
 
 		.bar div:hover {
@@ -36,7 +37,8 @@
 		}
 
 		input[type="text"],
-		input[type="date"], p.djf{
+		input[type="date"],
+		p.djf {
 			background: none;
 			border: none;
 			padding: 0.2rem 0 0;
@@ -44,7 +46,7 @@
 			top: -15px;
 		}
 
-/*.onlynum {
+		/*.onlynum {
 			background: none;
 			border: none;
 		}
@@ -79,7 +81,6 @@ input::-webkit-inner-spin-button {
 		.bar > div {
 			position: relative;
 		}
-
 
 
 		.bar > div::before {
@@ -160,27 +161,44 @@ input::-webkit-inner-spin-button {
 			</div>
 		</div>
 	</div>
-	<div class="row">
-	{% for appart in apparts %}
-		<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="col-md-4 py-1 text-decoration-none">
-			<div class="card">
-			<div class="card-body">
-				<img src={{asset("images/appartements/apt1_1.jpeg")}} class="card-img-top" alt="...">
-				<h5>{{appart.city}} - {{appart.country}}</h5>
-				<small>{{appart.description|slice(0,50)~"..."}}</small>
-				<div style="display: flex; justify-content: space-between; width: 100%;">
-				<p>{{appart.price}} € / Nuit</p> 
-				<p>{{appart.note}} / 5</p></div>
-			</div>
-			</div>
-		</a>
-    {% endfor %}
+	<div class="row d-flex justify-content-around">
+		{% for appart in apparts %}
+				<div class="card col-md-3 my-3 mx-1 py-1">
+					<div class="card-body">
+						<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+							<div class="splide__track">
+								<ul class="splide__list">
+								{% for img in appart.images %}
+									<li class="splide__slide"><img src="{{asset("uploads/"~img.path)}}" class="card-img-top" alt="..."></li>
+								{% else %}
+									<li class="splide__slide"><img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" class="card-img-top" alt="..."></li>
+								{% endfor %}
+								</ul>
+							</div>
+						</div>
+						<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="text-decoration-none text-black">
+							<h5>{{appart.city}}
+								-
+								{{appart.country}}</h5>
+							<small>{{appart.description|slice(0,50)~"..."}}</small>
+							<div style="display: flex; justify-content: space-between; width: 100%;">
+								<p>{{appart.price}}
+									€ / Nuit</p>
+								<p>{{appart.note}}
+									/ 5</p>
+							</div>
+						</a>
+					</div>
+				</div>
+		{% endfor %}
 
-{% endblock %}
+	{% endblock %}
 
 {% block javascripts %}
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
 	<script>
 		$( "#startdate" ).flatpickr( {
@@ -221,7 +239,7 @@ input::-webkit-inner-spin-button {
 			}
 			console.log($("#dest").val(), $("#startdate").val(), $("#enddate").val(), $("#adults").val(), $("#children").val(), $("#babies").val());
 			$.ajax({
-				url: "{{ path('search') }}",
+				url: "{{ path('ajax_search') }}",
 				type: "POST",
 				data: {
 					'dest': $("#dest").val(),
@@ -239,6 +257,24 @@ input::-webkit-inner-spin-button {
 				}
 			});
 		});
+
+	var elms = document.getElementsByClassName( 'splide' );
+
+	for ( var i = 0; i < elms.length; i++ ) {
+		new Splide( elms[ i ], {
+			type       : 'loop',
+			perPage    : 1,
+			perMove    : 1,
+			pagination : false,
+			autoplay   : false,
+			breakpoints: {
+				600: {
+					perPage: 1,
+				}
+			}
+		
+		}).mount();
+	}
 
 
 	</script>

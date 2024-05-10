@@ -48,9 +48,9 @@ class AppartPlus
     private ?int $icon = null;
 
     /**
-     * @var Collection<int, appartement>
+     * @var Collection<int, Appartement>
      */
-    #[ORM\ManyToMany(targetEntity: appartement::class, mappedBy: "appartPluses")]
+    #[ORM\ManyToMany(targetEntity: Appartement::class, mappedBy: "appartPluses")]
     private Collection $appartement;
 
     public function __construct()
@@ -81,7 +81,7 @@ class AppartPlus
     }
 
     /**
-     * @return Collection<int, appartement>
+     * @return Collection<int, Appartement>
      */
     public function getAppartement(): Collection
     {
