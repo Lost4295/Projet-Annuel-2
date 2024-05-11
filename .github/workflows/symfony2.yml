@@ -48,16 +48,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Copy repository contents via scp
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.TESTHOST }}
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.SSHKEY }}
-          source: "."
-          target: "/var/www/html/pcs_api"
-
       - name: Executing remote command
         uses: appleboy/ssh-action@master
         with:
@@ -65,4 +55,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSHKEY }}
-          script: ls
+          script: 'cd /var/www/ && sh deploy.sh'
