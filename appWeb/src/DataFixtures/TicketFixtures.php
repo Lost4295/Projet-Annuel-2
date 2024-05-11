@@ -12,17 +12,20 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 1; $i < 5; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $ticket = new Ticket();
             $ticket->setTitre('Ticket ' . $i);
             $ticket->setDescription('Description du ticket ' . $i);
             $ticket->setDateOuverture(new \DateTime('2021-01-0' . $i));
-            $ticket->setDateFermeture(new \DateTime('2021-01-0' . $i+1));
-            $ticket->setResolveur($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
-            $ticket->setDemandeur($this->getReference(UserFixtures::SUP_ADMIN_USER_REFERENCE));
-            $ticket->setStatus();
-
-            
+            $ticket->setDateFermeture(new \DateTime('2021-02-0' . $i+1));
+            $ticket->setResolveur($this->getReference("admin-user"));
+            $ticket->setDemandeur($this->getReference('bailleur' . $i . '-user'));
+            $ticket->setStatus(rand(1, 6));
+            $ticket->setType(rand(1, 5));
+            $ticket->setCategory(rand(1, 5));
+            $ticket->setPriority(rand(1, 4));
+            $ticket->setUrgence(rand(1, 4));
+            $ticket->setLastUpdateDate(new \DateTime('2021-01-0' . $i+1));
             $manager->persist($ticket);
         }
         $manager->flush();

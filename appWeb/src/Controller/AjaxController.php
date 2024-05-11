@@ -28,7 +28,6 @@ class AjaxController extends AbstractController
 
         $apparts = $em->getRepository(Appartement::class)->findAppart($dest, $startdate, $enddate, $adults, $children, $babies);
 
-        dump($apparts);
         return $this->json($apparts);
     }
 
@@ -50,9 +49,15 @@ class AjaxController extends AbstractController
     }
 
     #[Route("/getrating", name: "get_rating")]
-    public function getRating(Request $request, EntityManagerInterface $em)
+    public function getRating(Request $request)
     {
         $locId = $request->get('id');
+        $output = self::updateAppart($locId);
+        return $this->json($output);
+    }
+
+    public static function updateAppart($locId, EntityManagerInterface $em)
+    {
         $app = $em->getRepository(Appartement::class)->find($locId);
         $locs = $app->getLocations();
         $notes = [];
@@ -104,6 +109,6 @@ class AjaxController extends AbstractController
         $app->setNote($average_rating);
         $em->persist($app);
         $em->flush();
-        return $this->json($output);
+        return $output;
     }
 }

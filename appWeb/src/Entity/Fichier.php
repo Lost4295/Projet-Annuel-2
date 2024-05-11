@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\FichierRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: FichierRepository::class)]
 class Fichier
@@ -26,6 +27,7 @@ class Fichier
     private ?Email $email = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
+    #[Ignore]
     private ?Appartement $appartement = null;
 
     #[ORM\ManyToOne(inversedBy: 'pj')]

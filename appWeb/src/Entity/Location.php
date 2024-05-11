@@ -44,8 +44,8 @@ class Location
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\ManyToOne(inversedBy: 'locations')]
-    private ?Service $services = null;
+    #[ORM\ManyToMany(targetEntity:Service::class, inversedBy: 'locations')]
+    private Collection $services;
 
     /**
      * @var Collection<int, Note>
@@ -56,6 +56,7 @@ class Location
     public function __construct()
     {
         $this->notes = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -163,14 +164,26 @@ class Location
         return $this;
     }
 
-    public function getServices(): ?Service
+    public function getServices(): Collection
     {
         return $this->services;
     }
 
-    public function setServices(?Service $services): static
+    public function addService(Service $service): static
     {
-        $this->services = $services;
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
+            $service->addLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): static
+    {
+        if ($this->services->removeElement($service)) {
+            $service->removeLocation($this);
+        }
 
         return $this;
     }

@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class StripeController extends AbstractController
 {
+    const URL = "";
     #[Route('/stripe', name: 'app_stripe')]
     #[IsGranted("ROLE_USER")]
     public function index(Request $request, EntityManagerInterface $em): Response
@@ -24,7 +25,7 @@ class StripeController extends AbstractController
         $fform = $form['firstForm'];
         $appartId = $fform["appart"];
         $appart = $em->getRepository(Appartement::class)->find($appartId);
-        $appartPrice = $appart->getPrice();
+        $appartPrice = $form["price"];
         $adults = $fform["adults"];
         $kids = $fform["kids"];
         $babies = $fform["babies"];
@@ -33,8 +34,11 @@ class StripeController extends AbstractController
         $dates = array_map(function ($date) {
             return new \DateTime($date);
         }, $dates);
-
-
+        $appartimgs = $appart->getImages();
+        $appartimgs = $appartimgs->toArray();
+        $appartimgs = array_map(function ($img) {
+            return self::URL.'uploads/'.$img->getPath();
+        }, $appartimgs);
 
 
         Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
@@ -47,7 +51,7 @@ class StripeController extends AbstractController
                     'unit_amount' => $appartPrice * 100,
                     'product_data' => [
                         'name' => ($appart->getTitre())?$appart->getTitre() :"Appartement",
-                        // 'images' => ['http://placehold.it/200/200'], // $appart->getImages()->getPath();
+                        'images' => $appartimgs,
                         "description" => $appart->getShortDesc(),
                     ]
                 ],

@@ -97,7 +97,6 @@ class LocationController extends AbstractController
 
         $locs = $em->getRepository(Location::class)->findBy(["id" => $id]);
 
-
         $dates = explode("-", $firstForm->get('date')->getData());
         $dates = array_map(function ($date) {
             return new \DateTime($date);
@@ -106,6 +105,7 @@ class LocationController extends AbstractController
             $this->addFlash("danger", "samedate");
             return $this->redirectToRoute('appart_detail', ['id' => $id]);
         }
+        $days = $dates[0]->diff($dates[1])->days;
         if ($firstForm->isSubmitted() && !$firstForm->isValid()) {
             return $this->redirectToRoute('appart_detail', ['id' => $id]);
         }
@@ -115,7 +115,8 @@ class LocationController extends AbstractController
             'firstForm' => $firstForm,
             'appart' => $appart,
             'secondForm' => $secondForm,
-            'dates' => $dates
+            'dates' => $dates,
+            "days" => $days
         ]);
     }
 

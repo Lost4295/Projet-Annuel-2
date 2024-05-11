@@ -28,6 +28,10 @@
 							<li class="splide__slide">
 								<img src="{{ asset('uploads/'~image.path) }}" alt="image" style="width: 100%; height: 100%;">
 							</li>
+						{% else %}
+							<li class="splide__slide">
+								<img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" alt="image" style="width: 100%; height: 100%;">
+							</li>
 						{% endfor %}
 					</ul>
 		  		</div>
@@ -152,18 +156,6 @@
 							{{"nuit"|trans }}<span id="tprice"></span>
 							<span id="sprice"></span>
 						</p>
-						<p id="people">{{"people"|trans}}
-							:
-							<span id="speople"></span>
-							€</p>
-						<p id="tax">{{"tax"|trans}}
-							:
-							<span id="stax"></span>
-							€</p>
-						<p id="total">{{"total"|trans}}
-							:
-							<span id="stotal"></span>
-							€</p>
 					</div>
 				</div>
 			</div>
@@ -406,9 +398,9 @@ var dates = {{ dates|json_encode|raw }};
 					}
 				}
 				}, function(start, end, label) {
-				$("#tprice").text(" du "+start.format('DD/MM/YYYY')+" au "+end.format('DD/MM/YYYY')
-				+ ' ('+end.diff(start, 'days')+" jours) = ");
-				$("#sprice").text(end.diff(start, 'days')*{{appart.price}});
+				$("#tprice").text(" => du "+start.format('DD/MM/YYYY')+" au "+end.format('DD/MM/YYYY')
+				+ ' ('+end.diff(start, 'days')+" nuits) = ");
+				$("#sprice").text(end.diff(start, 'days')*{{appart.price}}+ " €");
 				});
 		$('.plus').click(function () {
 			var total = +$("#location_first_adults").val() + +$("#location_first_kids").val()+ +$("#location_first_babies").val();
@@ -416,14 +408,6 @@ var dates = {{ dates|json_encode|raw }};
 				return;
 			}
 			$(this).prev().val(+$(this).prev().val() + 1);
-			var travel = " voyageurs";
-			if (total <= 1) {
-				travel =" voyageur";
-			}
-			$("#speople").text(total +travel +"* xxx " )
-			var tax = total*0.2;
-			$("#stax").text(tax)
-			$("#stotal").text(total*{{appart.price}}+tax)
 		});
 
 		$('.moins').click(function () {
@@ -431,15 +415,6 @@ var dates = {{ dates|json_encode|raw }};
 			} else {
 			if ($(this).next().val() > 0) $(this).next().val(+$(this).next().val() - 1);
 			}
-			var total = +$("#location_first_adults").val() + +$("#location_first_kids").val()+ +$("#location_first_babies").val();
-			var travel = " voyageurs";
-			if (total <= 1) {
-				travel =" voyageur";
-			}
-			$("#speople").text(total +travel +"* xxx " )
-			var tax = total*0.2;
-			$("#stax").text(tax)
-			$("#stotal").text(total*{{appart.price}}+tax)
 		});
 
 

@@ -16,8 +16,15 @@ class ConfirmLocationType extends AbstractType
     {
         $builder
             ->add("firstForm", LocationFirstType::class)
-            ->add("services",EntityType::class, [
-                'class'=> Service::class,
+            ->add("price", TextType::class, [
+                "label" => false,
+                "required" => true
+            ])
+            ->add("services", EntityType::class, [
+                'class' => Service::class,
+                'choice_label' => function (Service $ser): string {
+                    return $ser->getTitre() . ' ( ' . $ser->getTarifs() . ' € )';
+                },
                 'multiple' => true,
                 'expanded' => false,
                 'label' => false,
@@ -25,8 +32,7 @@ class ConfirmLocationType extends AbstractType
                     "class" => "selectpicker"
                 ],
                 "required" => false
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

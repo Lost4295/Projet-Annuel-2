@@ -148,8 +148,8 @@ class Service
     public function addLocation(Location $location): static
     {
         if (!$this->locations->contains($location)) {
-            $this->locations->add($location);
-            $location->setServices($this);
+            $this->locations[] = $location;
+            $location->addService($this);
         }
 
         return $this;
@@ -158,10 +158,7 @@ class Service
     public function removeLocation(Location $location): static
     {
         if ($this->locations->removeElement($location)) {
-            // set the owning side to null (unless already changed)
-            if ($location->getServices() === $this) {
-                $location->setServices(null);
-            }
+            $location->removeService($this);
         }
 
         return $this;

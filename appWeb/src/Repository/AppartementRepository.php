@@ -70,10 +70,7 @@ class AppartementRepository extends ServiceEntityRepository
                 ->setParameter('startdate', $startdate)
                 ->setParameter('enddate', $enddate);
         }
-        $qb
-            ->getQuery()
-            ->getResult();
-        return $qb;
+        return $qb->getQuery()->getResult();
     }
 
     //    public function findOneBySomeField($value): ?Appartement

@@ -25,7 +25,9 @@
 							<a href="{{ path("appart_detail",{id: appart.id})}}" class="link-light">Modifier</a>
 						</div>
 					</div>
-					<p>{{ dates[0]|date("d/m/Y")}} - {{ dates[1]|date("d/m/Y")}}</p>
+					<p>{{ dates[0]|date("d/m/Y")}}
+						-
+						{{ dates[1]|date("d/m/Y")}}</p>
 					<div class='d-flex justify-content-between mb-2'>
 						<div>
 							Voyageurs :
@@ -55,7 +57,11 @@
 					<div class="row">
 						<div class="col d-flex flex-row">
 							<div class="col-3">
-								<img src="http://placehold.it/150" alt="appartement">
+								{% if appart.images|length > 1 %}
+									<img src="{{asset("uploads/")~appart.images[0].path}}" alt="appartement" style="width:10rem">
+								{% else  %}
+									<img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" class="card-img-top" alt="...">
+								{% endif  %}
 							</div>
 							<div class="col">
 								<p>{{ appart.shortDesc }}</p>
@@ -69,12 +75,17 @@
 							<h3>Détails du prix</h3>
 							<div class="col d-flex flex-column justify-content-between">
 								<div class="col m-2 d-flex justify-content-between">
-									<div>Arrivée</div>
-									<div>8555 €</div>
+									<div>Appartement *
+										{{ days }}
+										nuits restées</div>
+									{% set p1 = appart.price * days %}
+									<div>{{ p1 }}
+										€</div>
 								</div>
 								<div class="col m-2 d-flex justify-content-between">
-									<div>Bla bla</div>
-									<div>7000 €</div>
+									<div>Taxe de PCS</div>
+									{% set p2 = appart.price * 0.05 %}
+									<div>{{ p2 }}€</div>
 								</div>
 							</div>
 						</div>
@@ -84,7 +95,8 @@
 								<div class="col m-2 d-flex justify-content-between">
 									<div>
 										total</div>
-									<div>7000 €</div>
+									<div>{{ p1 + p2 }}
+										€</div>
 								</div>
 							</div>
 						</div>
@@ -96,6 +108,7 @@
 					<h2>Options supplémentaires</h2>
 					{{ form_start(secondForm) }}
 					{{ form_row(secondForm.services) }}
+					{{ form_row(secondForm.price, {value: p1+p2, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{ form_widget(secondForm.firstForm.kids, {value: firstForm.vars.value.kids, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{ form_widget(secondForm.firstForm.adults, {value: firstForm.vars.value.adults, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{ form_widget(secondForm.firstForm.babies, {value: firstForm.vars.value.babies, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}

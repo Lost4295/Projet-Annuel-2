@@ -164,7 +164,7 @@ input::-webkit-inner-spin-button {
 	<div class="row d-flex justify-content-around">
 		{% for appart in apparts %}
 				<div class="card col-md-3 my-3 mx-1 py-1">
-					<div class="card-body">
+					<div class="card-header">
 						<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 							<div class="splide__track">
 								<ul class="splide__list">
@@ -176,7 +176,9 @@ input::-webkit-inner-spin-button {
 								</ul>
 							</div>
 						</div>
-						<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="text-decoration-none text-black">
+					</div>
+					<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="text-decoration-none text-black">
+						<div class="card-body">
 							<h5>{{appart.city}}
 								-
 								{{appart.country}}</h5>
@@ -187,8 +189,8 @@ input::-webkit-inner-spin-button {
 								<p>{{appart.note}}
 									/ 5</p>
 							</div>
-						</a>
-					</div>
+						</div>
+					</a>
 				</div>
 		{% endfor %}
 
@@ -237,6 +239,13 @@ input::-webkit-inner-spin-button {
 				console.error("Veuillez remplir au moins un champ");
 				return;
 			}
+			$(".collapse").collapse('hide');
+			$(".row").empty();
+			$(".row").append(`
+				<div class="spinner-border text-primary" id="loader" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			`);
 			console.log($("#dest").val(), $("#startdate").val(), $("#enddate").val(), $("#adults").val(), $("#children").val(), $("#babies").val());
 			$.ajax({
 				url: "{{ path('ajax_search') }}",
@@ -250,14 +259,59 @@ input::-webkit-inner-spin-button {
 					'babies': $("#babies").val()
 				},
 				success: function (data) {
+					data.forEach(appart => {
+						var text= `
+							<div class="card col-md-3 my-3 mx-1 py-1">
+								<div class="card-header">
+									<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+										<div class="splide__track">
+											<ul class="splide__list">`;
+											if (appart.images.length == 0) {
+												text+=(`<li class="splide__slide"><img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" class="card-img-top" alt="..."></li>`);
+											} else {
+												appart.images.forEach(img => {
+													text+=(`<li class="splide__slide"><img src="uploads/${img.path}" class="card-img-top" alt="..."></li>`);
+												});
+											}
+											let route = "{{ path('appart_detail', { id: '0000' }) }}";
+											route = route.replace('0000', appart.id);
+											text+=(`
+											</ul>
+										</div>
+									</div>
+								</div>
+								<a href="${route}" class="text-decoration-none text-black">
+									<div class="card-body">
+										<h5>${appart.city}
+											-
+											${appart.country}</h5>
+										<small>${appart.description.slice(0,50)+"..."}</small>
+										<div style="display: flex; justify-content: space-between; width: 100%;">
+											<p>${appart.price}
+												€ / Nuit</p>
+											<p>${appart.note}
+												/ 5</p>
+										</div>
+									</div>
+								</a>
+							</div>
+						`);
+						$(".row").append(text);
+					});
 					console.log(data);
+					monune();
+				},
+				complete: function () {
+					$("#loader").remove();
 				},
 				error: function (error) {
 					console.error(error);
 				}
 			});
 		});
+					monune();
 
+function monune() {
 	var elms = document.getElementsByClassName( 'splide' );
 
 	for ( var i = 0; i < elms.length; i++ ) {
@@ -275,7 +329,7 @@ input::-webkit-inner-spin-button {
 		
 		}).mount();
 	}
-
+}
 
 	</script>
 {% endblock %}

@@ -6,6 +6,10 @@ use App\Repository\LocationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
 #[ApiResource]
@@ -20,6 +24,7 @@ class Location
     private ?\DateTimeInterface $dateDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath: 'dateDebut')]
     private ?\DateTimeInterface $dateFin = null;
 
     #[ORM\ManyToOne(inversedBy: 'locations')]
@@ -42,9 +47,25 @@ class Location
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\ManyToOne(inversedBy: 'locations')]
-    private ?Service $services = null;
+    #[ORM\ManyToMany(targetEntity:Service::class, inversedBy: 'locations')]
+    private Collection $services;
 
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'location', orphanRemoval: true)]
+    private Collection $notes;
+
+    public function __construct()
+    {
+        $this->notes = new ArrayCollection();
+        $this->services = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->id . ' ' . $this->dateDebut->format('d/m/Y') . ' - ' . $this->dateFin->format('d/m/Y') . ' ' . $this->appartement->getTitre() . ' ' . $this->locataire->getFullName();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -146,14 +167,56 @@ class Location
         return $this;
     }
 
-    public function getServices(): ?Service
+    public function getServices(): Collection
     {
         return $this->services;
     }
 
-    public function setServices(?Service $services): static
+    public function addService(Service $service): static
     {
-        $this->services = $services;
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
+            $service->addLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): static
+    {
+        if ($this->services->removeElement($service)) {
+            $service->removeLocation($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getLocation() === $this) {
+                $note->setLocation(null);
+            }
+        }
 
         return $this;
     }

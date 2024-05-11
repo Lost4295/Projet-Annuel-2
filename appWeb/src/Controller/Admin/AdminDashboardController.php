@@ -14,6 +14,7 @@ use App\Entity\User;
 use App\Entity\Email;
 use App\Entity\Appartement;
 use App\Entity\Commentaire;
+use App\Entity\Devis;
 use App\Entity\Fichier;
 use App\Entity\Location;
 use App\Entity\Professionnel;
@@ -183,6 +184,7 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('commentaire', 'fa fa-comment', Commentaire::class);
         yield MenuItem::linkToCrud('email', 'fa fa-envelope', Email::class);
         yield MenuItem::linkToCrud('file', 'fa fa-files-o ', Fichier::class);
+        yield MenuItem::linkToCrud('devis', 'fa fa-files-o ', Devis::class);
         yield MenuItem::linkToCrud('service', 'fa fa-tasks', Service::class);
         yield MenuItem::section('obrl');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);

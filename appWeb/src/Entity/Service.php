@@ -19,12 +19,12 @@ class Service
     const CHAUFFEUR = 6;
     const TYPE_LIST =
         [
-            "nettoyage" => self::NETTOYAGE,
-            "electricité" => self::ELECTRICITE,
-            "plomberie" => self::PLOMBERIE,
-            "peinture" => self::PEINTURE,
-            "bricolage" => self::BRICOLAGE,
-            "chauffeur" => self::CHAUFFEUR
+            self::NETTOYAGE=> "nettoyage" ,
+            self::ELECTRICITE=> "electricité" ,
+            self::PLOMBERIE=> "plomberie" ,
+            self::PEINTURE=> "peinture" ,
+            self::BRICOLAGE=> "bricolage" ,
+            self::CHAUFFEUR=> "chauffeur" 
         ];
 
 
@@ -52,7 +52,7 @@ class Service
     /**
      * @var Collection<int, Location>
      */
-    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Location::class, mappedBy: 'services')]
     private Collection $locations;
 
     public function __construct()
@@ -146,8 +146,8 @@ class Service
     public function addLocation(Location $location): static
     {
         if (!$this->locations->contains($location)) {
-            $this->locations->add($location);
-            $location->setServices($this);
+            $this->locations[] = $location;
+            $location->addService($this);
         }
 
         return $this;
@@ -156,10 +156,7 @@ class Service
     public function removeLocation(Location $location): static
     {
         if ($this->locations->removeElement($location)) {
-            // set the owning side to null (unless already changed)
-            if ($location->getServices() === $this) {
-                $location->setServices(null);
-            }
+            $location->removeService($this);
         }
 
         return $this;

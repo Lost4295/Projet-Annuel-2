@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
+
 
 #[ORM\Entity(repositoryClass: AppartementRepository::class)]
 class Appartement
@@ -56,6 +58,7 @@ class Appartement
 
     #[ORM\ManyToOne(inversedBy: 'appartements')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     private ?Professionnel $bailleur = null;
 
     #[ORM\Column(length: 255)]
@@ -75,6 +78,7 @@ class Appartement
      */
     #[ORM\ManyToMany(targetEntity: AppartPlus::class, inversedBy: 'appartement')]
     #[ORM\JoinTable(name: 'scp_appartement_appart_plus')]
+    #[Ignore]
     private Collection $appartPluses;
 
     #[ORM\Column(nullable: true)]
@@ -90,6 +94,7 @@ class Appartement
      * @var Collection<int, Location>
      */
     #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'appartement')]
+    #[Ignore]
     private Collection $locations;
 
 

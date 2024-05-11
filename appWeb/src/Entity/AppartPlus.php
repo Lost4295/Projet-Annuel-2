@@ -71,7 +71,7 @@ class AppartPlus
         return $this->icon;
     }
 
-    public function setIcon(string $icon): static
+    public function setIcon(int $icon): static
     {
         $this->icon = $icon;
 
