@@ -38,9 +38,9 @@ class LocationController extends AbstractController
         $canComm = false;
         $commentaires = [];
 
+        $commentaires = $em->getRepository(Commentaire::class)->findComments("appartement", $appart->getId());
         if ($passedlocs) {
             $canComm = true;
-            $commentaires = $em->getRepository(Commentaire::class)->findComments("appartement", $appart->getId());
             $formComm = $this->createForm(CommentaireType::class, null, [
                 'action' => $this->generateUrl('commentaire_create'),
                 'method' => 'POST',

@@ -258,9 +258,12 @@
 				],
 				satelliteToggle: true
 				},
-				skipConfirmModal: ( feature ) => false // overrides default behavior, show dialog every time
-				} );
-				console.log( result );
+				skipConfirmModal: (feature) =>
+				      ['exact', 'high'].includes(
+				        feature.properties.match_code.confidence
+				      )
+				  });
+				  if (result.type === 'nochange') submitForm();
 				} );
 				}
 				</script>

@@ -31,8 +31,9 @@ class UpdateAppartNotesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $apparts = $this->em->getRepository(Appartement::class)->findAll();
+        $ac = new AjaxController($this->em);
         foreach ($apparts as $appart) {
-            AjaxController::updateAppart($appart->getId(), $this->em);
+            $ac->updateAppart($appart->getId());
         }
         $io->success('Notes updated successfully!');
 

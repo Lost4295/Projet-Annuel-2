@@ -15,9 +15,15 @@ use Symfony\Component\HttpFoundation\Request;
 #[Route('/ajax', name: 'ajax_')]
 class AjaxController extends AbstractController
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
 
     #[Route("/search/appart", name: "search")]
-    public function search(Request $request, EntityManagerInterface $em)
+    public function search(Request $request)
     {
         $dest = $request->request->get('dest');
         $startdate = $request->request->get('startdate');
@@ -26,25 +32,25 @@ class AjaxController extends AbstractController
         $children = $request->request->get('children');
         $babies = $request->request->get('babies');
 
-        $apparts = $em->getRepository(Appartement::class)->findAppart($dest, $startdate, $enddate, $adults, $children, $babies);
+        $apparts = $this->em->getRepository(Appartement::class)->findAppart($dest, $startdate, $enddate, $adults, $children, $babies);
 
         return $this->json($apparts);
     }
 
     #[Route("/rating", name: "rating")]
-    public function rateLocation(Request $request, EntityManagerInterface $em)
+    public function rateLocation(Request $request)
     {
         $rating = $request->request->get('rating');
         $locId = $request->request->get('id');
-        $loc = $em->getRepository(Location::class)->find($locId);
+        $loc = $this->em->getRepository(Location::class)->find($locId);
         $note = new Note();
         $note->setNote($rating);
         $note->setLocation($loc);
         $note->setUser($this->getUser());
         $loc->addNote($note);
-        $em->persist($note);
-        $em->persist($loc);
-        $em->flush();
+        $this->em->persist($note);
+        $this->em->persist($loc);
+        $this->em->flush();
         return $this->json(['success' => 'true']);
     }
 
@@ -56,9 +62,9 @@ class AjaxController extends AbstractController
         return $this->json($output);
     }
 
-    public static function updateAppart($locId, EntityManagerInterface $em)
+    public function updateAppart($locId)
     {
-        $app = $em->getRepository(Appartement::class)->find($locId);
+        $app = $this->em->getRepository(Appartement::class)->find($locId);
         $locs = $app->getLocations();
         $notes = [];
         foreach ($locs as $loc) {
@@ -107,8 +113,8 @@ class AjaxController extends AbstractController
             'one_star_review'    =>    $one_star_review,
         ];
         $app->setNote($average_rating);
-        $em->persist($app);
-        $em->flush();
+        $this->em->persist($app);
+        $this->em->flush();
         return $output;
     }
 }

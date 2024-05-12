@@ -17,6 +17,7 @@ use App\Entity\Commentaire;
 use App\Entity\Devis;
 use App\Entity\Fichier;
 use App\Entity\Location;
+use App\Entity\Note;
 use App\Entity\Professionnel;
 use App\Entity\Service;
 use App\Entity\Ticket;
@@ -189,6 +190,7 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::section('obrl');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
+        yield MenuItem::linkToCrud('note', 'fa fa-star', Note::class);
         yield MenuItem::linkToCrud('loca', 'fa fa-plus', Location::class);
         // yield MenuItem::linkToCrud('appart', 'fa fa-building', Appartement::class);
         yield MenuItem::linktoRoute('crappart', 'fa fa-chart-bar', 'appartement_create');

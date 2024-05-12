@@ -16,20 +16,65 @@
       </p>
     </div>
   </div>
-  <div class="row mt-4">
+  <div class="row mt-4 d-flex justify-content-around">
     {% for appart in apparts %}
-      <a href="{{ path('appart_detail', {'id': appart.id}) }}" class="col-md-4 py-1 text-decoration-none">
-        <div class="card">
-          <div class="card-body">
-            <img src={{asset("images/appartements/apt1_1.jpeg")}} class="card-img-top" alt="...">
-            <h5>{{appart.city}} - {{appart.country}}</h5>
-            <small>{{appart.description|slice(0,50)~"..."}}</small>
-            <div style="display: flex; justify-content: space-between; width: 100%;">
-              <p>{{appart.price}} € / Nuit</p> 
-              <p>{{appart.note}} / 5</p></div>
-          </div>
-        </div>
-      </a>
-    {% endfor %}
+				<div class="card col-md-3 my-3 mx-1 py-1">
+					<div class="card-header">
+						<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+							<div class="splide__track">
+								<ul class="splide__list">
+								{% for img in appart.images %}
+									<li class="splide__slide"><img src="{{asset("uploads/"~img.path)}}" class="card-img-top" alt="..."></li>
+								{% else %}
+									<li class="splide__slide"><img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" class="card-img-top" alt="..."></li>
+								{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+					<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="text-decoration-none text-black">
+						<div class="card-body">
+							<h5>{{appart.city}}
+								-
+								{{appart.country}}</h5>
+							<small>{{appart.description|slice(0,50)~"..."}}</small>
+							<div style="display: flex; justify-content: space-between; width: 100%;">
+								<p>{{appart.price}}
+									€ / Nuit</p>
+								<p>{{appart.note}}
+									/ 5</p>
+							</div>
+						</div>
+					</a>
+				</div>
+		{% endfor %}
   </div>  
+{% endblock %}
+{% block javascripts %}
+	<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
+<script>
+monune();
+
+function monune() {
+	var elms = document.getElementsByClassName( 'splide' );
+
+	for ( var i = 0; i < elms.length; i++ ) {
+		new Splide( elms[ i ], {
+			type       : 'loop',
+			perPage    : 1,
+			perMove    : 1,
+			pagination : false,
+			autoplay   : false,
+			breakpoints: {
+				600: {
+					perPage: 1,
+				}
+			}
+		
+		}).mount();
+	}
+}
+</script>
 {% endblock %}

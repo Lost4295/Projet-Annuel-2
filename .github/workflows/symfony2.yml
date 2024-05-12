@@ -50,6 +50,8 @@ jobs:
 
       - name: Executing remote command
         uses: appleboy/ssh-action@master
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
         with:
           host: ${{ secrets.TESTHOST }}
           username: ${{ secrets.USERNAME }}
