@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Appartement;
+use App\Entity\Location;
 use App\Entity\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Stripe;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 
 class StripeController extends AbstractController
 {
@@ -37,9 +39,21 @@ class StripeController extends AbstractController
         $appartimgs = $appart->getImages();
         $appartimgs = $appartimgs->toArray();
         $appartimgs = array_map(function ($img) {
-            return self::URL.'uploads/'.$img->getPath();
+            return self::URL . 'uploads/' . $img->getPath();
         }, $appartimgs);
-
+        $loca = new \stdClass();
+        $loca->appartement =$appart->getId();
+        $loca->adults =$adults;
+        $loca->kids =$kids;
+        $loca->babies =$babies;
+        $loca->dateDebut =$dates[0];
+        $loca->dateFin =$dates[1];
+        $loca->locataire =$user->getUserIdentifier();
+        $loca->price =$appartPrice;
+        $loca->service=$services;
+        $uid = Uuid::v7();
+        $request->getSession()->set('location', $loca);
+        $request->getSession()->set('uid', $uid);
 
         Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
         $lineItems = [];
@@ -50,7 +64,7 @@ class StripeController extends AbstractController
                     'currency' => 'eur',
                     'unit_amount' => $appartPrice * 100,
                     'product_data' => [
-                        'name' => ($appart->getTitre())?$appart->getTitre() :"Appartement",
+                        'name' => ($appart->getTitre()) ? $appart->getTitre() : "Appartement",
                         'images' => $appartimgs,
                         "description" => $appart->getShortDesc(),
                     ]
@@ -85,7 +99,7 @@ class StripeController extends AbstractController
             'billing_address_collection' => 'auto',
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => $this->generateUrl('index', ["payment" => "success"], UrlGeneratorInterface::ABSOLUTE_URL),
+            'success_url' => $this->generateUrl('index', ["c" => $uid], UrlGeneratorInterface::ABSOLUTE_URL),
             'cancel_url' => $this->generateUrl('appart_detail', ['id' => $appartId], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
         return $this->redirect($checkout_session->url, 302);

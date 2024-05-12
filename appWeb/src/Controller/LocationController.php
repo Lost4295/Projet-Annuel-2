@@ -46,7 +46,7 @@ class LocationController extends AbstractController
                 'method' => 'POST',
             ]);
         }
-        $locs = $em->getRepository(Location::class)->findBy(["id" => $appart->getId()]);
+        $locs = $em->getRepository(Location::class)->findBy(["appartement" => $appart->getId()]);
         foreach ($locs as $loc) {
             $startDate = $loc->getDateDebut();
             $endDate = $loc->getDateFin();
@@ -63,7 +63,6 @@ class LocationController extends AbstractController
             'action' => $this->generateUrl('appart_confirm'),
             'method' => 'POST',
         ]);
-        dump($appart->getImages());
         $form->handleRequest($request);
         return $this->render('appartements/appart_detail.html.twig', [
             'appart' => $appart,
@@ -95,8 +94,7 @@ class LocationController extends AbstractController
             return $this->redirectToRoute('locations');
         }
 
-        $locs = $em->getRepository(Location::class)->findBy(["id" => $id]);
-
+        
         $dates = explode("-", $firstForm->get('date')->getData());
         $dates = array_map(function ($date) {
             return new \DateTime($date);
@@ -108,6 +106,23 @@ class LocationController extends AbstractController
         $days = $dates[0]->diff($dates[1])->days;
         if ($firstForm->isSubmitted() && !$firstForm->isValid()) {
             return $this->redirectToRoute('appart_detail', ['id' => $id]);
+        }
+        $locs = $em->getRepository(Location::class)->findBy(["appartement" => $id]);
+        foreach ($locs as $loc) {
+            $startDate = $loc->getDateDebut();
+            $endDate = $loc->getDateFin();
+            if ($dates[0] >= $startDate && $dates[0] <= $endDate) {
+                $this->addFlash("danger", "dateunavailable");
+                return $this->redirectToRoute('appart_detail', ['id' => $id]);
+            }
+            if ($dates[1] >= $startDate && $dates[1] <= $endDate) {
+                $this->addFlash("danger", "dateunavailable");
+                return $this->redirectToRoute('appart_detail', ['id' => $id]);
+            }
+            if ($dates[0] <= $startDate && $dates[1] >= $endDate) {
+                $this->addFlash("danger", "dateunavailable");
+                return $this->redirectToRoute('appart_detail', ['id' => $id]);
+            }
         }
         $appart = $em->getRepository(Appartement::class)->find($id);
 
