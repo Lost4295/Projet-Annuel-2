@@ -9,6 +9,20 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
 class Devis
 {
+    public const PRESTA_NETTOYAGE = 1;
+    public const PRESTA_ELEC = 2;
+    public const PRESTA_PLOMBERIE = 3;
+    public const PRESTA_PEINTURE = 4;
+    public const PRESTA_BRICOLAGE = 5;
+
+    public const PRESTA_LIST = [
+        self::PRESTA_NETTOYAGE => 'Nettoyage',
+        self::PRESTA_ELEC => 'Electricité',
+        self::PRESTA_PLOMBERIE => 'Plomberie',
+        self::PRESTA_PEINTURE => 'Peinture',
+        self::PRESTA_BRICOLAGE => 'Bricolage',
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -29,6 +43,7 @@ class Devis
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $typePresta = null;
 
+    private ?string $description = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -82,6 +97,10 @@ class Devis
         return $this;
     }
 
+    public static function getTypePrestaString()
+    {
+        return self::PRESTA_LIST;
+    }
     public function getTypePresta(): ?int
     {
         return $this->typePresta;
@@ -90,6 +109,26 @@ class Devis
     public function setTypePresta(int $typePresta): static
     {
         $this->typePresta = $typePresta;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of description
+     */ 
+    public function getDescription() :?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the value of description
+     *
+     * @return  self
+     */ 
+    public function setDescription($description) :static
+    {
+        $this->description = $description;
 
         return $this;
     }
