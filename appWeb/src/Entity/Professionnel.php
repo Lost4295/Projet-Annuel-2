@@ -163,6 +163,13 @@ class Professionnel
         return $this;
     }
 
+    public function setServices(Collection $services): static
+    {
+        $this->services = $services;
+
+        return $this;
+    }
+
     public function removeService(Service $service): static
     {
         if ($this->services->removeElement($service)) {
@@ -199,6 +206,13 @@ class Professionnel
             $this->appartements->add($appartement);
             $appartement->setBailleur($this);
         }
+
+        return $this;
+    }
+
+    public function setAppartements(Collection $appartements): static
+    {
+        $this->appartements = $appartements;
 
         return $this;
     }
