@@ -4,6 +4,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Appartement;
 use App\Entity\Location;
 use App\Entity\Professionnel;
 use App\Entity\User;
@@ -47,14 +48,15 @@ class UserController extends AbstractController
             $appartements = $pro->getAppartements();
         }
         
-        $reservation = $this->createForm(AppartementType::class);
+        $res = new Appartement();
+        $reservation = $this->createForm(AppartementType::class, $res);
         $reservation->handleRequest($request);
         if ($reservation->isSubmitted() && $reservation->isValid()) {
             $appartement = $reservation->getData();
-            dd($appartement);
-            $em->persist($appartement);
+            // dd($appartement);
+            $em->persist($res);
             $em->flush();
-            return $this->redirectToRoute('appartement_create');
+            return $this->redirectToRoute('index');
         }
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
             $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);

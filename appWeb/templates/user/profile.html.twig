@@ -220,6 +220,7 @@
 				<h2>{{'crappart'|trans }}</h2>
 				{% form_theme reservation 'bootstrap_5_layout.html.twig' %}
 				{{form_start(reservation) }}
+				{{form_row(reservation.titre) }}
 				{{form_row(reservation.description) }}
 				{{form_row(reservation.shortDesc) }}
 				{{form_row(reservation.price) }}
@@ -227,8 +228,16 @@
 				{{form_row(reservation.city) }}
 				{{form_row(reservation.postalCode) }}
 				{{form_row(reservation.country) }}
-				{# {{form_row(reservation.nbRooms) }}
-				{{form_row(reservation.services) }} #}
+				{{form_row(reservation.nbVoyageurs) }}
+				{{form_row(reservation.note) }}
+				{#{form_row(reservation.state) }#}
+				{{form_row(reservation.nbchambers) }}
+				{{form_row(reservation.nbbathrooms) }}
+				{{form_row(reservation.nbBeds) }}
+				{{form_row(reservation.createdAt) }}
+				{{form_row(reservation.updatedAt) }}
+				{{form_row(reservation.surface) }}
+				{{form_row(reservation.bailleur) }}
 				{{form_row(reservation.images) }}
 				{{form_row(reservation.submit) }}
 				{{form_row(reservation._token) }}

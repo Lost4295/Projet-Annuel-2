@@ -26,7 +26,7 @@ class AppartementType extends AbstractType
             ->add('titre', TextType::class, [
                 'attr' => [
                     "class" => "my-2"
-                ], "label" => "shortDesc"
+                ], "label" => "Titre"
             ])
             ->add('description', TextareaType::class, [
                 'attr' => [
@@ -77,11 +77,19 @@ class AppartementType extends AbstractType
                     "class" => "my-2"
                 ], "label" => "note"
             ])
-            ->add('state', ChoiceType::class, [
-                'attr' => [
-                    "class" => "my-2"
-                ], "label" => "state"
-            ])
+            // ->add('state', ChoiceType::class, [
+            //     'attr' => [
+            //         "class" => "my-2",
+               
+            //     ], "label" => "state",
+            //         "multiple" => true,
+            //         "expanded" => true,
+            //         "choices" => [
+            //             "Disponible" => "Disponible",
+            //             "En attente" => "En attente",
+            //             "Loué" => "Loué"]
+                   
+            // ])
             ->add('nbchambers', NumberType::class, [
                 'attr' => [
                     "class" => "my-2"
