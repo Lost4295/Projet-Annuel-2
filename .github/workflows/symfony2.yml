@@ -47,11 +47,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSHPASS }}
       - name: Executing remote command
         uses: appleboy/ssh-action@master
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
         with:
           host: ${{ secrets.TESTHOST }}
           username: ${{ secrets.USERNAME }}
