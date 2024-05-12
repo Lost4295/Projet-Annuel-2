@@ -6,7 +6,7 @@
         </div>
 		<div class="fs-1 mb-5 text-center col-4">
 			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search" placeholder="Trouvez les réponses à toutes vos questions" aria-label="Search">
+				<input id="searchInput" class="form-control mr-sm-2" type="search" placeholder="Trouvez les réponses à toutes vos questions" aria-label="Search">
 				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 			</form>
         </div>
@@ -17,29 +17,82 @@
 			</div>	
 		</div>
 		<div class="row pt-5">
-			<div class="col-8 fs-2">
+			<div id="question1" class="col-8 fs-2 question">
 			Comment s’inscrire sur le site ?
 			</div>
-			<div class="col-4 fs-2 ">
-			Comment être bailleur ?
+			<div class="col-4 fs-2 answer">
+			Cliquer sur le bouton " s'inscrire" en haut à droite de la page d'accueil
 			</div>	
 		</div>
 		<div class="row pt-5">
-			<div class="col-8 fs-2">
+			<div id="question2" class="col-8 fs-2 question">
+			Comment être bailleur ?
+			</div>
+			<div class="col-4 fs-2 answer">
+			Il faut avoir un compte et avoir un bien immobilier à louer
+			</div>	
+		</div>
+		<div class="row pt-5">
+			<div id="question3" class="col-8 fs-2 question">
 			Comment supprimer mon compte ?
 			</div>
-			<div class="col-4 fs-2 ">
-			Comment devenir prestataire ? 
+			<div class="col-4 fs-2 answer">
+			Vous pouvez nous faire la demande via notre plateforme de ticketing 
 			</div>	
 		</div>
 		<div class="row pt-5">
-			<div class="col-8 fs-2">
+			<div id="question4" class="col-8 fs-2 question">
 			Quelles sont les moyens de paiement disponibles ?
 			</div>
-			<div class="col-4 fs-2 ">
-			Comment récupérer les clés ?
+			<div class="col-4 fs-2 answer">
+			Ce sont Visa et Mastercard
 			</div>	
 		</div>
+		<div class="row pt-5">
+			<div id="question5" class="col-8 fs-2 question">
+			Comment récupérer les clés ?
+			</div>
+			<div class="col-4 fs-2 answer">
+			Les clés vont vous êtes remises par la femme de ménage
+			</div>	
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			// Cacher toutes les réponses au départ
+			$(".answer").hide();
+			
+			// Ajouter un gestionnaire d'événements aux questions
+			$(".question").click(function() {
+				// Trouver la réponse correspondante
+				var answer = $(this).next(".answer");
+				// Afficher ou cacher la réponse en fonction de son état actuel
+				answer.slideToggle();
+			});
+		});
+	</script>
+	<script>
+    document.getElementById("searchInput").addEventListener("input", function() {
+        var searchText = this.value.toLowerCase();
+        var questions = document.getElementsByClassName("question");
+
+        // Parcourir toutes les questions
+        for (var i = 0; i < questions.length; i++) {
+            var questionText = questions[i].innerText.toLowerCase();
+            var questionId = questions[i].id;
+
+            // Vérifier si le texte de la question correspond à la recherche
+            if (questionText.includes(searchText)) {
+                // Afficher la question si elle correspond
+                document.getElementById(questionId).parentNode.style.display = "block";
+            } else {
+                // Masquer la question si elle ne correspond pas
+                document.getElementById(questionId).parentNode.style.display = "none";
+            }
+        }
+    });
+</script>
 		
     
 	
