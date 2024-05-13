@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Service;
 
@@ -22,15 +22,5 @@ class PrefixNamingStrategy extends UnderscoreNamingStrategy
     public function classToTableName(string $className): string
     {
         return $this->prefix . '_' . parent::classToTableName($className);
-    }
-
-    public function propertyToColumnName(string $propertyName, string $className): string
-    {
-        return parent::propertyToColumnName($propertyName, $className);
-    }
-
-    public function joinTableName(string $sourceEntity, string $targetEntity, string $propertyName): string
-    {
-        return $this->prefix . '_' . parent::joinTableName($sourceEntity, $targetEntity, $propertyName);
     }
 }

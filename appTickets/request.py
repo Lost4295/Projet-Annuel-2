@@ -1,6 +1,7 @@
 import requests
 import dotenv
 import os
+import time
 
 dotenv.load_dotenv()
 EMAIL = os.getenv("EMAIL")
@@ -41,6 +42,8 @@ while True:
                 print("-----------------------------")
         else:
             print("Erreur lors de la récupération des tickets")
+            time.sleep(2)
+            print(response.json())
     elif choice == "3":
         break
     else:
