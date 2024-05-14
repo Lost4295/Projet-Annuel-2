@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Ticket;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,29 +16,45 @@ class TicketType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateOuverture', null, [
-                'widget' => 'single_text',
+        ->add('titre', TextType::class, [
+            'attr'=>[
+                "class"=> "form-control"
+            ]
+        ])
+        ->add('dateOuverture', DateTimeType::class, [
+                'attr'=>[
+                    "class"=> "form-control",
+                    "readonly"=> "readonly"
+                ]
             ])
-            ->add('dateFermeture', null, [
-                'widget' => 'single_text',
+            ->add('category', ChoiceType::class, [
+                'attr'=>[
+                    "class"=> "form-control"
+                ],
+                'choices'=>array_flip(Ticket::CATEGORY_LIST)
             ])
-            ->add('lastUpdateDate', null, [
-                'widget' => 'single_text',
+            ->add('type', ChoiceType::class, [
+                'attr'=>[
+                    "class"=> "form-control"
+                ],
+                'choices'=>array_flip(Ticket::TYPE_LIST)
             ])
-            ->add('category')
-            ->add('type')
-            ->add('status')
-            ->add('priority')
-            ->add('titre')
-            ->add('description')
-            ->add('urgence')
-            ->add('demandeur', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+            ->add('priority', ChoiceType::class, [
+                'attr'=>[
+                    "class"=> "form-control"
+                ],
+                'choices'=>array_flip(Ticket::PRIORITY_LIST)
             ])
-            ->add('resolveur', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+            ->add('urgence', ChoiceType::class, [
+                'attr'=>[
+                    "class"=> "form-control"
+                ],
+                'choices'=>array_flip(Ticket::URGENCE_LIST)
+            ])
+            ->add('description', TextareaType::class, [
+                'attr'=>[
+                    "class"=> "form-control"
+                ]
             ])
         ;
     }

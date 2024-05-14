@@ -50,11 +50,8 @@ class Appartement
     #[ORM\Column(length: 50)]
     private ?string $state = null;
 
-    /**
-     * @var Collection<int, Fichier>
-     */
-    #[ORM\OneToMany(targetEntity: Fichier::class, mappedBy: 'appartement')]
-    private Collection $images;
+    #[ORM\Column(type: 'json', nullable: true)]
+    private array $images;
 
     #[ORM\ManyToOne(inversedBy: 'appartements')]
     #[ORM\JoinColumn(nullable: false)]
@@ -103,7 +100,7 @@ class Appartement
     {
         $this->state = "En attente";
         $this->note = 0;
-        $this->images = new ArrayCollection();
+        $this->images = ["house-placeholder.jpg"];
         $this->appartPluses = new ArrayCollection();
         $this->locations = new ArrayCollection();
     }
@@ -202,33 +199,25 @@ class Appartement
         return $this;
     }
 
-    /**
-     * @return Collection<int, Fichier>
-     */
-    public function getImages(): Collection
+
+    public function getImages(): array
     {
-        return $this->images;
+        return$this->images; 
     }
 
-    public function addImage(Fichier $image): static
+    /**
+     * @param list<string> $image
+     */
+    public function setImages(array $image): static
     {
-        if (!$this->images->contains($image)) {
-            $this->images->add($image);
-            $image->setAppartement($this);
-        }
-
+        $this->images = $image;
         return $this;
     }
 
-    public function removeImage(Fichier $image): static
+    public function addImage(string $image): static
     {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getAppartement() === $this) {
-                $image->setAppartement(null);
-            }
-        }
-
+        $this->images[] = $image;
+        $this->setImages(array_unique($this->images));
         return $this;
     }
 

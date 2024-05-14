@@ -22,13 +22,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     public function rander(int $length, bool $number = true, bool $letter = true, bool $special = true): string
     {
-        $number = '0123456789';
-        $letter = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $special = '!@#$%^&*()_+{}|:<>?';
+        $numbere = '0123456789';
+        $lettere = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $speciale = '!@#$%^&*()_+{}|:<>?';
         $characters = '';
-        $characters .= $number ? $number : '';
-        $characters .= $letter ? $letter : '';
-        $characters .= $special ? $special : '';
+        $characters .= $number ? $numbere : '';
+        $characters .= $letter ? $lettere : '';
+        $characters .= $special ? $speciale : '';
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {

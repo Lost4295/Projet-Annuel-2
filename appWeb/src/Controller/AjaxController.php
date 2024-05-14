@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Appartement;
 use App\Entity\Location;
 use App\Entity\Note;
+use App\Service\AppartementService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,66 +56,11 @@ class AjaxController extends AbstractController
     }
 
     #[Route("/getrating", name: "get_rating")]
-    public function getRating(Request $request)
+    public function getRating(Request $request, AppartementService $as)
     {
         $locId = $request->get('id');
-        $output = self::updateAppart($locId);
+        $output = $as->updateAppart($locId);
         return $this->json($output);
     }
 
-    public function updateAppart($locId)
-    {
-        $app = $this->em->getRepository(Appartement::class)->find($locId);
-        $locs = $app->getLocations();
-        $notes = [];
-        foreach ($locs as $loc) {
-            foreach ($loc->getNotes() as $note) {
-                $notes[] = $note->getNote();
-            }
-        }
-        $total_review = $total_user_rating = $five_star_review = $four_star_review
-            = $three_star_review = $two_star_review = $one_star_review = 0;
-
-        foreach ($notes as $note) {
-            switch ($note) {
-                case '5':
-                    $five_star_review++;
-                    break;
-                case '4':
-                    $four_star_review++;
-                    break;
-                case '3':
-                    $three_star_review++;
-                    break;
-                case '2':
-                    $two_star_review++;
-                    break;
-                case '1':
-                    $one_star_review++;
-                    break;
-                default:
-                    break;
-            }
-            $total_review++;
-            $total_user_rating += $note;
-        }
-        if ($total_review == 0) {
-            $average_rating = 0;
-        } else {
-            $average_rating = $total_user_rating / $total_review;
-        }
-        $output = [
-            'average_rating'    =>    number_format($average_rating, 1),
-            'total_review'        =>    $total_review,
-            'five_star_review'    =>    $five_star_review,
-            'four_star_review'    =>    $four_star_review,
-            'three_star_review'    =>    $three_star_review,
-            'two_star_review'    =>    $two_star_review,
-            'one_star_review'    =>    $one_star_review,
-        ];
-        $app->setNote($average_rating);
-        $this->em->persist($app);
-        $this->em->flush();
-        return $output;
-    }
 }

@@ -169,9 +169,7 @@ input::-webkit-inner-spin-button {
 							<div class="splide__track">
 								<ul class="splide__list">
 								{% for img in appart.images %}
-									<li class="splide__slide"><img src="{{asset("uploads/"~img.path)}}" class="card-img-top" alt="..."></li>
-								{% else %}
-									<li class="splide__slide"><img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" class="card-img-top" alt="..."></li>
+									<li class="splide__slide"><img src="{{asset("images/appartements/"~img)}}" class="card-img-top" alt="..."></li>
 								{% endfor %}
 								</ul>
 							</div>

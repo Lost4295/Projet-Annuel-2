@@ -27,9 +27,6 @@ class Fichier
     #[ORM\ManyToOne(inversedBy: 'pj')]
     private ?Email $email = null;
 
-    #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?Appartement $appartement = null;
-
     #[ORM\ManyToOne(inversedBy: 'pj')]
     private ?Ticket $ticket = null;
 
@@ -85,18 +82,6 @@ class Fichier
     public function setEmail(?Email $email): static
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getAppartement(): ?Appartement
-    {
-        return $this->appartement;
-    }
-
-    public function setAppartement(?Appartement $appartement): static
-    {
-        $this->appartement = $appartement;
 
         return $this;
     }

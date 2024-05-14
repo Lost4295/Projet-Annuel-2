@@ -18,19 +18,12 @@
 			</div>
 		</div>
 		<div class="row d-flex justify-content-center">
-				{# {{dump(appart.images.getValues()) }}
-} #}
-
 			<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 		  		<div class="splide__track">
 					<ul class="splide__list">
 						{% for image in appart.images %}
 							<li class="splide__slide">
-								<img src="{{ asset('uploads/'~image.path) }}" alt="image" style="width: 100%; height: 100%;">
-							</li>
-						{% else %}
-							<li class="splide__slide">
-								<img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" alt="image" style="width: 100%; height: 100%;">
+								<img src="{{ asset('images/appartements/'~image) }}" alt="image" style="width: 100%; height: 100%;">
 							</li>
 						{% endfor %}
 					</ul>

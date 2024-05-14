@@ -36,6 +36,18 @@ class ProfessionnelRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+    /**
+     * @return Professionnel[] Returns an array of Professionnel objects
+     */
+    public function findByRole(string $string): array
+    {
+        return $this->createQueryBuilder('b')
+            ->join("b.responsable", "u")
+            ->where('u.roles LIKE :role')
+            ->setParameter('role', '%' .$string. '%')
+            ->getQuery()
+            ->getResult();
+    }
     //    public function findOneBySomeField($value): ?Professionnel
     //    {
     //        return $this->createQueryBuilder('b')

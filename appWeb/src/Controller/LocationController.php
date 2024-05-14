@@ -11,6 +11,7 @@ use App\Form\CommentaireType;
 use App\Form\ConfirmLocationType;
 use App\Form\LocationFirstType;
 use App\Form\LocationTestType;
+use App\Service\AppartementService;
 use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,9 +22,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class LocationController extends AbstractController
 {
     #[Route("/appartements", name: "appartements")]
-    public function createPage(EntityManagerInterface $em)
+    public function createPage(EntityManagerInterface $em, AppartementService $as)
     {
         $apparts = $em->getRepository(Appartement::class)->findAll();
+        foreach ($apparts as $appart) {
+            $as->updateAppart($appart->getId());
+        }
         return $this->render('appartements/locations.html.twig', [
             'apparts' => $apparts
         ]);
@@ -31,13 +35,18 @@ class LocationController extends AbstractController
 
 
     #[Route("/appartements/{id}", name: "appart_detail", requirements: ['id' => '\d+'])]
-    public function show($id, EntityManagerInterface $em, Request $request)
+    public function show($id, EntityManagerInterface $em, Request $request, AppartementService $as)
     {
         $appart = $em->getRepository(Appartement::class)->find($id);
+        if (!$appart) {
+            $this->addFlash("danger", "noaccess");
+            return $this->redirectToRoute('appartements');
+        }
+        $as->updateAppart($id);
         $passedlocs = $em->getRepository(Location::class)->findPassedLocations($appart->getId());
         $canComm = false;
         $commentaires = [];
-
+        
         $commentaires = $em->getRepository(Commentaire::class)->findComments("appartement", $appart->getId());
         if ($passedlocs) {
             $canComm = true;
@@ -79,7 +88,11 @@ class LocationController extends AbstractController
     #[IsGranted("ROLE_USER")]
     public function confirm(Request $request, EntityManagerInterface $em)
     {
-        
+        $user = $this->getUser();
+        if (!$user->isVerified()) {
+            $this->addFlash('warning', "plsverif");
+            return $this->redirectToRoute('appartements');
+        }
         $secondForm = $this->createForm(ConfirmLocationType::class, null, [
             'method' => 'POST',
             'action' => $this->generateUrl('app_stripe')
@@ -91,7 +104,7 @@ class LocationController extends AbstractController
         $id = $firstForm->get('appart')->getData();
         if (!$id) {
             $this->addFlash("danger", "noaccess");
-            return $this->redirectToRoute('locations');
+            return $this->redirectToRoute('appartements');
         }
 
         

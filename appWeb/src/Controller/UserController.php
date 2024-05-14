@@ -7,31 +7,18 @@ namespace App\Controller;
 use App\Entity\Appartement;
 use App\Entity\Location;
 use App\Entity\Professionnel;
+use App\Entity\Ticket;
 use App\Entity\User;
 use App\Form\AppartementType;
+use App\Form\ModifyProfileType;
 use App\Form\TicketType;
-use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\EqualTo;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserController extends AbstractController
 {
@@ -48,16 +35,6 @@ class UserController extends AbstractController
             $appartements = $pro->getAppartements();
         }
         
-        $res = new Appartement();
-        $reservation = $this->createForm(AppartementType::class, $res);
-        $reservation->handleRequest($request);
-        if ($reservation->isSubmitted() && $reservation->isValid()) {
-            $appartement = $reservation->getData();
-            // dd($appartement);
-            $em->persist($res);
-            $em->flush();
-            return $this->redirectToRoute('index');
-        }
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
             $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);
             foreach ($locations as $key => $location) {
@@ -67,7 +44,7 @@ class UserController extends AbstractController
                 }
             }
         }
-
+        $tickets = $em->getRepository(Ticket::class)->findBy(["demandeur" => $user->getId()]);
         // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
         return $this->render('user/profile.html.twig', [
             'message' => 'Hello World!',
@@ -75,14 +52,23 @@ class UserController extends AbstractController
             'appartements' => $appartements,
             'locations' => $locations,
             'pastlocations' => $pastlocas,
-            'reservation' => $reservation
+            'tickets' => $tickets
         ]);
     }
 
-    #[Route("/create_appart/f", name: "create_appart")]
+    #[Route("/appartement/create", name: "create_appart")]
+    #[IsGranted("ROLE_BAILLEUR")]
     public function createAppart(Request $request, EntityManagerInterface $em)
     {
-        return $this->render('create_appart.html.twig');
+        $res = new Appartement();
+        $reservation = $this->createForm(AppartementType::class, $res);
+        $reservation->handleRequest($request);
+        if ($reservation->isSubmitted() && $reservation->isValid()) {
+            $em->persist($res);
+            $em->flush();
+            return $this->redirectToRoute('profile');
+        }
+        return $this->render('appartements/create_appart_user.html.twig', ['reservation' => $reservation]);
     }
 
     #[Route("profile/modify/", name: "check_infos")]
@@ -91,99 +77,7 @@ class UserController extends AbstractController
     public function checkInfos(Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser();
-        $form = $this->createFormBuilder($user)
-            ->add('email', EmailType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-                'constraints' => [
-                    new Email([
-                        'message' => 'The email {{ value }} is not a valid email.',
-                    ]),
-                    new NotBlank([
-                        'message' => 'Please enter an email.',
-                    ]),
-                ],
-                "label" => 'emailfield'
-
-            ])
-            ->add('nom', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'disabled' => 'disabled',
-                ],
-                "label" => 'nom',
-
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a name.',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'minMessage' => 'Your name should be at least {{ limit }} characters.',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 80,
-                    ]),
-                ],
-            ])
-            ->add('prenom', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'disabled' => 'disabled',
-                ],
-                "label" => 'prenom',
-
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a name.',
-                    ]),
-                    new Length([
-                        'min' => 2,
-                        'minMessage' => 'Your name should be at least {{ limit }} characters.',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 80,
-                    ]),
-                ],
-                //
-            ])
-            ->add('birthdate', DateType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'disabled' => 'disabled',
-                ],
-                "label" => 'birthdate',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a birthdate.',
-                    ]),
-                    new Type([
-                        'message' => 'Please enter a valid date.',
-                        'type' => 'DateTime',
-                    ])
-                ]
-            ])
-            ->add('phoneNumber', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-                "label" => 'phone',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a phone number.',
-                    ]),
-                    new Length([
-                        'min' => 10,
-                        'minMessage' => 'Your phone number should be at least {{ limit }} characters.',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 10,
-                    ]),
-                    new Regex([
-                        'pattern' => '/^[0-9]{10}$/',
-                        'message' => 'Your phone number should contain only numbers.'
-                    ])
-                ],
-            ])
-            ->getForm()->handleRequest($request);
+        $form = $this->createForm(ModifyProfileType::class,$user)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setIsVerified(false);
             $em->persist($user);
@@ -197,9 +91,41 @@ class UserController extends AbstractController
 
     #[Route("/ticket", name: "create_ticket")]
     #[IsGranted("ROLE_USER")]
-    public function createTicket(Request $request, EntityManagerInterface $em)
+    public function createTicket(Request $request, EntityManagerInterface $em, TranslatorInterface $trans)
     {
-        $form = $this->createForm(TicketType::class, null);
+        $info = new Ticket();
+        $info
+        ->setStatus(TICKET::STATUS_NOUVEAU)
+        ->setDateOuverture(new \DateTime('now'))
+        ->setDemandeur($this->getUser());
+        $reason = $request->get('r');
+        if ($reason) {
+            switch ($reason) {
+                case 'info':
+                    $mess =$trans->trans("hereinfo", [], 'messages');
+                    $info->setTitre("Changements d'informations")
+                    ->setDescription("Je voudrais changer mes informations personnelles. ". $mess)
+                    ->setUrgence(TICKET::URGENCE_BASSE)
+                    ->setPriority(TICKET::PRIORITY_BASSE)
+                    ->setCategory(TICKET::CATEGORY_DEMANDE);
+                    break;
+                case 'payment':
+                    $info = 'Payment';
+                    break;
+                case 'other':
+                    $info = 'Other';
+                    break;
+                default:
+                    break;
+            }
+        }
+        $form = $this->createForm(TicketType::class, $info)->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($info);
+            $em->flush();
+            $this->addFlash('success', 'Your ticket has been created successfully.');
+            return $this->redirectToRoute('profile');
+        }
         return $this->render('user/create_ticket.html.twig', ['form' => $form]);
     }
 }

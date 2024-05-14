@@ -1,102 +1,139 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 	<div class="row py-2 d-flex bg-orange">
-        <div class="fs-1 text-center ">
-			<h4>Vous pouvez faire votre demande de devis <a href={{path("create_devis")}}>ici</a></h4>
-        </div>
+		<div class="fs-1 text-center ">
+			<h4>Vous pouvez faire votre demande de devis
+				<a href={{path("create_devis")}}>ici</a>
+			</h4>
+		</div>
 	</div>
 	<div class="d-flex align-items-start">
 		<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-			<button class="nav-link fs-3 my-3 p-5 active" id="v-pills-nettoyage-tab" data-bs-toggle="pill" data-bs-target="#v-pills-nettoyage" type="button" role="tab" aria-controls="v-pills-nettoyage" aria-selected="true">Nettoyage</button>			
+			<button class="nav-link fs-3 my-3 p-5 active" id="v-pills-nettoyage-tab" data-bs-toggle="pill" data-bs-target="#v-pills-nettoyage" type="button" role="tab" aria-controls="v-pills-nettoyage" aria-selected="true">Nettoyage</button>
 			<button class="nav-link fs-3 my-3 p-5" id="v-pills-elec-tab" data-bs-toggle="pill" data-bs-target="#v-pills-elec" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false">Electricité</button>
 			<button class="nav-link fs-3 my-3 p-5" id="v-pills-plomberie-tab" data-bs-toggle="pill" data-bs-target="#v-pills-plomberie" type="button" role="tab" aria-controls="v-pills-plomberie" aria-selected="false">Plomberie</button>
-			<button class="nav-link fs-3 my-3 p-5" id="v-pills-peinture-tab" data-bs-toggle="pill" data-bs-target="#v-pills-peinture" type="button" role="tab" aria-controls="v-pills-peinture" aria-selected="false">Peinture</button>			
+			<button class="nav-link fs-3 my-3 p-5" id="v-pills-peinture-tab" data-bs-toggle="pill" data-bs-target="#v-pills-peinture" type="button" role="tab" aria-controls="v-pills-peinture" aria-selected="false">Peinture</button>
 			<button class="nav-link fs-3 my-3 p-5" id="v-pills-bricolage-tab" data-bs-toggle="pill" data-bs-target="#v-pills-bricolage" type="button" role="tab" aria-controls="v-pills-bricolage" aria-selected="false">Bricolage</button>
 			<button class="nav-link fs-3 my-3 p-5" id="v-pills-chauffeur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-chauffeur" type="button" role="tab" aria-controls="v-pills-chauffeur" aria-selected="false">Chauffeur</button>
 		</div>
 		<div class="tab-content w-100" id="v-pills-tabContent bs-info">
 			<div class="tab-pane fade show active" id="v-pills-nettoyage" role="tabpanel" aria-labelledby="v-pills-nettoyage-tab">
-				<div class="card-deck d-flex justify-content-around flex-row">
+				<div class="row d-flex justify-content-around flex-row">
 					{% for net in nettoyage %}
-						<div class="card">
-							<div class="card-body">
-								<div class="col d-flex justify-content-center">
-									<img src="https://placehold.co/300x300" alt="">
+						<div class="col-md-3 my-3 mx-1 py-1">
+							<div class="card">
+								<div class="card-body">
+									<div class="col d-flex justify-content-center">
+										<img src="https://placehold.co/300x300" alt="" class="img-top" style="width:100%">
+									</div>
+									<h5 class="card-title">{{net.titre}}</h5>
+									<h6 class="card-subtitle mb-2 text-body-secondary">{{net.description|slice(0,50)~"..."}}</h6>
+									<small class="float-end text-muted">{{net.tarifs}}
+										€</small>
 								</div>
-								<h5 class="card-title">{{net.titre}}</h5>
-								<h6 class="card-subtitle mb-2 text-body-secondary">{{net.description|slice(0,50)~"..."}}</h6>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
 			</div>
 			<div class="tab-pane fade" id="v-pills-elec" role="tabpanel" aria-labelledby="v-pills-elec-tab">
-				<div class="card-deck d-flex justify-content-around flex-row">
+				<div class="row d-flex justify-content-around flex-row">
 					{% for elec in electricite %}
-						<div class="card">
-							<div class="card-body">
-								<div class="col d-flex justify-content-center">
-									<img src="https://placehold.co/500x300" alt="">
+						<div class="col-md-3 my-3 mx-1 py-1">
+							<div class="card">
+								<div class="card-body">
+									<div class="col d-flex justify-content-center">
+										<img src="https://placehold.co/300x300" alt="" class="img-top" style="width:100%">
+									</div>
+									<h5 class="card-title">{{elec.titre}}</h5>
+									<h6 class="card-subtitle mb-2 text-body-secondary">{{elec.description|slice(0,50)~"..."}}</h6>
+									<small class="float-end text-muted">{{elec.tarifs}}
+										€</small>
 								</div>
-								<h5 class="card-title">{{elec.titre}}</h5>
-								<h6 class="card-subtitle mb-2 text-body-secondary">{{elec.description|slice(0,50)~"..."}}</h6>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
 			</div>
 			<div class="tab-pane fade" id="v-pills-plomberie" role="tabpanel" aria-labelledby="v-pills-plomberie-tab">
-				<div class="card-deck d-flex justify-content-around flex-row">
+				<div class="row d-flex justify-content-around flex-row">
 					{% for plomb in plomberie %}
-						<div class="card">
-							<div class="card-body">
-								<div class="col d-flex justify-content-center">
-									<img src="https://placehold.co/500x300" alt="">
+						<div class="col-md-3 my-3 mx-1 py-1">
+							<div class="card">
+								<div class="card-body">
+									<div class="col d-flex justify-content-center">
+										<img src="https://placehold.co/300x300" alt="" class="img-top" style="width:100%">
+									</div>
+									<h5 class="card-title">{{plomb.titre}}</h5>
+									<h6 class="card-subtitle mb-2 text-body-secondary">{{plomb.description|slice(0,50)~"..."}}</h6>
+									<small class="float-end text-muted">{{plomb.tarifs}}
+										€</small>
 								</div>
-								<h5 class="card-title">{{plomb.titre}}</h5>
-								<h6 class="card-subtitle mb-2 text-body-secondary">{{plomb.description|slice(0,50)~"..."}}</h6>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
 			</div>
 			<div class="tab-pane fade" id="v-pills-peinture" role="tabpanel" aria-labelledby="v-pills-peinture-tab">
-				<div class="card-deck d-flex justify-content-around flex-row">
+				<div class="row d-flex justify-content-around flex-row">
 					{% for peint in peinture %}
-						<div class="card">
-							<div class="card-body">
-								<div class="col d-flex justify-content-center">
-									<img src="https://placehold.co/500x300" alt="">
+						<div class="col-md-3 my-3 mx-1 py-1">
+							<div class="card">
+								<div class="card-body">
+									<div class="col d-flex justify-content-center">
+										<img src="https://placehold.co/300x300" alt="" class="img-top" style="width:100%">
+									</div>
+									<h5 class="card-title">{{peint.titre}}</h5>
+									<h6 class="card-subtitle mb-2 text-body-secondary">{{peint.description|slice(0,50)~"..."}}</h6>
+									<small class="float-end text-muted">{{peint.tarifs}}
+										€</small>
 								</div>
-								<h5 class="card-title">{{peint.titre}}</h5>
-								<h6 class="card-subtitle mb-2 text-body-secondary">{{peint.description|slice(0,50)~"..."}}</h6>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="tab-pane fade" id="v-pills-bricolage" role="tabpanel" aria-labelledby="v-pills-bricolage-tab">
+				<div class="row d-flex justify-content-around flex-row">
+					{% for peint in bricolage %}
+						<div class="col-md-3 my-3 mx-1 py-1">
+							<div class="card">
+								<div class="card-body">
+									<div class="col d-flex justify-content-center">
+										<img src="https://placehold.co/300x300" alt="" class="img-top" style="width:100%">
+									</div>
+									<h5 class="card-title">{{peint.titre}}</h5>
+									<h6 class="card-subtitle mb-2 text-body-secondary">{{peint.description|slice(0,50)~"..."}}</h6>
+									<small class="float-end text-muted">{{peint.tarifs}}
+										€</small>
+								</div>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
 			</div>
 			<div class="tab-pane fade" id="v-pills-chauffeur" role="tabpanel" aria-labelledby="v-pills-chauffeur-tab">
-				<div class="card-deck d-flex justify-content-around flex-row">
+				<div class="row d-flex justify-content-around flex-row">
 					{% for chauf in chauffeur %}
-						<div class="card">
-							<div class="card-body">
-								<div class="col d-flex justify-content-center">
-									<img src="https://placehold.co/500x300" alt="">
+						<div class="col-md-3 my-3 mx-1 py-1">
+							<div class="card">
+								<div class="card-body">
+									<div class="col d-flex justify-content-center">
+										<img src="https://placehold.co/300x300" alt="" class="img-top" style="width:100%">
+									</div>
+									<h5 class="card-title">{{chauf.titre}}</h5>
+									<h6 class="card-subtitle mb-2 text-body-secondary">{{chauf.description|slice(0,50)~"..."}}</h6>
+									<small class="float-end text-muted">{{chauf.tarifs}}
+										€</small>
 								</div>
-								<h5 class="card-title">{{chauf.titre}}</h5>
-								<h6 class="card-subtitle mb-2 text-body-secondary">{{chauf.description|slice(0,50)~"..."}}</h6>
 							</div>
 						</div>
 					{% endfor %}
 				</div>
-				
+
 			</div>
 		</div>
 	</div>
-
-
-
-
 
 
 {% endblock %}

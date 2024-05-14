@@ -58,9 +58,7 @@
 						<div class="col d-flex flex-row">
 							<div class="col-3">
 								{% if appart.images|length > 1 %}
-									<img src="{{asset("uploads/")~appart.images[0].path}}" alt="appartement" style="width:10rem">
-								{% else  %}
-									<img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" class="card-img-top" alt="...">
+									<img src="{{asset("images/appartements/")~appart.images[0]}}" alt="appartement" style="width:10rem">
 								{% endif  %}
 							</div>
 							<div class="col">

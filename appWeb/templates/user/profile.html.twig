@@ -41,9 +41,10 @@
 					{% if is_granted("ROLE_VOYAGEUR") %}
 						<button class="nav-link my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
 					{% endif %}
-					<button class="nav-link my-2 p-4" id="v-pills-resa-tab" data-bs-toggle="pill" data-bs-target="#v-pills-resa" type="button" role="tab" aria-controls="v-pills-resa" aria-selected="false">{{"crappart"|trans}}</button>
 					<button class="nav-link my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
-					<button class="nav-link my-2 p-4" id="v-pills-conf-tab" data-bs-toggle="pill" data-bs-target="#v-pills-conf" type="button" role="tab" aria-controls="v-pills-conf" aria-selected="false">{{"conf"|trans}}</button>
+					{% if tickets is defined %}
+						<button class="nav-link my-2 p-4" id="v-pills-tick-tab" data-bs-toggle="pill" data-bs-target="#v-pills-tick" type="button" role="tab" aria-controls="v-pills-tick" aria-selected="false">{{"tick"|trans}}</button>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -132,7 +133,7 @@
 				{% if is_granted("ROLE_BAILLEUR") %}
 					<div class="tab-pane fade" id="v-pills-baill" role="tabpanel" aria-labelledby="v-pills-baill-tab" tabindex="0">
 						<h1>Appartements</h1>
-						<a href="#" class="btn btn-primary">Nouveau</a>
+						<a href="{{path("create_appart") }}" class="btn btn-primary">Nouveau</a>
 						<div class="row">
 							{% for appart in appartements %}
 								<div class="col-3 my-3">
@@ -216,86 +217,52 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="tab-pane fade" id="v-pills-resa" role="tabpanel" aria-labelledby="v-pills-resa-tab" tabindex="0">
-				<h2>{{'crappart'|trans }}</h2>
-				{% form_theme reservation 'bootstrap_5_layout.html.twig' %}
-				{{form_start(reservation) }}
-				{{form_row(reservation.titre) }}
-				{{form_row(reservation.description) }}
-				{{form_row(reservation.shortDesc) }}
-				{{form_row(reservation.price) }}
-				{{form_row(reservation.address) }}
-				{{form_row(reservation.city) }}
-				{{form_row(reservation.postalCode) }}
-				{{form_row(reservation.country) }}
-				{{form_row(reservation.nbVoyageurs) }}
-				{{form_row(reservation.note) }}
-				{#{form_row(reservation.state) }#}
-				{{form_row(reservation.nbchambers) }}
-				{{form_row(reservation.nbbathrooms) }}
-				{{form_row(reservation.nbBeds) }}
-				{{form_row(reservation.createdAt) }}
-				{{form_row(reservation.updatedAt) }}
-				{{form_row(reservation.surface) }}
-				{{form_row(reservation.bailleur) }}
-				{{form_row(reservation.images) }}
-				{{form_row(reservation.submit) }}
-				{{form_row(reservation._token) }}
-				{{form_end(reservation,{render_rest:false}) }}
-				
-						<script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.19/web.js"></script>
-						<script>
-							const ACCESS_TOKEN = 'pk.eyJ1IjoiYnlxIiwiYSI6ImNsdjBza2E2ajFxcHkycW53bXBheGd4cGUifQ.THaHqpyg1zDpdAcCWTQsjQ';
-
-				document.getElementById( "search-js" ).onload = () => {
-				mapboxsearch.config.accessToken = ACCESS_TOKEN;
-				const collection = mapboxsearch.autofill( { accessToken: ACCESS_TOKEN } );
-
-				// Add confirmation prompt to shipping address
-				const form = document.querySelector( "form" );
-				form.addEventListener( "submit", async ( e ) => {
-				e.preventDefault();
-				const result = await mapboxsearch.confirmAddress( form, {
-				theme: {
-				variables: {
-				border: '3px solid rgba(0,0,0,0.35)',
-				borderRadius: '18px'
-				}
-				},
-				minimap: {
-				defaultMapStyle: [
-				'mapbox', 'outdoors-v11'
-				],
-				satelliteToggle: true
-				},
-				skipConfirmModal: (feature) =>
-				      ['exact', 'high'].includes(
-				        feature.properties.match_code.confidence
-				      )
-				  });
-				  if (result.type === 'nochange') submitForm();
-				} );
-
-				function submitForm() {
-					form.submit();
-				}
-				}
-
-				</script>
-				
-
-			</div>
 				<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
-				<div class="tab-pane fade" id="v-pills-conf" role="tabpanel" aria-labelledby="v-pills-conf-tab" tabindex="0">
-					conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...
-					<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
-					conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>conf...<br>
-				</div>
+				{% if tickets is defined %}
+					<div class="tab-pane fade col-5" id="v-pills-tick" role="tabpanel" aria-labelledby="v-pills-tick-tab" tabindex="0">
+						{% for ticket in tickets %}
+							<div class="card my-2">
+								<div class="card-header d-flex justify-content-between">
+									<div>{{ ticket.titre }}</div>
+									<div>{{ ticket.dateOuverture|date("d/m/Y") }}</div>
+								</div>
+								<div class="card-body">
+									{{ ticket.description }}
+								</div>
+								<div class="card-footer">
+									{{ constant("STATUS_LIST",ticket)[ticket.status]|trans }}
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}
+	{% block javascripts %}
+		<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+		<script>
+			monune();
+
+function monune() {
+var elms = document.getElementsByClassName( 'splide' );
+
+for ( var i = 0; i < elms.length; i++ ) {
+new Splide( elms[i], {
+type: 'loop',
+perPage: 1,
+perMove: 1,
+pagination: false,
+autoplay: false,
+breakpoints: {
+600: {
+perPage: 1
+}
+}
+
+} ).mount();
+}
+}
+		</script>
+	{% endblock %}

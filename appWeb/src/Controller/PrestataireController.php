@@ -5,6 +5,7 @@
 namespace App\Controller;
 
 use App\Entity\Professionnel;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,7 @@ class PrestataireController extends AbstractController
     {
 
         
-        $prestas = $em->getRepository(Professionnel::class)->findAll();
+        $prestas = $em->getRepository(Professionnel::class)->findByRole(User::ROLE_PRESTA);
         return $this->render('presta/index.html.twig', [
             'prestas' => $prestas,
 
@@ -27,7 +28,8 @@ class PrestataireController extends AbstractController
     #[Route("/detail", name: "detail_presta")]
     public function show(Request $request, EntityManagerInterface $em)
     {
-        return $this->render('presta/index.html.twig');
+        //TODO faire la page de detail
+        return $this->render('presta/presting.html.twig');
     }
 
 }

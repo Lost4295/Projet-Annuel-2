@@ -30,6 +30,11 @@ class TicketCrudController extends AbstractCrudController
         return $actions
             // ...
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_INDEX, Action::EDIT)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::EDIT)
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
         ;
     }
     public function configureFields(string $pageName): array|\Traversable
@@ -40,13 +45,13 @@ class TicketCrudController extends AbstractCrudController
         $dateFermeture= DateField::new("dateFermeture","dateFermeture");
         $demandeur= AssociationField::new("demandeur","demandeur");
         $lastUpdateDate= DateField::new("lastUpdateDate","lastUpdateDate");
-        $category= ChoiceField::new("category","category");
-        $type= ChoiceField::new("type","type");
-        $status= ChoiceField::new("status","status");
-        $priority= ChoiceField::new("priority","priority");
+        $category= ChoiceField::new("category","category")->setChoices(array_flip(Ticket::CATEGORY_LIST));
+        $type= ChoiceField::new("type","type")->setChoices(array_flip(Ticket::TYPE_LIST));
+        $status= ChoiceField::new("status","status")->setChoices(array_flip(Ticket::STATUS_LIST));
+        $priority= ChoiceField::new("priority","priority")->setChoices(array_flip(Ticket::PRIORITY_LIST));
         $description= TextareaField::new("description","description");
         $pj= AssociationField::new("pj","pj");
-        $urgence= ChoiceField::new("urgence","urgence");
+        $urgence= ChoiceField::new("urgence","urgence")->setChoices(array_flip(Ticket::URGENCE_LIST));
         $resolveur= AssociationField::new("resolveur","resolveur");
         
         if (Crud::PAGE_INDEX === $pageName) {

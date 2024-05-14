@@ -37,9 +37,8 @@ class StripeController extends AbstractController
             return new \DateTime($date);
         }, $dates);
         $appartimgs = $appart->getImages();
-        $appartimgs = $appartimgs->toArray();
         $appartimgs = array_map(function ($img) {
-            return self::URL . 'uploads/' . $img->getPath();
+            return self::URL . 'images/appartements' . $img;
         }, $appartimgs);
         $loca = new \stdClass();
         $loca->appartement =$appart->getId();

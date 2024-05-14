@@ -84,14 +84,14 @@ class Ticket
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateOuverture = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateFermeture = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $demandeur = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastUpdateDate = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -122,11 +122,11 @@ class Ticket
     private ?int $urgence = null;
 
     #[ORM\ManyToOne(inversedBy: 'ticketsAttribues')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $resolveur = null;
 
     public function __construct()
     {
-        $this->commentaires = new ArrayCollection();
         $this->pj = new ArrayCollection();
     }
 

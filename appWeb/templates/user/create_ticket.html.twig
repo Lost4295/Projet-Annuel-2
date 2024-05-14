@@ -1,7 +1,35 @@
 {% extends 'base.html.twig' %}
 {% block body %}
- {{ form_start(form) }}
- {{ form_rest(form) }}
-<button type="submit" class="btn btn-primary">Créer</button>
-{{ form_end(form) }}
+	<h1>{{"createticket"|trans}}</h1>
+	{{ form_start(form) }}
+	<div class="form-floating mb-3">
+		{{ form_widget(form.titre) }}
+		{{ form_label(form.titre) }}
+	</div>
+	<div class="form-floating mb-3">
+		{{ form_widget(form.dateOuverture) }}
+		{{ form_label(form.dateOuverture) }}
+	</div>
+	<div class="form-floating mb-3">
+		{{ form_widget(form.category) }}
+		{{ form_label(form.category) }}
+	</div>
+	<div class="form-floating mb-3">
+		{{ form_widget(form.type) }}
+		{{ form_label(form.type) }}
+	</div>
+	<div class="form-floating mb-3">
+		{{ form_widget(form.priority) }}
+		{{ form_label(form.priority) }}
+	</div>
+	<div class="form-floating mb-3">
+		{{ form_widget(form.urgence) }}
+		{{ form_label(form.urgence) }}
+	</div>
+	<div class="form-floating mb-3">
+		{{ form_widget(form.description) }}
+		{{ form_label(form.description) }}
+    </div>
+	<button type="submit" class="btn btn-primary">Créer</button>
+	{{ form_end(form) }}
 {% endblock %}

@@ -16,6 +16,25 @@
 		<link rel="stylesheet" href="{{ asset('css/styles.css') }}"> {% block stylesheets %}{% endblock %}
 		</head>
 		<body class="bg-body-tertiary">
+			<div aria-live="polite" aria-atomic="true">
+				<div class="toast-container top-0 end-0 p-3">
+					{% for label, messages in app.flashes %}
+						{% for message in messages %}
+							<div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay='152' data-bs-animation="true">
+								<div class="toast-header text-white bg-{{ label }}">
+									<strong class="me-auto">{{'Notification' |trans }}</strong>
+									<small>{{'Maintenant' |trans }}</small>
+									<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+								</div>
+								<div class="toast-body">
+									{{ message |trans }}
+								</div>
+							</div>
+
+						{% endfor %}
+					{% endfor %}
+				</div>
+			</div>
 			<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
 				<symbol id="check2" viewbox="0 0 16 16">
 					<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -35,8 +54,8 @@
 				<button
 					class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
 					{# <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-																																																													<use href="#circle-half"></use>
-																																																												</svg> #}
+																															<use href="#circle-half"></use>
+																														</svg> #}
 					<i class="bi bi-chat-text"></i>
 					<span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
 				</button>
@@ -109,17 +128,7 @@
 							</div>
 							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'prestataires' %} active {%endif%}" {% if app.request.get('_route') == 'prestataires' %} aria-current="page" {% endif %} href="{{path('prestataires') }}">{{'prestataires' |trans }}</a>
 							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'contact' %} active {%endif%}" {% if app.request.get('_route') == 'contact' %} aria-current="page" {% endif %} href="{{path('contact') }}">{{'contacter' |trans }}</a>
-							{#
-																																																																																				<a class="nav-link" href="{{path('rps_index') }}">RPS</a>
-																																																																																				<a class="nav-link" href="#">Link</a>
-																																																																																				#}
 						</nav>
-						{#
-																																																																															<form class="d-flex m-auto" role="search" action="{{path('results') }}">
-																																																																									<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-																																																																									<button class="btn btn-outline-success" type="submit">Search</button>
-																																																																								</form>
-																																																																								#}
 						<div class="d-flex flex-row">
 							{% if app.user %}
 								<div class="dropdown">
@@ -147,53 +156,30 @@
 							</div>
 							<div class="d-flex flex-row">
 								<div class="mx-2">
-									<a class="link-primary" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'fr'})) }}"><img src="{{asset('brand/flag_fr.png') }}" width="40" alt="Français"/></a>
+									<a class="link-primary" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({_locale: 'fr'})) }}"><img src="{{asset('brand/flag_fr.png') }}" width="40" alt="Français"/></a>
 								</div>
 								<div class="mx-2">
-									<a class="link-primary" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'en'})) }}"><img src="{{asset('brand/flag_en.png') }}" width="40" alt="English"/></a>
+									<a class="link-primary" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({_locale: 'en'})) }}"><img src="{{asset('brand/flag_en.png') }}" width="40" alt="English"/></a>
 								</div>
 							</div>
 						</div>
 					</div>
 				</nav>
-				{# <div class="nav-scroller bg-body shadow-sm">
-																																																								<nav class="nav" aria-label="Secondary navigation"></nav>
-																																																								</div> #}
 				<main class="container-fluid mb-5 pb-5">
-					<div aria-live="polite" aria-atomic="true" class="position-relative">
-						<div class="toast-container top-0 end-0 p-3">
-							{% for label, messages in app.flashes %}
-								{% for message in messages %}
-									<div class="position-fixed top-0 end-0 p-4 pt-5" style="z-index: 11">
-										<div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay='152' data-bs-animation="true">
-											<div class="toast-header text-white bg-{{ label }}">
-												<strong class="me-auto">{{'Notification' |trans }}</strong>
-												<small>{{'Maintenant' |trans }}</small>
-												<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-											</div>
-											<div class="toast-body">
-												{{ message |trans }}
-											</div>
-										</div>
-									</div>
-								{% endfor %}
-							{% endfor %}
-						</div>
-					</div>
-					{% block body %}{% endblock %}
+					{% block body %}
+						&nbsp;
+					{% endblock %}
 				</main>
-				<div class="">
-					<footer class="footer border-info bg-info py-3">
-						<div class="d-flex justify-content-center align-items-center">
-							Copyright © 2024 CaretakerServices &emsp;
-							<a href="{{path('cookies') }}" class="link-light px-3">{{'cookies'|trans}}</a>
-							<a href="{{path('privacy') }}" class="link-light px-3">{{'privacy'|trans}}</a>
-							<a href="{{path('terms') }}" class="link-light px-3">{{'cgu'|trans}}</a>
-							<a href="{{path('about') }}" class="link-light px-3">{{'about'|trans}}</a>
-							<a href="#" class="link-light px-3" id="open_preferences_center">{{"modpref"|trans }}</a>
-						</div>
-					</footer>
-				</div>
+				<footer class="footer border-info bg-info py-3">
+					<div class="d-flex justify-content-center align-items-center">
+						Copyright © 2024 CaretakerServices &emsp;
+						<a href="{{path('cookies') }}" class="link-light px-3">{{'cookies'|trans}}</a>
+						<a href="{{path('privacy') }}" class="link-light px-3">{{'privacy'|trans}}</a>
+						<a href="{{path('terms') }}" class="link-light px-3">{{'cgu'|trans}}</a>
+						<a href="{{path('about') }}" class="link-light px-3">{{'about'|trans}}</a>
+						<a href="#" class="link-light px-3" id="open_preferences_center">{{"modpref"|trans }}</a>
+					</div>
+				</footer>
 				<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 				<script src="{{ asset('js/offcanvas-navbar.js') }}"></script>
 				<script src="{{ asset('js/color-modes.js') }}"></script>
@@ -206,25 +192,30 @@ $( this ).find( '.dropdown-menu' ).stop( true, true ).delay( 100 ).fadeIn( 200 )
 $( this ).find( '.dropdown-menu' ).stop( true, true ).delay( 100 ).fadeOut( 200 );
 } );
 } );
-
-
 				</script>
-{# <!-- Cookie Consent by PrivacyPolicies.com https://www.PrivacyPolicies.com --> #}
-<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
-<script type="text/javascript" charset="UTF-8">
-document.addEventListener('DOMContentLoaded', function () {
-cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"fr","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"Paris Caretaker Services","website_privacy_policy_url":"https://pcs.freeboxos.fr/privacy"});
-});
-</script>
+				{# <!-- Cookie Consent by PrivacyPolicies.com https://www.PrivacyPolicies.com --> #}
+				<script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
+				<script type="text/javascript" charset="UTF-8">
+					document.addEventListener( 'DOMContentLoaded', function () {
+cookieconsent.run( {
+"notice_banner_type": "simple",
+"consent_type": "express",
+"palette": "light",
+"language": "fr",
+"page_load_consent_levels": ["strictly-necessary"],
+"notice_banner_reject_button_hide": false,
+"preferences_center_close_button_hide": false,
+"page_refresh_confirmation_buttons": false,
+"website_name": "Paris Caretaker Services",
+"website_privacy_policy_url": "https://pcs.freeboxos.fr/privacy"
+} );
+} );
+				</script>
 
-<noscript>Cookie Consent by <a href="https://www.privacypolicies.com/">Privacy Policies website</a></noscript>
-{# <!-- End Cookie Consent by PrivacyPolicies.com https://www.PrivacyPolicies.com --> #}
-
-
-
-
-
-{# <!-- Below is the link that users can use to open Preferences Center to change their preferences. Do not modify the ID parameter. Place it where appropriate, style it as needed. --> #}
+				<noscript>Cookie Consent by
+					<a href="https://www.privacypolicies.com/">Privacy Policies website</a>
+				</noscript>
+				{# <!-- End Cookie Consent by PrivacyPolicies.com https://www.PrivacyPolicies.com --> #}
 
 				{% block javascripts %}{% endblock %}
 			</body>

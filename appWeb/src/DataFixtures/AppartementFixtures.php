@@ -19,8 +19,8 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $serv= new Service();
             $serv->setPrestataire($this->getReference('presta'.rand(1, 15).'-user'));
             $serv->setTitre('Service '.$i);
-            $serv->setTarifs(rand(1,100 ));
-            $serv->setType(Service::getTypes()[rand(1,6)]);
+            $serv->setTarifs(rand(1,100));
+            $serv->setType(rand(1,6));
             $serv->setDescription('Description du service '.$i);
             $this->addReference('service'.$i, $serv);
             $manager->persist($serv);
@@ -38,9 +38,9 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $appartement->setNbVoyageurs(rand(5,15));
             $appartement->setNbchambers($i);
             $appartement->setBailleur($this->getReference('bailleurp'.$i.'-user'));
-            $appartement->setNbBeds(1);
-            $appartement->setNbBathrooms(1);
-            $appartement->setPrice(1000);
+            $appartement->setNbBeds(rand(1,5));
+            $appartement->setNbBathrooms(rand(1,3));
+            $appartement->setPrice(rand(50, 200));
             $appartement->setCreatedAt(new \DateTime('2021-01-0'.$i));
             $appartement->setUpdatedAt(new \DateTime('2021-01-0'.$i));
             $this->addReference('appartement'.$i, $appartement);
@@ -56,8 +56,9 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $that =$this->getReference('voyageur'.rand(1, 10).'-user');
             $loca = new Location();
             $loca->setLocataire($that);
-            $loca->setDateDebut(new \DateTime(sprintf('202%d-01-%02d',rand(1,9), $i)));
-            $loca->setDateFin(new \DateTime(sprintf('202%d-01-%02d',rand(2,9), $i)));
+            $date = new \DateTime(sprintf('202%d-01-%02d',rand(2,9), $i));
+            $loca->setDateDebut($date);
+            $loca->setDateFin($date->add(new \DateInterval('P'.rand(1, 10).'D')));
             $loca->setAppartement($this->getReference('appartement'.rand(1, 6)));
             $loca->setAdults(rand(1, 4));
             $loca->setKids(rand(0, 2));
