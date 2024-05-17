@@ -68,10 +68,10 @@ class Ticket
     public const URGENCE_HAUTE = 3;
     public const URGENCE_URGENTE = 4;
     public const URGENCE_LIST = [
-        self::URGENCE_BASSE=>"basse",
+        self::URGENCE_BASSE=>"faible",
         self::URGENCE_NORMALE=>"normale",
         self::URGENCE_HAUTE=>"haute",
-        self::URGENCE_URGENTE=>"urgente",
+        self::URGENCE_URGENTE=>"Critique",
     ];
 
     #[ORM\Id]
