@@ -45,16 +45,28 @@ jobs:
   deployapi:
     runs-on: ubuntu-latest
 
+    # steps:
+    #   - uses: actions/checkout@v1
+    #   - uses: webfactory/ssh-agent@v0.9.0
+    #     with:
+    #       ssh-private-key: ${{ secrets.SSHP }}
+    #   - name: Executing remote command
+    #     uses: appleboy/ssh-action@master
+    #     with:
+    #       host: ${{ secrets.TESTHOST }}
+    #       username: ${{ secrets.USERNAME }}
+    #       port: ${{ secrets.PORT }}
+    #       key: ${{ secrets.SSHKEY }}
+    #       script: 'cd /var/www/ && sh deploy.sh'
     steps:
-      - uses: actions/checkout@v1
-      - uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSHP }}
-      - name: Executing remote command
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.TESTHOST }}
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.SSHKEY }}
-          script: 'cd /var/www/ && sh deploy.sh'
+      - name: install ssh keys
+        # check this thread to understand why its needed:
+        # https://stackoverflow.com/a/70447517
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSHKEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.TESTHOST }} > ~/.ssh/known_hosts
+      - name: connect and pull
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.TESTHOST }} "cd /var/www/html && git checkout main && git pull && exit"
+      - name: cleanup
+        run: rm -rf ~/.ssh
