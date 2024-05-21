@@ -10,6 +10,7 @@ PASSWORD = os.getenv("PASSWORD")
 CHOICE = "Votre choix : "
 INVALID = "Choix invalide"
 
+
 class colors:
     reset = '\033[0m'
     bold = '\033[01m'
@@ -80,7 +81,7 @@ def main_menu(data):
         print("4. Modifier un ticket")
         print("5. Supprimer un ticket")
         print("6. Gestion des utilisateurs")
-        print("7. Quitter")
+        print("0. Quitter")
         print("-----------------------------")
 
         choice = input(CHOICE)
@@ -98,7 +99,7 @@ def main_menu(data):
                 delete_ticket(data)
             case "6":
                 user_management_menu(data)
-            case "7":
+            case "0":
                 break
             case _:
                 print(INVALID)
@@ -106,8 +107,6 @@ def main_menu(data):
 
 
 # Créer ticket
-# TODO : AJOUTER LES CHOICES
-
 def create_ticket(data):
     url = data[0]
     token = data[1]
@@ -118,7 +117,7 @@ def create_ticket(data):
     description = input("Contenu du ticket : ")
     if description == "0":
         return
-    date_ouverture =  time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.localtime())
+    date_ouverture = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.localtime())
     ok = False
     while not ok:
         demandeur = input(
@@ -131,7 +130,12 @@ def create_ticket(data):
             ok = True
     ok = False
     while not ok:
-        print("category :")
+        print("Catégorie du ticket :")
+        print("1. Technique")
+        print("2. Fonctionnel")
+        print("3. Demande")
+        print("4. Incident")
+        print("5. Autre")
         category = input(CHOICE)
         match category:
             case "0":
@@ -223,8 +227,7 @@ def create_ticket(data):
     if response.status_code == 201:
         print("Ticket créé avec succès !")
     else:
-        print("Erreur lors de la création du ticket")
-        print(response.json())
+        print("Erreur lors de la création du ticket. Merci de bien vouloir réessayer.")
 
 
 def see_ticket(data):
@@ -239,11 +242,20 @@ def see_ticket(data):
         ticket = response.json()
         print("Titre :", ticket["titre"])
         print("Contenu :", ticket["description"])
+        print("Date d'ouverture :", ticket["dateOuverture"])
+        print("Date de fermeture :", ticket["dateFermeture"])
+        print("Demandeur :", ticket["demandeur"])
+        print("Dernière mise à jour :", ticket["lastUpdateDate"])
+        print("Catégorie :", ticket["category"])
+        print("Type :", ticket["type"])
+        print("Statut :", ticket["status"])
+        print("Priorité :", ticket["priority"])
+        print("Urgence :", ticket["urgence"])
+        print("Resolveur :", ticket["resolveur"])
+        print("Pièces jointes :", ticket["pj"])
         print("-----------------------------")
-    else:
-        print("Erreur lors de la récupération du ticket")
-        raise response.json()
-
+    elif response.status_code == 404:
+        print("Ticket non trouvé. Merci de vérifier l'ID.")
 # Function to list tickets
 
 
@@ -258,8 +270,11 @@ def list_tickets(data):
         print("-----------------------------")
         print(tickets["hydra:totalItems"], "tickets trouvés")
         print("-----------------------------")
+        if tickets["hydra:totalItems"] == 0:
+            return
         ticketsl = tickets["hydra:member"]
         for ticket in ticketsl:
+            print("ID :", ticket["@id"].replace("/api/tickets/", ""))
             print("Titre :", ticket["titre"])
             print("Contenu :", ticket["description"])
             print("-----------------------------")
@@ -270,13 +285,8 @@ def list_tickets(data):
                 see_ticket(data)
         else:
             return
-    else:
-        print("Erreur lors de la récupération des tickets")
-        time.sleep(2)
-        print(response.json())
 
 # Function to modify a ticket
-# TODO : VOIR POUR LES BONNES DATES
 
 def modify_ticket(data):
     url = data[0]
@@ -311,28 +321,111 @@ def modify_ticket(data):
         print("11. Pj")
         print("12. Urgence")
         print("13. Resolveur")
-        print("14. Confirmer")
+        if date_ouverture != "" or date_fermeture != "" or demandeur != "" or last_update_date != "" or category != "" or typeid != "" or status != "" or priority != "" or titre != "" or description != "" or pj != "" or urgence != "" or resolveur != "":
+            print("14. Confirmer")
         print("0. Annuler")
         print("-----------------------------")
         choice = input(CHOICE)
         match choice:
             case "1":
-                date_ouverture = input("Nouvelle date d'ouverture : ")
+                print("Nouvelle date d'ouverture : ")
+                date_ouverture = create_date()
+                if date_ouverture == None:
+                    break
             case "2":
-                date_fermeture = input("Nouvelle date de fermeture : ")
+                print("Nouvelle date de fermeture : ")
+                date_fermeture = create_date()
+                if date_fermeture == None:
+                    break
             case "3":
-                demandeur = input("Nouveau demandeur : ")
+                print("Nouveau demandeur : ")
+                ok = False
+                while not ok:
+                    demandeur = input(
+                        "Entrez l'ID du demandeur ( pour le savoir, lancez la commande pour voir tous les utilisateurs ) : ")
+                    if demandeur == "0":
+                        return
+                    if not user_exists(data, demandeur):
+                        print("L'utilisateur n'existe pas")
+                    else:
+                        ok = True
             case "4":
-                last_update_date = input(
-                    "Nouvelle date de dernière mise à jour : ")
+                print("Nouvelle date de dernière mise à jour : ")
+                last_update_date = create_date()
+                if last_update_date == None:
+                    break
             case "5":
-                category = input("Nouvelle catégorie : ")
+                print("Nouvelle catégorie : ")
+                ok = False
+                while not ok:
+                    print("Catégorie du ticket :")
+                    print("1. Technique")
+                    print("2. Fonctionnel")
+                    print("3. Demande")
+                    print("4. Incident")
+                    print("5. Autre")
+                    category = input(CHOICE)
+                    match category:
+                        case "0":
+                            return
+                        case "1":
+                            ok = True
+                        case _:
+                            print(INVALID)
             case "6":
-                typeid = input("Nouveau type : ")
+                print("Nouveau type : ")
+                ok = False
+                while not ok:
+                    print("Type du ticket : ")
+                    print("1. Epic")
+                    print("2. Task")
+                    print("3. Story")
+                    print("4. Bug")
+                    print("5. Subtask")
+                    typeid = input(CHOICE)
+                    match typeid:
+                        case "0":
+                            return
+                        case "1" | "2" | "3" | "4" | "5":
+                            ok = True
+                        case _:
+                            print(INVALID)
             case "7":
-                status = input("Nouveau statut : ")
+                print("Nouveau statut : ")
+                ok = False
+                while not ok:
+                    print("Statut du ticket : ")
+                    print("1. Nouveau")
+                    print("2. En cours")
+                    print("3. Résolu")
+                    print("4. Fermé")
+                    print("5. En attente")
+                    print("6. Rejeté")
+                    status = input(CHOICE)
+                    match status:
+                        case "0":
+                            return
+                        case "1" | "2" | "3" | "4" | "5" | "6":
+                            ok = True
+                        case _:
+                            print(INVALID)
             case "8":
-                priority = input("Nouvelle priorité : ")
+                print("Nouvelle priorité : ")
+                ok = False
+                while not ok:
+                    print("Priorité du ticket : ")
+                    print("1. Bas")
+                    print("2. Normal")
+                    print("3. Haut")
+                    print("4. Urgent")
+                    priority = input(CHOICE)
+                    match priority:
+                        case "0":
+                            return
+                        case "1" | "2" | "3" | "4":
+                            ok = True
+                        case _:
+                            print(INVALID)
             case "9":
                 titre = input("Nouveau titre : ")
             case "10":
@@ -340,10 +433,28 @@ def modify_ticket(data):
             case "11":
                 pj = input("Nouvelle pièce jointe : ")
             case "12":
-                urgence = input("Nouvelle urgence : ")
+                print("Nouvelle urgence : ")
+                ok = False
+                while not ok:
+                    print("Urgence du ticket : ")
+                    print("1. Faible")
+                    print("2. Moyenne")
+                    print("3. Haute")
+                    print("4. Critique")
+                    urgence = input(CHOICE)
+                    match urgence:
+                        case "0":
+                            return
+                        case "1" | "2" | "3" | "4":
+                            ok = True
+                        case _:
+                            print(INVALID)
             case "13":
                 resolveur = input("Nouveau resolveur : ")
             case "14":
+                if date_ouverture == "" and date_fermeture == "" and demandeur == "" and last_update_date == "" and category == "" and typeid == "" and status == "" and priority == "" and titre == "" and description == "" and pj == "" and urgence == "" and resolveur == "":
+                    print("Option invalide")
+                    continue
                 print("Modification du ticket :")
                 if date_ouverture != "":
                     print("dateOuverture :", date_ouverture)
@@ -371,20 +482,26 @@ def modify_ticket(data):
                     print("urgence :", urgence)
                 if resolveur != "":
                     print("resolveur :", resolveur)
-                while True:
-                    confirmer = input("Confirmer la modification (y/n) : ")
-                    if confirmer == "y":
-                        json = create_json(date_ouverture, date_fermeture, demandeur, last_update_date,
-                                           category, typeid, status, priority, titre, description, pj, urgence, resolveur)
-                        response = requests.put(
-                            f"{url}/api/tickets/{ticket_id}", json=json, headers={"Authorization": f"Bearer {token}"})
-                        if response.status_code == 200:
-                            print("Ticket modifié avec succès !")
-                        else:
-                            print("Erreur lors de la modification du ticket")
+                confirmer = input("Confirmer la modification (y/n) : ")
+                if confirmer == "y":
+                    json = create_json(date_ouverture, date_fermeture, demandeur, last_update_date,
+                                       category, typeid, status, priority, titre, description, pj, urgence, resolveur)
+                    response = requests.put(
+                        f"{url}/api/tickets/{ticket_id}", json=json, headers={"Authorization": f"Bearer {token}"})
+                    if response.status_code == 200:
+                        print("Ticket modifié avec succès !")
+                    elif response.status_code == 404:
+                        print("Ticket non trouvé. Merci de vérifier l'ID.")
+                    elif response.status_code == 400:
+                        print("Erreur lors de la modification du ticket. Merci de bien vouloir réessayer.")
+                    elif response.status_code == 422:
+                        print("Le ticket n'a pas pu être modifié. Veuillez vérifier les données saisies.")
                     else:
-                        print("Modification annulée")
-                        break
+                        print(response.json())
+                    break
+                else:
+                    print("Modification annulée")
+                    break
             case "0":
                 break
             case _:
@@ -422,7 +539,23 @@ def create_json(date_ouverture, date_fermeture, demandeur, last_update_date, cat
         json["resolveur"] = resolveur
     return json
 
-
+def create_date():
+    year = ask_for_year()
+    if year == "0":
+        return None
+    month = ask_for_month()
+    if month == "0":
+        return None
+    day = ask_for_day(month, year)
+    if day == "0":
+        return None
+    hour = ask_for_hour()
+    if hour == "0":
+        return None
+    minute = ask_for_minute()
+    if minute == "0":
+        return None
+    return year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":00.000Z"
 # Function to delete a ticket
 def delete_ticket(data):
     url = data[0]
@@ -464,13 +597,13 @@ def user_management_menu(data):
 def user_exists(data, id):
     url = data[0]
     token = data[1]
-
     response = requests.get(f"{url}/api/users/{id}",
                             headers={"Authorization": f"Bearer {token}"})
     if response.status_code == 200:
         return True
     else:
         return False
+
 
 def see_users(data):
     url = data[0]
@@ -486,12 +619,12 @@ def see_users(data):
         print("Nom :", user["nom"])
         print("Prenom :", user["prenom"])
         print("-----------------------------")
-    else:
-        print("Erreur lors de la récupération de l'utilisateur")
-        time.sleep(2)
-        print(response.json())
+    elif response.status_code == 404:
+        print("L'utilisateur avec cet ID n'existe pas.")
 
 # Liste de tous les utilisateurs
+
+
 def list_users(data):
     url = data[0]
     token = data[1]
@@ -509,10 +642,104 @@ def list_users(data):
             print("Nom :", user["nom"])
             print("Prenom :", user["prenom"])
             print("-----------------------------")
-    else:
-        print("Erreur lors de la récupération des utilisateurs")
-        time.sleep(2)
-        print(response.json())
+
+def ask_for_year():
+    year = ""
+    good = False
+    while not good:
+        year = input("\nEntrez l'année de réservation (yyyy): (entrez 0 pour annuler)")
+        if year == "0":
+            return "0"
+        if len(year) == 4:
+            good = True
+        else:
+            print("\nL'année doit être au format yyyy")
+    return year
+
+def ask_for_month():
+    month= ""
+    good= False
+    while not good:
+        month = input("\nEntrez le mois de réservation (mm):")
+        if month == "0":
+            return "0"
+        int_month= int(month)
+        if 1 <= int_month and int_month <= 12:
+            good = True
+            if len(month) == 1:
+                month = "0" + month
+        else:
+            print("\nLe mois doit être compris entre 1 et 12")
+    return month
+
+
+def ask_for_day(month:str, year:str):
+    day= ""
+    good= False
+    while not good:
+        day = input("\nEntrez le jour de réservation (dd): (entrez 0 pour annuler)")
+        if day == "0":
+            return "0"
+        int_day = int(day)
+        int_month = int(month)
+        int_year = int(year)
+        match int_month:
+            case 1| 3| 5| 7| 8| 10| 12:
+                if int_day >= 1 and int_day <= 31:
+                    good = True
+                else:
+                    print("\nLe jour doit être compris entre 1 et 31")
+            case 4| 6| 9| 11:
+                if int_day >= 1 and int_day <= 30:
+                    good = True
+                else:
+                    print("\nLe jour doit être compris entre 1 et 30")
+            case 2:
+                if int_year%4 == 0 and (int_year%100 != 0 or int_year%400 == 0):
+                    if int_day >= 1 and int_day <= 29:
+                        good = True
+                    else:
+                        print("\nLe jour doit être compris entre 1 et 29")
+                else:
+                    if int_day >= 1 and int_day <= 28:
+                        good = True
+                    else:
+                        print("\nLe jour doit être compris entre 1 et 28")
+        if len(day) == 1:
+            day = "0" + day
+    return day
+
+def ask_for_hour():
+    hour= ""
+    good= False
+    while not good:
+        hour = input("\nEntrez l'heure de réservation (hh): (entrez 0 pour annuler)")
+        if hour == "0":
+            return "0"
+        int_hour = int(hour)
+        if int_hour >= 0 and int_hour <= 23:
+            good = True
+            if len(hour) == 1:
+                hour = "0" + hour
+        else:
+            print("\nL'heure doit être comprise entre 0 et 23")
+    return hour
+
+def ask_for_minute():
+    minute= ""
+    good = False
+    while not good:
+        minute = input("\nEntrez les minutes de réservation (mm): (entrez 0 pour annuler)")
+        if minute == "0":
+            return "0"
+        int_minute = int(minute)
+        if int_minute >= 0 and int_minute <= 59:
+            good = True
+            if len(minute) == 1:
+                minute = "0" + minute
+        else:
+            print("Les minutes doivent être comprises entre 0 et 59")
+    return minute
 
 
 # Main execution
