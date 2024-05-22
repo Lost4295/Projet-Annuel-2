@@ -1,99 +1,132 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<div class="row text-white py-5 d-flex justify-content-center bg-info">
-        <div class="fs-1 mt-5  text-center pt-5">
-        Besoin d’aide ?
-        </div>
+	<div class="row text-white py-5 d-flex justify-content-center bg-info">
+		<div class="fs-1 mt-5  text-center pt-5">
+			Besoin d’aide ?
+		</div>
 		<div class="fs-1 mb-5 text-center col-4">
 			<form class="form-inline my-2 my-lg-0">
 				<input id="searchInput" class="form-control mr-sm-2" type="search" placeholder="Trouvez les réponses à toutes vos questions" aria-label="Search">
 				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 			</form>
-        </div>
-</div>
-		<div class="row text-center fs-1">
-			<div>
+		</div>
+	</div>
+	<div class="row text-center fs-1">
+		<div>
 			Questions fréquentes
-			</div>	
 		</div>
-		<div class="row pt-5">
-			<div id="question1" class="col-8 fs-2 question">
-			Comment s’inscrire sur le site ?
+	</div>
+	<div class="row">
+		<div id="question1" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer1" role="button" aria-expanded="false" aria-controls="answer1">
+			<div>
+				<i class=" arrow bi-arrow-right"></i>&nbsp;Comment s’inscrire sur le site ?
 			</div>
-			<div class="col-4 fs-2 answer">
-			Cliquer sur le bouton " s'inscrire" en haut à droite de la page d'accueil
-			</div>	
-		</div>
-		<div class="row pt-5">
-			<div id="question2" class="col-8 fs-2 question">
-			Comment être bailleur ?
+			<div>
+				<i class="icon bi-plus-circle"></i>
 			</div>
-			<div class="col-4 fs-2 answer">
-			Il faut avoir un compte et avoir un bien immobilier à louer
-			</div>	
 		</div>
-		<div class="row pt-5">
-			<div id="question3" class="col-8 fs-2 question">
-			Comment supprimer mon compte ?
+	</div>
+	<div class="row">
+		<div id="answer1" class="col fs-2 collapse">Cliquer sur le bouton " s'inscrire" en haut à droite de la page d'accueil</div>
+	</div>
+	<div class=" row">
+		<div id="question2" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer2" role="button" aria-expanded="false" aria-controls="answer2">
+			<div>
+				<i class=" arrow bi-arrow-right"></i>&nbsp;Comment être bailleur ?
 			</div>
-			<div class="col-4 fs-2 answer">
-			Vous pouvez nous faire la demande via notre plateforme de ticketing 
-			</div>	
-		</div>
-		<div class="row pt-5">
-			<div id="question4" class="col-8 fs-2 question">
-			Quelles sont les moyens de paiement disponibles ?
+			<div>
+				<i class="icon bi-plus-circle"></i>
 			</div>
-			<div class="col-4 fs-2 answer">
-			Ce sont Visa et Mastercard
-			</div>	
 		</div>
-		<div class="row pt-5">
-			<div id="question5" class="col-8 fs-2 question">
-			Comment récupérer les clés ?
+	</div>
+	<div class="row ">
+		<div id="answer2" class="col fs-2 collapse">
+			Il faut avoir un compte et avoir un bien immobilier à louer</div>
+	</div>
+	<div class=" row ">
+		<div id="question3" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer3" role="button" aria-expanded="false" aria-controls="answer3">
+			<div>
+				<i class=" arrow bi-arrow-right"></i>&nbsp;Comment supprimer mon compte ?
 			</div>
-			<div class="col-4 fs-2 answer">
-			Les clés vont vous êtes remises par la femme de ménage
-			</div>	
+			<div>
+				<i class="icon bi-plus-circle"></i>
+			</div>
 		</div>
+	</div>
+	<div class="row">
+		<div id="answer3" class="col fs-2 collapse">Vous pouvez nous faire la demande via notre plateforme de ticketing</div>
+	</div>
+	<div class="row">
+		<div id="question4" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer4" role="button" aria-expanded="false" aria-controls="answer4">
+			<div>
+				<i class=" arrow bi-arrow-right"></i>&nbsp;Quelles sont les moyens de paiement disponibles ?
+			</div>
+			<div>
+				<i class="icon bi-plus-circle"></i>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div id="answer4" class="col fs-2 collapse">Ce sont Visa et Mastercard.
+		</div>
+	</div>
+	<div class=" row ">
+		<div id="question5" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer5" role="button" aria-expanded="false" aria-controls="answer5">
+			<div>
+				<i class=" arrow bi-arrow-right"></i>&nbsp;Comment récupérer les clés ?
+			</div>
+			<div>
+				<i class="icon bi-plus-circle"></i>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div id="answer5" class="col fs-2 collapse">
+			Les clés vont vous être remises par la femme de ménage.
+		</div>
+	</div>
+{% endblock %}
 
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% block javascripts %}
 	<script>
-		$(document).ready(function() {
-			// Cacher toutes les réponses au départ
-			$(".answer").hide();
-			
-			// Ajouter un gestionnaire d'événements aux questions
-			$(".question").click(function() {
-				// Trouver la réponse correspondante
-				var answer = $(this).next(".answer");
-				// Afficher ou cacher la réponse en fonction de son état actuel
-				answer.slideToggle();
-			});
-		});
+		document.getElementById( "searchInput" ).addEventListener( "input", function () {
+			var searchText = this.value.toLowerCase();
+			var questions = document.getElementsByClassName( "question" );
+
+		// Parcourir toutes les questions
+			for ( var i = 0; i < questions.length; i++ ) {
+				var questionText = questions[ i ].innerText.toLowerCase();
+				var questionId = questions[ i ].id;
+		// Vérifier si le texte de la question correspond à la recherche
+				if ( questionText.includes( searchText ) ) { // Afficher la question si elle correspond
+					document.getElementById( questionId ).parentNode.style.display = "block";
+				} else { // Masquer la question si elle ne correspond pas
+					document.getElementById( questionId ).parentNode.style.display = "none";
+				}
+			}
+		} );
+		elems = document.querySelectorAll( '.btn' )
+		for ( let elem of elems ) {
+			elem.addEventListener( 'click', event => {
+				let icon = elem.querySelector( '.icon' )
+				if ( icon.classList.contains( 'bi-plus-circle' ) ) {
+					icon.classList.remove( 'bi-plus-circle' )
+					icon.classList.add( 'bi-dash-circle' )
+				}
+				else {
+					icon.classList.remove( 'bi-dash-circle' )
+					icon.classList.add( 'bi-plus-circle' )
+				}
+				let col = elem.querySelector( '.arrow' )
+				if ( col.classList.contains( 'bi-arrow-right' ) ) {
+					col.classList.remove( 'bi-arrow-right' )
+					col.classList.add( 'bi-arrow-down' )
+				}
+				else {
+					col.classList.remove( 'bi-arrow-down' )
+					col.classList.add( 'bi-arrow-right' )
+				}
+			} )
+		}
 	</script>
-	<script>
-    document.getElementById("searchInput").addEventListener("input", function() {
-        var searchText = this.value.toLowerCase();
-        var questions = document.getElementsByClassName("question");
-
-        // Parcourir toutes les questions
-        for (var i = 0; i < questions.length; i++) {
-            var questionText = questions[i].innerText.toLowerCase();
-            var questionId = questions[i].id;
-
-            // Vérifier si le texte de la question correspond à la recherche
-            if (questionText.includes(searchText)) {
-                // Afficher la question si elle correspond
-                document.getElementById(questionId).parentNode.style.display = "block";
-            } else {
-                // Masquer la question si elle ne correspond pas
-                document.getElementById(questionId).parentNode.style.display = "none";
-            }
-        }
-    });
-</script>
-		
-    
-	
 {% endblock %}

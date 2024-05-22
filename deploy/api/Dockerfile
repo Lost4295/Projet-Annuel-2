@@ -31,4 +31,4 @@ RUN a2dissite 000-default
 RUN a2ensite api.conf
 RUN service apache2 restart
 EXPOSE 80
-WORKDIR /var/www/html
+WORKDIR /var/www/html/pcs_api/

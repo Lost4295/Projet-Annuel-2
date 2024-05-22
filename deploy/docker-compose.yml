@@ -1,25 +1,8 @@
 version: '3'
+networks:
+  symfony:
+    driver: bridge
 services:
-  api:
-    build: api
-    ports:
-      - 9000:80
-    volumes:
-      - ../pcs_api:/var/www/html/pcs_api
-      - .db/data:/var/www/html/var
-      - ./api/conf/.env.local:/var/www/html/pcs_api/.env.local
-    networks:
-      - symfony
-  website:
-    build: web
-    ports:
-      - 9080:80
-    volumes:
-      - ../appWeb:/var/www/html/appWeb
-      - .db/data:/var/www/html/var
-      - ./web/conf/.env.local:/var/www/html/appWeb/.env.local
-    networks:
-      - symfony
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -31,9 +14,24 @@ services:
     ports:
       - 3308:3306
     volumes:
-      - .db/data:/var/lib/mysql
+      - ./mysql:/var/lib/mysql
     networks:
       - symfony
-networks:
-  symfony:
-    driver: bridge
+  api:
+    build: api
+    ports:
+      - 9000:80
+    volumes:
+      - ../pcs_api:/var/www/html/pcs_api
+      - ./api/conf/.env.local:/var/www/html/pcs_api/.env.local
+    networks:
+      - symfony
+  website:
+    build: web
+    ports:
+      - 9080:80
+    volumes:
+      - ../appWeb:/var/www/html/appWeb
+      - ./web/conf/.env.local:/var/www/html/appWeb/.env.local
+    networks:
+      - symfony
