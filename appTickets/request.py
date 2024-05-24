@@ -9,7 +9,11 @@ EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 CHOICE = "Votre choix : "
 INVALID = "Choix invalide"
-
+PREVIOUS = "hydra:previous"
+MEMBER ="hydra:member" 
+VIEW = "hydra:view"
+NEXT= "hydra:next"
+ITEMS ="hydra:totalItems"
 
 class colors:
     reset = '\033[0m'
@@ -252,36 +256,49 @@ def see_ticket(data):
         print("Priorité :", ticket["priority"])
         print("Urgence :", ticket["urgence"])
         print("Resolveur :", ticket["resolveur"])
-        print("Pièces jointes :", ticket["pj"])
         print("-----------------------------")
     elif response.status_code == 404:
         print("Ticket non trouvé. Merci de vérifier l'ID.")
 # Function to list tickets
 
 
-def list_tickets(data):
+def list_tickets(data, page="/api/tickets"):
     url = data[0]
     token = data[1]
-    response = requests.get(url+"/api/tickets",
+    response = requests.get(url+page,
                             headers={"Authorization": f"Bearer {token}"})
     if response.status_code == 200:
         print("Liste des tickets :")
         tickets = response.json()
         print("-----------------------------")
-        print(tickets["hydra:totalItems"], "tickets trouvés")
+        print(tickets[ITEMS], "tickets trouvés")
         print("-----------------------------")
-        if tickets["hydra:totalItems"] == 0:
+        if tickets[ITEMS] == 0:
             return
-        ticketsl = tickets["hydra:member"]
+        ticketsl = tickets[MEMBER]
         for ticket in ticketsl:
             print("ID :", ticket["@id"].replace("/api/tickets/", ""))
             print("Titre :", ticket["titre"])
             print("Contenu :", ticket["description"])
             print("-----------------------------")
-        print("1. Voir un ticket")
-        print("2. Retour")
-        ch = input(CHOICE)
-        if ch == "1":
+        if tickets[VIEW].get(NEXT) is not None:
+            print("1. Voir la page suivante")
+        if tickets[VIEW].get(PREVIOUS) is not None:
+            print("2. Voir la page précédente")
+        print("3. Voir un ticket")
+        print("4. Retour")
+        inp = input(CHOICE)
+        if inp == "1":
+            if tickets[VIEW].get(NEXT) is not None:
+                list_tickets(data, tickets[VIEW][NEXT])
+            else:
+                print(INVALID)
+        if inp == "2":
+            if tickets[VIEW].get(PREVIOUS) is not None:
+                list_tickets(data, tickets[VIEW][PREVIOUS])
+            else:
+                print(INVALID)
+        if inp == "3":
                 see_ticket(data)
         else:
             return
@@ -301,7 +318,6 @@ def modify_ticket(data):
     priority = ""
     titre = ""
     description = ""
-    pj = ""
     urgence = ""
     resolveur = ""
     ticket_id = input("ID du ticket à modifier (entrez 0 pour annuler): ")
@@ -321,7 +337,7 @@ def modify_ticket(data):
         print("11. Pj")
         print("12. Urgence")
         print("13. Resolveur")
-        if date_ouverture != "" or date_fermeture != "" or demandeur != "" or last_update_date != "" or category != "" or typeid != "" or status != "" or priority != "" or titre != "" or description != "" or pj != "" or urgence != "" or resolveur != "":
+        if date_ouverture != "" or date_fermeture != "" or demandeur != "" or last_update_date != "" or category != "" or typeid != "" or status != "" or priority != "" or titre != "" or description != "" or urgence != "" or resolveur != "":
             print("14. Confirmer")
         print("0. Annuler")
         print("-----------------------------")
@@ -430,8 +446,6 @@ def modify_ticket(data):
                 titre = input("Nouveau titre : ")
             case "10":
                 description = input("Nouveau contenu : ")
-            case "11":
-                pj = input("Nouvelle pièce jointe : ")
             case "12":
                 print("Nouvelle urgence : ")
                 ok = False
@@ -452,7 +466,7 @@ def modify_ticket(data):
             case "13":
                 resolveur = input("Nouveau resolveur : ")
             case "14":
-                if date_ouverture == "" and date_fermeture == "" and demandeur == "" and last_update_date == "" and category == "" and typeid == "" and status == "" and priority == "" and titre == "" and description == "" and pj == "" and urgence == "" and resolveur == "":
+                if date_ouverture == "" and date_fermeture == "" and demandeur == "" and last_update_date == "" and category == "" and typeid == "" and status == "" and priority == "" and titre == "" and description == "" and urgence == "" and resolveur == "":
                     print("Option invalide")
                     continue
                 print("Modification du ticket :")
@@ -476,8 +490,6 @@ def modify_ticket(data):
                     print("titre :", titre)
                 if description != "":
                     print("description :", description)
-                if pj != "":
-                    print("pj :", pj)
                 if urgence != "":
                     print("urgence :", urgence)
                 if resolveur != "":
@@ -485,7 +497,7 @@ def modify_ticket(data):
                 confirmer = input("Confirmer la modification (y/n) : ")
                 if confirmer == "y":
                     json = create_json(date_ouverture, date_fermeture, demandeur, last_update_date,
-                                       category, typeid, status, priority, titre, description, pj, urgence, resolveur)
+                                       category, typeid, status, priority, titre, description, urgence, resolveur)
                     response = requests.put(
                         f"{url}/api/tickets/{ticket_id}", json=json, headers={"Authorization": f"Bearer {token}"})
                     if response.status_code == 200:
@@ -509,7 +521,7 @@ def modify_ticket(data):
                 print("-----------------------------")
 
 
-def create_json(date_ouverture, date_fermeture, demandeur, last_update_date, category, typeid, status, priority, titre, description, pj, urgence, resolveur):
+def create_json(date_ouverture, date_fermeture, demandeur, last_update_date, category, typeid, status, priority, titre, description, urgence, resolveur):
     json = {}
     if date_ouverture != "":
         json["dateOuverture"] = date_ouverture
@@ -531,8 +543,6 @@ def create_json(date_ouverture, date_fermeture, demandeur, last_update_date, cat
         json["titre"] = titre
     if description != "":
         json["description"] = description
-    if pj != "":
-        json["pj"] = pj
     if urgence != "":
         json["urgence"] = urgence
     if resolveur != "":
@@ -625,22 +635,46 @@ def see_users(data):
 # Liste de tous les utilisateurs
 
 
-def list_users(data):
+def list_users(data, page="/api/users"):
     url = data[0]
     token = data[1]
-    response = requests.get(url+"/api/users",
+    response = requests.get(url+page,
                             headers={"Authorization": f"Bearer {token}"})
     if response.status_code == 200:
         print("Liste des utilisateurs :")
-        users = response.json()
+        resp = response.json()
         print("-----------------------------")
-        print(users["hydra:totalItems"], "utilisateurs trouvés")
+        print(resp[ITEMS], "utilisateurs trouvés")
         print("-----------------------------")
-        usersl = users["hydra:member"]
+        usersl = resp[MEMBER]
         for user in usersl:
             print("Id :", user["@id"].replace("/api/users/", ""))
             print("Nom :", user["nom"])
             print("Prenom :", user["prenom"])
+            print("-----------------------------")
+        if resp[VIEW].get(NEXT) is not None:
+            print("1. Voir la page suivante")
+        if resp[VIEW].get(PREVIOUS) is not None:
+            print("2. Voir la page précédente")
+        print("3. Voir un utilisateur")
+        print("4. Retour")
+        inp = input(CHOICE)
+        if inp == "1":
+            if resp[VIEW].get(NEXT) is not None:
+                list_users(data, resp[VIEW][NEXT])
+            else:
+                print(INVALID)
+        if inp == "2":
+            if resp[VIEW].get(PREVIOUS) is not None:
+                list_users(data, resp[VIEW][PREVIOUS])
+            else:
+                print(INVALID)
+        elif inp == "3":
+            see_users(data)
+        elif inp == "4":
+            return
+        else:
+            print(INVALID)
             print("-----------------------------")
 
 def ask_for_year():

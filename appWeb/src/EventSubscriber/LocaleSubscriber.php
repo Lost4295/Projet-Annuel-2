@@ -1,4 +1,4 @@
-<?php 
+<?php
 // src/EventSubscriber/LocaleSubscriber.php
 namespace App\EventSubscriber;
 

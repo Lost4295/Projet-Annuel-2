@@ -112,12 +112,6 @@ class Ticket
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    /**
-     * @var Collection<int, Fichier>
-     */
-    #[ORM\OneToMany(targetEntity: Fichier::class, mappedBy: 'ticket')]
-    private Collection $pj;
-
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $urgence = null;
 
@@ -240,36 +234,6 @@ class Ticket
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Fichier>
-     */
-    public function getPj(): Collection
-    {
-        return $this->pj;
-    }
-
-    public function addPj(Fichier $pj): static
-    {
-        if (!$this->pj->contains($pj)) {
-            $this->pj->add($pj);
-            $pj->setTicket($this);
-        }
-
-        return $this;
-    }
-
-    public function removePj(Fichier $pj): static
-    {
-        if ($this->pj->removeElement($pj)) {
-            // set the owning side to null (unless already changed)
-            if ($pj->getTicket() === $this) {
-                $pj->setTicket(null);
-            }
-        }
 
         return $this;
     }

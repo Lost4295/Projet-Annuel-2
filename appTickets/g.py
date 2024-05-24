@@ -1,38 +1,4 @@
-# from tkinter import *
-# from tkinter.ttk import *
 
-# root = Tk()
-# tabmanager = Notebook(root)
-# tabmanager.pack(expand=1,fill="both")
-
-# tab1 = Frame(tabmanager)
-# tab2 = Frame(tabmanager)
-
-# tabmanager.add(tab1,text="Home")
-# tabmanager.add(tab2,text="About")
-# root.mainloop()
-# import tkinter
-
-# def page1():
-#     page2text.pack_forget()
-#     page1text.pack()
-
-# def page2():
-#     page1text.pack_forget()
-#     page2text.pack()
-
-# window = tkinter.Tk()
-
-# page1btn = tkinter.Button(window, text="Page 1", command=page1)
-# page2btn = tkinter.Button(window, text="Page 2", command=page2)
-
-# page1text = tkinter.Label(window, text="This is page 1")
-# page2text = tkinter.Label(window, text="This is page 2")
-
-# page1btn.pack()
-# page2btn.pack()
-# page1text.pack()
-# window.mainloop()
 import PySimpleGUI as sg
 
 # ----------- Create the 3 layouts this Window will display -----------
@@ -40,7 +6,7 @@ layout1 = [[sg.Text('This is layout 1 - It is all Checkboxes')],
            *[[sg.CB(f'Checkbox {i}')] for i in range(5)]]
 
 layout2 = [[sg.Text('This is layout 2')],
-           [sg.Input(key='-IN-')],
+           [sg.Input("Nom",key='-IN-')],
            [sg.Input(key='-IN2-')]]
 
 layout3 = [[sg.Text('This is layout 3 - It is all Radio Buttons')],
