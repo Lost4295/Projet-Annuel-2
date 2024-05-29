@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -22,18 +23,24 @@ class LoginSuccessHandler extends CustomAuthenticationSuccessHandler
     private $entityManager;
     private $emailVerifier;
     private $urlGenerator;
+    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, EmailVerifier $emailVerifier, urlGeneratorInterface $urlGenerator)
+    public function __construct(EntityManagerInterface $entityManager, EmailVerifier $emailVerifier, urlGeneratorInterface $urlGenerator, Security $security)
     {
         $this->entityManager = $entityManager;
         $this->emailVerifier = $emailVerifier;
         $this->urlGenerator = $urlGenerator;
+        $this->security = $security;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
         $email = $request->request->get('_username') ?? $request->request->all()['user']['email'];
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+        if ($user->hasRole(User::ROLE_NON_USER)){
+            $this->security->logout(false);
+            return new RedirectResponse($this->urlGenerator->generate('index', ['e' => 'unauthorized']));
+        }
         $user->setLastConnDate(new \DateTime('now'));
         $this->entityManager->persist($user);
         $this->entityManager->flush();

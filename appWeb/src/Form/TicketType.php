@@ -56,7 +56,7 @@ class TicketType extends AbstractType
                     "class"=> "form-control"
                 ]
             ])
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

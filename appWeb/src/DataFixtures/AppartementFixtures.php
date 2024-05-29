@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\AppartPlus;
 use App\Entity\Location;
 use App\Entity\Service;
+use App\Service\AppartementService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Appartement;
@@ -13,6 +14,12 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class AppartementFixtures extends Fixture implements DependentFixtureInterface
 {
+    private AppartementService $as;
+    public function __construct(AppartementService $as)
+    {
+        $this->as = $as;
+    }
+
     public function load(ObjectManager $manager):void
     {
         for ($i = 1 ; $i < 21 ; $i++){
@@ -25,13 +32,13 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $this->addReference('service'.$i, $serv);
             $manager->persist($serv);
         }
-        for ($i =1 ; $i < 7; $i++){
+        for ($i =1 ; $i < 15; $i++){
             $appartement = new Appartement();
             $appartement->setAddress($i.' rue du bailleur');
             $appartement->setTitre('Appartement F2 au '.$i.'ème étage');
-            $appartement->setPostalCode("750".$i."0");
-            $appartement->setDescription('Appartement de type F2, situé au '.$i.'ème étage d\'un immeuble de 5 étages. Il est composé d\'un séjour, d\'une cuisine, d\'une chambre, d\'une salle de bain et d\'un WC. Il est équipé d\'un chauffage individuel électrique. L\'appartement est situé à proximité des commerces et des transports en commun. Il est disponible immédiatement.');
-            $appartement->setShortDesc("Appartement de type F2, situé au ".$i."ème étage d'un immeuble de 5 étages.");
+            $appartement->setPostalCode(sprintf("750%02d", $i));
+            $appartement->setDescription('Appartement de type F2, situé au '.$i.'ème étage d\'un immeuble de 15 étages. Il est composé d\'un séjour, d\'une cuisine, d\'une chambre, d\'une salle de bain et d\'un WC. Il est équipé d\'un chauffage individuel électrique. L\'appartement est situé à proximité des commerces et des transports en commun. Il est disponible immédiatement.');
+            $appartement->setShortDesc("Appartement de type F2, situé au ".$i."ème étage d'un immeuble de 15 étages.");
             $appartement->setCity('Paris');
             $appartement->setCountry('France');
             $appartement->setSurface(50);
@@ -41,22 +48,24 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $appartement->setNbBeds(rand(1,5));
             $appartement->setNbBathrooms(rand(1,3));
             $appartement->setPrice(rand(50, 200));
-            $appartement->setCreatedAt(new \DateTime('2021-01-0'.$i));
-            $appartement->setUpdatedAt(new \DateTime('2021-01-0'.$i));
+            $appartement->setCreatedAt(new \DateTime(sprintf('202%d-01-%02d',rand(2,9), rand(1,31))));
+            $appartement->setUpdatedAt(new \DateTime(sprintf('202%d-01-%02d',rand(2,9), rand(1,31))));
             $this->addReference('appartement'.$i, $appartement);
             $manager->persist($appartement);
-            for ($j = 1; $j <= rand(1,6); $j++) {
-                $plusie = new AppartPlus();
-                $plusie->setIcon(rand(1, 6));
-                $plusie->addAppartement($appartement);
-                $manager->persist($plusie);
-            }
         }
-        for ($i = 1 ; $i < 11 ; $i++){
+        for ($j = 1; $j <= 6; $j++) {
+            $plusie = new AppartPlus();
+            $plusie->setIcon($j);
+            for ($i = 1; $i <= rand(1,6); $i++) {
+                $plusie->addAppartement($this->getReference('appartement'.rand(1,15)));
+            }
+            $manager->persist($plusie);
+        }
+        for ($i = 1 ; $i < 40 ; $i++){
             $that =$this->getReference('voyageur'.rand(1, 10).'-user');
             $loca = new Location();
             $loca->setLocataire($that);
-            $date = new \DateTime(sprintf('202%d-01-%02d',rand(2,9), $i));
+            $date = new \DateTime(sprintf('202%d-01-%02d',rand(2,9), rand(1,31)));
             $loca->setDateDebut($date);
             $loca->setDateFin($date->add(new \DateInterval('P'.rand(1, 10).'D')));
             $loca->setAppartement($this->getReference('appartement'.rand(1, 6)));
@@ -73,7 +82,7 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $days = $loca->getDateDebut()->diff($loca->getDateFin())->days;
             $loca->setPrice($loca->getAppartement()->getPrice()*$days +$price);
             $this->addReference('location'.$i, $loca);
-            for ($j = 1; $j <= 11; $j++) {
+            for ($j = 1; $j <= 40; $j++) {
                 $nott = new Note();
                 $nott->setLocation($this->getReference('location'.$i));
                 $nott->setUser($that);
@@ -82,7 +91,11 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             }
             $manager->persist($loca);
         }
-            $manager->flush();
+        $manager->flush();
+        for ($i = 1 ; $i < 15 ; $i++){
+            $appartement = $this->getReference('appartement'.$i);
+            $this->as->updateAppart($appartement->getId());
+        }
     }
     public function getDependencies()
     {

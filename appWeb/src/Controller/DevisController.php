@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Devis;
 use App\Entity\Fichier;
+use App\EventSubscriber\ModerationSubscriber;
 use App\Form\DevisType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,8 +33,12 @@ class DevisController extends AbstractController
 
         
         $form = $this->createForm(DevisType::class, null);
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", DevisType::class, null, array(
+            'auto_initialize'=>false // it's important!!!
+        ));
+        $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
+        $form = $builder->getForm();
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             //... Ton code pour enregistrer le devis jsp ce que tu fais aporès
         }

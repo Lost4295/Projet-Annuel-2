@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h2>Nos différents abonnements</h2>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover align-middle text-center">
+			<thead>
+				<tr>
+					{% for abo, val in abonnements.nom %}
+						{% if loop.first %}
+							<th>Nom</th>
+						{% else %}
+							<th>
+								<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
+								{{ val }}
+							</th>
+						{% endif %}
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					{% for abo,val in abonnements.prix %}
+						{% if loop.first %}
+							<td>Prix</td>
+						{% else %}
+							<td>{{ val }}</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+				{% for key, val in options %}
+					<tr>
+						<td>{{key}}</td>
+						{% for abo,aboVal in val %}
+							{% if aboVal == 1 %}
+								<td>
+									<i class="bi-check fw-bold text-success h1"></i>
+								</td>
+							{% else %}
+								<td>
+									<i class="bi-x fw-bold text-danger h1"></i>
+								</td>
+							{% endif %}
+						{% endfor %}
+					</tr>
+				{% endfor %}
+				<tr>
+					{% for abo,val in abonnements.url %}
+						{% if loop.first %}
+							<td></td>
+						{% else %}
+							{% if abouser != null and abo == abouser.id %}
+								<td>
+									<a href="{{val.link}}" class="btn btn-primary disabled">Abonnement actuel</a>
+								</td>
+							{% else %}
+								<td>
+									<a href="{{val.link}}" class="btn btn-primary">Acheter</a>
+								</td>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+				</tr>
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

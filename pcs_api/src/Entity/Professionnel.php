@@ -48,10 +48,14 @@ class Professionnel
     #[ORM\OneToMany(targetEntity: Appartement::class, mappedBy: 'bailleur', orphanRemoval: true)]
     private Collection $appartements;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
         $this->appartements = new ArrayCollection();
+        $this->image = "user-placeholder.jpg";
     }
 
     public function __toString(): string
@@ -165,6 +169,13 @@ class Professionnel
         return $this;
     }
 
+    public function setServices(Collection $services): static
+    {
+        $this->services = $services;
+
+        return $this;
+    }
+
     public function removeService(Service $service): static
     {
         if ($this->services->removeElement($service)) {
@@ -205,6 +216,13 @@ class Professionnel
         return $this;
     }
 
+    public function setAppartements(Collection $appartements): static
+    {
+        $this->appartements = $appartements;
+
+        return $this;
+    }
+
     public function removeAppartement(Appartement $appartement): static
     {
         if ($this->appartements->removeElement($appartement)) {
@@ -212,6 +230,22 @@ class Professionnel
             if ($appartement->getBailleur() === $this) {
                 $appartement->setBailleur(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        if ($image !== null) {
+            $this->image = $image;
+        } else {
+            $this->image = "user-placeholder.jpg";
         }
 
         return $this;

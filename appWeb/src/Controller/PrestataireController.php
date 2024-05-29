@@ -15,10 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 class PrestataireController extends AbstractController
 {
     #[Route(name: "prestataires")]
-    public function prestataires(Request $request, EntityManagerInterface $em)
+    public function prestataires(EntityManagerInterface $em)
     {
 
-        
         $prestas = $em->getRepository(Professionnel::class)->findByRole(User::ROLE_PRESTA);
         return $this->render('presta/index.html.twig', [
             'prestas' => $prestas,

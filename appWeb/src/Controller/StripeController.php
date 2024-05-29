@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Abonnement;
 use App\Entity\Appartement;
-use App\Entity\Location;
 use App\Entity\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,10 +15,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 
+
+#[Route('/stripe', name: 'stripe_')]
 class StripeController extends AbstractController
 {
     const URL = "";
-    #[Route('/stripe', name: 'app_stripe')]
+    #[Route('/loc', name: 'locations')]
     #[IsGranted("ROLE_USER")]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
@@ -102,5 +104,45 @@ class StripeController extends AbstractController
             'cancel_url' => $this->generateUrl('appart_detail', ['id' => $appartId], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
         return $this->redirect($checkout_session->url, 302);
+    }
+
+
+    #[Route("/abos/{id}", name:"abos", requirements:['id'=> '\d+'])]
+    public function abonnements( $id, Request $request, EntityManagerInterface $em) : Response {
+        $user = $this->getUser();
+        $abonnement = $em->getRepository(Abonnement::class)->find($id);
+        $price = $abonnement->getTarif();
+        Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
+        $uid = Uuid::v7();
+        $request->getSession()->set('aboid', $id);
+        $request->getSession()->set('uid', $uid);
+        $lineItems = [];
+        $lineItems[] =
+            [
+                # Appartement
+                'price_data' => [
+                    'currency' => 'eur',
+                    'unit_amount' => $price * 100,
+                    'product_data' => [
+                        'name' => ($abonnement->getNom()) ? $abonnement->getNom() : "Abonnement $id",
+                        // 'images' => self::URL . 'images/abonnement' . $abonnement->getImage(),
+                    ]
+                ],
+                'quantity' => 1,
+            ];
+        $checkout_session = \Stripe\Checkout\Session::create([
+            'customer_email' => $user->getUserIdentifier(),
+            'submit_type' => 'pay',
+            "consent_collection" => ["terms_of_service" => "required"],
+            'payment_method_types' => ['card'],
+            'automatic_tax' => ['enabled' => true],
+            'billing_address_collection' => 'auto',
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => $this->generateUrl('index', ["a" => $uid], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('abos', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
+        return $this->redirect($checkout_session->url, 302);
+
     }
 }

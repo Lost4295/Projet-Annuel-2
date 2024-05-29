@@ -38,7 +38,7 @@ class LocationTestType extends AbstractType
                 'class' => Service::class,
                 'choice_label' => 'id',
             ])
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

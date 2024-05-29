@@ -2,17 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Appartement;
-use App\Entity\Location;
-use App\Entity\Service;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LocationFirstType extends AbstractType
 {
@@ -54,7 +48,6 @@ class LocationFirstType extends AbstractType
                 ],
                 'label'=>"babies",
                 "scale"=>0,
-
             ])
             ->add("appart", HiddenType::class, [])
             ;

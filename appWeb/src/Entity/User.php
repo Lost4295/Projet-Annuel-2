@@ -103,6 +103,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $notes;
 
+    /**
+     * @var Collection<int, Warning>
+     */
+    #[ORM\OneToMany(targetEntity: Warning::class, mappedBy: 'user')]
+    private Collection $warnings;
+
+    #[ORM\Column(options: ["default"=> false])]
+    private ?bool $isBanned = false;
+
 
     public function __construct()
     {
@@ -114,6 +123,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->ticketsAttribues = new ArrayCollection();
         $this->locations = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->warnings = new ArrayCollection();
+        $this->isBanned = false;
     }
 
     public function __toString()
@@ -158,7 +169,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = self::ROLE_USER;
-
         return array_unique($roles);
     }
 
@@ -410,6 +420,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ];
     }
 
+
+
+
+
+
+
+
+
+
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles());
@@ -532,6 +551,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Warning>
+     */
+    public function getWarnings(): Collection
+    {
+        return $this->warnings;
+    }
+
+    public function addWarning(Warning $warning): static
+    {
+        if (!$this->warnings->contains($warning)) {
+            $this->warnings->add($warning);
+            $warning->setUsers($this);
+            if (count($this->warnings) >= 3 ){
+                $this->setBanned(true);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeWarning(Warning $warning): static
+    {
+        if ($this->warnings->removeElement($warning)) {
+            // set the owning side to null (unless already changed)
+            if ($warning->getUsers() === $this) {
+                $warning->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setBanned(bool $isBanned): static
+    {
+        $this->isBanned = $isBanned;
         return $this;
     }
 }

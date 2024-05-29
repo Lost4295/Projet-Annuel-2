@@ -24,3 +24,6 @@ services:
     # please note that last definitions always *replace* previous ones
     App\EventSubscriber\LocaleSubscriber:
         arguments: ['%kernel.default_locale%']
+
+    App\EventSubscriber\ModerationSubscriber:
+        arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']

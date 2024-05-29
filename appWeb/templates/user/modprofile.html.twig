@@ -9,13 +9,19 @@
 			<h2>
 				{{ 'profile'|trans }}
 			</h2>
-			{{ form_start(user) }}
+			{{dump(submitted)}}
+			{% if submitted is defined and submitted == true %}
+				{% set class = "was-validated" %}
+			{% else %}
+				{% set class = "" %}
+			{% endif %}
+			{{ form_start(user, {attr : {class: class}}) }}
 			<div class="row">
 				<div class="col-2">
 					{{ form_label(user.nom) }}
 				</div>
 				<div class="col-6">
-					{{ form_widget(user.nom) }}
+					{{ form_widget(user.nom, {value : user.vars.value.nom}) }}
 				</div>
 			</div>
 			<div class="row">
@@ -23,7 +29,7 @@
 					{{ form_label(user.prenom) }}
 				</div>
 				<div class="col-6">
-					{{ form_widget(user.prenom) }}
+					{{ form_widget(user.prenom, {value : user.vars.value.prenom}) }}
 				</div>
 			</div>
 			<div class="row">
@@ -31,7 +37,7 @@
 					{{ form_label(user.birthdate) }}
 				</div>
 				<div class="col-6">
-					{{ form_widget(user.birthdate) }}
+					{{ form_widget(user.birthdate, {value : user.vars.value.birthdate|date("Y-m-d")}) }}
 				</div>
 			</div>
 			<div class="row mt-2">
@@ -40,6 +46,9 @@
 				</div>
 				<div class="col-6">
 					{{ form_widget(user.phoneNumber) }}
+					<div class="invalid-feedback">
+						{{ form_errors(user.phoneNumber) }}
+					</div>
 				</div>
 			</div>
 			<div class="row">
@@ -48,22 +57,108 @@
 				</div>
 				<div class="col-6">
 					{{ form_widget(user.email) }}
+					<div class="invalid-feedback">
+						{{ form_errors(user.email) }}
+
+
+					</div>
 				</div>
-			</div>
-			<div class=" my-2 d-flex justify-content-around">
-				<div class="col-5">
-					<input type="submit" id="submit" class="btn btn-primary" value="{{ 'submit'|trans }}">
-					<a href="{{ path('profile') }}" class="btn btn-primary">
-						{{ 'back'|trans }}
-					</a>
+				{% if user.pro is defined %}
+					<div class="row mt-2">
+						<div class="col-2">
+							{{ form_label(user.image) }}
+						</div>
+						<div class="col-6">
+							{{ form_widget(user.image) }}
+							<div class="invalid-feedback">
+								{{ form_errors(user.image) }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							{{ form_label(user.pro.societyName)}}
+						</div>
+						<div class="col-6">
+							{{ form_widget(user.pro.societyName, {value: pro.societyName})}}
+							<div class="invalid-feedback">
+								{{ form_errors(user.pro.societyName, {value: pro.societyName})}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							{{ form_label(user.pro.siretNumber)}}
+						</div>
+						<div class="col-6">
+							{{ form_widget(user.pro.siretNumber, {value: pro.siretNumber})}}
+							<div class="invalid-feedback">
+								{{ form_errors(user.pro.siretNumber, {value: pro.siretNumber})}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							{{ form_label(user.pro.societyAddress)}}
+						</div>
+						<div class="col-6">
+							{{ form_widget(user.pro.societyAddress, {value: pro.societyAddress})}}
+							<div class="invalid-feedback">
+								{{ form_errors(user.pro.societyAddress, {value: pro.societyAddress})}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							{{ form_label(user.pro.city)}}
+						</div>
+						<div class="col-6">
+							{{ form_widget(user.pro.city, {value: pro.city})}}
+							<div class="invalid-feedback">
+								{{ form_errors(user.pro.city, {value: pro.city})}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							{{ form_label(user.pro.postalCode)}}
+						</div>
+						<div class="col-6">
+							{{ form_widget(user.pro.postalCode, {value: pro.postalCode})}}
+							<div class="invalid-feedback">
+								{{ form_errors(user.pro.postalCode, {value: pro.postalCode})}}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							{{ form_label(user.pro.country)}}
+						</div>
+						<div class="col-6">
+							{{ form_widget(user.pro.country, {value: pro.country})}}
+							<div class="invalid-feedback">
+								{{ form_errors(user.pro.country, {value: pro.country})}}
+							</div>
+						</div>
+					</div>
+
+				{% endif %}
+				<div class=" my-2 d-flex justify-content-around">
+					<div class="col-5">
+						<input type="submit" id="submit" class="btn btn-primary" value="{{ 'submit'|trans }}">
+						<a href="{{ path('profile') }}" class="btn btn-primary">
+							{{ 'back'|trans }}
+						</a>
+					</div>
 				</div>
+				{{ form_end(user) }}
+				<p class="text-muted">
+					{{"crticket"|trans|raw}}
+					<a href="{{ path('create_ticket', {r:"info"}) }}">{{"here"|trans}}</a>
+				</p>
+				<p class="text-muted">
+					{{'modmdp'|trans|raw}}
+					<a href="{{ path('app_forgot_password_request') }}">{{'clhere'|trans}}</a>
+				</p>
 			</div>
-			{{ form_end(user) }}
-			<p class="text-muted">
-				{{"crticket"|trans|raw}} <a href="{{ path('create_ticket', {r:"info"}) }}">{{"here"|trans}}</a>
-			</p>
-			<p class="text-muted">
-				{{'modmdp'|trans|raw}} <a href="{{ path('app_forgot_password_request') }}">{{'clhere'|trans}}</a>
-			</p>
-		</div>
-	{% endblock %}
+		{% endblock %}

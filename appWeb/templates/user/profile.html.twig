@@ -42,7 +42,7 @@
 						<button class="nav-link my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
 					{% endif %}
 					<button class="nav-link my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
-					{% if tickets is defined %}
+					{% if tickets|length > 0 %}
 						<button class="nav-link my-2 p-4" id="v-pills-tick-tab" data-bs-toggle="pill" data-bs-target="#v-pills-tick" type="button" role="tab" aria-controls="v-pills-tick" aria-selected="false">{{"tick"|trans}}</button>
 					{% endif %}
 				</div>
@@ -92,6 +92,33 @@
 							{{ user.email }}
 						</div>
 					</div>
+					{% if is_granted("ROLE_BAILLEUR") or is_granted("ROLE_PRESTA") %}
+						<div class="row">
+							<div class="col-4 my-2">
+								{{ "society" |trans }}
+							</div>
+							<div class="col-6">
+								{{pro.societyName}}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-4 my-2">
+								{{ "siret" |trans }}
+							</div>
+							<div class="col-6">
+								{{pro.siretNumber}}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-4 my-2">
+								{{ "address" |trans }}
+							</div>
+							<div class="col-6">
+								{{pro.societyAddress}} {{pro.postalCode}} {{pro.city}}
+							</div>
+						</div>
+						
+					{% endif %}
 					<div class="d-flex justify-content-around">
 						<div class="col-5">
 							<a href="{{path("check_infos")}}" class="btn btn-primary">{{'modifymyinfo'|trans }}</a>
@@ -133,15 +160,69 @@
 				{% if is_granted("ROLE_BAILLEUR") %}
 					<div class="tab-pane fade" id="v-pills-baill" role="tabpanel" aria-labelledby="v-pills-baill-tab" tabindex="0">
 						<h1>Appartements</h1>
+						<h2><a data-bs-toggle="collapse" href="#statsdash" role="button" aria-expanded="false" aria-controls="statsdash">{{'stats'|trans }}</a></h2>
+						<div class="row collapse" id="statsdash">
+							<div class="col-4">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="card-title">{{'nblocs'|trans }}</h5>
+										<canvas id="chartl"></canvas>
+									</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="card-title">{{'notes'|trans }}</h5>
+										<canvas id="chartn"></canvas>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="card-title">{{'prices'|trans }}</h5>
+										<canvas id="chartp"></canvas>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<h2><a data-bs-toggle="collapse" href="#apartsdash" role="button" aria-expanded="false" aria-controls="apartsdash">{{'appart'|trans }}</a></h2>
+						<div class="row collapse" id="apartsdash">
+						{% for appart in appartements %}
+							<div class="col-4">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="card-title">{{'nbappart'|trans }}</h5>
+										<canvas id="chart-{{loop.index}}"></canvas>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+						</div>
 						<a href="{{path("create_appart") }}" class="btn btn-primary">Nouveau</a>
 						<div class="row">
 							{% for appart in appartements %}
 								<div class="col-3 my-3">
 									<div class="card">
 										<div class="card-body">
-											<img src="{#{{ appart.image }}#}http://placehold.it/300x200" class="card-img-top" alt="...">
-											<h5 class="card-title">{{ appart.shortDesc }}</h5>
+											<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+												<div class="splide__track">
+													<ul class="splide__list">
+													{% for img in appart.images %}
+														<li class="splide__slide"><img src="{{asset("images/appartements/"~img)}}" class="card-img-top" alt="..."></li>
+													{% endfor %}
+													</ul>
+												</div>
+											</div>
+											<h5 class="card-title">{{ appart.titre }}</h5>
+											<div class="btn-group">
 											<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="btn btn-primary">Voir</a>
+											<a href="{{ path('appart_modify', {'id': appart.id}) }}" class="btn btn-warning">Modifier</a>
+											<a href="{{ path('appart_delete', {'id': appart.id}) }}" class="btn btn-danger">Supprimer</a>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -153,6 +234,9 @@
 				{% if is_granted("ROLE_PRESTA") %}
 					<div class="tab-pane fade" id="v-pills-presta" role="tabpanel" aria-labelledby="v-pills-presta-tab" tabindex="0">
 						<h2>??????</h2>
+						set dispos ici
+						+ devis en attente
+						+ dashboard sur avis clients
 					</div>
 
 				{% endif %}
@@ -218,8 +302,9 @@
 					</div>
 				{% endif %}
 				<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
-				{% if tickets is defined %}
+				{% if tickets|length > 0 %}
 					<div class="tab-pane fade col-5" id="v-pills-tick" role="tabpanel" aria-labelledby="v-pills-tick-tab" tabindex="0">
+					<h2> {{"tickets"|trans}}</h2>
 						{% for ticket in tickets %}
 							<div class="card my-2">
 								<div class="card-header d-flex justify-content-between">
@@ -240,6 +325,7 @@
 		</div>
 	{% endblock %}
 	{% block javascripts %}
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 		<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
 		<script>
@@ -264,5 +350,68 @@ perPage: 1
 } ).mount();
 }
 }
+
+</script>
+{% if is_granted("ROLE_BAILLEUR")%}
+<script>
+
+const ctxl = document.getElementById('chartl');
+labels =[ {% for app in appartements %}"{{app.titre}}",{% endfor %}]
+data =[ {% for app in appartements %}"{{app.locations|length}}",{% endfor %}]
+  new Chart(ctxl, {
+    type: 'pie',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# {{"nblocs"|trans}}',
+        data: data,
+        borderWidth: 1
+      }]
+    },
+  });
+  const ctxn = document.getElementById('chartn');
+data =[ {% for app in appartements %}"{{app.note}}",{% endfor %}]
+  new Chart(ctxn, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '{{"note"|trans}}',
+        data: data,
+        borderWidth: 1
+      }]
+    },
+  });
+  const ctxp = document.getElementById('chartp');
+data =[ {% for app in appartements %}"{{app.price}}",{% endfor %}]
+  new Chart(ctxp, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# {{"price"|trans}}',
+        data: data,
+        borderWidth: 1
+      }]
+    },
+  });
+{% for name, appart in data %}
+const ctx{{loop.index}} = document.getElementById('chart-{{loop.index}}');
+	const title{{loop.index}} = document.getElementById('chart-{{loop.index}}').parentElement.parentElement.querySelector('h5');
+	title{{loop.index}}.innerHTML = "\"{{name}}\"" + " : note moyenne {{appart.average_rating}}/5";
+	 new Chart(ctx{{loop.index}}, {
+		type: 'bar',
+		data: {
+			labels: ['1 étoile', '2 étoiles', '3 étoiles', '4 étoiles', '5 étoiles'],
+			datasets: [{
+				label: '# {{"nbvotes"|trans}}',
+				data: [{{appart.one_star_review}}, {{appart.two_star_review}}, {{appart.three_star_review}}, {{appart.four_star_review}}, {{appart.five_star_review}}],
+				borderWidth: 1
+			}]
+		},
+	});
+{% endfor %}
 		</script>
+	{% endif %}
+
 	{% endblock %}

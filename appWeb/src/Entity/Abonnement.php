@@ -28,6 +28,9 @@ class Abonnement
     #[ORM\OneToMany(targetEntity: OptionsAbonnement::class, mappedBy: 'abonnement')]
     private Collection $options;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->subscribers = new ArrayCollection();
@@ -121,6 +124,18 @@ class Abonnement
         if ($this->options->removeElement($option)) {
             $option->removeAbonnement($this);
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

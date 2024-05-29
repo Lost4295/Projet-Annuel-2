@@ -22,7 +22,7 @@ class ResetPasswordRequestFormType extends AbstractType
                 ],
                 'label' => 'emailfield',
             ])
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

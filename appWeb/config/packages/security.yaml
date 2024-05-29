@@ -26,6 +26,7 @@ security:
                     max_attempts: 5
             logout:
                 path: /logout
+            user_checker: App\Security\UserChecker
         main:
             lazy: true
 
@@ -40,6 +41,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/ticket, roles: ROLE_USER }
 
 when@test:
     security:

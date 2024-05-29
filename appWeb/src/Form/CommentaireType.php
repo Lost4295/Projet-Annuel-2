@@ -23,7 +23,7 @@ class CommentaireType extends AbstractType
             ])
             ->add('type', HiddenType::class)
             ->add('entityId', HiddenType::class)
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -67,4 +67,10 @@ class AppartementService {
         $this->em->flush();
         return $output;
     }
+
+    public function isOk($file)
+    {
+        //TODO vérifier avec l'API Si c'est un apparrtement
+        return true;
+    }
 }

@@ -93,12 +93,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'resolveur')]
     private Collection $ticketsAttribues;
 
-
     /**
      * @var Collection<int, Location>
      */
     #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'locataire')]
     private Collection $locations;
+
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $notes;
+
+    /**
+     * @var Collection<int, Warning>
+     */
+    #[ORM\OneToMany(targetEntity: Warning::class, mappedBy: 'user')]
+    private Collection $warnings;
+
+    #[ORM\Column(options: ["default"=> false])]
+    private ?bool $isBanned = false;
 
 
     public function __construct()
@@ -110,6 +124,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->tickets = new ArrayCollection();
         $this->ticketsAttribues = new ArrayCollection();
         $this->locations = new ArrayCollection();
+        $this->notes = new ArrayCollection();
+        $this->warnings = new ArrayCollection();
+        $this->isBanned = false;
     }
 
     public function __toString()
@@ -154,7 +171,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = self::ROLE_USER;
-
         return array_unique($roles);
     }
 
@@ -244,6 +260,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isAdmin(): ?bool
     {
+        if ($this->admin){
+            $this->grantAdmin();
+        } else {
+            $this->removeAdmin();
+        }
         return $this->admin;
     }
 
@@ -406,7 +427,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return in_array($role, $this->getRoles());
     }
 
-
     /**
      * @return Collection<int, Ticket>
      */
@@ -466,7 +486,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
+
     /**
      * @return Collection<int, Location>
      */
@@ -494,6 +514,80 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getUser() === $this) {
+                $note->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Warning>
+     */
+    public function getWarnings(): Collection
+    {
+        return $this->warnings;
+    }
+
+    public function addWarning(Warning $warning): static
+    {
+        if (!$this->warnings->contains($warning)) {
+            $this->warnings->add($warning);
+            $warning->setUsers($this);
+            if (count($this->warnings) >= 3 ){
+                $this->setBanned(true);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeWarning(Warning $warning): static
+    {
+        if ($this->warnings->removeElement($warning)) {
+            // set the owning side to null (unless already changed)
+            if ($warning->getUsers() === $this) {
+                $warning->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setBanned(bool $isBanned): static
+    {
+        $this->isBanned = $isBanned;
         return $this;
     }
 }

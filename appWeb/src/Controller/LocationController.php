@@ -7,6 +7,8 @@ namespace App\Controller;
 use App\Entity\Appartement;
 use App\Entity\Commentaire;
 use App\Entity\Location;
+use App\EventSubscriber\ModerationSubscriber;
+use App\Form\AppartementType;
 use App\Form\CommentaireType;
 use App\Form\ConfirmLocationType;
 use App\Form\LocationFirstType;
@@ -182,12 +184,6 @@ class LocationController extends AbstractController
             return $this->redirectToRoute('appart_detail', ['id' => $commentaire->getEntityId()]);
         }
     }
-    #[Route("/create_appart", name: "create_appart_bailleur")]
-    #[IsGranted("ROLE_BAILLEUR")]
-    public function createAppart(Request $request, EntityManagerInterface $em)
-    {
-        return $this->render('appartements/create_appart.html.twig');
-    }
 
     #[Route("/location/{id}", name: "location_info", requirements: ["id" => "\d+"])]
     #[IsGranted("ROLE_VOYAGEUR")]
@@ -200,5 +196,79 @@ class LocationController extends AbstractController
             return $this->redirectToRoute('profile');
         }
         return $this->render("location/location_detail.html.twig", ['location' => $loc]);
+    }
+    
+    #[Route("/appartement/create", name: "create_appart")]
+    #[IsGranted("ROLE_BAILLEUR")]
+    public function createAppart(Request $request, EntityManagerInterface $em, AppartementService $as)
+    {
+        $res = new Appartement();
+        $reservation = $this->createForm(AppartementType::class, $res);
+        $builder = $reservation->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", AppartementType::class, $res, array(
+            'auto_initialize'=>false // it's important!!!
+        ));
+        $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
+        $reservation = $builder->getForm();
+        $reservation->handleRequest($request);
+        if ($reservation->isSubmitted() && $reservation->isValid()) {
+            if ($request->files->get('appartement')['images']) {
+                $res->removeImage("house-placeholder.jpg");
+                foreach ($request->files->get('appartement')['images'] as $image) {
+                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads/appartements';
+                    $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename.'-'.uniqid().'.'.$image->guessExtension();
+                    $image->move($destination, $newFilename);
+                    if ($as->isOk($image)) {
+                        $finalDestination = $this->getParameter('kernel.project_dir').'/public/images/appartements';
+                        rename($destination."/".$newFilename, $finalDestination."/".$newFilename);
+                        $res->addImage($newFilename);
+                    }
+                }
+                $em->persist($res);
+                $em->flush();
+            }
+            return $this->redirectToRoute('profile');
+        }
+        return $this->render('appartements/create_appart_user.html.twig', ['reservation' => $reservation]);
+    }
+    #[Route("/appartement/modify/{id}", name: "appart_modify", requirements: ["id" => "\d+"])]
+    #[IsGranted("ROLE_BAILLEUR")]
+    public function modifyAppart($id, Request $request, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        $res = $em->getRepository(Appartement::class)->find($id);
+        if (!$res || $res->getProprietaire() !== $user) {
+            $this->addFlash("danger", "noaccess");
+            return $this->redirectToRoute('profile');
+        }
+        $reservation = $this->createForm(AppartementType::class, $res);
+        $builder = $reservation->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", AppartementType::class, $res, array(
+            'auto_initialize'=>false // it's important!!!
+        ));
+        $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
+        $reservation = $builder->getForm();
+        $reservation->handleRequest($request);
+        if ($reservation->isSubmitted() && $reservation->isValid()) {
+            // check si tt est ok
+            $em->persist($res);
+            $em->flush();
+            return $this->redirectToRoute('profile');
+        }
+        // return $this->render('appartements/create_appart_user.html.twig', ['reservation' => $reservation]);
+    }
+    #[Route("/appartement/delete/{id}", name: "appart_delete", requirements: ["id" => "\d+"])]
+    #[IsGranted("ROLE_BAILLEUR")]
+    public function deleteAppart($id, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        $res = $em->getRepository(Appartement::class)->find($id);
+        if (!$res || $res->getProprietaire() !== $user) {
+            $this->addFlash("danger", "noaccess");
+        } else {
+            $em->remove($res);
+            $em->flush();
+            $this->addFlash("success", "appartdeleted");
+        }
+            return $this->redirectToRoute('profile');
     }
 }

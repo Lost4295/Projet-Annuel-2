@@ -5,7 +5,6 @@
 namespace App\Controller;
 
 use App\Entity\Service;
-use App\Form\DevisType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +14,7 @@ class ServiceController extends AbstractController
 {
 
     #[Route("/service", name: "services")]
-    public function table(Request $request, EntityManagerInterface $em)
+    public function table(EntityManagerInterface $em)
     {
 
         $nettoyage = $em->getRepository(Service::class)->findBy(["type" => Service::NETTOYAGE]);

@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Email;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -65,7 +64,8 @@ class EmailType extends AbstractType
                 'multiple'=>true,
                 'label' => 'pj',
                 'required' => false
-            ]);
+            ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

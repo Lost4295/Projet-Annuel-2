@@ -8,11 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Email;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class DevisType extends AbstractType
 {
@@ -68,7 +63,8 @@ class DevisType extends AbstractType
                 'class' => 'form-controle my-1'
             ],
             'label' => 'Description'
-        ]);
+        ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

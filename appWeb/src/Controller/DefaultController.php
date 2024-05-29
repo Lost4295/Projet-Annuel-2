@@ -4,6 +4,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Abonnement;
 use App\Entity\Appartement;
 use App\Entity\Location;
 use App\Entity\Professionnel;
@@ -26,6 +27,11 @@ class DefaultController extends AbstractController
         $user = $this->getUser();
         if ($user && !$user->isVerified()) {
             $this->addFlash('warning', "plsverif");
+        }
+
+        $connected = $request->query->get('e', null);
+        if ($connected) {
+            $this->addFlash('danger', "unauthorized");
         }
         $paid = $request->query->get('c', null);
         $uid = null;
@@ -54,7 +60,22 @@ class DefaultController extends AbstractController
                 $request->getSession()->remove('uid');
             }
         }
-        $apparts = $em->getRepository(Appartement::class)->findAll();
+        $paid = $request->query->get('a', null);
+        $uid = null;
+        if ($paid) {
+            $uid = $request->getSession()->get('uid')->toRfc4122();
+            if ($uid === $paid) {
+                $id = $request->getSession()->get('aboid');
+                $abo = $em->getRepository(Abonnement::class)->find($id);
+                $user->setAbonnement($abo);
+                $em->flush();
+                $this->addFlash('success', "abosuccess");
+                $request->getSession()->remove('uid');
+                $request->getSession()->remove('aboid');
+            }
+        }
+        $apparts = $em->getRepository(Appartement::class)->findBy([], ['note' => 'DESC']);
+        $apparts = array_slice($apparts, 0, 9);
         return $this->render('index.html.twig', ['apparts' => $apparts]);
     }
 

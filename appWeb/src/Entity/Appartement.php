@@ -221,6 +221,15 @@ class Appartement
         return $this;
     }
 
+    public function removeImage(string $image): static
+    {
+        $key = array_search($image, $this->images);
+        if ($key !== false) {
+            unset($this->images[$key]);
+        }
+        return $this;
+    }
+
     public function getBailleur(): ?Professionnel
     {
         return $this->bailleur;

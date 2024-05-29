@@ -2,40 +2,69 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\User;
+use App\Entity\Warning;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\PreSubmitEvent;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\Request;
 
 class ModerationSubscriber implements EventSubscriberInterface
 {
+    private EntityManagerInterface $em;
+    private Request $request;
+    public function __construct(EntityManagerInterface $em, Request $request)
+    {
+        $this->em = $em;
+        $this->request = $request;
+    }
+
     public function onFormPreSubmit(PreSubmitEvent $event): void
     {
-        // Todo récupérer le formulaire
         $form = $event->getForm();
-
-        // TODO check s'il y a des textType ou des TextareaType, puis check si ces champs contiennent des mots interdits
-        $forbiddenWords = ['badword1', 'badword2']; // Replace with your list of forbidden words
+        // dd($form->getConfig()->getRequestHandler(), $form);
+        $forbiddenWords = file(__DIR__ . "/blacklist.txt"); // Replace with your list of forbidden words
         $formData = $event->getData();
         foreach ($formData as $key => $value) {
             $field = $form->get($key);
-            if ($field->getConfig()->getType()->getBlockPrefix() === 'text' || $field->getConfig()->getType()->getBlockPrefix() === 'textarea') {
+            $ff = $field->getConfig()->getType()->getBlockPrefix();
+            if ($ff === 'text' || $ff === 'textarea' || $ff ==="email") {
                 foreach ($forbiddenWords as $word) {
-                    if (strpos($value, $word) !== false) {
-                        $formData[$key] = str_replace($word, '***', $value);
-                        // TODO: Notify the user about the forbidden word
+                    $word = trim($word);
+                    if (preg_match("/$word/ui", $value)) {
+                        $field->addError(new FormError('This field contains forbidden words'));
+                        $formData[$key] = str_replace($word, '*****', $value);
+                        $lastemail = $this->request->getSession()->all()["_security.last_username"];
+                        $user = $this->em->getRepository(User::class)->findOneBy(["email"=>$lastemail]);
+                        $warning = new Warning();
+                        $warning->setUser($user);
+                        $warning->setIp($this->request->getClientIp());
+                        $warning->setForm($form->getName());
+                        $warning->setField($ff);
+                        $warning->setWord($word);
+                        $warning->setDate(new \DateTime());
+                        // dd($warning, $this->request->getSession()->all(), $user);
+                        
+                        $this->em->persist($warning);
+                        $this->em->flush();
+                        $this->request->getSession()->getFlashBag()->add("danger","forbiddenword");
+                        if ($ff === "email") {
+                            $formData[$key] = $lastemail;
+                        }
+                        $event->setData($formData);
+                        return;
                     }
                 }
             }
         }
-
-        $event->setData($formData);
-
-
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            'form.pre_submit' => 'onFormPreSubmit',
+            FormEvents::PRE_SUBMIT => 'onFormPreSubmit',
         ];
     }
 }

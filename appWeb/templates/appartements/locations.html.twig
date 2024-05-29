@@ -267,9 +267,10 @@ input::-webkit-inner-spin-button {
 											if (appart.images.length == 0) {
 												text+=(`<li class="splide__slide"><img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" class="card-img-top" alt="..."></li>`);
 											} else {
-												appart.images.forEach(img => {
-													text+=(`<li class="splide__slide"><img src="uploads/${img.path}" class="card-img-top" alt="..."></li>`);
-												});
+												console.log(appart.images, typeof appart.images);
+												for (key in appart.images) {
+													text+=(`<li class="splide__slide"><img src="images/appartements/${appart.images[key]}" class="card-img-top" alt="..."></li>`);
+												};
 											}
 											let route = "{{ path('appart_detail', { id: '0000' }) }}";
 											route = route.replace('0000', appart.id);
@@ -307,7 +308,7 @@ input::-webkit-inner-spin-button {
 				}
 			});
 		});
-					monune();
+		monune();
 
 function monune() {
 	var elms = document.getElementsByClassName( 'splide' );

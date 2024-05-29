@@ -4,14 +4,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Appartement;
+use App\Entity\Abonnement;
 use App\Entity\Location;
 use App\Entity\Professionnel;
 use App\Entity\Ticket;
 use App\Entity\User;
-use App\Form\AppartementType;
+use App\EventSubscriber\ModerationSubscriber;
 use App\Form\ModifyProfileType;
 use App\Form\TicketType;
+use App\Service\AppartementService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,16 +26,22 @@ class UserController extends AbstractController
 
     #[Route("/profile", name: "profile")]
     #[IsGranted("ROLE_USER")]
-    public function profile(Request $request, EntityManagerInterface $em): Response
+    public function profile(EntityManagerInterface $em, AppartementService $as): Response
     {
         $user = $this->getUser();
+        dump();
 
         $appartements = $locations = $pastlocas = [];
-        if ($user->hasRole(User::ROLE_BAILLEUR)) {
+        if ($user->hasRole(User::ROLE_PRESTA)||$user->hasRole(User::ROLE_BAILLEUR)) {
             $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
-            $appartements = $pro->getAppartements();
         }
-        
+        if ($user->hasRole(User::ROLE_BAILLEUR)) {
+            $appartements = $pro->getAppartements();
+            $data = [];
+            foreach ($appartements as $appartement) {
+                $data[$appartement->getTitre()] = $as->updateAppart($appartement->getId());
+            }
+        }
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
             $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);
             foreach ($locations as $key => $location) {
@@ -45,31 +52,17 @@ class UserController extends AbstractController
             }
         }
         $tickets = $em->getRepository(Ticket::class)->findBy(["demandeur" => $user->getId()]);
-        // $form = $this->createForm(UserType::class, $user)->handleRequest($request);
         return $this->render('user/profile.html.twig', [
-            'message' => 'Hello World!',
             'user' => $user,
             'appartements' => $appartements,
             'locations' => $locations,
             'pastlocations' => $pastlocas,
-            'tickets' => $tickets
+            'tickets' => $tickets?? null,
+            'data' => $data ?? null,
+            'pro' => $pro ?? null,
         ]);
     }
 
-    #[Route("/appartement/create", name: "create_appart")]
-    #[IsGranted("ROLE_BAILLEUR")]
-    public function createAppart(Request $request, EntityManagerInterface $em)
-    {
-        $res = new Appartement();
-        $reservation = $this->createForm(AppartementType::class, $res);
-        $reservation->handleRequest($request);
-        if ($reservation->isSubmitted() && $reservation->isValid()) {
-            $em->persist($res);
-            $em->flush();
-            return $this->redirectToRoute('profile');
-        }
-        return $this->render('appartements/create_appart_user.html.twig', ['reservation' => $reservation]);
-    }
 
     #[Route("profile/modify/", name: "check_infos")]
     #[IsGranted("ROLE_USER")]
@@ -77,16 +70,40 @@ class UserController extends AbstractController
     public function checkInfos(Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser();
-        $form = $this->createForm(ModifyProfileType::class,$user)->handleRequest($request);
+        if ($user->hasRole(User::ROLE_BAILLEUR) || $user->hasRole(User::ROLE_PRESTA)) {
+            $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
+        }
+        $form = $this->createForm(ModifyProfileType::class, $user);
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", ModifyProfileType::class, $user, array(
+            'auto_initialize'=>false // it's important!!!
+        ));
+        $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
+        $form = $builder->getForm();
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($user->hasRole(User::ROLE_BAILLEUR) || $user->hasRole(User::ROLE_PRESTA)) {
+                $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
+                $image = $request->files->get('modify_profile')['image'];
+                $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/presta';
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . '-' . uniqid() . '.' . $image->guessExtension();
+                $image->move($destination, $newFilename);
+                $finalDestination = $this->getParameter('kernel.project_dir') . '/public/images/presta';
+                rename($destination . "/" . $newFilename, $finalDestination . "/" . $newFilename);
+                $pro->setImage($newFilename);
+                $em->persist($pro);
+            }
             $user->setIsVerified(false);
             $em->persist($user);
             $em->flush();
             $this->addFlash('success', 'Your profile has been updated successfully. However, you need to verify your email address.');
             return $this->redirectToRoute('profile');
         }
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $s = true;
+        }
 
-        return $this->render('user/modprofile.html.twig', ['user' => $form]);
+        return $this->render('user/modprofile.html.twig', ['user' => $form, 'pro' => $pro ?? null, 'submitted' => $s ?? null]);
     }
 
     #[Route("/ticket", name: "create_ticket")]
@@ -95,19 +112,19 @@ class UserController extends AbstractController
     {
         $info = new Ticket();
         $info
-        ->setStatus(TICKET::STATUS_NOUVEAU)
-        ->setDateOuverture(new \DateTime('now'))
-        ->setDemandeur($this->getUser());
+            ->setStatus(TICKET::STATUS_NOUVEAU)
+            ->setDateOuverture(new \DateTime('now'))
+            ->setDemandeur($this->getUser());
         $reason = $request->get('r');
         if ($reason) {
             switch ($reason) {
                 case 'info':
-                    $mess =$trans->trans("hereinfo", [], 'messages');
+                    $mess = $trans->trans("hereinfo", [], 'messages');
                     $info->setTitre("Changements d'informations")
-                    ->setDescription("Je voudrais changer mes informations personnelles. ". $mess)
-                    ->setUrgence(TICKET::URGENCE_BASSE)
-                    ->setPriority(TICKET::PRIORITY_BASSE)
-                    ->setCategory(TICKET::CATEGORY_DEMANDE);
+                        ->setDescription("Je voudrais changer mes informations personnelles. " . $mess)
+                        ->setUrgence(TICKET::URGENCE_BASSE)
+                        ->setPriority(TICKET::PRIORITY_BASSE)
+                        ->setCategory(TICKET::CATEGORY_DEMANDE);
                     break;
                 case 'payment':
                     $info = 'Payment';
@@ -119,7 +136,13 @@ class UserController extends AbstractController
                     break;
             }
         }
-        $form = $this->createForm(TicketType::class, $info)->handleRequest($request);
+        $form = $this->createForm(TicketType::class, $info);
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", TicketType::class, $info, array(
+            'auto_initialize'=>false // it's important!!!
+        ));
+        $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
+        $form = $builder->getForm();
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($info);
             $em->flush();
@@ -128,4 +151,49 @@ class UserController extends AbstractController
         }
         return $this->render('user/create_ticket.html.twig', ['form' => $form]);
     }
+
+    #[Route("/abonnements", name: "abos")]
+    public function abonnements(EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        if ($user){
+            $abonnement = $user->getAbonnement();
+        }
+        $abos = $em->getRepository(Abonnement::class)->findAll();
+        $transform = [];
+        $options = [];
+        $transform["key"] = [null];
+        $transform["nom"] = [null];
+        $transform["prix"] = [null];
+        $transform["url"] = [null];
+        foreach ($abos as $key => $abo) {
+            $transform["key"][] = $key;
+            $transform["prix"][] =  $abo->getTarif();
+            $transform["nom"][] =  $abo->getNom();
+            foreach ($abo->getOptions() as $option) {
+                $options[$option->getOption()->getNom()][] = ($option->isPresence()) ? "1" : "0";
+            }
+            $transform["url"][$abo->getId()]["link"] = $this->generateUrl('change_abo',['id'=>$abo->getId()]);
+            $transform["url"][$abo->getId()]["link"] = $this->generateUrl('stripe_abos',['id'=>$abo->getId()]);
+        }
+        return $this->render('user/abonnements.html.twig',[
+            'abonnements' => $transform,
+            'options' => $options,
+            'abouser'=> $abonnement??null
+        ]);
+    }
+
+    #[Route("/abonnements/getnew/{id}", name: "change_abo")]
+    #[IsGranted("ROLE_USER")]
+    public function changeAbo(EntityManagerInterface $em, $id)
+    {
+        $user = $this->getUser();
+        $abo = $em->getRepository(Abonnement::class)->find($id);
+        $user->setAbonnement($abo);
+        $em->persist($user);
+        $em->flush();
+        $this->addFlash('success', 'Your subscription has been updated successfully.');
+        return $this->redirectToRoute('abos');
+    }
+
 }
