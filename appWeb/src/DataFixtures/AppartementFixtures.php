@@ -44,7 +44,7 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $appartement->setSurface(50);
             $appartement->setNbVoyageurs(rand(5,15));
             $appartement->setNbchambers($i);
-            $appartement->setBailleur($this->getReference('bailleurp'.$i.'-user'));
+            $appartement->setBailleur($this->getReference('bailleurp'.rand(1,6).'-user'));
             $appartement->setNbBeds(rand(1,5));
             $appartement->setNbBathrooms(rand(1,3));
             $appartement->setPrice(rand(50, 200));
