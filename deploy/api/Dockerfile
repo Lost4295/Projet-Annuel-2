@@ -29,7 +29,8 @@ CMD [ "/deployapi.sh" ]
 RUN a2enmod rewrite
 RUN a2dissite 000-default
 RUN a2ensite api.conf
-RUN apt-get install snapd -y && apt-get clean && snap install --classic certbot && ln -s /snap/bin/certbot /usr/bin/certbot
+
+RUN apt-get install certbot -y && apt-get clean
 RUN certbot --apache --non-interactive --agree-tos --redirect --email admin@pcs.fr --domains pcs.freeboxos.fr
 RUN service apache2 restart
 EXPOSE 80
