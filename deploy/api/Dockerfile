@@ -31,7 +31,6 @@ RUN a2dissite 000-default
 RUN a2ensite api.conf
 
 RUN apt-get install certbot python3-certbot-apache -y && apt-get clean
-RUN certbot --apache --non-interactive --agree-tos --redirect --email admin@pcs.fr --domains pcs.freeboxos.fr
 RUN service apache2 restart
 EXPOSE 80
 WORKDIR /var/www/html/pcs_api/
