@@ -19,6 +19,7 @@ services:
       - symfony
   api:
     container_name: api
+    restart: always
     build: api
     ports:
       - 9004:443
@@ -30,6 +31,7 @@ services:
       - symfony
   website:
     container_name: website
+    restart: always
     build: web
     ports:
       - 9084:443

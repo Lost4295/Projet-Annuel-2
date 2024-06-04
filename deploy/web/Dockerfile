@@ -31,10 +31,10 @@ COPY ./conf/privkey.pem /etc/apache2/privkey.pem
 COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployweb.sh /deployweb.sh
 RUN chmod +x /deployweb.sh
-CMD [ "/deployweb.sh" ]
 RUN a2enmod rewrite ssl
 RUN a2dissite 000-default
 RUN a2ensite website.conf
 RUN a2ensite ssl.conf
 EXPOSE 80 443
 WORKDIR /var/www/html/appWeb
+CMD [ "/deployweb.sh" ]
