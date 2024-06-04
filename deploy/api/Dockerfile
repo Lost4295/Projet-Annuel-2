@@ -3,6 +3,7 @@ FROM php:8.2.19-apache
 ENV APACHE_RUN_USER=www-data
 ENV APACHE_RUN_GROUP=www-data
 
+WORKDIR /var/www/html/pcs_api/
 
 # PHP
 RUN apt-get update && apt-get upgrade -y
@@ -29,10 +30,9 @@ COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployapi.sh /deployapi.sh
 RUN chmod +x /deployapi.sh
 CMD [ "/deployapi.sh" ]
-RUN a2enmod rewrite
+RUN a2enmod rewrite ssl
 RUN a2dissite 000-default
 RUN a2ensite api.conf
 RUN a2ensite ssl.conf
 RUN service apache2 restart
 EXPOSE 80 443 
-WORKDIR /var/www/html/pcs_api/

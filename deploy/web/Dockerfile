@@ -32,7 +32,7 @@ COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployweb.sh /deployweb.sh
 RUN chmod +x /deployweb.sh
 CMD [ "/deployweb.sh" ]
-RUN a2enmod rewrite
+RUN a2enmod rewrite ssl
 RUN a2dissite 000-default
 RUN a2ensite website.conf
 RUN a2ensite ssl.conf
