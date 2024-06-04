@@ -22,7 +22,7 @@ RUN mv composer.phar /usr/local/bin/composer
 
 # Apache
 
-RUN mkdir -p /var/log/apache2/80 
+RUN mkdir -p /var/log/apache2/80 /var/log/apache2/443
 COPY ./conf/apache2.conf /etc/apache2/apache2.conf
 COPY ./conf/website.conf /etc/apache2/sites-available/website.conf
 COPY ./conf/ssl.conf /etc/apache2/sites-available/ssl.conf
