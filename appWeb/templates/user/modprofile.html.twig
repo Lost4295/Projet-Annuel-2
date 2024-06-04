@@ -9,7 +9,6 @@
 			<h2>
 				{{ 'profile'|trans }}
 			</h2>
-			{{dump(submitted)}}
 			{% if submitted is defined and submitted == true %}
 				{% set class = "was-validated" %}
 			{% else %}

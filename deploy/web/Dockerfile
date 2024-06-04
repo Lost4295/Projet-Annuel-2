@@ -25,14 +25,16 @@ RUN mv composer.phar /usr/local/bin/composer
 RUN mkdir -p /var/log/apache2/80 
 COPY ./conf/apache2.conf /etc/apache2/apache2.conf
 COPY ./conf/website.conf /etc/apache2/sites-available/website.conf
-
+COPY ./conf/fullchain.pem /etc/apache2/fullchain.pem
+COPY ./conf/privkey.pem /etc/apache2/privkey.pem
+COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployweb.sh /deployweb.sh
 RUN chmod +x /deployweb.sh
 CMD [ "/deployweb.sh" ]
 RUN a2enmod rewrite
 RUN a2dissite 000-default
 RUN a2ensite website.conf
-RUN apt-get install certbot python3-certbot-apache -y && apt-get clean 
+RUN a2ensite default-ssl.conf
 RUN service apache2 restart
-EXPOSE 80
+EXPOSE 80 443
 WORKDIR /var/www/html/appWeb

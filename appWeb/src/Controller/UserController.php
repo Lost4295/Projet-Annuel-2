@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Abonnement;
 use App\Entity\Location;
 use App\Entity\Professionnel;
+use App\Entity\Service;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\EventSubscriber\ModerationSubscriber;
@@ -42,6 +43,13 @@ class UserController extends AbstractController
                 $data[$appartement->getTitre()] = $as->updateAppart($appartement->getId());
             }
         }
+        if ($user->hasRole(User::ROLE_PRESTA)) {
+            $services = $pro->getServices();
+            $dataserv = [];
+            foreach ($services as $service) {
+                $dataserv[$service->getNom()] = $as->updateService($service->getId());
+            }
+        }
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
             $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);
             foreach ($locations as $key => $location) {
@@ -60,6 +68,8 @@ class UserController extends AbstractController
             'tickets' => $tickets?? null,
             'data' => $data ?? null,
             'pro' => $pro ?? null,
+            'services' => $services ?? null,
+            'dataserv' => $dataserv ?? null
         ]);
     }
 

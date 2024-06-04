@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Appartement;
 use App\Entity\Location;
 use App\Entity\Note;
+use App\Entity\Professionnel;
 use App\Service\AppartementService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,7 +39,7 @@ class AjaxController extends AbstractController
         return $this->json($apparts);
     }
 
-    #[Route("/rating", name: "rating")]
+    #[Route("/ratingl", name: "rating_l")]
     public function rateLocation(Request $request)
     {
         $rating = $request->request->get('rating');
@@ -62,5 +63,23 @@ class AjaxController extends AbstractController
         $output = $as->updateAppart($locId);
         return $this->json($output);
     }
+    
+    #[Route("/ratingp", name: "rating_p")]
+    public function ratePresta(Request $request)
+    {
+        $rating = $request->request->get('rating');
+        $prestaId = $request->request->get('id');
+        $presta = $this->em->getRepository(Professionnel::class)->find($prestaId);
+        $note = new Note();
+        $note->setNote($rating);
+        $note->setPrestataire($presta);
+        $note->setUser($this->getUser());
+        $presta->addNote($note);
+        $this->em->persist($note);
+        $this->em->persist($presta);
+        $this->em->flush();
+        return $this->json(['success' => 'true']);
+    }
+
 
 }

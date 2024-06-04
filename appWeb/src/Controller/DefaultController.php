@@ -7,13 +7,11 @@ namespace App\Controller;
 use App\Entity\Abonnement;
 use App\Entity\Appartement;
 use App\Entity\Location;
-use App\Entity\Professionnel;
 use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends AbstractController

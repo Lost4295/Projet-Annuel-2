@@ -211,6 +211,8 @@ class LocationController extends AbstractController
         $reservation = $builder->getForm();
         $reservation->handleRequest($request);
         if ($reservation->isSubmitted() && $reservation->isValid()) {
+            $res->setCreatedAt(new \DateTime());
+            $res->setUpdatedAt(new \DateTime());
             if ($request->files->get('appartement')['images']) {
                 $res->removeImage("house-placeholder.jpg");
                 foreach ($request->files->get('appartement')['images'] as $image) {
@@ -237,7 +239,7 @@ class LocationController extends AbstractController
     {
         $user = $this->getUser();
         $res = $em->getRepository(Appartement::class)->find($id);
-        if (!$res || $res->getProprietaire() !== $user) {
+        if (!$res || $res->getBailleur()->getResponsable() !== $user) {
             $this->addFlash("danger", "noaccess");
             return $this->redirectToRoute('profile');
         }
@@ -249,12 +251,12 @@ class LocationController extends AbstractController
         $reservation = $builder->getForm();
         $reservation->handleRequest($request);
         if ($reservation->isSubmitted() && $reservation->isValid()) {
-            // check si tt est ok
+            $res->setUpdatedAt(new \DateTime());
             $em->persist($res);
             $em->flush();
             return $this->redirectToRoute('profile');
         }
-        // return $this->render('appartements/create_appart_user.html.twig', ['reservation' => $reservation]);
+        return $this->render('appartements/update_appart_user.html.twig', ['reservation' => $reservation]);
     }
     #[Route("/appartement/delete/{id}", name: "appart_delete", requirements: ["id" => "\d+"])]
     #[IsGranted("ROLE_BAILLEUR")]
@@ -262,7 +264,7 @@ class LocationController extends AbstractController
     {
         $user = $this->getUser();
         $res = $em->getRepository(Appartement::class)->find($id);
-        if (!$res || $res->getProprietaire() !== $user) {
+        if (!$res ||  $res->getBailleur()->getResponsable() !== $user) {
             $this->addFlash("danger", "noaccess");
         } else {
             $em->remove($res);

@@ -22,15 +22,16 @@ RUN mv composer.phar /usr/local/bin/composer
 RUN mkdir -p /var/log/apache2/8000 /var/log/apache2/80
 COPY ./conf/apache2.conf /etc/apache2/apache2.conf
 COPY ./conf/api.conf /etc/apache2/sites-available/api.conf
-
+COPY ./conf/fullchain.pem /etc/apache2/fullchain.pem
+COPY ./conf/privkey.pem /etc/apache2/privkey.pem
+COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployapi.sh /deployapi.sh
 RUN chmod +x /deployapi.sh
 CMD [ "/deployapi.sh" ]
 RUN a2enmod rewrite
 RUN a2dissite 000-default
 RUN a2ensite api.conf
-
-RUN apt-get install certbot python3-certbot-apache -y && apt-get clean
+RUN a2ensite default-ssl.conf
 RUN service apache2 restart
-EXPOSE 80
+EXPOSE 80 443 
 WORKDIR /var/www/html/pcs_api/

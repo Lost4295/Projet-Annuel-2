@@ -17,7 +17,7 @@ class DevisController extends AbstractController
 {
 
     #[Route("/devis", name: "devis")]
-    public function table(Request $request, EntityManagerInterface $em)
+    public function table(EntityManagerInterface $em)
     {
         $devis= $em->getRepository(Fichier::class)->findBy(["type" => "devis"]);
 

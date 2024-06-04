@@ -24,11 +24,13 @@ class PrestataireController extends AbstractController
 
         ]);
     }
-    #[Route("/detail", name: "detail_presta")]
-    public function show(Request $request, EntityManagerInterface $em)
+    #[Route("/detail/{id}", name: "detail_presta")]
+    public function show($id, Request $request, EntityManagerInterface $em)
     {
+        $pres = $em->getRepository(Professionnel::class)->find($id);
         //TODO faire la page de detail
-        return $this->render('presta/presting.html.twig');
+        return $this->render('presta/presting.html.twig', [
+            'presta' => $pres,
+        ]);
     }
-
 }

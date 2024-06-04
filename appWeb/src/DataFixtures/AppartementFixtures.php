@@ -22,6 +22,8 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager):void
     {
+        $city = [ 0 => 'Paris', 1 => 'Madrid', 2 => 'Rome', 3 => 'Berlin', 4 => 'Londres'];
+        $country = [ 0 => 'France', 1 => 'Espagne', 2 => 'Italie', 3 => 'Allemagne', 4 => 'Angleterre'];
         for ($i = 1 ; $i < 21 ; $i++){
             $serv= new Service();
             $serv->setPrestataire($this->getReference('presta'.rand(1, 15).'-user'));
@@ -39,8 +41,8 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $appartement->setPostalCode(sprintf("750%02d", $i));
             $appartement->setDescription('Appartement de type F2, situé au '.$i.'ème étage d\'un immeuble de 15 étages. Il est composé d\'un séjour, d\'une cuisine, d\'une chambre, d\'une salle de bain et d\'un WC. Il est équipé d\'un chauffage individuel électrique. L\'appartement est situé à proximité des commerces et des transports en commun. Il est disponible immédiatement.');
             $appartement->setShortDesc("Appartement de type F2, situé au ".$i."ème étage d'un immeuble de 15 étages.");
-            $appartement->setCity('Paris');
-            $appartement->setCountry('France');
+            $appartement->setCity($city[rand(0, 4)]);
+            $appartement->setCountry($country[rand(0, 4)]);
             $appartement->setSurface(50);
             $appartement->setNbVoyageurs(rand(5,15));
             $appartement->setNbchambers($i);

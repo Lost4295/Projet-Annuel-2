@@ -10,6 +10,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProfessionnelRepository::class)]
 class Professionnel
 {
+    const DAYS_LIST = [
+        "lundi",
+        "mardi",
+        "mercredi",
+        "jeudi",
+        "vendredi",
+        "samedi",
+        "dimanche"
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -49,11 +59,24 @@ class Professionnel
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'prestataire', orphanRemoval: true)]
+    private ?Collection $notes = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private array $workDays = [];
+
+    #[ORM\Column(length:20, nullable: true)]
+    private ?string $startHour = null;
+    #[ORM\Column(length:20, nullable: true)]
+    private ?string $endHour = null;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
         $this->appartements = new ArrayCollection();
+        $this->notes = new ArrayCollection();
         $this->image = "user-placeholder.jpg";
+        $this->workDays = [];
     }
 
     public function __toString(): string
@@ -248,4 +271,119 @@ class Professionnel
 
         return $this;
     }
+
+        /**
+     * @return Collection<int, note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setPrestataire($this);
+        }
+
+        return $this;
+    }
+
+    public function setNotes(Collection $notes): static
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function removeNote(note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getPrestataire() === $this) {
+                $note->setPrestataire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of startHour
+     */ 
+    public function getStartHour()
+    {
+        return $this->startHour;
+    }
+
+    /**
+     * Set the value of startHour
+     *
+     * @return  self
+     */ 
+    public function setStartHour($startHour)
+    {
+        $this->startHour = $startHour;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of endHour
+     */ 
+    public function getEndHour()
+    {
+        return $this->endHour;
+    }
+
+    /**
+     * Set the value of endHour
+     *
+     * @return  self
+     */ 
+    public function setEndHour($endHour)
+    {
+        $this->endHour = $endHour;
+
+        return $this;
+    }
+
+    public function getWorkDays(): array
+    {
+        return$this->workDays;
+    }
+
+    /**
+     * @param list<string> $workDay
+     */
+    public function setWorkDays(array $workDays): static
+    {
+        foreach ($workDays as $workDay) {
+            if (!in_array($workDay, self::DAYS_LIST)) {
+                throw new \InvalidArgumentException("Invalid work day : $workDay");
+            }
+        }
+        $this->workDays = $workDays;
+        return $this;
+    }
+
+    public function addWorkDay(int $workDay): static
+    {
+        if (!in_array($workDay, $this->workDays) && in_array($workDay,self::DAYS_LIST)) {
+            $this->workDays[] = $workDay;
+        }
+        $this->setWorkDays(array_unique($this->workDays));
+        return $this;
+    }
+
+    public function removeWorkDay(int $workDay): static
+    {
+        $key = array_search($workDay, $this->workDays);
+        if ($key !== false) {
+            unset($this->workDays[$key]);
+        }
+        return $this;
+    }
+
 }
