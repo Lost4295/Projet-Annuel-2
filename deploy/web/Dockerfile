@@ -36,6 +36,5 @@ RUN a2enmod rewrite ssl
 RUN a2dissite 000-default
 RUN a2ensite website.conf
 RUN a2ensite ssl.conf
-RUN service apache2 restart
 EXPOSE 80 443
 WORKDIR /var/www/html/appWeb
