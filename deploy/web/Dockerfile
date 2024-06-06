@@ -20,9 +20,7 @@ RUN apt-get install curl -y && apt-get clean
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
-
 # Apache
-
 RUN mkdir -p /var/log/apache2/80 /var/log/apache2/443
 COPY ./conf/apache2.conf /etc/apache2/apache2.conf
 COPY ./conf/website.conf /etc/apache2/sites-available/website.conf
@@ -32,6 +30,8 @@ COPY ./conf/privkey.pem /etc/apache2/privkey.pem
 COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployweb.sh /deployweb.sh
 RUN chmod +x /deployweb.sh
+
+RUN a2dismod mpm_worker
 RUN a2dismod mpm_prefork
 RUN a2enmod mpm_event http2
 RUN a2enmod rewrite ssl

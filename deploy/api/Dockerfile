@@ -29,6 +29,7 @@ COPY ./conf/privkey.pem /etc/apache2/privkey.pem
 COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployapi.sh /deployapi.sh
 RUN chmod +x /deployapi.sh
+RUN a2dismod mpm_worker
 RUN a2dismod mpm_prefork
 RUN a2enmod mpm_event http2
 RUN a2enmod rewrite ssl
