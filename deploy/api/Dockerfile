@@ -5,6 +5,7 @@ ENV APACHE_RUN_GROUP=www-data
 
 WORKDIR /var/www/html/pcs_api/
 
+
 # PHP
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y apache2 && apt-get clean
@@ -16,14 +17,16 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 
 RUN docker-php-source extract \
-    && docker-php-ext-configure opcache --enable-opcache \
-    && docker-php-ext-install opcache \
-    && docker-php-source delete
+&& docker-php-ext-configure opcache --enable-opcache \
+&& docker-php-ext-install opcache \
+&& docker-php-source delete
 
 # Composer
 RUN apt-get install curl -y && apt-get clean
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
+RUN rm /etc/apt/preferences.d/no-debian-php
+RUN apt-get install -y libapache2-mod-php8.2 && apt-get clean
 
 
 # Apache

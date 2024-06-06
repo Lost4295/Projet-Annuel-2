@@ -23,6 +23,8 @@ RUN docker-php-source extract \
 RUN apt-get install curl -y && apt-get clean
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
+RUN rm /etc/apt/preferences.d/no-debian-php
+RUN apt-get install -y libapache2-mod-php8.2 && apt-get clean
 
 # Apache
 RUN mkdir -p /var/log/apache2/80 /var/log/apache2/443
