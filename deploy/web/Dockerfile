@@ -7,12 +7,11 @@ ENV APACHE_RUN_GROUP=www-data
 
 # PHP
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y apache2 libapache2-mod-php && apt-get clean
+RUN apt-get install -y apt-utils && apt-get install -y apache2 libapache2-mod-php && apt-get clean
 RUN apt-get install -y zlib1g-dev libwebp-dev libpng-dev && docker-php-ext-install gd && apt-get clean
 RUN apt-get install libzip-dev -y && docker-php-ext-install zip && apt-get clean
 RUN apt-get install -y libicu-dev && docker-php-ext-configure intl && docker-php-ext-install intl && apt-get clean
 RUN docker-php-ext-install pdo pdo_mysql
-RUN apt-get install -y libapache2-mod-php8.2 && apt-get clean
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 RUN docker-php-source extract \
