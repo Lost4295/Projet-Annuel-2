@@ -14,6 +14,10 @@ RUN  docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install opcache
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+RUN docker-php-source extract \
+    && docker-php-ext-configure opcache --enable-opcache \
+    && docker-php-ext-install opcache \
+    && docker-php-source delete
 
 # Composer
 RUN apt-get install curl -y && apt-get clean
@@ -30,7 +34,6 @@ COPY ./conf/privkey.pem /etc/apache2/privkey.pem
 COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployweb.sh /deployweb.sh
 RUN chmod +x /deployweb.sh
-
 RUN a2dismod mpm_worker
 RUN a2dismod mpm_prefork
 RUN a2enmod mpm_event http2
