@@ -6,6 +6,7 @@ ENV APACHE_RUN_USER=www-data
 ENV APACHE_RUN_GROUP=www-data
 
 # PHP
+RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y apache2 php8.2-cli php8.2-common php8.2-opcache libapache2-mod-php8.2 && apt-get clean
 RUN apt-get install -y zlib1g-dev libwebp-dev libpng-dev && docker-php-ext-install gd && apt-get clean
