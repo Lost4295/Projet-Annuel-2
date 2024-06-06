@@ -22,8 +22,8 @@ services:
     restart: always
     build: api
     ports:
-      - 9004:443
-      - 9000:80
+      - 8000:443
+      - 8080:80
     volumes:
       - ../pcs_api:/var/www/html/pcs_api
       - ./api/conf/.env.local:/var/www/html/pcs_api/.env.local
@@ -34,8 +34,8 @@ services:
     restart: always
     build: web
     ports:
-      - 9084:443
-      - 9080:80
+      - 443:443
+      - 80:80
     volumes:
       - ../appWeb:/var/www/html/appWeb
       - ./web/conf/.env.local:/var/www/html/appWeb/.env.local

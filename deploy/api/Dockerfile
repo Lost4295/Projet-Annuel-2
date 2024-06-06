@@ -7,12 +7,13 @@ WORKDIR /var/www/html/pcs_api/
 
 # PHP
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y apache2 && apt-get clean
+RUN apt-get install -y apache2 libapache2-mod-php8.2 && apt-get clean
 RUN apt-get install -y zlib1g-dev libwebp-dev libpng-dev && docker-php-ext-install gd && apt-get clean
 RUN apt-get install libzip-dev -y && docker-php-ext-install zip && apt-get clean
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install opcache
 RUN pecl install xdebug && docker-php-ext-enable xdebug
+
 
 RUN docker-php-source extract \
     && docker-php-ext-configure opcache --enable-opcache \
@@ -38,6 +39,7 @@ RUN chmod +x /deployapi.sh
 RUN a2dismod mpm_worker
 RUN a2dismod mpm_prefork
 RUN a2enmod mpm_event http2
+RUN a2enmod php8.2
 RUN a2enmod rewrite ssl
 RUN a2dissite 000-default
 RUN a2ensite ssl.conf
