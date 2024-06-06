@@ -1,5 +1,6 @@
 FROM php:8.2.19-apache
 
+WORKDIR /var/www/html/appWeb
 
 ENV APACHE_RUN_USER=www-data
 ENV APACHE_RUN_GROUP=www-data
@@ -31,10 +32,11 @@ COPY ./conf/privkey.pem /etc/apache2/privkey.pem
 COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
 COPY ./conf/deployweb.sh /deployweb.sh
 RUN chmod +x /deployweb.sh
+RUN a2dismod mpm_prefork
+RUN a2enmod mpm_event http2
 RUN a2enmod rewrite ssl
 RUN a2dissite 000-default
-RUN a2ensite website.conf
 RUN a2ensite ssl.conf
+RUN a2ensite website.conf
 EXPOSE 80 443
-WORKDIR /var/www/html/appWeb
 CMD [ "/deployweb.sh" ]
