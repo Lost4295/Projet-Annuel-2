@@ -29,17 +29,18 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h1 class="card-title">{{ service.titre }}</h1>
+                    <p class="card-text">{{ service.description }}</p>
                     <h4 class="card-subtitle text-muted">{{ service.tarifs }} €</h4>
                 </div>
             </div>
         </div>
 
-        {% if service.description is not empty %}
+        {% if service.additionalInfo is not empty %}
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h2 class="card-title">Description du service</h2>
-                    <p class="card-text">{{ service.description }}</p>
+                    <h2 class="card-title">Informations supplémentaires</h2>
+                    <p class="card-text">{{ service.additionalInfo }}</p>
                 </div>
             </div>
         </div>

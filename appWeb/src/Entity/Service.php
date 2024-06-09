@@ -38,6 +38,7 @@ class Service
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
+    
 
     #[ORM\Column]
     private ?int $type = null;
@@ -61,6 +62,8 @@ class Service
 
     #[ORM\Column(length:4)]
     private string $avgNote = "0";
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $additionalInfo = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
     private array $images;
@@ -93,6 +96,7 @@ class Service
 
         return $this;
     }
+    
 
     public function getDescription(): ?string
     {
@@ -247,6 +251,17 @@ class Service
     public function setAvgNote($avgNote)
     {
         $this->avgNote = $avgNote;
+
+        return $this;
+    }
+    public function getAdditionalInfo(): ?string
+    {
+        return $this->additionalInfo;
+    }
+
+    public function setAdditionalInfo(?string $additionalInfo): static
+    {
+        $this->additionalInfo = $additionalInfo;
 
         return $this;
     }
