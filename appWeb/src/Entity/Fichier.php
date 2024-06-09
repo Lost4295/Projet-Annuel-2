@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FichierRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
@@ -28,6 +29,21 @@ class Fichier
 
     #[ORM\ManyToOne(inversedBy: 'pj')]
     private ?Ticket $ticket = null;
+
+    #[ORM\ManyToOne(inversedBy: 'documents')]
+    private ?User $user = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $size = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
+
+
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     public function __toString(): string
     {
@@ -93,6 +109,42 @@ class Fichier
     public function setTicket(?Ticket $ticket): static
     {
         $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(string $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }

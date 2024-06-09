@@ -98,6 +98,9 @@ class Ticket
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $type = null;
 
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: Fichier::class, orphanRemoval: true, cascade: ["persist"])]
+    private Collection $pj;
+
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $status = null;
 
@@ -277,6 +280,30 @@ class Ticket
     public function setDateFermeture($dateFermeture): static
     {
         $this->dateFermeture = $dateFermeture;
+
+        return $this;
+    }
+
+    public function getPjs(): Collection
+    {
+        return $this->pj;
+    }
+
+    public function addPj(Fichier $pj): static
+    {
+        if (!$this->pj->contains($pj)) {
+            $this->pj->add($pj);
+            $pj->setTicket($this);
+        }
+
+        return $this;
+    }
+
+    public function removePj(Fichier $pj): static
+    {
+        if ($this->pj->removeElement($pj)) {
+            $pj->setTicket(null);
+        }
 
         return $this;
     }

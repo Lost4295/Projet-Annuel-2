@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Fichier;
+use App\Entity\Note;
 use App\Entity\Professionnel;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -50,6 +52,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setBirthdate(new \DateTime('1990-01-01'))
                 ->setIsVerified(true);
             $this->setReference("voyageur$i-user", $voyageur);
+            $file = new Fichier();
+            $file->setNom('test')
+                ->setType('pdf')
+                ->setPath('Bonjour.pdf')
+                ->setSize(self::human_filesize(filesize(__DIR__.'/../../public/files/pdfs/Bonjour.pdf')))
+                ->setUser($this->getReference("voyageur$i-user"));
+            $manager->persist($file);
             $manager->persist($voyageur);
         }
         for ($i = 1; $i <= 6; $i++) {
@@ -73,6 +82,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $bailleurpro->setCountry("France");
             $this->addReference("bailleur$i-user", $bailleur);
             $this->addReference("bailleurp$i-user", $bailleurpro);
+            $file = new Fichier();
+            $file->setNom('test')
+                ->setType('pdf')
+                ->setPath('Bonjour.pdf')
+                ->setSize(self::human_filesize(filesize(__DIR__.'/../../public/files/pdfs/Bonjour.pdf')))
+                ->setUser($this->getReference("bailleur$i-user"));
+            $manager->persist($file);
             $manager->persist($bailleurpro);
             $manager->persist($bailleur);
         }
@@ -100,6 +116,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setPhoneNumber("06" . self::rander(8, true, false, false))
                 ->setBirthdate(new \DateTime(sprintf("19%02d-01-01", $i)))
                 ->setIsVerified(true);
+            $this->addReference("prestau$i-user", $prestaire);
             $prestapro = new Professionnel();
             $prestapro->setResponsable($prestaire);
             $prestapro->setSiretNumber(self::rander(14, true, false, false));
@@ -109,6 +126,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $prestapro->setCity("Paris");
             $prestapro->setCountry("France");
             $this->addReference("presta$i-user", $prestapro);
+            $file = new Fichier();
+            $file->setNom('test')
+                ->setType('pdf')
+                ->setPath('Bonjour.pdf')
+                ->setSize(self::human_filesize(filesize(__DIR__.'/../../public/files/pdfs/Bonjour.pdf')))
+                ->setUser($this->getReference("prestau$i-user"));
+            $manager->persist($file);
             $manager->persist($prestaire);
             $manager->persist($prestapro);
         }
@@ -132,5 +156,11 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         return [
             AbonnementFixtures::class,
         ];
+    }
+
+    function human_filesize($bytes, $decimals = 2) {
+        $sz = 'BKMGTP';
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
     }
 }

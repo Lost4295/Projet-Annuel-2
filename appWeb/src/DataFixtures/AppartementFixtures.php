@@ -34,6 +34,14 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $this->addReference('service'.$i, $serv);
             $manager->persist($serv);
         }
+        for ($j = 1; $j <= 40; $j++) {
+            $that =$this->getReference('voyageur'.rand(1, 10).'-user');
+            $nott = new Note();
+            $nott->setService($this->getReference('service'.rand(1,20)));
+            $nott->setUser($that);
+            $nott->setNote(rand(1, 5));
+            $manager->persist($nott);
+        }
         for ($i =1 ; $i < 15; $i++){
             $appartement = new Appartement();
             $appartement->setAddress($i.' rue du bailleur');
@@ -59,7 +67,7 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $plusie = new AppartPlus();
             $plusie->setIcon($j);
             for ($i = 1; $i <= rand(1,6); $i++) {
-                $plusie->addAppartement($this->getReference('appartement'.rand(1,15)));
+                $plusie->addAppartement($this->getReference('appartement'.rand(1,14)));
             }
             $manager->persist($plusie);
         }
@@ -70,7 +78,7 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $date = new \DateTime(sprintf('202%d-01-%02d',rand(2,9), rand(1,31)));
             $loca->setDateDebut($date);
             $loca->setDateFin($date->add(new \DateInterval('P'.rand(1, 10).'D')));
-            $loca->setAppartement($this->getReference('appartement'.rand(1, 6)));
+            $loca->setAppartement($this->getReference('appartement'.rand(1, 14)));
             $loca->setAdults(rand(1, 4));
             $loca->setKids(rand(0, 2));
             $loca->setBabies(rand(0, 1));

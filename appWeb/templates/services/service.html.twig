@@ -20,9 +20,9 @@
 			<div class="tab-pane fade show active" id="v-pills-nettoyage" role="tabpanel" aria-labelledby="v-pills-nettoyage-tab">
 				<div class="row d-flex justify-content-around flex-row">
 					{% for net in nettoyage %}
-						<div class="col-md-3 my-3 mx-1 py-1">						<a href="{{path('spec_service', {id:net.id })}}" class="text-decoration-none">
+						<div class="col-md-3 my-3 mx-1 py-1">
 							<div class="card">
-								<div class="card-body">
+							<div class="card-header">
 									<div class="col d-flex justify-content-center">
 										<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 											<div class="splide__track">
@@ -34,12 +34,16 @@
 											</div>
 										</div>
 									</div>
+									</div>
+									<a href="{{path('spec_service', {id:net.id })}}" class="text-decoration-none">
+								<div class="card-body">
 									<h5 class="card-title">{{net.titre}}</h5>
 									<h6 class="card-subtitle mb-2 text-body-secondary">{{net.description|slice(0,50)~"..."}}</h6>
 									<small class="float-end text-muted">{{net.tarifs}}
 										€</small>
 								</div>
-							</div>						</a>
+							</a>
+							</div>
 						</div>
 					{% endfor %}
 				</div>
@@ -47,9 +51,9 @@
 			<div class="tab-pane fade" id="v-pills-elec" role="tabpanel" aria-labelledby="v-pills-elec-tab">
 				<div class="row d-flex justify-content-around flex-row">
 					{% for elec in electricite %}
-						<div class="col-md-3 my-3 mx-1 py-1">						<a href="{{path('spec_service', {id:elec.id })}}" class="text-decoration-none">
+						<div class="col-md-3 my-3 mx-1 py-1">
 							<div class="card">
-								<div class="card-body">
+							<div class="card-header">
 									<div class="col d-flex justify-content-center">
 										<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 											<div class="splide__track">
@@ -61,12 +65,16 @@
 											</div>
 										</div>
 									</div>
+									</div>
+									<a href="{{path('spec_service', {id:elec.id })}}" class="text-decoration-none">
+								<div class="card-body">
 									<h5 class="card-title">{{elec.titre}}</h5>
 									<h6 class="card-subtitle mb-2 text-body-secondary">{{elec.description|slice(0,50)~"..."}}</h6>
 									<small class="float-end text-muted">{{elec.tarifs}}
 										€</small>
 								</div>
-							</div>						</a>
+							</a>
+							</div>
 						</div>
 					{% endfor %}
 				</div>
@@ -74,9 +82,9 @@
 			<div class="tab-pane fade" id="v-pills-plomberie" role="tabpanel" aria-labelledby="v-pills-plomberie-tab">
 				<div class="row d-flex justify-content-around flex-row">
 					{% for plomb in plomberie %}
-						<div class="col-md-3 my-3 mx-1 py-1">						<a href="{{path('spec_service', {id:plomb.id })}}" class="text-decoration-none">
+						<div class="col-md-3 my-3 mx-1 py-1">
 							<div class="card">
-								<div class="card-body">
+							<div class="card-header">
 									<div class="col d-flex justify-content-center">
 										<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 											<div class="splide__track">
@@ -88,12 +96,16 @@
 											</div>
 										</div>
 									</div>
+									</div>
+									<a href="{{path('spec_service', {id:plomb.id })}}" class="text-decoration-none">
+								<div class="card-body">
 									<h5 class="card-title">{{plomb.titre}}</h5>
 									<h6 class="card-subtitle mb-2 text-body-secondary">{{plomb.description|slice(0,50)~"..."}}</h6>
 									<small class="float-end text-muted">{{plomb.tarifs}}
 										€</small>
 								</div>
-							</div>						</a>
+							</a>
+							</div>
 						</div>
 					{% endfor %}
 				</div>
@@ -101,9 +113,9 @@
 			<div class="tab-pane fade" id="v-pills-peinture" role="tabpanel" aria-labelledby="v-pills-peinture-tab">
 				<div class="row d-flex justify-content-around flex-row">
 					{% for peint in peinture %}
-						<div class="col-md-3 my-3 mx-1 py-1">						<a href="{{path('spec_service', {id:peint.id })}}" class="text-decoration-none">
+						<div class="col-md-3 my-3 mx-1 py-1">
 							<div class="card">
-								<div class="card-body">
+							<div class="card-header">
 									<div class="col d-flex justify-content-center">
 										<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 											<div class="splide__track">
@@ -115,41 +127,47 @@
 											</div>
 										</div>
 									</div>
+									</div>
+									<a href="{{path('spec_service', {id:peint.id })}}" class="text-decoration-none">
+								<div class="card-body">
 									<h5 class="card-title">{{peint.titre}}</h5>
 									<h6 class="card-subtitle mb-2 text-body-secondary">{{peint.description|slice(0,50)~"..."}}</h6>
 									<small class="float-end text-muted">{{peint.tarifs}}
 										€</small>
 								</div>
-							</div>						</a>
+							</a>
+							</div>
 						</div>
 					{% endfor %}
 				</div>
 			</div>
 			<div class="tab-pane fade" id="v-pills-bricolage" role="tabpanel" aria-labelledby="v-pills-bricolage-tab">
 				<div class="row d-flex justify-content-around flex-row">
-					{% for peint in bricolage %}
+					{% for bri in bricolage %}
 						<div class="col-md-3 my-3 mx-1 py-1">
-						<a href="{{path('spec_service', {id: peint.id })}}" class="text-decoration-none">
 							<div class="card">
-								<div class="card-body">
+							<div class="card-header">
 									<div class="col d-flex justify-content-center">
 										<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 											<div class="splide__track">
 												<ul class="splide__list">
-													{% for img in peint.images %}
+													{% for img in bri.images %}
 														<li class="splide__slide"><img src="{{asset("images/services/"~img)}}" class="card-img-top" alt="..."></li>
 													{% endfor %}
 												</ul>
 											</div>
 										</div>
 									</div>
-									<h5 class="card-title">{{peint.titre}}</h5>
-									<h6 class="card-subtitle mb-2 text-body-secondary">{{peint.description|slice(0,50)~"..."}}</h6>
-									<small class="float-end text-muted">{{peint.tarifs}}
+									</div>
+									<a href="{{path('spec_service', {id:bri.id })}}" class="text-decoration-none">
+								<div class="card-body">
+									<h5 class="card-title">{{bri.titre}}</h5>
+									<h6 class="card-subtitle mb-2 text-body-secondary">{{bri.description|slice(0,50)~"..."}}</h6>
+									<small class="float-end text-muted">{{bri.tarifs}}
 										€</small>
 								</div>
+							</a>
 							</div>
-						</a>
 						</div>
 					{% endfor %}
 				</div>
@@ -158,9 +176,8 @@
 				<div class="row d-flex justify-content-around flex-row">
 					{% for chauf in chauffeur %}
 						<div class="col-md-3 my-3 mx-1 py-1">
-						<a href="{{path('spec_service', {id:chauf.id })}}" class="text-decoration-none">
 							<div class="card">
-								<div class="card-body">
+							<div class="card-header">
 									<div class="col d-flex justify-content-center">
 										<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 											<div class="splide__track">
@@ -172,13 +189,16 @@
 											</div>
 										</div>
 									</div>
+									</div>
+									<a href="{{path('spec_service', {id:chauf.id })}}" class="text-decoration-none">
+								<div class="card-body">
 									<h5 class="card-title">{{chauf.titre}}</h5>
 									<h6 class="card-subtitle mb-2 text-body-secondary">{{chauf.description|slice(0,50)~"..."}}</h6>
 									<small class="float-end text-muted">{{chauf.tarifs}}
 										€</small>
 								</div>
+							</a>
 							</div>
-						</a>
 						</div>
 					{% endfor %}
 				</div>

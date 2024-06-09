@@ -35,7 +35,7 @@ class FichierCrudController extends AbstractCrudController
         $id= IdField::new("id", "id");
         $nom= TextField::new("nom", "title")->setRequired(true);
         $type= ChoiceField::new("type", "type")->setChoices(["image" => "image", "pdf" => "pdf", "word" => "word", "excel" => "excel", "powerpoint" => "powerpoint", "autre" => "autre"]);
-        $path= ImageField::new("path", "path")->setUploadDir("/public/uploads/")->setBasePath("/uploads/");
+        $path= ImageField::new("path", "path")->setUploadDir("/var/uploads/")->setBasePath("/uploads/");
         //$email= CollectionField::new("email")->setEntryType(EmailType::class)->setEntryIsComplex();
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $nom, $type];

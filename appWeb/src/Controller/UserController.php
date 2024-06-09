@@ -5,14 +5,16 @@
 namespace App\Controller;
 
 use App\Entity\Abonnement;
+use App\Entity\Devis;
+use App\Entity\Fichier;
 use App\Entity\Location;
 use App\Entity\Professionnel;
-use App\Entity\Service;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\EventSubscriber\ModerationSubscriber;
 use App\Form\ModifyProfileType;
 use App\Form\TicketType;
+use App\Form\WorkDaysType;
 use App\Service\AppartementService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,14 +29,13 @@ class UserController extends AbstractController
 
     #[Route("/profile", name: "profile")]
     #[IsGranted("ROLE_USER")]
-    public function profile(EntityManagerInterface $em, AppartementService $as): Response
+    public function profile(EntityManagerInterface $em, AppartementService $as, Request $request): Response
     {
         $user = $this->getUser();
-        dump();
-
         $appartements = $locations = $pastlocas = [];
         if ($user->hasRole(User::ROLE_PRESTA)||$user->hasRole(User::ROLE_BAILLEUR)) {
             $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
+            $as->updateProfessionnel($pro->getId()); //TODO revoir function
         }
         if ($user->hasRole(User::ROLE_BAILLEUR)) {
             $appartements = $pro->getAppartements();
@@ -47,7 +48,25 @@ class UserController extends AbstractController
             $services = $pro->getServices();
             $dataserv = [];
             foreach ($services as $service) {
-                $dataserv[$service->getNom()] = $as->updateService($service->getId());
+                $dataserv[$service->getTitre()] = $as->updateService($service->getId());
+            }
+            if ($pro->getPrestaType() == null) {
+                $this->addFlash('danger', 'chooprestype');
+            } else {
+                $devis = $em->getRepository(Devis::class)->findBy(["prestataire" => $pro->getId()]);
+                $unPickedDevis = $em->getRepository(Devis::class)->findBy(["prestataire" => null, "typePresta" => $pro->getPrestaType()]);
+            }
+            $workdays = $pro->getWorkDays();
+            $workform = $this->createForm(WorkDaysType::class, $workdays);
+            $workform->handleRequest($request);
+            if ($workform->isSubmitted() && $workform->isValid()) {
+                $data = $workform->getData();
+                $pro->setWorkDays($data['days']);
+                $pro->setStartHour($data['sth']->format('H:i'));
+                $pro->setEndHour($data['enh']->format('H:i'));
+                $em->persist($pro);
+                $em->flush();
+                $this->addFlash('success', "sucworkd");
             }
         }
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
@@ -69,7 +88,10 @@ class UserController extends AbstractController
             'data' => $data ?? null,
             'pro' => $pro ?? null,
             'services' => $services ?? null,
-            'dataserv' => $dataserv ?? null
+            'dataserv' => $dataserv ?? null,
+            'devis' => $devis ?? null,
+            'workform' => $workform ?? null,
+            'unpicked' => $unPickedDevis ?? null
         ]);
     }
 
@@ -94,7 +116,7 @@ class UserController extends AbstractController
             if ($user->hasRole(User::ROLE_BAILLEUR) || $user->hasRole(User::ROLE_PRESTA)) {
                 $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
                 $image = $request->files->get('modify_profile')['image'];
-                $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/presta';
+                $destination = $this->getParameter('kernel.project_dir') . '/var/uploads/presta';
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $originalFilename . '-' . uniqid() . '.' . $image->guessExtension();
                 $image->move($destination, $newFilename);
@@ -204,6 +226,33 @@ class UserController extends AbstractController
         $em->flush();
         $this->addFlash('success', 'Your subscription has been updated successfully.');
         return $this->redirectToRoute('abos');
+    }
+
+    #[Route('/file/download/{id}', name: 'download_file')]
+    #[IsGranted("ROLE_USER")]
+    public function downloadFile($id, EntityManagerInterface $em)
+    {
+        $file = $em->getRepository(Fichier::class)->find($id);
+        $path = $this->getParameter('kernel.project_dir') . '/public/files/pdfs/' . $file->getPath();
+        if ($file->getUser() == $this->getUser()){
+            return $this->file($path);
+        } else {
+            $this->addFlash('danger', 'You are not allowed to download this file.');
+            return $this->redirectToRoute('profile');
+        }
+    }
+    #[Route('/file/delete/{id}', name: 'delete_file')]
+    #[IsGranted("ROLE_USER")]
+    public function deleteFile($id, EntityManagerInterface $em)
+    {
+        $file = $em->getRepository(Fichier::class)->find($id);
+        $path = $this->getParameter('kernel.project_dir') . '/public/files/pdfs/' . $file->getPath();
+        if ($file->getUser() == $this->getUser()){
+            return $this->file($path);
+        } else {
+            $this->addFlash('danger', 'You are not allowed to delete this file.');
+            return $this->redirectToRoute('profile');
+        }
     }
 
 }

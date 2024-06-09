@@ -216,7 +216,7 @@ class LocationController extends AbstractController
             if ($request->files->get('appartement')['images']) {
                 $res->removeImage("house-placeholder.jpg");
                 foreach ($request->files->get('appartement')['images'] as $image) {
-                    $destination = $this->getParameter('kernel.project_dir').'/public/uploads/appartements';
+                    $destination = $this->getParameter('kernel.project_dir').'/var/uploads/appartements';
                     $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                     $newFilename = $originalFilename.'-'.uniqid().'.'.$image->guessExtension();
                     $image->move($destination, $newFilename);

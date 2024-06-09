@@ -175,13 +175,13 @@ input::-webkit-inner-spin-button {
 							</div>
 						</div>
 					</div>
-					<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="text-decoration-none text-black">
+					<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="text-decoration-none">
 						<div class="card-body">
 							<h5>{{appart.city}}
 								-
 								{{appart.country}}</h5>
-							<small>{{appart.description|slice(0,50)~"..."}}</small>
-							<div style="display: flex; justify-content: space-between; width: 100%;">
+							<small class=" text-black">{{appart.description|slice(0,50)~"..."}}</small>
+							<div class=" text-black" style="display: flex; justify-content: space-between; width: 100%;">
 								<p>{{appart.price}}
 									€ / Nuit</p>
 								<p>{{appart.note}}

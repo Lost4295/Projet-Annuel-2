@@ -112,6 +112,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(options: ["default"=> false])]
     private ?bool $isBanned = false;
 
+    /**
+     * @var Collection<int, Fichier>
+     */
+    #[ORM\OneToMany(targetEntity: Fichier::class, mappedBy: 'user')]
+    private Collection $documents;
+
+
+    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'user')]
+    private Collection $devis;
+
 
     public function __construct()
     {
@@ -119,12 +129,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = [self::ROLE_USER];
         $this->isVerified = false;
         $this->commentaires = new ArrayCollection();
+        $this->devis = new ArrayCollection();
         $this->tickets = new ArrayCollection();
         $this->ticketsAttribues = new ArrayCollection();
         $this->locations = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->warnings = new ArrayCollection();
         $this->isBanned = false;
+        $this->documents = new ArrayCollection();
     }
 
     public function __toString()
@@ -595,6 +607,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBanned(bool $isBanned): static
     {
         $this->isBanned = $isBanned;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Fichier>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Fichier $document): static
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Fichier $document): static
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getUser() === $this) {
+                $document->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): static
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis->add($devis);
+            $devis->setPrestataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): static
+    {
+        if ($this->devis->removeElement($devis)) {
+            // set the owning side to null (unless already changed)
+            if ($devis->getPrestataire() === $this) {
+                $devis->setPrestataire(null);
+            }
+        }
+
         return $this;
     }
 }

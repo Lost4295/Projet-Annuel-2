@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProfessionnelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProfessionnelRepository::class)]
@@ -59,8 +60,8 @@ class Professionnel
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'prestataire', orphanRemoval: true)]
-    private ?Collection $notes = null;
+    #[ORM\Column(length:4)]
+    private ?string $avgNote = "0";
 
     #[ORM\Column(type: 'json', nullable: true)]
     private array $workDays = [];
@@ -69,12 +70,18 @@ class Professionnel
     private ?string $startHour = null;
     #[ORM\Column(length:20, nullable: true)]
     private ?string $endHour = null;
+    
+    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'prestataire', orphanRemoval: true)]
+    private Collection $devis;
+
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $prestatype;
 
     public function __construct()
     {
         $this->services = new ArrayCollection();
+        $this->devis = new ArrayCollection();
         $this->appartements = new ArrayCollection();
-        $this->notes = new ArrayCollection();
         $this->image = "user-placeholder.jpg";
         $this->workDays = [];
     }
@@ -272,43 +279,6 @@ class Professionnel
         return $this;
     }
 
-        /**
-     * @return Collection<int, note>
-     */
-    public function getNotes(): Collection
-    {
-        return $this->notes;
-    }
-
-    public function addNote(Note $note): static
-    {
-        if (!$this->notes->contains($note)) {
-            $this->notes->add($note);
-            $note->setPrestataire($this);
-        }
-
-        return $this;
-    }
-
-    public function setNotes(Collection $notes): static
-    {
-        $this->notes = $notes;
-
-        return $this;
-    }
-
-    public function removeNote(note $note): static
-    {
-        if ($this->notes->removeElement($note)) {
-            // set the owning side to null (unless already changed)
-            if ($note->getPrestataire() === $this) {
-                $note->setPrestataire(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * Get the value of startHour
      */ 
@@ -360,7 +330,7 @@ class Professionnel
     public function setWorkDays(array $workDays): static
     {
         foreach ($workDays as $workDay) {
-            if (!in_array($workDay, self::DAYS_LIST)) {
+            if (!in_array($workDay, array_keys(self::DAYS_LIST))) {
                 throw new \InvalidArgumentException("Invalid work day : $workDay");
             }
         }
@@ -370,7 +340,7 @@ class Professionnel
 
     public function addWorkDay(int $workDay): static
     {
-        if (!in_array($workDay, $this->workDays) && in_array($workDay,self::DAYS_LIST)) {
+        if (!in_array($workDay, $this->workDays) && in_array($workDay,array_keys(self::DAYS_LIST))) {
             $this->workDays[] = $workDay;
         }
         $this->setWorkDays(array_unique($this->workDays));
@@ -386,4 +356,61 @@ class Professionnel
         return $this;
     }
 
+    /**
+     * Get the value of avgNote
+     */ 
+    public function getAvgNote()
+    {
+        return $this->avgNote;
+    }
+
+    /**
+     * Set the value of avgNote
+     *
+     * @return  self
+     */ 
+    public function setAvgNote($avgNote)
+    {
+        $this->avgNote = $avgNote;
+        return $this;
+    }
+
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): static
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis->add($devis);
+            $devis->setPrestataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): static
+    {
+        if ($this->devis->removeElement($devis)) {
+            // set the owning side to null (unless already changed)
+            if ($devis->getPrestataire() === $this) {
+                $devis->setPrestataire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPrestaType(): ?int
+    {
+        return $this->prestatype;
+    }
+
+    public function setPrestaType(int $prestatype): static
+    {
+        $this->prestatype = $prestatype;
+
+        return $this;
+    }
 }

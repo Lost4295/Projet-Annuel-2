@@ -59,13 +59,17 @@ class Service
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'service', orphanRemoval: true)]
     private ?Collection $notes = null;
 
+    #[ORM\Column(length:4)]
+    private string $avgNote = "0";
+
     #[ORM\Column(type: 'json', nullable: true)]
     private array $images;
     public function __construct()
     {
         $this->locations = new ArrayCollection();
-        $this->images = ["default.jpg"];
+        $this->images = ["default.png"];
         $this->notes = new ArrayCollection();
+        $this->avgNote = 0;
     }
 
     public function __toString(): string
@@ -224,6 +228,26 @@ class Service
         if ($key !== false) {
             unset($this->images[$key]);
         }
+        return $this;
+    }
+
+    /**
+     * Get the value of avgNote
+     */ 
+    public function getAvgNote()
+    {
+        return $this->avgNote;
+    }
+
+    /**
+     * Set the value of avgNote
+     *
+     * @return  self
+     */ 
+    public function setAvgNote($avgNote)
+    {
+        $this->avgNote = $avgNote;
+
         return $this;
     }
 }

@@ -32,11 +32,6 @@ class Note
     #[ORM\JoinColumn(nullable: true)]
     private ?Service $service = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notes')]
-    #[ORM\JoinColumn(nullable: true)]
-
-    private ?Professionnel $prestataire = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -80,7 +75,7 @@ class Note
 
     /**
      * Get the value of service
-     */ 
+     */
     public function getService() : ?Service
     {
         return $this->service;
@@ -90,30 +85,10 @@ class Note
      * Set the value of service
      *
      * @return  self
-     */ 
+     */
     public function setService(?Service $service)
     {
         $this->service = $service;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of prestataire
-     */ 
-    public function getPrestataire()
-    {
-        return $this->prestataire;
-    }
-
-    /**
-     * Set the value of prestataire
-     *
-     * @return  self
-     */ 
-    public function setPrestataire($prestataire)
-    {
-        $this->prestataire = $prestataire;
 
         return $this;
     }

@@ -43,7 +43,21 @@ class Devis
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $typePresta = null;
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private ?bool $contactWithPhone = false;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'devis')]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(targetEntity: Professionnel::class, inversedBy: 'devis')]
+    private ?Professionnel $prestataire = null;
+
+    #[ORM\Column(length:10, nullable: true)]
+    private ?string $estimatedTime = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +143,55 @@ class Devis
     public function setDescription($description) :static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPrestataire(): ?Professionnel
+    {
+        return $this->prestataire;
+    }
+
+    public function setPrestataire(?Professionnel $prestataire): static
+    {
+        $this->prestataire = $prestataire;
+
+        return $this;
+    }
+
+    public function getContactWithPhone(): ?bool
+    {
+        return $this->contactWithPhone;
+    }
+
+    public function setContactWithPhone(bool $contactWithPhone): static
+    {
+        $this->contactWithPhone = $contactWithPhone;
+
+        return $this;
+    }
+
+    public function getEstimatedTime(): ?string
+    {
+        return $this->estimatedTime;
+    }
+
+    public function setEstimatedTime(string $estimatedTime): static
+    {
+        $this->estimatedTime = $estimatedTime;
 
         return $this;
     }

@@ -58,7 +58,7 @@ class UserCrudController extends AbstractCrudController
         $birthdate = DateField::new("birthdate", "birthdate")->setRequired(true);
         $isVerified = BooleanField::new("isVerified", "verified");
         $avatar = ImageField::new("avatar", "avatar")
-            ->setUploadDir("public/uploads/avatars")
+            ->setUploadDir("var/uploads/avatars")
             ->setBasePath("uploads/avatars");
         $phoneNumber = TelephoneField::new("phoneNumber", 'phone')->setRequired(true);
         $abonnement = AssociationField::new("abonnement", 'abo')->setRequired(true);
