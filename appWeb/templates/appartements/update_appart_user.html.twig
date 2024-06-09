@@ -1,65 +1,115 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-	<h2>{{'crappart'|trans }}</h2>
-	{% form_theme reservation 'bootstrap_5_layout.html.twig' %}
-	{{form_start(reservation) }}
-	{{form_row(reservation.titre) }}
-	{{form_row(reservation.description) }}
-	{{form_row(reservation.shortDesc) }}
-	{{form_row(reservation.price) }}
-	{{form_row(reservation.address) }}
-	{{form_row(reservation.city) }}
-	{{form_row(reservation.postalCode) }}
-	{{form_row(reservation.country) }}
-	{{form_row(reservation.nbVoyageurs) }}
-	{{form_row(reservation.note) }}
-	{{form_row(reservation.nbchambers) }}
-	{{form_row(reservation.nbbathrooms) }}
-	{{form_row(reservation.nbBeds) }}
-	{{form_row(reservation.surface) }}
-	{{form_row(reservation.images) }}
-	{{form_row(reservation.submit, {label:"crappart", attr:{class:"btn btn-success"}}) }}
-	{{form_row(reservation._token) }}
-	{{form_end(reservation,{render_rest:false}) }}
+<div class="container mt-5">
+    <h2 class="mb-4">{{ 'crappart'|trans }}</h2>
+    {% form_theme reservation 'bootstrap_5_layout.html.twig' %}
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(reservation) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(reservation.titre) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(reservation.description) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(reservation.shortDesc) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(reservation.price) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(reservation.address) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(reservation.city) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(reservation.postalCode) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(reservation.country) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(reservation.nbVoyageurs) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(reservation.note) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(reservation.nbchambers) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(reservation.nbbathrooms) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(reservation.nbBeds) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(reservation.surface) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form_row(reservation.images) }}
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                {{ form_row(reservation.submit, { label: "crappart", attr: { class: "btn btn-success" } }) }}
+            </div>
+            {{ form_row(reservation._token) }}
+            {{ form_end(reservation, { render_rest: false }) }}
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
+<script id="search-js" defer src="https://api.mapbox.com/search-js/v1.0.0-beta.19/web.js"></script>
+<script>
+    const ACCESS_TOKEN = 'pk.eyJ1IjoiYnlxIiwiYSI6ImNsdjBza2E2ajFxcHkycW53bXBheGd4cGUifQ.THaHqpyg1zDpdAcCWTQsjQ';
 
-	<script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.19/web.js"></script>
-	<script>
-		const ACCESS_TOKEN = 'pk.eyJ1IjoiYnlxIiwiYSI6ImNsdjBza2E2ajFxcHkycW53bXBheGd4cGUifQ.THaHqpyg1zDpdAcCWTQsjQ';
+    document.getElementById("search-js").onload = () => {
+        mapboxsearch.config.accessToken = ACCESS_TOKEN;
+        const collection = mapboxsearch.autofill({ accessToken: ACCESS_TOKEN });
 
-document.getElementById( "search-js" ).onload = () => {
-mapboxsearch.config.accessToken = ACCESS_TOKEN;
-const collection = mapboxsearch.autofill( { accessToken: ACCESS_TOKEN } );
+        // Add confirmation prompt to shipping address
+        const form = document.querySelector("form");
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const result = await mapboxsearch.confirmAddress(form, {
+                theme: {
+                    variables: {
+                        border: '3px solid rgba(0,0,0,0.35)',
+                        borderRadius: '18px'
+                    }
+                },
+                minimap: {
+                    defaultMapStyle: ['mapbox', 'outdoors-v11'],
+                    satelliteToggle: true
+                },
+                skipConfirmModal: (feature) => ['exact', 'high'].includes(feature.properties.match_code.confidence)
+            });
+            if (result.type === 'nochange') 
+                submitForm();
+        });
 
-// Add confirmation prompt to shipping address
-const form = document.querySelector( "form" );
-form.addEventListener( "submit", async ( e ) => {
-e.preventDefault();
-const result = await mapboxsearch.confirmAddress( form, {
-theme: {
-variables: {
-border: '3px solid rgba(0,0,0,0.35)',
-borderRadius: '18px'
-}
-},
-minimap: {
-defaultMapStyle: [
-'mapbox', 'outdoors-v11'
-],
-satelliteToggle: true
-},
-skipConfirmModal: ( feature ) => [ 'exact', 'high' ].includes( feature.properties.match_code.confidence )
-} );
-if ( result.type === 'nochange' ) 
-submitForm();
-} );
-
-function submitForm() {
-form.submit();
-}
-}
-	</script>
-
+        function submitForm() {
+            form.submit();
+        }
+    }
+</script>
 {% endblock %}
