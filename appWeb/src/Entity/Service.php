@@ -62,7 +62,7 @@ class Service
 
     #[ORM\Column(length:4)]
     private string $avgNote = "0";
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $additionalInfo = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
