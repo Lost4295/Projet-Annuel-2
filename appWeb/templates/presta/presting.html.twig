@@ -1,152 +1,145 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-	<h1>
-		{{presta.societyName}}
-	</h1>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>{{presta.societyName}}</h1>
+            <img src="{{ asset('/images/presta/' ~ presta.image) }}" alt="image" class="img-fluid my-4" style="max-width: 200px;">
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">Services proposés</h3>
+        </div>
+        {% for service in presta.services %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="h5 mb-0">{{ service.titre }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="splide" role="group" aria-label="Splide Basic HTML Example">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    {% for img in service.images %}
+                                        <li class="splide__slide">
+                                            <img src="{{ asset('images/services/' ~ img) }}" class="card-img-top" alt="...">
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="mt-3">{{ service.description }}</p>
+                        <p class="font-weight-bold">{{ service.tarifs }} €</p>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <p>Il n'y a pas de service pour le moment proposé par ce prestataire.</p>
+            </div>
+        {% endfor %}
+    </div>
 
-	<img src="{{asset('/images/presta/'~presta.image)}}" alt="image" width="200" height="200">
-
-	<h3>
-		Services proposés
-	</h3>
-	<div class='row'>
-		{% for service in presta.services %}
-			<div class="col-3 m-2">
-				<div class="card">
-					<div class="card-header">
-						<h2>{{service.titre}}</h2>
-					</div>
-					<div class="card-body">
-                    <div class="splide" role="group" aria-label="Splide Basic HTML Example">
-							<div class="splide__track">
-								<ul class="splide__list">
-								{% for img in service.images %}
-									<li class="splide__slide"><img src="{{asset("images/services/"~img)}}" class="card-img-top" alt="..."></li>
-								{% endfor %}
-								</ul>
-							</div>
-						</div>
-						<p>{{service.description}}</p>
-						<p>{{service.tarifs}}
-							€
-						</p>
-					</div>
-				</div>
-			</div>
-		{% else %}
-			<p>Il n'y a pas de service pour le moment proposé par ce prestataire.</p>
-		{% endfor %}
-	</div>
-	{% if is_granted('ROLE_USER') %}
-
-		<div class="card m-3">
-			<div class="card-header">
-				<p>{{"rating"|trans }}</p>
-			</div>
-			<div class="card-body">
-				<div class="text-center mt-2 mb-4 fs-4">
-					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_1" data-rating="1"></i>
-					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_2" data-rating="2"></i>
-					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_3" data-rating="3"></i>
-					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_4" data-rating="4"></i>
-					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_5" data-rating="5"></i>
-				</div>
-			</div>
-			<div class="card-footer">
-				<button type="button" name="save_review" id="save_review" class="btn btn-success">{{"send"|trans }}</button>
-			</div>
-		</div>
-		<a href="{{ path('prestataires') }}" class="btn btn-primary">{{"backtolist"|trans }}</a>
-	{% endif %}
+    {% if is_granted('ROLE_USER') %}
+        <div class="card m-3">
+            <div class="card-header">
+                <p>{{ 'rating'|trans }}</p>
+            </div>
+            <div class="card-body text-center">
+                <div class="star-wrapper fs-4">
+                    {% for i in 1..5 %}
+                        <i class="fas fa-star star-light submit_star mr-1" id="submit_star_{{ i }}" data-rating="{{ i }}"></i>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button type="button" name="save_review" id="save_review" class="btn btn-success">{{ 'send'|trans }}</button>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="{{ path('prestataires') }}" class="btn btn-primary">{{ 'backtolist'|trans }}</a>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block stylesheets %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
 
 <style>
-	div.rating-wrapper {
-		display: flex;
-		align-items: first baseline;
-		flex-direction: column;
-		margin: 5rem;
-		font-size: 1.5rem;
-	}
-	div.star-wrapper {
-		font-size: 2rem;
-	}
-	div.star-wrapper i {
-		cursor: pointer;
-	}
-	div.star-wrapper i.yellow {
-		color: #FDD835;
-	}
-	div.star-wrapper i.vote-recorded {
-		color: #F57C00;
-	}
-	p.v-data {
-		background: #ccc;
-		padding: 0.5rem;
-	}
-</style>{% endblock %}{% block javascripts %}
+    .star-wrapper i {
+        cursor: pointer;
+        font-size: 2rem;
+    }
+    .star-wrapper i.text-warning {
+        color: #FDD835;
+    }
+    .star-wrapper i.star-light {
+        color: #D3D3D3;
+    }
+</style>
+{% endblock %}
+
+{% block javascripts %}
 <script>
-	var rating_data = 0;
+    var rating_data = 0;
 
-$( document ).on( 'mouseenter', '.submit_star', function () {
-var rating = $( this ).data( 'rating' );
-reset_background();
-for ( var count = 1; count <= rating; count++ ) {
-$( '#submit_star_' + count ).addClass( 'text-warning' );
-}
-} );
-function reset_background() {
-for ( var count = 1; count <= 5; count++ ) {
-$( '#submit_star_' + count ).addClass( 'star-light' );
-$( '#submit_star_' + count ).removeClass( 'text-warning' );
-}
-}
-$( document ).on( 'mouseleave', '.submit_star', function () {
-reset_background();
-for ( var count = 1; count <= rating_data; count++ ) {
-$( '#submit_star_' + count ).removeClass( 'star-light' );
-$( '#submit_star_' + count ).addClass( 'text-warning' );
-}
-} );
-$( document ).on( 'click', '.submit_star', function () {
-rating_data = $( this ).data( 'rating' );
-} );
+    $(document).on('mouseenter', '.submit_star', function() {
+        var rating = $(this).data('rating');
+        reset_background();
+        for (var count = 1; count <= rating; count++) {
+            $('#submit_star_' + count).addClass('text-warning');
+        }
+    });
 
-$( "#save_review" ).click( function () {
-$.ajax( {
-url:"{{ path('ajax_rating_p') }}",
-method: "POST",
-data: {
-rating: rating_data,
-id: {{ presta.id }}
-},
-success: function ( data ) {
-alert( 'Review Added Successfully' );
-}
-} );
-} );
+    function reset_background() {
+        for (var count = 1; count <= 5; count++) {
+            $('#submit_star_' + count).addClass('star-light');
+            $('#submit_star_' + count).removeClass('text-warning');
+        }
+    }
+
+    $(document).on('mouseleave', '.submit_star', function() {
+        reset_background();
+        for (var count = 1; count <= rating_data; count++) {
+            $('#submit_star_' + count).removeClass('star-light');
+            $('#submit_star_' + count).addClass('text-warning');
+        }
+    });
+
+    $(document).on('click', '.submit_star', function() {
+        rating_data = $(this).data('rating');
+    });
+
+    $('#save_review').click(function() {
+        $.ajax({
+            url: "{{ path('ajax_rating_p') }}",
+            method: "POST",
+            data: {
+                rating: rating_data,
+                id: {{ presta.id }}
+            },
+            success: function(data) {
+                alert('Review Added Successfully');
+            }
+        });
+    });
 </script>
-	<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
-<script src="
-https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js
-" defer ></script>
-
-	<script>
-  document.addEventListener( 'DOMContentLoaded', function() {
-    var splide = new Splide( '.splide', {
-		type   : 'loop',
-	  	gap    : '1rem',
-		width  : '100%',
-		fixedHeight: '25rem',
-	  	autoplay: true,
-	  	interval: 3000,
-	  	pauseOnHover: true,
-		});
-    splide.mount();
-  } );
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        new Splide('.splide', {
+            type: 'loop',
+            gap: '1rem',
+            width: '100%',
+            fixedHeight: '25rem',
+            autoplay: true,
+            interval: 3000,
+            pauseOnHover: true,
+        }).mount();
+    });
 </script>
 {% endblock %}
