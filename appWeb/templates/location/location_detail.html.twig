@@ -1,131 +1,106 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	{{ dump(location) }}
-	<h2>{{"locdetail"|trans }}</h2>
-	<img src="http://placehold.it/150/50" alt="dcpl" class="img"/>
-	<div>
-		{{location.appartement.titre}}
-	</div>
-	<div>
-		{{location.appartement.description}}
-	</div>
-	<div>
-		{{"apppluses"|trans }}
-		{% for plus in location.appartement.appartPluses %}
-			<div class="col-4">
-				<div class="d-flex">
-					<i class="{{constant('ICONS', plus)[constant('LIST_PLUSES', plus)[plus.icon]]['data-icon']}}"></i>
-					<div>
-						&nbsp;
-						{{constant('LIST_PLUSES', plus)[plus.icon] }}
-						{# Joli bordel juste pour une simple icône de merde #}
-					</div>
-				</div>
-			</div>
-		{% endfor %}
-		<div>
-			{{location.dateDebut|date('d/m/Y')}}-{{location.dateFin|date('d/m/Y')}}
-		</div>
-		<div>
-			{{location.price}}
-			€
-		</div>
-		<div>
-			{{"for"|trans }}
-			{{location.adults + location.kids + location.babies }}
-			{{ "persons"|trans }}
-		</div>
-	</div>
-	<div class="card m-3">
-		<div class="card-header">
-			<p>{{"rating"|trans }}</p>
-		</div>
-		<div class="card-body">
-			<h4 class="text-center mt-2 mb-4">
-				<i class="fas fa-star star-light submit_star mr-1" id="submit_star_1" data-rating="1"></i>
-				<i class="fas fa-star star-light submit_star mr-1" id="submit_star_2" data-rating="2"></i>
-				<i class="fas fa-star star-light submit_star mr-1" id="submit_star_3" data-rating="3"></i>
-				<i class="fas fa-star star-light submit_star mr-1" id="submit_star_4" data-rating="4"></i>
-				<i class="fas fa-star star-light submit_star mr-1" id="submit_star_5" data-rating="5"></i>
-			</h4>
-		</div>
-		<div class="card-footer">
-			<button type="button" name="save_review" id="save_review" class="btn btn-success">{{"send"|trans }}</button>
-		</div>
-	</div>
-	<a href="{{ path('profile') }}" class="btn btn-primary">{{"backtolist"|trans }}</a>
+<div class="container mt-5">
+    <h2>{{ "locdetail"|trans }}</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="http://placehold.it/150/50" alt="dcpl" class="img-fluid mb-3"/>
+            <h3>{{ location.appartement.titre }}</h3>
+            <p>{{ location.appartement.description }}</p>
+        </div>
+        <div class="col-md-6">
+            <h4>{{ "apppluses"|trans }}</h4>
+            <div class="row">
+                {% for plus in location.appartement.appartPluses %}
+                <div class="col-4 mb-2">
+                    <div class="d-flex align-items-center">
+                        <i class="{{ constant('ICONS', plus)[constant('LIST_PLUSES', plus)[plus.icon]]['data-icon'] }}"></i>
+                        <span class="ms-2">{{ constant('LIST_PLUSES', plus)[plus.icon] }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <p><strong>{{ "dates"|trans }}:</strong> {{ location.dateDebut|date('d/m/Y') }} - {{ location.dateFin|date('d/m/Y') }}</p>
+            <p><strong>{{ "price"|trans }}:</strong> {{ location.price }} €</p>
+            <p><strong>{{ "for"|trans }}:</strong> {{ location.adults + location.kids + location.babies }} {{ "persons"|trans }}</p>
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-header">
+            <h5>{{ "rating"|trans }}</h5>
+        </div>
+        <div class="card-body text-center">
+            <h4 class="mb-4">
+                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_1" data-rating="1"></i>
+                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_2" data-rating="2"></i>
+                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_3" data-rating="3"></i>
+                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_4" data-rating="4"></i>
+                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_5" data-rating="5"></i>
+            </h4>
+            <button type="button" name="save_review" id="save_review" class="btn btn-success">{{ "send"|trans }}</button>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ path('profile') }}" class="btn btn-primary">{{ "backtolist"|trans }}</a>
+    </div>
 </div>
 {% endblock %}
 
 {% block stylesheets %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
 <style>
-	div.rating-wrapper {
-		display: flex;
-		align-items: first baseline;
-		flex-direction: column;
-		margin: 5rem;
-		font-size: 1.5rem;
-	}
-	div.star-wrapper {
-		font-size: 2rem;
-	}
-	div.star-wrapper i {
-		cursor: pointer;
-	}
-	div.star-wrapper i.yellow {
-		color: #FDD835;
-	}
-	div.star-wrapper i.vote-recorded {
-		color: #F57C00;
-	}
-	p.v-data {
-		background: #ccc;
-		padding: 0.5rem;
-	}
+    .star-light {
+        color: #d3d3d3;
+    }
+    .text-warning {
+        color: #FDD835;
+    }
 </style>
 {% endblock %}
 
 {% block javascripts %}
 <script>
-	var rating_data = 0;
+    var rating_data = 0;
 
-$( document ).on( 'mouseenter', '.submit_star', function () {
-    var rating = $( this ).data( 'rating' );   
-    reset_background();
-    for ( var count = 1; count <= rating; count++ ) {
-        $( '#submit_star_' + count ).addClass( 'text-warning' );
-    }
-});
-function reset_background() {
-    for ( var count = 1; count <= 5; count++ ) {
-    $( '#submit_star_' + count ).addClass( 'star-light' );
-    $( '#submit_star_' + count ).removeClass( 'text-warning' );
-    }
-}
-$( document ).on( 'mouseleave', '.submit_star', function () {
-    reset_background();
-    for ( var count = 1; count <= rating_data; count++ ) {
-    $( '#submit_star_' + count ).removeClass( 'star-light' );
-    $( '#submit_star_' + count ).addClass( 'text-warning' );
-    }
-});
-$( document ).on( 'click', '.submit_star', function () {
-    rating_data = $( this ).data( 'rating' );
-});
+    $(document).on('mouseenter', '.submit_star', function() {
+        var rating = $(this).data('rating');
+        reset_background();
+        for (var count = 1; count <= rating; count++) {
+            $('#submit_star_' + count).addClass('text-warning');
+        }
+    });
 
-    $("#save_review").click(function(){
+    function reset_background() {
+        for (var count = 1; count <= 5; count++) {
+            $('#submit_star_' + count).addClass('star-light');
+            $('#submit_star_' + count).removeClass('text-warning');
+        }
+    }
+
+    $(document).on('mouseleave', '.submit_star', function() {
+        reset_background();
+        for (var count = 1; count <= rating_data; count++) {
+            $('#submit_star_' + count).removeClass('star-light');
+            $('#submit_star_' + count).addClass('text-warning');
+        }
+    });
+
+    $(document).on('click', '.submit_star', function() {
+        rating_data = $(this).data('rating');
+    });
+
+    $("#save_review").click(function() {
         $.ajax({
-            url:"{{ path('ajax_rating') }}",
-            method:"POST",
-            data:{rating:rating_data, id: {{ location.id }}},
-            success:function(data)
-            {
+            url: "{{ path('ajax_rating_l') }}",
+            method: "POST",
+            data: { rating: rating_data, id: {{ location.id }} },
+            success: function(data) {
                 alert('Review Added Successfully');
             }
         });
     });
-</script>{% endblock %}
-
+</script>
+{% endblock %}
