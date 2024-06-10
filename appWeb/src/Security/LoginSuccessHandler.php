@@ -23,24 +23,18 @@ class LoginSuccessHandler extends CustomAuthenticationSuccessHandler
     private $entityManager;
     private $emailVerifier;
     private $urlGenerator;
-    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, EmailVerifier $emailVerifier, urlGeneratorInterface $urlGenerator, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, EmailVerifier $emailVerifier, urlGeneratorInterface $urlGenerator)
     {
         $this->entityManager = $entityManager;
         $this->emailVerifier = $emailVerifier;
         $this->urlGenerator = $urlGenerator;
-        $this->security = $security;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
         $email = $request->request->get('_username') ?? $request->request->all()['user']['email'];
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
-        if ($user->hasRole(User::ROLE_NON_USER)){
-            $this->security->logout(false);
-            return new RedirectResponse($this->urlGenerator->generate('index', ['e' => 'unauthorized']));
-        }
         $user->setLastConnDate(new \DateTime('now'));
         $this->entityManager->persist($user);
         $this->entityManager->flush();

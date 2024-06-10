@@ -30,7 +30,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     private $entityManager;
     private $emailVerifier;
 // 
-    public function __construct(private UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager, EmailVerifier $emailVerifier)
+    public function __construct(EntityManagerInterface $entityManager, EmailVerifier $emailVerifier)
     {
         $this->entityManager = $entityManager;
         $this->emailVerifier = $emailVerifier;
