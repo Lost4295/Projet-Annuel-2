@@ -7,8 +7,9 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\Abonnement;
 use App\Entity\Option;
 use App\Entity\OptionsAbonnement;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-class AbonnementFixtures extends Fixture
+class AbonnementFixtures extends Fixture implements FixtureGroupInterface
 {
     public const GRATUIT= "gratuit";
     public function load(ObjectManager $manager):void
@@ -121,5 +122,10 @@ class AbonnementFixtures extends Fixture
         $manager->persist($ao24);
 
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['abonnement'];
     }
 }
