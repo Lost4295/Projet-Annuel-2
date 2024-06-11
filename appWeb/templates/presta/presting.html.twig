@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class="col-12">
-            <h3 class="mb-4">Services proposés</h3>
+            <h3 class="mb-4">{{"Services proposés"| trans}}</h3>
         </div>
         {% for service in presta.services %}
             <div class="col-lg-4 col-md-6 mb-4">
@@ -37,7 +37,7 @@
             </div>
         {% else %}
             <div class="col-12">
-                <p>Il n'y a pas de service pour le moment proposé par ce prestataire.</p>
+                <p>{{"Il n'y a pas de service pour le moment proposé par ce prestataire."|trans}}</p>
             </div>
         {% endfor %}
     </div>

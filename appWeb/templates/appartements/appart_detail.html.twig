@@ -12,9 +12,9 @@
 			<div class="col-2 pull-right">
 				<a href="#">
 					<i class="bi-heart"></i>
-					J'aime</a>
+					{{"J'aime"|trans}}</a>
 				<a href="{{ path('appart_detail', {'id': appart.id}) }}">
-					<i class="bi-send"></i>Je partage</a>
+					<i class="bi-send"></i>{{"Je partage"|trans}}</a>
 			</div>
 		</div>
 		<div class="row d-flex justify-content-center">
@@ -37,13 +37,13 @@
 			<div style="display: flex; justify-content: space-between; width: 100%;">
 
 				<p>{{appart.NbVoyageurs}}
-					Voyageurs -
+					{{"Voyageurs"|trans}} -
 					{{appart.nbchambers}}
-					Chambres -
+					{{"Chambres"|trans}} -
 					{{appart.nbBeds}}
-					Lits -
+					{{"Lits"|trans}} -
 					{{appart.nbbathrooms}}
-					Salle de bain</p>
+					{{"Salle de bain"|trans}}</p>
 				<p class="">{{appart.note}}
 					/ 5</p>
 			</div>
@@ -53,7 +53,7 @@
 					<img class="me-3 mb-3" src="{{asset("/images/presta/"~appart.bailleur.image)}}" alt=""width=100 height=100>
 					<div>
 						<p>
-							<b>Hôte :</b>
+							<b>{{"Hôte"|trans}} :</b>
 							{{appart.bailleur.responsable.prenom}}
 							{{appart.bailleur.responsable.nom}}</p>
 
@@ -179,7 +179,7 @@
 								</div>
 								<h3>
 									<span id="total_review">0</span>
-									Review</h3>
+									{{"Review"|trans}}</h3>
 							</div>
 							<div class="col-sm-4">
 								<p>
@@ -235,7 +235,7 @@
 							</div>
 							{% if canComm %}
 								<div class="col-sm-4 text-center">
-									<h3 class="mt-4 mb-3">Write Review Here</h3>
+									<h3 class="mt-4 mb-3">{{"Write Review Here"|trans}}</h3>
 									<button type="button" name="add_review" id="add_review" class="btn btn-primary">Review</button>
 								</div>
 							{% endif %}

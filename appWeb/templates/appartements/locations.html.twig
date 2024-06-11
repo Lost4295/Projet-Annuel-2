@@ -122,7 +122,7 @@ input::-webkit-inner-spin-button {
 			</div>
 			<div class="text-light guests">
 				<p>{{"guests"|trans }}</p>
-				<p class="djf" data-bs-toggle="collapse" data-bs-target="#card" aria-expanded="false" aria-controls="card">0 voyageur</p>
+				<p class="djf" data-bs-toggle="collapse" data-bs-target="#card" aria-expanded="false" aria-controls="card">0 {{"voyageur"|trans}}</p>
 				<span id="search">
 					<i class="bi-search"></i>
 				</span>
@@ -203,8 +203,9 @@ input::-webkit-inner-spin-button {
 	<script>
 		$( "#startdate" ).flatpickr( {
 			"plugins": [new rangePlugin(
-				{ input: "#enddate" }
-			)], 
+				{ input: "#enddate"},
+			)],
+				"dateFormat": "Y-m-d",
 		});
 	</script>
 	<script>
@@ -214,9 +215,9 @@ input::-webkit-inner-spin-button {
 		$('.plus').click(function () {
 			$(this).prev().val(+$(this).prev().val() + 1);
 			var total = +$("#adults").val() + +$("#children").val()+ +$("#babies").val();
-			var travel = " voyageurs";
+			var travel = "  {{'guests'|trans}}";
 			if (total <= 1) {
-				travel =" voyageur";
+				travel =" {{'voyageur'|trans}}";
 			}
 			$(".djf").text(total+travel);
 		});
@@ -224,9 +225,9 @@ input::-webkit-inner-spin-button {
 		$('.moins').click(function () {
 			if ($(this).next().val() > 0) $(this).next().val(+$(this).next().val() - 1);
 			var total = +$("#adults").val() + +$("#children").val()+ +$("#babies").val();
-			var travel = " voyageurs";
+			var travel = " {{'guests'|trans}}";
 			if (total <= 1) {
-				travel =" voyageur";
+				travel =" {{'voyageur'|trans}}";
 			}
 			$(".djf").text(total+travel);
 		});
@@ -264,14 +265,9 @@ input::-webkit-inner-spin-button {
 									<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 										<div class="splide__track">
 											<ul class="splide__list">`;
-											if (appart.images.length == 0) {
-												text+=(`<li class="splide__slide"><img src="https://reviveyouthandfamily.org/wp-content/uploads/2016/11/house-placeholder.jpg" class="card-img-top" alt="..."></li>`);
-											} else {
-												console.log(appart.images, typeof appart.images);
 												for (key in appart.images) {
 													text+=(`<li class="splide__slide"><img src="images/appartements/${appart.images[key]}" class="card-img-top" alt="..."></li>`);
 												};
-											}
 											let route = "{{ path('appart_detail', { id: '0000' }) }}";
 											route = route.replace('0000', appart.id);
 											text+=(`
@@ -279,15 +275,15 @@ input::-webkit-inner-spin-button {
 										</div>
 									</div>
 								</div>
-								<a href="${route}" class="text-decoration-none text-black">
+								<a href="${route}" class="text-decoration-none">
 									<div class="card-body">
 										<h5>${appart.city}
 											-
 											${appart.country}</h5>
-										<small>${appart.description.slice(0,50)+"..."}</small>
-										<div style="display: flex; justify-content: space-between; width: 100%;">
+										<small class="text-black">${appart.description.slice(0,50)+"..."}</small>
+										<div class="text-black" style="display: flex; justify-content: space-between; width: 100%;">
 											<p>${appart.price}
-												€ / Nuit</p>
+												€ / {{'Nuit'|trans}}</p>
 											<p>${appart.note}
 												/ 5</p>
 										</div>

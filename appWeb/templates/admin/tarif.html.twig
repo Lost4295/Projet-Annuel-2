@@ -6,8 +6,9 @@
 
         <form action="{{ path('update_abonnement', {'id': id}) }}" method="POST">
             {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button type="submit" class="btn btn-primary">Save</button>
+            {{ form_row(form.nom) }}
+            {{ form_row(form.tarif) }}
+            <button type="submit" class="btn btn-primary">{{"save"|trans}}</button>
             {{ form_end(form) }}
         </form>
     </div>

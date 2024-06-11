@@ -87,7 +87,6 @@ class LocationController extends AbstractController
     }
 
     #[Route("/locations/confirm", name: "appart_confirm")]
-    #[IsGranted("ROLE_USER")]
     public function confirm(Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser();
@@ -97,7 +96,7 @@ class LocationController extends AbstractController
         }
         $secondForm = $this->createForm(ConfirmLocationType::class, null, [
             'method' => 'POST',
-            'action' => $this->generateUrl('app_stripe')
+            'action' => $this->generateUrl('stripe_locations')
         ]);
         $firstForm = $this->createForm(LocationFirstType::class, null, [
             'method' => 'POST',

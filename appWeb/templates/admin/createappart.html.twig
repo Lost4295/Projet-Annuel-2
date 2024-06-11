@@ -1,8 +1,10 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
-{% block page_title %}Créer un appartement
+{% block page_title %}
+	{{"Créer un appartement"|trans}}
 {% endblock %}
 {% block page_actions %}{% endblock %}
-{% block page_headline %}Créer un appartement
+{% block page_headline %}
+	{{"Créer un appartement"|trans}}
 {% endblock %}
 {% form_theme form 'bootstrap_5_layout.html.twig' %}
 {% block page_content %}
@@ -18,6 +20,9 @@ const collection = mapboxsearch.autofill( { accessToken: ACCESS_TOKEN } );
 
 // Add confirmation prompt to shipping address
 const form = document.querySelector( "form" );
+function submitForm() {
+	form.submit();
+}
 form.addEventListener( "submit", async ( e ) => {
 e.preventDefault();
 const result = await mapboxsearch.confirmAddress( form, {
@@ -33,13 +38,12 @@ defaultMapStyle: [
 ],
 satelliteToggle: true
 },
-skipConfirmModal: (feature) =>
-      ['exact', 'high'].includes(
-        feature.properties.match_code.confidence
-      )
-  });
-  if (result.type === 'nochange') submitForm();
+skipConfirmModal: ( feature ) => [ 'exact', 'high' ].includes( feature.properties.match_code.confidence )
+} );
+if ( result.type === 'nochange' ) 
+submitForm();
 } );
 }
+
 		</script>
 	{% endblock %}

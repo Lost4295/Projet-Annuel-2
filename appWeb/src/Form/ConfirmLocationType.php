@@ -28,7 +28,10 @@ class ConfirmLocationType extends AbstractType
                 'expanded' => false,
                 'label' => false,
                 "attr" => [
-                    "class" => "selectpicker"
+                    "class" => "selectpicker",
+                    "data-container"=>"body",
+                    "data-live-search" => "true",
+                    "data-dropup-auto" => "false",
                 ],
                 "required" => false
             ]);

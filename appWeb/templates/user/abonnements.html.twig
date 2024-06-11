@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <h2>Nos différents abonnements</h2>
+    <h2>{{"Nos différents abonnements"|trans}}</h2>
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover align-middle text-center">
 			<thead>
 				<tr>
 					{% for abo, val in abonnements.nom %}
 						{% if loop.first %}
-							<th>Nom</th>
+							<th>{{"Nom"|trans}}</th>
 						{% else %}
 							<th>
 								<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
@@ -50,11 +50,11 @@
 						{% else %}
 							{% if abouser != null and abo == abouser.id %}
 								<td>
-									<a href="{{val.link}}" class="btn btn-primary disabled">Abonnement actuel</a>
+									<a href="{{val.link}}" class="btn btn-primary disabled">{{"Abonnement actuel"|trans}}</a>
 								</td>
 							{% else %}
 								<td>
-									<a href="{{val.link}}" class="btn btn-primary">Acheter</a>
+									<a href="{{val.link}}" class="btn btn-primary">{{"Acheter"|trans}}</a>
 								</td>
 							{% endif %}
 						{% endif %}

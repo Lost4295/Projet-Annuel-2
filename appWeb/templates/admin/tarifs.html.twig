@@ -2,14 +2,14 @@
 
 
 {% block page_content %}
-	<h2>Contenu actuel</h2>
+	<h2>{{"abos"|trans}} </h2>
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover align-middle text-center">
 			<thead>
 				<tr>
 					{% for abo, val in abonnements.nom %}
 						{% if loop.first %}
-							<th>Nom</th>
+							<th>{{"nom"|trans}}</th>
 						{% else %}
 							<th>
 								<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
@@ -23,7 +23,7 @@
 				<tr>
 					{% for abo,val in abonnements.prix %}
 						{% if loop.first %}
-							<td>Prix</td>
+							<td>{{"price"|trans }}</td>
 						{% else %}
 							<td>{{ val }}</td>
 						{% endif %}
@@ -51,15 +51,16 @@
 							<td></td>
 						{% else %}
 							<td>
-								<a href="{{val.upd }}" class="btn btn-primary">Modifier</a>
-								<a href="{{val.del }}" class="btn btn-danger">Supprimer</a>
+								<a href="{{val.upd }}" class="btn btn-primary">{{"modify"|trans}}</a>
+								<a href="{{val.del }}" class="btn btn-danger">{{"delete"|trans}}</a>
 							</td>
 						{% endif %}
 					{% endfor %}
 				</tr>
 			</tbody>
 		</table>
-		<a href="#" class="btn btn-primary">Ajouter un nouveau niveau d'abonnement</a>
-		<a href="#" class="btn btn-primary">Ajouter une option</a>
+
+		<a href="#" class="btn btn-primary">{{"Ajouter un nouveau niveau d'abonnement"| trans}}</a>
+		<a href="#" class="btn btn-primary">{{"Ajouter une option"|trans}}</a>
 	</div>
 {% endblock %}

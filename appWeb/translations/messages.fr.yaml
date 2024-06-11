@@ -101,39 +101,151 @@ kids: 'Enfants(-18 ans)'
 babies: 'Bébés(-2 ans)'
 travelernum: 'Nombre de Voyageurs'
 chdate: 'Choisisssez vos dates'
-submit: Valider les modifications
-back: Retour au profil
-modifymyinfo: Modifier mes informations
+submit: 'Valider les modifications'
+back: 'Retour au profil'
+modifymyinfo: 'Modifier mes informations'
 download: Télécharger
 delete: Supprimer
 crticket: 'Afin de pouvoir modifier vos informations telles que le nom, le prénom ou la date de naissance, veuillez '
 modmdp: 'Pour modifier votre mot de passe, veuillez '
-here : "créer un ticket."
-clhere: "passer par ici."
+here: 'créer un ticket.'
+clhere: 'passer par ici.'
 mail: Email
-
-reserv: 'Réserver'
+reserv: Réserver
 comm: Commentaire
 comms: Commentaires
-comment: 'Commenter'
+comment: Commenter
 yourcomm: 'Votre commentaire'
 wrby: 'Ecrit par'
-apartproposes: "Ce que propose ce logement :"
-nocomm: Pas de commentaire.
+apartproposes: 'Ce que propose ce logement :'
+nocomm: 'Pas de commentaire.'
 destination: Destination
-dest: Sélectionnez votre destination
-checkin: 'Date d''arrivée'
-when: Quand ? 
+dest: 'Sélectionnez votre destination'
+checkin: "Date d'arrivée"
+when: 'Quand ?'
 checkout: 'Date de départ'
 guests: Voyageurs
 ticket: Tickets
-crappart: Créer un appartement
-croplus: Créer un service lié à un appartement
-myprofile: Mon Profil
+crappart: 'Créer un appartement'
+croplus: 'Créer un service lié à un appartement'
+myprofile: 'Mon Profil'
 settings: Paramètres
 logout: Déconnexion
 voyageur: Voyageur
-nouser: Non Utilisateur
+nouser: 'Non Utilisateur'
 pluses: Services
 hereinfo: 'Ici vous pouvez ajouter toutes les informations sur les champs que vous souhaitez modifier.'
 sucworkd: 'Vos jours de travail ont été mis à jour avec succès.'
+'No APIs found': 'Pas d''Apis trouvées'
+'Créer un appartement': 'Créer un appartement'
+'Créer un "Plus"': 'Créer un "Plus"'
+save: Sauvegarder
+abos: Abonnements
+modify: Modifier
+"Ajouter un nouveau niveau d'abonnement": "Ajouter un nouveau niveau d'abonnement"
+'Ajouter une option': Ajouter une option'
+'Date de Création': 'Date de Création'
+'Date de Modification': 'Date de Modification'
+'Pas de traitements en cours': 'Pas de traitements en cours'
+add: Ajouter
+prevmont: Montant prévisionnel
+"J'aime": "Aimer"
+'Je partage': 'Partager'
+Voyageurs: Voyageurs
+Chambres: Chambres
+Lits: Lits
+'Salle de bain': 'Salle de bains'
+Hôte: Hôte
+nuit: Nuit
+Review: Notes
+'Write Review Here': 'Ecrire votre commentaire ici'
+Confirmation: Confirmation
+'Demande de Réservation': 'Demande de Réservation'
+'Votre voyage:': 'Votre voyage :'
+appartement: Appartement
+'Détails du prix': 'Détails du prix'
+'nuits restées': 'nuits restées'
+'Taxe de PCS': 'Taxe de PCS'
+total: Total
+'Options supplémentaires': 'Options supplémentaires'
+'Procéder au paiement': 'Procéder au paiement'
+Nuit: Nuit
+'Bienvenue sur la page de demande de Devis': 'Bienvenue sur la page de demande de Devis'
+'Envoyer votre demande de devis': 'Envoyer votre demande de devis'
+starttext: "Paris Caretaker Services (PCS) est une chaîne de conciergeries immobilières assurant une offre de\n      gestion locative saisonnière, créée à Paris en 2018. La société a connu une croissance\n      rapide depuis sa création, principalement en raison de la qualité de son accueil et de la richesse de ses\n      prestations.\n      Elle offre des services allant de la gestion des réservations jusqu'à l’entretien du bien immobilier pour\n      le compte du propriétaire, en passant par l’accueil des clients. Ainsi, de nombreux bailleurs peuvent louer \n      leurs logements sans avoir à gérer les différentes charges inhérentes à la location."
+Contactez-nous: Contactez-nous
+'Du Lundi au Vendredi de 10h à 18h': 'Du Lundi au Vendredi de 10h à 18h'
+'Appelez-nous au': 'Appelez-nous au'
+'Posez-nous toutes vos questions en cliquant sur le chat en bas à gauche de chaque page': 'Posez-nous toutes vos questions en cliquant sur le chat en bas à gauche de chaque page'
+"écrivez-nous sur l'adresse mail: contact@pariscaretakerservices.fr": "Écrivez-nous sur l'adresse mail: contact@pariscaretakerservices.fr"
+'Besoin d’aide ?': 'Besoin d’aide ?'
+Search: Rechercher
+'Questions fréquentes': 'Questions fréquentes'
+'Comment s’inscrire sur le site ?': 'Comment s’inscrire sur le site ?'
+"Cliquer sur le bouton \" s'inscrire\" en haut à droite de la page d\accueil": "Cliquer sur le bouton \" s'inscrire\" en haut à droite de la page d\accueil"
+'Comment être bailleur ?': 'Comment être bailleur ?'
+'Il faut avoir un compte et avoir un bien immobilier à louer': 'Il faut avoir un compte et avoir un bien immobilier à louer.'
+'Comment supprimer mon compte ?': 'Comment supprimer mon compte ?'
+'Vous pouvez nous faire la demande via notre plateforme de ticketing': 'Vous pouvez nous faire la demande via notre plateforme de ticketing'
+'Quelles sont les moyens de paiement disponibles ?': 'Quelles sont les moyens de paiement disponibles ?'
+'Ce sont Visa et Mastercard.': 'Ce sont Visa et Mastercard.'
+'Comment récupérer les clés ?': 'Comment récupérer les clés ?'
+'Les clés vont vous être remises par la femme de ménage.': 'Les clés vont vous être remises par la femme de ménage.'
+locdetail: Détails de la Location
+apppluses: Services liés à l'appartement
+dates: Dates
+for: Pour
+persons: Personnes
+rating: Note
+backtolist: Retour à la liste
+'Vous pouvez faire votre demande de devis': 'Vous pouvez faire votre demande de devis'
+ici: ici
+'Services proposés': 'Services proposés'
+"Il n'y a pas de service pour le moment proposé par ce prestataire.": "Il n'y a pas de service pour le moment proposé par ce prestataire."
+'Password Reset Email Sent': 'Email de réinitialisation de mot de passe envoyé'
+txtrespwd: " Si un compte possédant cette adresse email existe, un mail contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe vient de lui être envoyé.\n        Ce lien expirera dans "
+chckspam: "Si vous ne recevez pas l'email, veuillez vérifier votre dossier spam ou "
+'try again': 'réessayer'
+Nettoyage: Nettoyage
+Electricité: Electricité
+Plomberie: Plomberie
+Peinture: Peinture
+Bricolage: Bricolage
+Chauffeur: Chauffeur
+'Informations supplémentaires': 'Informations supplémentaires'
+'Retour à la liste des services': 'Retour à la liste des services'
+'Nos différents abonnements': 'Nos différents abonnements'
+Nom: Nom
+'Abonnement actuel': 'Abonnement actuel'
+Acheter: Acheter
+createticket: Créer un ticket
+Créer: Créer
+chgabo: Changer d'abonnement
+baillapps: __baillapps
+prestadates: __prestadates
+society: __society
+siret: Numéro de siret
+see: Voir
+close: Fermer
+stats: Statistiques
+nblocs: Nombre de locations
+notes: Notes
+prices: Prix
+nbappart: Nombre d'appartements
+prestadispos: Disponibilités du prestataire
+deviswaiting: Devis en attente
+devisnottak: Devis non pris
+devde: Devis de
+pick: Prendre
+workdays: Jours de travail
+prestanote: Note du prestataire
+nbanb: Nombre de services
+new: Nouveau
+tickets: Tickets
+nbvotes: __nbvotes
+shweek: S
+today: Aujourd'hui
+month: Mois
+weeke: Semaine
+day: Jour
+list: Liste

@@ -101,37 +101,154 @@ kids: Kids(-18)
 babies: Babies(-2)
 travelernum: 'Number of travelers'
 chdate: 'Choose your dates'
-submit: Submit the modifications
-back: Back to profile
-modifymyinfo: Modify my information
+submit: 'Submit the modifications'
+back: 'Back to profile'
+modifymyinfo: 'Modify my information'
 download: Download
 delete: Delete
 mail: Email
 crticket: 'To modify your information such as your name, first name or date of birth, '
 modmdp: 'To change your password, please '
-here: "please create a ticket."
-clhere: "click here."
+here: 'please create a ticket.'
+clhere: 'click here.'
 comm: Comment
 reserv: Book
-comms: 'Comments'
-comment: 'Comment'
+comms: Comments
+comment: Comment
 yourcomm: 'Your comment'
 wrby: 'Written by'
 apartproposes: 'What this appartment offers:'
 nocomm: 'No comment.'
 destination: Destination
-dest: Select a destination
-checkin: Check-in 
+dest: 'Select a destination'
+checkin: Check-in
 checkout: Check-out
 when: When
 guests: Guests
 ticket: Tickets
-crappart: Create an appartment
-croplus: Create a appartment linked service
-myprofile: My Profile
+crappart: 'Create an appartment'
+croplus: 'Create a appartment linked service'
+myprofile: 'My Profile'
 settings: Settings
 logout: Logout
 voyageur: Traveler
 nouser: 'Non user'
 hereinfo: 'Here you can add all the information about the fields you want changed.'
 sucworkd: 'Your work days have been updated successfully.'
+APIs found': 'No APIs found'
+'Créer un appartement': 'Create an Apartment'
+'Créer un "Plus"': 'Create a "Plus"'
+save: Save
+abos: Subscriptions
+modify: Modify
+"Ajouter un nouveau niveau d'abonnement": "Add a new subscription level"
+'Ajouter une option': 'Add an option'
+'Date de Création': 'Creation date'
+'Date de Modification': 'Modification date'
+'Pas de traitements en cours': 'No ongoing processes'
+add: 'Add'
+"J'aime": 'Like'
+'Je partage': 'Share'
+Voyageurs: 'Travelers'
+Chambres: 'Rooms'
+Lits: 'Beds'
+'Salle de bain': 'Bathroom'
+Hôte: 'Host'
+prevmont: 'Previsionnal amount'
+nuit: 'Night'
+Review: 'Review'
+'Write Review Here': 'Write Review Here'
+Confirmation: 'Confirmation'
+'Demande de Réservation': 'Reservation Request'
+'Votre voyage:': 'Your trip:'
+Date: 'Date'
+Modifier: 'Modify'
+Voyageur: 'Traveler'
+Appartement: 'Apartment'
+'Détails du prix': 'Price details'
+'nuits restées': 'Nights stayed'
+'Taxe de PCS': 'PCS Tax'
+total: 'Total'
+'Options supplémentaires': 'Additional options'
+'Procéder au paiement': 'Proceed to payment'
+Nuit: 'Night'
+'Bienvenue sur la page de demande de Devis': 'Welcome to the quote request page'
+'Envoyer votre demande de devis': 'Send your quote request'
+starttext: "Paris Caretaker Services (PCS) is a chain of property management concierge services offering seasonal rental management, created in Paris in 2018. The company has experienced rapid growth since its creation, mainly due to the quality of its service and the variety of its offerings. It provides services ranging from booking management to property maintenance on behalf of the owner, including guest reception. Thus, many landlords can rent out their properties without having to manage the various rental-related tasks."
+Contactez-nous: 'Contact us'
+'Du Lundi au Vendredi de 10h à 18h': 'Monday to Friday from 10am to 6pm'
+'Appelez-nous au': 'Call us at'
+'Posez-nous toutes vos questions en cliquant sur le chat en bas à gauche de chaque page': 'Ask us all your questions by clicking on the chat at the bottom left of each page'
+"écrivez-nous sur l'adresse mail: contact@pariscaretakerservices.fr": "Write to us at: contact@pariscaretakerservices.fr"
+'Besoin d’aide ?': 'Need help?'
+Search: 'Search'
+'Questions fréquentes': 'Frequently asked questions'
+'Comment s’inscrire sur le site ?': 'How to sign up on the site?'
+"Cliquer sur le bouton \" s'inscrire\" en haut à droite de la page d\accueil": "Click on the \"sign up\" button at the top right of the homepage"
+'Comment être bailleur ?': 'How to be a landlord?'
+'Il faut avoir un compte et avoir un bien immobilier à louer': 'You need to have an account and a property to rent'
+'Comment supprimer mon compte ?': 'How to delete my account?'
+'Vous pouvez nous faire la demande via notre plateforme de ticketing': 'You can request it via our ticketing platform'
+'Quelles sont les moyens de paiement disponibles ?': 'What payment methods are available?'
+'Ce sont Visa et Mastercard.': 'They are Visa and Mastercard.'
+'Comment récupérer les clés ?': 'How to get the keys?'
+'Les clés vont vous être remises par la femme de ménage.': 'The keys will be handed over by the housekeeper.'
+locdetail: 'Location details'
+apppluses: 'Apartment pluses'
+dates: 'Dates'
+for: 'For'
+persons: 'Persons'
+rating: 'Rating'
+backtolist: 'Back to list'
+'Vous pouvez faire votre demande de devis': 'You can make your quote request'
+ici: 'here'
+'Services proposés': 'Offered services'
+"Il n'y a pas de service pour le moment proposé par ce prestataire.": "There are no services currently offered by this provider."
+'Password Reset Email Sent': 'Password Reset Email Sent'
+txtrespwd: "If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.\n        This link will expire in"
+chckspam: "If you don't receive an email please check your spam folder or"
+'try again': 'try again'
+Nettoyage: 'Cleaning'
+Electricité: 'Electricity'
+Plomberie: 'Plumbing'
+Peinture: 'Painting'
+Bricolage: 'Handyman'
+Chauffeur: 'Driver'
+'Informations supplémentaires': 'Additional information'
+'Retour à la liste des services': 'Back to service list'
+'Nos différents abonnements': 'Our different subscriptions'
+Nom: 'Name'
+'Abonnement actuel': 'Current subscription'
+Acheter: 'Buy'
+createticket: 'Create ticket'
+Créer: 'Create'
+chgabo: 'Change subscription'
+baillapps: 'Landlord applications'
+prestadates: 'Provider dates'
+tick: 'Tick'
+society: 'Society'
+siret: 'SIRET'
+see: 'See'
+close: 'Close'
+stats: 'Statistics'
+nblocs: 'Number of bookings'
+notes: 'Notes'
+prices: 'Prices'
+nbappart: 'Number of apartments'
+prestadispos: 'Availablility of the provider'
+deviswaiting: 'Quotes waiting'
+devisnottak: 'Quotes not taken'
+devde: 'Quote of'
+pick: 'Pick'
+workdays: 'Work days'
+prestanote: 'Provider rating'
+nbanb: 'Number of services'
+new: 'New'
+tickets: 'Tickets'
+nbvotes: 'Number of votes'
+shweek: W
+today: 'Today'
+month: 'Month'
+weeke: 'Week'
+day: 'Day'
+list: 'List'

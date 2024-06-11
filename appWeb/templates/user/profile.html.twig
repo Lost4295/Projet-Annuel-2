@@ -46,7 +46,7 @@
 					{% endif %}
 					<button class="nav-link my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
 					{% if tickets|length > 0 %}
-						<button class="nav-link my-2 p-4" id="v-pills-tick-tab" data-bs-toggle="pill" data-bs-target="#v-pills-tick" type="button" role="tab" aria-controls="v-pills-tick" aria-selected="false">{{"tick"|trans}}</button>
+						<button class="nav-link my-2 p-4" id="v-pills-tick-tab" data-bs-toggle="pill" data-bs-target="#v-pills-tick" type="button" role="tab" aria-controls="v-pills-tick" aria-selected="false">{{"tickets"|trans}}</button>
 					{% endif %}
 				</div>
 			</div>
@@ -156,8 +156,25 @@
 										<td>{{ doc.size }}</td>
 										<td>{{ doc.type }}</td>
 										<td>
+											<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement">{{"see"|trans }}</button>
 											<a class="btn mx-2 btn-primary" href="{{ path('download_file', {'id': doc.id}) }}">{{'download'|trans }}</a>
 											<a class="btn mx-2 btn-danger" href="{{ path('delete_file', {'id': doc.id}) }}">{{'delete'|trans }}</a>
+											<div class="modal fade" id="modal-agreement">
+												<div class="modal-dialog modal-lg" role="document">
+											    	<div class="modal-content">
+														<div class="modal-header">
+                    									    <h4 class="modal-title">{{"see"|trans}} {{ doc.nom }} </h4>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    									</div>
+														<div class="modal-body">
+											    	    	<object type="application/pdf" data="{{asset("files/pdfs/" ~ doc.path )}}" width="100%" height="500" style="height: 85vh;">No Support</object>
+											        	</div>
+														<div class="modal-footer">
+                            								<button type="button" class="btn btn-default" data-bs-dismiss="modal">{{"close"|trans}}</button>
+                        								</div>
+											    	</div><!-- /.modal-content -->
+											    </div><!-- /.modal-dialog -->
+											</div><!-- /.modal -->
 										</td>
 									</tr>
 								{% else %}
@@ -171,6 +188,7 @@
 								</tr>
 							{% endif %}
 						</table>
+
 					</div>
 				</div>
 				{% if is_granted("ROLE_BAILLEUR") %}
@@ -238,9 +256,9 @@
 											</div>
 											<h5 class="card-title">{{ appart.titre }}</h5>
 											<div class="btn-group">
-											<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="btn btn-primary">Voir</a>
-											<a href="{{ path('appart_modify', {'id': appart.id}) }}" class="btn btn-warning">Modifier</a>
-											<a href="{{ path('appart_delete', {'id': appart.id}) }}" class="btn btn-danger">Supprimer</a>
+											<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="btn btn-primary">{{"see"|trans}}</a>
+											<a href="{{ path('appart_modify', {'id': appart.id}) }}" class="btn btn-warning">{{"modify"|trans}}</a>
+											<a href="{{ path('appart_delete', {'id': appart.id}) }}" class="btn btn-danger">{{"delete"|trans}}</a>
 											</div>
 										</div>
 									</div>
@@ -342,7 +360,7 @@
 					</div>
 					<div class="tab-pane fade" id="v-pills-presta3" role="tabpanel" aria-labelledby="v-pills-presta3-tab" tabindex="0">
 					<h1>Services</h1>
-						<a href="{{path("create_service") }}" class="btn btn-primary">Nouveau</a>
+						<a href="{{path("create_service") }}" class="btn btn-primary">{{"new"|trans}}</a>
 						<div class="row">
 							{% for service in services %}
 								<div class="col-3 my-3">
@@ -359,9 +377,9 @@
 											</div>
 											<h5 class="card-title">{{ service.titre }}</h5>
 											<div class="btn-group">
-											<a href="{{ path('service_detail', {'id': service.id}) }}" class="btn btn-primary">Voir</a>
-											<a href="{{ path('service_modify', {'id': service.id}) }}" class="btn btn-warning">Modifier</a>
-											<a href="{{ path('service_delete', {'id': service.id}) }}" class="btn btn-danger">Supprimer</a>
+											<a href="{{ path('service_detail', {'id': service.id}) }}" class="btn btn-primary">{{'see'|trans}}</a>
+											<a href="{{ path('service_modify', {'id': service.id}) }}" class="btn btn-warning">{{'modify'|trans}}</a>
+											<a href="{{ path('service_delete', {'id': service.id}) }}" class="btn btn-danger">{{'delete'|trans}}</a>
 											</div>
 										</div>
 									</div>
@@ -378,12 +396,22 @@
 						<div class="row d-flex justify-content-around">
 							{% for location in locations %}
 								<div class="col-4 my-2">
-									<a href="{{path("location_info", {id:location.id} ) }}" class="text-decoration-none">
-										<div class="card">
+									<div class="card">
+										<div class="card-header">
+											<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+												<div class="splide__track">
+													<ul class="splide__list">
+														{% for img in location.appartement.images %}
+															<li class="splide__slide"><img src="{{asset("images/appartements/"~ img )}}" class="card-img-top" alt="..."></li>
+														{% endfor %}
+													</ul>
+												</div>
+											</div>
+										</div>
+										<a href="{{path("location_info", {id:location.id} ) }}" class="text-decoration-none">
 											<div class="card-body">
-												<img src="https://placehold.co/100x50" class="card-img-top" alt="...">
 												<h4>{{location.appartement.shortDesc }}</h4>
-												<small class="placeholder-glow">
+												<small class="text-dark placeholder-glow">
 													<div class="d-flex justify-content-between">
 														<span class="">{{location.dateDebut|date("d-m-Y")}}
 															-
@@ -391,26 +419,36 @@
 														<span class=" col-3"></span>
 													</div>
 													<div class="d-flex justify-content-between">
-														<span class="placeholder col-5"></span>
+														<span class="text-dark placeholder col-5"></span>
 														<span class="">{{location.price }}
 															€</span>
 													</div>
 												</small>
 											</div>
-										</div>
-									</a>
+										</a>
+									</div>
 								</div>
 							{% endfor %}
 							<h3>{{"pastloca"|trans }}</h3>
 							<div class="row d-flex justify-content-around">
 								{% for location in pastlocations %}
 									<div class="col-4 my-2">
-										<a href="{{path("location_info", {id:location.id} ) }}" class="text-decoration-none">
-											<div class="card past">
+										<div class="card past">
+											<div class="card-header">
+												<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+													<div class="splide__track">
+														<ul class="splide__list">
+															{% for img in location.appartement.images %}
+																<li class="splide__slide"><img src="{{asset("images/appartements/"~img)}}" class="card-img-top" alt="..."></li>
+															{% endfor %}
+														</ul>
+													</div>
+												</div>
+											</div>
+											<a href="{{path("location_info", {id:location.id} ) }}" class="text-decoration-none">
 												<div class="card-body">
-													<img src="https://placehold.co/100x50" class="card-img-top" alt="...">
 													<h4>{{location.appartement.shortDesc }}</h4>
-													<small class="placeholder-glow">
+													<small class="text-dark placeholder-glow">
 														<div class="d-flex justify-content-between">
 															<span class="">{{location.dateDebut|date("d-m-Y")}}
 																-
@@ -418,14 +456,14 @@
 															<span class=" col-3"></span>
 														</div>
 														<div class="d-flex justify-content-between">
-															<span class="placeholder col-5"></span>
+															<span class="text-dark placeholder col-5"></span>
 															<span class="">{{location.price }}
 																€</span>
 														</div>
 													</small>
 												</div>
-											</div>
-										</a>
+											</a>
+										</div>
 									</div>
 								{% endfor %}
 							</div>
@@ -455,296 +493,307 @@
 			</div>
 		</div>
 	{% endblock %}
-	{% block javascripts %}
-		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-		<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
-		<script>
-			monune();
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+<link
+    href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css"
+    rel="stylesheet"
+/>
+<script>
+    monune();
 
-function monune() {
-var elms = document.getElementsByClassName( 'splide' );
+    function monune() {
+        var elms = document.getElementsByClassNafffme("splide");
 
-for ( var i = 0; i < elms.length; i++ ) {
-new Splide( elms[i], {
-type: 'loop',
-perPage: 1,
-perMove: 1,
-pagination: false,
-autoplay: false,
-breakpoints: {
-600: {
-perPage: 1
-}
-}
-
-} ).mount();
-}
-}
-
+        for (var i = 0; i < elms.length; i++) {
+            new Splide(elms[i], {
+                type: "loop",
+                perPage: 1,
+                perMove: 1,
+                pagination: false,
+                autoplay: false,
+                breakpoints: {
+                    600: {
+                        perPage: 1,
+                    },
+                },
+            }).mount();
+        }
+    }
 </script>
 {% if is_granted("ROLE_BAILLEUR")%}
 <script>
 
-const ctxl = document.getElementById('chartl');
-labels =[ {% for app in appartements %}"{{app.titre}}",{% endfor %}]
-data =[ {% for app in appartements %}"{{app.locations|length}}",{% endfor %}]
-  new Chart(ctxl, {
-    type: 'pie',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '# {{"nblocs"|trans}}',
-        data: data,
-        borderWidth: 1
-      }]
-    },
-  });
-  const ctxn = document.getElementById('chartn');
-data =[ {% for app in appartements %}"{{app.note}}",{% endfor %}]
-  new Chart(ctxn, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '{{"note"|trans}}',
-        data: data,
-        borderWidth: 1
-      }]
-    },
-  });
-  const ctxp = document.getElementById('chartp');
-data =[ {% for app in appartements %}"{{app.price}}",{% endfor %}]
-  new Chart(ctxp, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '# {{"price"|trans}}',
-        data: data,
-        borderWidth: 1
-      }]
-    },
-  });
-{% for name, appart in data %}
-const ctx_a_{{loop.index}} = document.getElementById('chart-app-{{loop.index}}');
-	const title_a_{{loop.index}} = document.getElementById('chart-app-{{loop.index}}').parentElement.parentElement.querySelector('h5');
-	title_a_{{loop.index}}.innerHTML = "\"{{name}}\"" + " : note moyenne {{appart.average_rating}}/5";
-	 new Chart(ctx_a_{{loop.index}}, {
-		type: 'bar',
-		data: {
-			labels: ['1 étoile', '2 étoiles', '3 étoiles', '4 étoiles', '5 étoiles'],
-			datasets: [{
-				label: '# {{"nbvotes"|trans}}',
-				data: [{{appart.one_star_review}}, {{appart.two_star_review}}, {{appart.three_star_review}}, {{appart.four_star_review}}, {{appart.five_star_review}}],
-				borderWidth: 1
-			}]
-		},
-	});
-{% endfor %}
-		</script>
-{% endif %}
-{% if is_granted("ROLE_PRESTA")%}
-<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'>
-<link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js' defer></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/i18n/defaults-fr_FR.min.js"></script>
-
-	<script>
-      document.addEventListener('DOMContentLoaded', function() {
-		var allevents = "";
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-		  themeSystem: 'bootstrap5',
-		  weekNumbers: true,
-		  height: '700px',
-		  locale: "{{app.request.locale}}",
-		  weekNumberCalculation: {% if app.request.locale == 'fr' %}
-			'ISO', {% else %} 'local',
-		  {% endif %}
-		  weekText: '{{"shweek"|trans}}',
-		  navLinks: true,
-		  headerToolbar: {
-    		left: 'prevYear,prev,next,nextYear today',
-    		center: 'title',
-    		right: 'timeGridDay,timeGridWeek,dayGridMonth,multiMonthYear' // user can switch between the two
-  		}, buttonText: {
-            today:    '{{"today"|trans}}',
-            month:    '{{"month"|trans}}',
-            week:     '{{"weeke"|trans}}',
-            day:      '{{"day"|trans}}',
-            list:     '{{"list"|trans}}'
-}, titleFormat:{ year: 'numeric', month: 'long', day: 'numeric' },
-		nowIndicator: true,
-		editable:true,
-		stick: true,
-		businessHours: {
-  			// days of week. an array of zero-based day of week integers (0=Sunday)
-  			daysOfWeek:  {{pro.workDays |json_encode|raw}}, // Monday - Thursday
-  			startTime: "{{pro.startHour}}", // a start time (10am in this example)
-  			endTime:  "{{pro.endHour}}", // an end time (6pm in this example)
-			},
-		eventOverlap: true, //TODO : finir
-		droppable: true,
-		drop: function(arg) {
-            // is the "remove after drop" checkbox checked?
-            //if (document.getElementById('drop-remove').checked) {
-              // if so, remove the element from the "Draggable Events" list
-            	arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+    const ctxl = document.getElementById('chartl');
+    labels =[ {% for app in appartements %}"{{app.titre}}",{% endfor %}]
+    data =[ {% for app in appartements %}"{{app.locations|length}}",{% endfor %}]
+        new Chart(ctxl, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '# {{"nblocs"|trans}}',
+                    data: data,
+                    borderWidth: 1
+                }]
             },
-		eventReceive: function(info) {
-		//eventReceive: function(info) {
-		//	d = {{pro.workDays |json_encode|raw}}
-		//	if (d.includes(info.event.start.getDay())){
-		//	calendar.addEvent({
-		//		title: info.event.title,
-		//		start: info.event.start,
-		//		end: info.event.end,
-		//		allDay: info.event.allDay,
-		//		groupId: info.event.groupId,
-		//		})
-		//	}
-//				$.ajax({
- //					{# url: "{{path('presta_add_event')}}", #}
-//					type: 'POST',
-//					data: {
-//						title: info.event.title,
-//						start: info.event.start,
-//						end: info.event.end,
-//					},
-//					success: function(response) {
-//						console.log(response);
-//					}
-//				});
-			}
         });
-        calendar.render();
-				 
-			
-		//{#{% for dev in devis %}
-		//	new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index}}'), {
-		//		eventData: {
-		//			title: '{{dev.nom ~ " " ~ dev.prenom}}',
-		//			duration: {hours:2},
-		//			color: 'blue',
-		//			groupId: 'devis-{{dev.id}}',
-		//			startEditable: true,
-		//			durationEditable: true,
-		//			revert: true,
-		//		}
-		//	});
-		//{% endfor %} #}
-		
-		{% for dev in devis %}
-			new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index}}'), {
-				eventData: {
-					title: '{{dev.nom ~ " " ~ dev.prenom}}',
-					duration: '02:00',
-					color: 'blue',
-					startTime: '10:00',
-					endTime: '12:00',
-					groupId: 'devis-{{dev.id}}',
-					startEditable: true,
-					durationEditable: true,
-					revert: true,
-				}
-			});
-		{% endfor %}
-		{% for dev in devis %}
-			new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index+1}}'), {
-				eventData: {
-					title: '{{dev.nom ~ " " ~ dev.prenom}}',
-					duration: '02:00',
-					color: 'red',
-					startTime: '10:00',
-					endTime: '12:00',
-					groupId: 'devis-{{dev.id+1}}',
-					startEditable: true,
-					durationEditable: true,
-					revert: true,
-				}
-			});
-		{% endfor %}
-		});
-	$("#v-pills-presta-tab").click(function(){
-		var prevButton = document.querySelector('.fc-prev-button');
-		var nextButton = document.querySelector('.fc-next-button');
-		nextButton.click();
-		prevButton.click();
-	});
-	$("#pickdev-{{dev.id}}" ).click(function(){
-		$(this).append('<div class="spinner-border text-primary" id="loader" role="status"><span class="visually-hidden">Loading...</span></div>');
-		$.ajax({
-			url: "{{path('devis_pick')}}",
-			type: 'POST',
-			data: {
-				id: {{dev.id}},
-			},
-			success: function(response) {
-				("#devisw").append('<div id="dragdev-{{dev.id}}" class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event badge me-3 my-1"><div  class="fc-event-main">Event 1e</div></div>');
-				console.log(response);
-				$(this).remove();
-			},
-			error: function(response) {
-				console.error(response);
-			},
-			complete: function(response) {
-				$('#loader').remove();
-			}
-		});
-			});
-    </script>
+        const ctxn = document.getElementById('chartn');
+    data =[ {% for app in appartements %}"{{app.note}}",{% endfor %}]
+        new Chart(ctxn, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '{{"note"|trans}}',
+                    data: data,
+                    borderWidth: 1
+                }]
+            },
+        });
+        const ctxp = document.getElementById('chartp');
+    data =[ {% for app in appartements %}"{{app.price}}",{% endfor %}]
+        new Chart(ctxp, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '# {{"price"|trans}}',
+                    data: data,
+                    borderWidth: 1
+                }]
+            },
+        });
+    {% for name, appart in data %}
+    const ctx_a_{{loop.index}} = document.getElementById('chart-app-{{loop.index}}');
+            const title_a_{{loop.index}} = document.getElementById('chart-app-{{loop.index}}').parentElement.parentElement.querySelector('h5');
+            title_a_{{loop.index}}.innerHTML = "\"{{name}}\"" + " : note moyenne {{appart.average_rating}}/5";
+            new Chart(ctx_a_{{loop.index}}, {
+                    type: 'bar',
+                    data: {
+                            labels: ['1 étoile', '2 étoiles', '3 étoiles', '4 étoiles', '5 étoiles'],
+                            datasets: [{
+                                    label: '# {{"nbvotes"|trans}}',
+                                    data: [{{appart.one_star_review}}, {{appart.two_star_review}}, {{appart.three_star_review}}, {{appart.four_star_review}}, {{appart.five_star_review}}],
+                                    borderWidth: 1
+                            }]
+                    },
+            });
+    {% endfor %}
+</script>
+{% endif %} {% if is_granted("ROLE_PRESTA")%}
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+/>
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+    rel="stylesheet"
+/>
+<script
+    src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"
+    defer
+></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/i18n/defaults-fr_FR.min.js"></script>
+
+<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var allevents = "";
+                    var calendarEl = document.getElementById('calendar');
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        themeSystem: 'bootstrap5',
+                        weekNumbers: true,
+                        height: '700px',
+                        locale: "{{app.request.locale}}",
+                        weekNumberCalculation: {% if app.request.locale == 'fr' %}
+                            'ISO', {% else %} 'local',
+                        {% endif %}
+                        weekText: '{{"shweek"|trans}}',
+                        navLinks: true,
+                        headerToolbar: {
+                            left: 'prevYear,prev,next,nextYear today',
+                            center: 'title',
+                            right: 'timeGridDay,timeGridWeek,dayGridMonth,multiMonthYear' // user can switch between the two
+                        }, buttonText: {
+                            today:        '{{"today"|trans}}',
+                            month:        '{{"month"|trans}}',
+                            week:         '{{"weeke"|trans}}',
+                            day:            '{{"day"|trans}}',
+                            list:         '{{"list"|trans}}'
+    }, titleFormat:{ year: 'numeric', month: 'long', day: 'numeric' },
+                    nowIndicator: true,
+                    editable:true,
+                    stick: true,
+                    businessHours: {
+                                // days of week. an array of zero-based day of week integers (0=Sunday)
+                                daysOfWeek:    {{pro.workDays |json_encode|raw}}, // Monday - Thursday
+                                startTime: "{{pro.startHour}}", // a start time (10am in this example)
+                                endTime:    "{{pro.endHour}}", // an end time (6pm in this example)
+                            },
+                    eventOverlap: true, //TODO : finir
+                    droppable: true,
+                    drop: function(arg) {
+                            // is the "remove after drop" checkbox checked?
+                            //if (document.getElementById('drop-remove').checked) {
+                                // if so, remove the element from the "Draggable Events" list
+                                    arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                            },
+                    eventReceive: function(info) {
+                    //eventReceive: function(info) {
+                    //	d = {{pro.workDays |json_encode|raw}}
+                    //	if (d.includes(info.event.start.getDay())){
+                    //	calendar.addEvent({
+                    //		title: info.event.title,
+                    //		start: info.event.start,
+                    //		end: info.event.end,
+                    //		allDay: info.event.allDay,
+                    //		groupId: info.event.groupId,
+                    //		})
+                    //	}
+    //				$.ajax({
+     //					{# url: "{{path('presta_add_event')}}", #}
+    //					type: 'POST',
+    //					data: {
+    //						title: info.event.title,
+    //						start: info.event.start,
+    //						end: info.event.end,
+    //					},
+    //					success: function(response) {
+    //						console.log(response);
+    //					}
+    //				});
+                            }
+                    });
+                    calendar.render();
+
+
+                    //{#{% for dev in devis %}
+                    //	new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index}}'), {
+                    //		eventData: {
+                    //			title: '{{dev.nom ~ " " ~ dev.prenom}}',
+                    //			duration: {hours:2},
+                    //			color: 'blue',
+                    //			groupId: 'devis-{{dev.id}}',
+                    //			startEditable: true,
+                    //			durationEditable: true,
+                    //			revert: true,
+                    //		}
+                    //	});
+                    //{% endfor %} #}
+
+                    {% for dev in devis %}
+                            new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index}}'), {
+                                    eventData: {
+                                            title: '{{dev.nom ~ " " ~ dev.prenom}}',
+                                            duration: '02:00',
+                                            color: 'blue',
+                                            startTime: '10:00',
+                                            endTime: '12:00',
+                                            groupId: 'devis-{{dev.id}}',
+                                            startEditable: true,
+                                            durationEditable: true,
+                                            revert: true,
+                                    }
+                            });
+                    {% endfor %}
+                    {% for dev in devis %}
+                            new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index+1}}'), {
+                                    eventData: {
+                                            title: '{{dev.nom ~ " " ~ dev.prenom}}',
+                                            duration: '02:00',
+                                            color: 'red',
+                                            startTime: '10:00',
+                                            endTime: '12:00',
+                                            groupId: 'devis-{{dev.id+1}}',
+                                            startEditable: true,
+                                            durationEditable: true,
+                                            revert: true,
+                                    }
+                            });
+                    {% endfor %}
+                    });
+            $("#v-pills-presta-tab").click(function(){
+                    var prevButton = document.querySelector('.fc-prev-button');
+                    var nextButton = document.querySelector('.fc-next-button');
+                    nextButton.click();
+                    prevButton.click();
+            });
+            $("#pickdev-{{dev.id}}" ).click(function(){
+                    $(this).append('<div class="spinner-border text-primary" id="loader" role="status"><span class="visually-hidden">Loading...</span></div>');
+                    $.ajax({
+                            url: "{{path('devis_pick')}}",
+                            type: 'POST',
+                            data: {
+                                    id: {{dev.id}},
+                            },
+                            success: function(response) {
+                                    ("#devisw").append('<div id="dragdev-{{dev.id}}" class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event badge me-3 my-1"><div    class="fc-event-main">Event 1e</div></div>');
+                                    console.log(response);
+                                    $(this).remove();
+                            },
+                            error: function(response) {
+                                    console.error(response);
+                            },
+                            complete: function(response) {
+                                    $('#loader').remove();
+                            }
+                    });
+                            });
+</script>
 <script>
 
-const ctxps = document.getElementById('chartps');
-labels =[ {% for serv in services %}"{{serv.titre}}",{% endfor %}]
-data =[ {% for serv in services %}"{{serv.locations|length}}",{% endfor %}]
-  new Chart(ctxps, {
-    type: 'pie',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '# {{"nblocs"|trans}}',
-        data: data,
-        borderWidth: 1
-      }]
-    },
-  });
-  const ctxpn = document.getElementById('chartpn');
-data =[ {% for serv in services %}"{{serv.avgnote}}",{% endfor %}]
-  new Chart(ctxpn, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '{{"note"|trans}}',
-        data: data,
-        borderWidth: 1
-      }]
-    },
-  });
-{% for name, note in dataserv %}
-const ctx_a_{{loop.index}} = document.getElementById('chart-serv-{{loop.index}}');
-	const title_a_{{loop.index}} = document.getElementById('chart-serv-{{loop.index}}').parentElement.parentElement.querySelector('h5');
-	title_a_{{loop.index}}.innerHTML = "\"{{name}}\"" + " : note moyenne {{note.average_rating}}/5";
-	 new Chart(ctx_a_{{loop.index}}, {
-		type: 'bar',
-		data: {
-			labels: ['1 étoile', '2 étoiles', '3 étoiles', '4 étoiles', '5 étoiles'],
-			datasets: [{
-				label: '# {{"nbvotes"|trans}}',
-				data: [{{note.one_star_review}}, {{note.two_star_review}}, {{note.three_star_review}}, {{note.four_star_review}}, {{note.five_star_review}}],
-				borderWidth: 1
-			}]
-		},
-	});
-{% endfor %}
+    const ctxps = document.getElementById('chartps');
+    labels =[ {% for serv in services %}"{{serv.titre}}",{% endfor %}]
+    data =[ {% for serv in services %}"{{serv.locations|length}}",{% endfor %}]
+        new Chart(ctxps, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '# {{"nblocs"|trans}}',
+                    data: data,
+                    borderWidth: 1
+                }]
+            },
+        });
+        const ctxpn = document.getElementById('chartpn');
+    data =[ {% for serv in services %}"{{serv.avgnote}}",{% endfor %}]
+        new Chart(ctxpn, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '{{"note"|trans}}',
+                    data: data,
+                    borderWidth: 1
+                }]
+            },
+        });
+    {% for name, note in dataserv %}
+    const ctx_a_{{loop.index}} = document.getElementById('chart-serv-{{loop.index}}');
+            const title_a_{{loop.index}} = document.getElementById('chart-serv-{{loop.index}}').parentElement.parentElement.querySelector('h5');
+            title_a_{{loop.index}}.innerHTML = "\"{{name}}\"" + " : note moyenne {{note.average_rating}}/5";
+            new Chart(ctx_a_{{loop.index}}, {
+                    type: 'bar',
+                    data: {
+                            labels: ['1 étoile', '2 étoiles', '3 étoiles', '4 étoiles', '5 étoiles'],
+                            datasets: [{
+                                    label: '# {{"nbvotes"|trans}}',
+                                    data: [{{note.one_star_review}}, {{note.two_star_review}}, {{note.three_star_review}}, {{note.four_star_review}}, {{note.five_star_review}}],
+                                    borderWidth: 1
+                            }]
+                    },
+            });
+    {% endfor %}
+</script>
+{% endif %}
 
 
-
-		</script>
-	{% endif %}
 	{% endblock %}

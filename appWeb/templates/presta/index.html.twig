@@ -4,8 +4,8 @@
 
 	<div class="row py-2 d-flex bg-orange">
 		<div class="fs-1 text-center ">
-			<h4>Vous pouvez faire votre demande de devis
-				<a href={{path("create_devis")}}>ici</a>
+			<h4>{{"Vous pouvez faire votre demande de devis"|trans}}
+				<a href="{{path("create_devis")}}">{{"ici"|trans}}</a>
 			</h4>
 		</div>
 	</div>
@@ -20,17 +20,12 @@
 			<a href="{{ path('detail_presta', {'id': presta.id}) }}" class="col-md-4 py-1 text-decoration-none">
 				<div class="card">
 					<div class="card-body">
-						<img src={{asset("images/presta/"~ link)}} class="card-img-top" alt="..."  height=300>
+						<img src={{asset("images/presta/"~ link)}} class="card-img-top" alt="..." height="300">
 						<h5 class="text-center">{{presta.societyName|slice(0,30)}}
 						</h5>
 					</div>
 				</div>
 			</a>
 		{% endfor %}
-
-		<div class="row d-flex justify-content-center mt-5">
-			<div class="fs-3 text-center col-6 bg-info rounded pb-2 pt-2">
-				Voir les autres prestataires disponibles en cliquant ici
-			</div>
-		</div>
-	{% endblock %}
+	</div>
+{% endblock %}

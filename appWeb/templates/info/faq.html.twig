@@ -2,24 +2,24 @@
 {% block body %}
 	<div class="row text-white py-5 d-flex justify-content-center bg-info">
 		<div class="fs-1 mt-5  text-center pt-5">
-			Besoin d’aide ?
+			{{'Besoin d’aide ?'|trans}}
 		</div>
 		<div class="fs-1 mb-5 text-center col-4">
 			<form class="form-inline my-2 my-lg-0">
 				<input id="searchInput" class="form-control mr-sm-2" type="search" placeholder="Trouvez les réponses à toutes vos questions" aria-label="Search">
-				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+				<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">{{'Search'|trans}}</button>
 			</form>
 		</div>
 	</div>
 	<div class="row text-center fs-1">
 		<div>
-			Questions fréquentes
+			{{'Questions fréquentes'|trans}}
 		</div>
 	</div>
 	<div class="row">
 		<div id="question1" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer1" role="button" aria-expanded="false" aria-controls="answer1">
 			<div>
-				<i class=" arrow bi-arrow-right"></i>&nbsp;Comment s’inscrire sur le site ?
+				<i class="question arrow bi-arrow-right"></i>&nbsp;{{'Comment s’inscrire sur le site ?'|trans}}
 			</div>
 			<div>
 				<i class="icon bi-plus-circle"></i>
@@ -27,12 +27,12 @@
 		</div>
 	</div>
 	<div class="row">
-		<div id="answer1" class="col fs-2 collapse">Cliquer sur le bouton " s'inscrire" en haut à droite de la page d'accueil</div>
+		<div id="answer1" class="col fs-2 collapse">{{'Cliquer sur le bouton " s\'inscrire" en haut à droite de la page d\accueil'|trans}}</div>
 	</div>
 	<div class=" row">
 		<div id="question2" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer2" role="button" aria-expanded="false" aria-controls="answer2">
 			<div>
-				<i class=" arrow bi-arrow-right"></i>&nbsp;Comment être bailleur ?
+				<i class="question arrow bi-arrow-right"></i>&nbsp;{{'Comment être bailleur ?'|trans}}
 			</div>
 			<div>
 				<i class="icon bi-plus-circle"></i>
@@ -41,12 +41,12 @@
 	</div>
 	<div class="row ">
 		<div id="answer2" class="col fs-2 collapse">
-			Il faut avoir un compte et avoir un bien immobilier à louer</div>
+			{{'Il faut avoir un compte et avoir un bien immobilier à louer'|trans}}</div>
 	</div>
 	<div class=" row ">
 		<div id="question3" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer3" role="button" aria-expanded="false" aria-controls="answer3">
 			<div>
-				<i class=" arrow bi-arrow-right"></i>&nbsp;Comment supprimer mon compte ?
+				<i class="question arrow bi-arrow-right"></i>&nbsp;{{'Comment supprimer mon compte ?'|trans}}
 			</div>
 			<div>
 				<i class="icon bi-plus-circle"></i>
@@ -54,12 +54,12 @@
 		</div>
 	</div>
 	<div class="row">
-		<div id="answer3" class="col fs-2 collapse">Vous pouvez nous faire la demande via notre plateforme de ticketing</div>
+		<div id="answer3" class="col fs-2 collapse">{{'Vous pouvez nous faire la demande via notre plateforme de ticketing'|trans}}</div>
 	</div>
 	<div class="row">
 		<div id="question4" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer4" role="button" aria-expanded="false" aria-controls="answer4">
 			<div>
-				<i class=" arrow bi-arrow-right"></i>&nbsp;Quelles sont les moyens de paiement disponibles ?
+				<i class="question arrow bi-arrow-right"></i>&nbsp;{{'Quelles sont les moyens de paiement disponibles ?'|trans}}
 			</div>
 			<div>
 				<i class="icon bi-plus-circle"></i>
@@ -67,13 +67,13 @@
 		</div>
 	</div>
 	<div class="row">
-		<div id="answer4" class="col fs-2 collapse">Ce sont Visa et Mastercard.
+		<div id="answer4" class="col fs-2 collapse">{{'Ce sont Visa et Mastercard.'|trans}}
 		</div>
 	</div>
 	<div class=" row ">
 		<div id="question5" class="col fs-2 btn d-flex justify-content-between" data-bs-toggle="collapse" href="#answer5" role="button" aria-expanded="false" aria-controls="answer5">
 			<div>
-				<i class=" arrow bi-arrow-right"></i>&nbsp;Comment récupérer les clés ?
+				<i class="question arrow bi-arrow-right"></i>&nbsp;{{'Comment récupérer les clés ?'|trans}}
 			</div>
 			<div>
 				<i class="icon bi-plus-circle"></i>
@@ -82,7 +82,7 @@
 	</div>
 	<div class="row">
 		<div id="answer5" class="col fs-2 collapse">
-			Les clés vont vous être remises par la femme de ménage.
+			{{'Les clés vont vous être remises par la femme de ménage.'|trans}}
 		</div>
 	</div>
 {% endblock %}
@@ -92,16 +92,17 @@
 		document.getElementById( "searchInput" ).addEventListener( "input", function () {
 			var searchText = this.value.toLowerCase();
 			var questions = document.getElementsByClassName( "question" );
-
 		// Parcourir toutes les questions
 			for ( var i = 0; i < questions.length; i++ ) {
-				var questionText = questions[ i ].innerText.toLowerCase();
-				var questionId = questions[ i ].id;
+				var questionText = questions[ i ].parentNode.innerText.toLowerCase();
+				var questionId = questions[ i ].parentNode.parentNode.id;
 		// Vérifier si le texte de la question correspond à la recherche
 				if ( questionText.includes( searchText ) ) { // Afficher la question si elle correspond
-					document.getElementById( questionId ).parentNode.style.display = "block";
+					document.getElementById( questionId ).classList.add("d-block");
+					document.getElementById( questionId ).classList.remove("d-none");
 				} else { // Masquer la question si elle ne correspond pas
-					document.getElementById( questionId ).parentNode.style.display = "none";
+					document.getElementById( questionId ).classList.add("d-none");
+					document.getElementById( questionId ).classList.remove("d-block");
 				}
 			}
 		} );
@@ -124,7 +125,7 @@
 				}
 				else {
 					col.classList.remove( 'bi-arrow-down' )
-					col.classList.add( 'bi-arrow-right' )
+					col.classListquestion.add( 'bi-arrow-right' )
 				}
 			} )
 		}

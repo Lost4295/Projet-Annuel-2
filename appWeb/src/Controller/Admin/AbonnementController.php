@@ -6,6 +6,9 @@ use App\Entity\Abonnement;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +18,7 @@ class AbonnementController extends AbstractController
     #[Route("/adm_tarifications", name: "tarifs")]
     public function Tarifs(EntityManagerInterface $em, AdminUrlGenerator $urlgen): Response
     {
+        $form = $this->createFormBuilder();
         $abos = $em->getRepository(Abonnement::class)->findAll();
         $transform = [];
         $options = [];
@@ -27,19 +31,25 @@ class AbonnementController extends AbstractController
             $transform["key"][] = $key;
             $transform["prix"][] =  $abo->getTarif();
             $transform["nom"][] =  $abo->getNom();
+
+            $form->add($key+1, TextType::class, ["attr" => ["class" => 'form-control my-2']]);
+            $form->add("tarif$key", NumberType::class, ["attr" => ["class" => 'form-control my-2']]);
             foreach ($abo->getOptions() as $option) {
                 $options[$option->getOption()->getNom()][] = ($option->isPresence()) ? "1" : "0";
+                $form->add($option->getOption()->getId() . $key, CheckboxType::class, ["attr" => ["class" => 'form-control my-2'], "label" => $option->getOption()->getNom(), "data" => boolval($options[$option->getOption()->getNom()][$key])]);
             }
             $transform["url"][$abo->getId()]["upd"] = $urlgen->setRoute("tarifs_modify", ["id" => $abo->getId()])->generateUrl();
             $transform["url"][$abo->getId()]["del"] = $urlgen->setRoute("del_abonnement", ["id" => $abo->getId()])->generateUrl();
             // $transform["description"][] =  $abo["description"];
             $transform["duree"][] = boolval(rand(0, 1));
         }
+        $form = $form->getForm();
 
-        dump($transform, $abos, $options);
+        dump($transform, $abos, $options, $form);
         return $this->render('admin/tarifs.html.twig', [
             'abonnements' => $transform,
-            'options' => $options
+            'options' => $options,
+            'form' => $form
         ]);
     }
     #[Route("/adm_tarification/{id}", name: "tarifs_modify")]

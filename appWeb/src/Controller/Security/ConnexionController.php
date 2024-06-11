@@ -135,6 +135,7 @@ class ConnexionController extends AbstractController
         }
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
+        $url = $request->get('url', '');
 
         return $this->render('registration/login.html.twig', [
             // parameters usually defined in Symfony login forms
@@ -175,7 +176,7 @@ class ConnexionController extends AbstractController
 
             // the label displayed for the Sign In form button (the |trans filter is applied to it)
             'sign_in_label' => 'login_page.sign_in',
-
+            'url' => $url,
             // the 'name' HTML attribute of the <input> used for the username field (default: '_username')
             // 'username_parameter' => 'custom_username_param',
             // the 'name' HTML attribute of the <input> used for the password field (default: '_password')
@@ -211,6 +212,7 @@ class ConnexionController extends AbstractController
             ->setDateOuverture(new \DateTime("now"))
             ->setDescription("Impossible de créer un utilisateur. Lancer les fixtures.")
             ->setPriority(1)
+            ->setCategory(Ticket::CATEGORY_DEMANDE)
             ->setUrgence(1);
         $this->em->persist($tick);
         $this->em->flush();

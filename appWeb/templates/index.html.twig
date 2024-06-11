@@ -6,13 +6,7 @@
       <img src="{{ asset('brand/PCS_Logo/White_Full.png') }}" alt="logo" class="img-fluid">
     </div>
     <div class="col-8 d-flex align-items-center">
-      <p class="text-white">Paris Caretaker Services (PCS) est une chaîne de conciergeries immobilières assurant une offre de
-      gestion locative saisonnière, créée à Paris en 2018. La société a connu une croissance
-      rapide depuis sa création, principalement en raison de la qualité de son accueil et de la richesse de ses
-      prestations.
-      Elle offre des services allant de la gestion des réservations jusqu'à l’entretien du bien immobilier pour
-      le compte du propriétaire, en passant par l’accueil des clients. Ainsi, de nombreux bailleurs peuvent louer 
-      leurs logements sans avoir à gérer les différentes charges inhérentes à la location.
+      <p class="text-white">{{"starttext"|trans}}
       </p>
     </div>
   </div>
@@ -30,13 +24,13 @@
 							</div>
 						</div>
 					</div>
-					<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="text-decoration-none text-black">
+					<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="text-decoration-none ">
 						<div class="card-body">
 							<h5>{{appart.city}}
 								-
 								{{appart.country}}</h5>
-							<small>{{appart.description|slice(0,50)~"..."}}</small>
-							<div style="display: flex; justify-content: space-between; width: 100%;">
+							<small class="text-black">{{appart.description|slice(0,50)~"..."}}</small>
+							<div class="text-black" style="display: flex; justify-content: space-between; width: 100%;">
 								<p>{{appart.price}}
 									€ / Nuit</p>
 								<p>{{appart.note}}
@@ -51,7 +45,6 @@
 {% block javascripts %}
 	<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
 <script>
 monune();
 

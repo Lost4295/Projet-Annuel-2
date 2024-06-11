@@ -1,64 +1,83 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container mt-5">
-    <h2>{{ "locdetail"|trans }}</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <img src="http://placehold.it/150/50" alt="dcpl" class="img-fluid mb-3"/>
-            <h3>{{ location.appartement.titre }}</h3>
-            <p>{{ location.appartement.description }}</p>
-        </div>
-        <div class="col-md-6">
-            <h4>{{ "apppluses"|trans }}</h4>
-            <div class="row">
-                {% for plus in location.appartement.appartPluses %}
-                <div class="col-4 mb-2">
-                    <div class="d-flex align-items-center">
-                        <i class="{{ constant('ICONS', plus)[constant('LIST_PLUSES', plus)[plus.icon]]['data-icon'] }}"></i>
-                        <span class="ms-2">{{ constant('LIST_PLUSES', plus)[plus.icon] }}</span>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <p><strong>{{ "dates"|trans }}:</strong> {{ location.dateDebut|date('d/m/Y') }} - {{ location.dateFin|date('d/m/Y') }}</p>
-            <p><strong>{{ "price"|trans }}:</strong> {{ location.price }} €</p>
-            <p><strong>{{ "for"|trans }}:</strong> {{ location.adults + location.kids + location.babies }} {{ "persons"|trans }}</p>
-        </div>
-    </div>
+	<div class="container mt-5">
+		<h2>{{ "locdetail"|trans }}</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+					<div class="splide__track">
+						<ul class="splide__list">
+							{% for img in location.appartement.images %}
+								<li class="splide__slide"><img src="{{asset("images/appartements/"~img)}}" class="card-img-top" alt="..."></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<h3>{{ location.appartement.titre }}</h3>
+				<p>{{ location.appartement.description }}</p>
+			</div>
+			<div class="col-md-6">
+				<h4>{{ "apppluses"|trans }}</h4>
+				<div class="row">
+					{% for plus in location.appartement.appartPluses %}
+						<div class="col-4 mb-2">
+							<div class="d-flex align-items-center">
+								<i class="{{ constant('ICONS', plus)[constant('LIST_PLUSES', plus)[plus.icon]]['data-icon'] }}"></i>
+								<span class="ms-2">{{ constant('LIST_PLUSES', plus)[plus.icon] }}</span>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<p>
+					<strong>{{ "dates"|trans }}:</strong>
+					{{ location.dateDebut|date('d/m/Y') }}
+					-
+					{{ location.dateFin|date('d/m/Y') }}</p>
+				<p>
+					<strong>{{ "price"|trans }}:</strong>
+					{{ location.price }}
+					€</p>
+				<p>
+					<strong>{{ "for"|trans }}:</strong>
+					{{ location.adults + location.kids + location.babies }}
+					{{ "persons"|trans }}</p>
+			</div>
+		</div>
 
-    <div class="card mt-5">
-        <div class="card-header">
-            <h5>{{ "rating"|trans }}</h5>
-        </div>
-        <div class="card-body text-center">
-            <h4 class="mb-4">
-                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_1" data-rating="1"></i>
-                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_2" data-rating="2"></i>
-                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_3" data-rating="3"></i>
-                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_4" data-rating="4"></i>
-                <i class="fas fa-star star-light submit_star mr-1" id="submit_star_5" data-rating="5"></i>
-            </h4>
-            <button type="button" name="save_review" id="save_review" class="btn btn-success">{{ "send"|trans }}</button>
-        </div>
-    </div>
+		<div class="card mt-5">
+			<div class="card-header">
+				<h5>{{ "rating"|trans }}</h5>
+			</div>
+			<div class="card-body text-center">
+				<h4 class="mb-4">
+					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_1" data-rating="1"></i>
+					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_2" data-rating="2"></i>
+					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_3" data-rating="3"></i>
+					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_4" data-rating="4"></i>
+					<i class="fas fa-star star-light submit_star mr-1" id="submit_star_5" data-rating="5"></i>
+                    &nbsp;
+				</h4>
+				<button type="button" name="save_review" id="save_review" class="btn btn-success">{{ "send"|trans }}</button>
+			</div>
+		</div>
 
-    <div class="mt-4">
-        <a href="{{ path('profile') }}" class="btn btn-primary">{{ "backtolist"|trans }}</a>
-    </div>
-</div>
+		<div class="mt-4">
+			<a href="{{ path('profile') }}" class="btn btn-primary">{{ "backtolist"|trans }}</a>
+		</div>
+	</div>
 {% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<style>
-    .star-light {
-        color: #d3d3d3;
-    }
-    .text-warning {
-        color: #FDD835;
-    }
-</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+	<style>
+		.star-light {
+			color: #d3d3d3;
+		}
+		.text-warning {
+			color: #FDD835;
+		}
+	</style>
 {% endblock %}
 
 {% block javascripts %}
@@ -102,5 +121,31 @@
             }
         });
     });
+</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+<script>
+monune();
+
+function monune() {
+	var elms = document.getElementsByClassName( 'splide' );
+
+	for ( var i = 0; i < elms.length; i++ ) {
+		new Splide( elms[ i ], {
+			type       : 'loop',
+			perPage    : 1,
+			perMove    : 1,
+			pagination : false,
+			autoplay   : false,
+			breakpoints: {
+				600: {
+					perPage: 1,
+				}
+			}
+		
+		}).mount();
+	}
+}
 </script>
 {% endblock %}

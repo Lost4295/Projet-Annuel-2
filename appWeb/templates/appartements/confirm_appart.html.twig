@@ -1,9 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %}Confirmation
+{% block title %}{{"Confirmation"|trans}}
 {% endblock %}
 {% block javascripts %}
-
-	<script data-require="jquery@2.2.4" data-semver="2.2.4" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -13,16 +11,16 @@
 		<div class="col-6">
 			<div class="card bg-info">
 				<div class="card-header">
-					<h2>Demande de Réservation</h2>
+					<h2>{{"Demande de Réservation"|trans}}</h2>
 				</div>
 				<div class="card-body">
-					<p>Votre voyage:</p>
+					<p>{{"Votre voyage:"|trans}}</p>
 					<div class='d-flex justify-content-between mb-2'>
 						<div>
-							Date :
+							{{"date"|trans}} :
 						</div>
 						<div>
-							<a href="{{ path("appart_detail",{id: appart.id})}}" class="link-light">Modifier</a>
+							<a href="{{ path("appart_detail",{id: appart.id})}}" class="link-light">{{"modify"|trans}}</a>
 						</div>
 					</div>
 					<p>{{ dates[0]|date("d/m/Y")}}
@@ -30,18 +28,18 @@
 						{{ dates[1]|date("d/m/Y")}}</p>
 					<div class='d-flex justify-content-between mb-2'>
 						<div>
-							Voyageurs :
+							{{"Voyageurs"|trans}} :
 						</div>
 						<div>
-							<a href="{{ path("appart_detail",{id: appart.id})}}" class="link-light">Modifier</a>
+							<a href="{{ path("appart_detail",{id: appart.id})}}" class="link-light">{{"modify"|trans}}</a>
 						</div>
 					</div>
 					{% set num = firstForm.vars.value.adults + firstForm.vars.value.kids + firstForm.vars.value.babies %}
 					<p>{{ num  }}
 						{% if num > 1 %}
-							Voyageurs
+							{{"Voyageurs"|trans}}
 						{% else %}
-							Voyageur
+							{{"voyageur"|trans}}
 						{% endif %}
 						<span></span>
 					</p>
@@ -51,7 +49,7 @@
 		<div class="col-6">
 			<div class="card bg-info mb-3">
 				<div class="card-header">
-					<h2>Appartement</h2>
+					<h2>{{"Appartement"|trans}}</h2>
 				</div>
 				<div class="card-body">
 					<div class="row">
@@ -65,23 +63,23 @@
 								<p>{{ appart.shortDesc }}</p>
 								<p>{{ appart.city }}</p>
 								<p>{{ appart.price }}
-									€/nuit</p>
+									€/{{"nuit"|trans}}</p>
 							</div>
 						</div>
 						<hr class="text-light">
 						<div class="row">
-							<h3>Détails du prix</h3>
+							<h3>{{"Détails du prix"|trans}}</h3>
 							<div class="col d-flex flex-column justify-content-between">
 								<div class="col m-2 d-flex justify-content-between">
-									<div>Appartement *
+									<div>{{"Appartement"|trans}} *
 										{{ days }}
-										nuits restées</div>
+										{{"nuits restées"|trans}}</div>
 									{% set p1 = appart.price * days %}
 									<div>{{ p1 }}
 										€</div>
 								</div>
 								<div class="col m-2 d-flex justify-content-between">
-									<div>Taxe de PCS</div>
+									<div>{{"Taxe de PCS"|trans}}</div>
 									{% set p2 = appart.price * 0.05 %}
 									<div>{{ p2 }}€</div>
 								</div>
@@ -92,7 +90,7 @@
 							<div class="col d-flex justify-content-between">
 								<div class="col m-2 d-flex justify-content-between">
 									<div>
-										total</div>
+										{{"total"|trans}}</div>
 									<div>{{ p1 + p2 }}
 										€</div>
 								</div>
@@ -103,7 +101,7 @@
 			</div>
 			<div class="card bg-info">
 				<div class="card-header">
-					<h2>Options supplémentaires</h2>
+					<h2>{{"Options supplémentaires"|trans}}</h2>
 					{{ form_start(secondForm) }}
 					{{ form_row(secondForm.services) }}
 					{{ form_row(secondForm.price, {value: p1+p2, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
@@ -119,7 +117,7 @@
 	</div>
 	<div class="row">
 		<div class="col">
-			<button class="btn btn-primary">Procéder au paiement</button>
+			<button class="btn btn-primary">{{"Procéder au paiement"|trans}}</button>
 		</div>
 	</div>
 	{{ form_end(secondForm, {render_rest: false}) }}
