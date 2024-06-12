@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\NoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: NoteRepository::class)]
 #[UniqueEntity(fields: ['location', 'user'], message: 'Vous avez déjà noté cette location.')]
+#[ApiResource( security: "is_granted('ROLE_USER')")]
 class Note
 {
     #[ORM\Id]

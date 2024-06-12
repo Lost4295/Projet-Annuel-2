@@ -27,9 +27,6 @@ class LocationController extends AbstractController
     public function createPage(EntityManagerInterface $em, AppartementService $as)
     {
         $apparts = $em->getRepository(Appartement::class)->findAll();
-        foreach ($apparts as $appart) {
-            $as->updateAppart($appart->getId());
-        }
         return $this->render('appartements/locations.html.twig', [
             'apparts' => $apparts
         ]);

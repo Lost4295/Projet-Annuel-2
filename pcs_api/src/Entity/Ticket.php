@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
-#[ApiResource]
+#[ApiResource( security: "is_granted('ROLE_NON_USER')")]
 class Ticket
 {
     public const TYPE_EPIC = 1;

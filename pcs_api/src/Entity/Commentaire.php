@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
-#[ApiResource]
+#[ApiResource( security: "is_granted('ROLE_NON_USER')")]
 class Commentaire
 {
 

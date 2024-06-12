@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: ProfessionnelRepository::class)]
-#[ApiResource]
+#[ApiResource( security: "is_granted('ROLE_NON_USER')")]
 class Professionnel
 {
     #[ORM\Id]

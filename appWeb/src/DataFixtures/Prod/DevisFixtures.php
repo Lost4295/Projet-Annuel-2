@@ -1,12 +1,13 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\Prod;
 
 use App\Entity\Devis;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class DevisFixtures extends Fixture
+class DevisFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager):void
     {
@@ -19,5 +20,9 @@ class DevisFixtures extends Fixture
             $devis->setTypePresta(rand(1,4));
             $manager->persist($devis);
         }
+    }
+    public static function getGroups(): array
+    {
+        return ['prod', 'devisprod'];
     }
 }

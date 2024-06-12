@@ -1,13 +1,15 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\Dev;
+
 
 use App\Entity\Ticket;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class TicketFixtures extends Fixture implements DependentFixtureInterface
+class TicketFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
 
     public function load(ObjectManager $manager): void
@@ -36,5 +38,9 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
         return [
             UserFixtures::class,
         ];
+    }
+    public static function getGroups(): array
+    {
+        return ['dev', 'ticketdev'];
     }
 }

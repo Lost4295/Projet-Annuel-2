@@ -8,6 +8,8 @@ import time
 dotenv.load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
+URL = os.getenv("URL")
+IP = os.getenv("IP")
 CHOICE = "Votre choix : "
 INVALID = "Choix invalide"
 MEMBER = "hydra:member"
@@ -18,19 +20,17 @@ DESC = 'hydra:description'
 
 
 def authenticate():
-    url = "http://pcs.freeboxos.fr:8080"
-    response = requests.post(url+"/auth",
+    response = requests.post(URL+"/auth",
                              json={"email": EMAIL, "password": PASSWORD})
     if response.status_code == 200:
-        return [url, response.json()["token"]]
+        return [URL, response.json()["token"]]
     else:
         print("Error while trying to authenticate")
         print("Trying with IP address...")
-        url = "http://82.65.24.229:8080"
-        response = requests.post(url+"/auth",
+        response = requests.post(IP+"/auth",
                                  json={"email": EMAIL, "password": PASSWORD})
         if response.status_code == 200:
-            return [url, response.json()["token"]]
+            return [IP, response.json()["token"]]
         else:
             print("Error while trying to authenticate")
             exit()

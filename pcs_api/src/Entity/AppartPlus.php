@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: AppartPlusRepository::class)]
-#[ApiResource]
+#[ApiResource( security: "is_granted('ROLE_NON_USER')", operations:[])]
 class AppartPlus
 {
     public const WIFI = 1;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\Dev;
 
 use App\Entity\AppartPlus;
 use App\Entity\Location;
@@ -10,9 +10,11 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Appartement;
 use App\Entity\Note;
+use DateTime;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class AppartementFixtures extends Fixture implements DependentFixtureInterface
+class AppartementFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     private AppartementService $as;
     public function __construct(AppartementService $as)
@@ -75,9 +77,9 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
             $that =$this->getReference('voyageur'.rand(1, 10).'-user');
             $loca = new Location();
             $loca->setLocataire($that);
-            $date = new \DateTime(sprintf('202%d-01-%02d',rand(2,9), rand(1,31)));
+            $date = new DateTime(sprintf('202%d-01-%02d',rand(2,9), rand(1,31)));
             $loca->setDateDebut($date);
-            $loca->setDateFin($date->add(new \DateInterval('P'.rand(1, 10).'D')));
+            $loca->setDateFin(new DateTime($date->add(new \DateInterval('P'.rand(1, 10).'D'))->format("Y-m-d H:i:s")));
             $loca->setAppartement($this->getReference('appartement'.rand(1, 14)));
             $loca->setAdults(rand(1, 4));
             $loca->setKids(rand(0, 2));
@@ -112,5 +114,9 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface
         return [
             UserFixtures::class,
         ];
+    }
+    public static function getGroups(): array
+    {
+        return ['dev', 'appartdev'];
     }
 }

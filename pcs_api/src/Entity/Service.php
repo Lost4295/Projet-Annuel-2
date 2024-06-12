@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
-#[ApiResource]
+#[ApiResource( security: "is_granted('ROLE_NON_USER')")]
 class Service
 {
     const NETTOYAGE = 1;
@@ -54,7 +54,7 @@ class Service
     /**
      * @var Collection<int, Location>
      */
-    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: Location::class, mappedBy: 'services')]
     private Collection $locations;
 
     public function __construct()

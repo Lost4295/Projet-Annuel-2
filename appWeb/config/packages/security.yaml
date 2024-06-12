@@ -14,6 +14,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         secured_area:
+            pattern: ^/
             form_login:
                 # "app_login" is the name of the route created previously
                 login_path: login
@@ -21,7 +22,6 @@ security:
                 use_referer: true
                 enable_csrf: true
                 provider: app_user_provider
-                success_handler: App\Security\LoginSuccessHandler
             login_throttling:
                     max_attempts: 5
             logout:
@@ -39,9 +39,10 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/ticket, roles: ROLE_USER }
+        - { path: ^/locations/confirm, roles: ROLE_USER }
 
 when@test:
     security:

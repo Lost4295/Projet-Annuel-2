@@ -1,35 +1,31 @@
-
 import PySimpleGUI as sg
+import time
 
-# ----------- Create the 3 layouts this Window will display -----------
-layout1 = [[sg.Text('This is layout 1 - It is all Checkboxes')],
-           *[[sg.CB(f'Checkbox {i}')] for i in range(5)]]
 
-layout2 = [[sg.Text('This is layout 2')],
-           [sg.Input("Nom",key='-IN-')],
-           [sg.Input(key='-IN2-')]]
+def work():
+    time.sleep(5)
 
-layout3 = [[sg.Text('This is layout 3 - It is all Radio Buttons')],
-           *[[sg.R(f'Radio {i}', 1)] for i in range(8)]]
+layout = [
+    [sg.Multiline(size=(40, 10), key='-MULTILINE-', no_scrollbar=True)],
+    [sg.Button('Download Files'),sg.Button("Exit")],
+]
+window = sg.Window('Demo', layout, enable_close_attempted_event=True)
 
-# ----------- Create actual layout using Columns and a row of Buttons
-layout = [[sg.Column(layout1, key='-COL1-'), sg.Column(layout2, visible=False, key='-COL2-'), sg.Column(layout3, visible=False, key='-COL3-')],
-          [sg.Button('Cycle Layout'), sg.Button('1'), sg.Button('2'), sg.Button('3'), sg.Button('Exit')]]
-
-window = sg.Window('Swapping the contents of a window', layout)
-
-layout = 1  # The currently visible layout
 while True:
     event, values = window.read()
-    print(event, values)
-    if event in (None, 'Exit'):
+
+    if event in (sg.WINDOW_CLOSE_ATTEMPTED_EVENT, 'Exit'):
+        window.timer_stop_all()
+        sg.popup_animated(None)
         break
-    if event == 'Cycle Layout':
-        window[f'-COL{layout}-'].update(visible=False)
-        layout = layout + 1 if layout < 3 else 1
-        window[f'-COL{layout}-'].update(visible=True)
-    elif event in '123':
-        window[f'-COL{layout}-'].update(visible=False)
-        layout = int(event)
-        window[f'-COL{layout}-'].update(visible=True)
+    elif event == sg.TIMER_KEY:
+        sg.popup_animated(sg.DEFAULT_BASE64_LOADING_GIF, message='Loading', time_between_frames=100)
+        window.force_focus()
+    elif event == 'Download Files':
+        window.timer_start(100)
+        window.start_thread(work, 'Done')
+    elif event == 'Done':
+        window.timer_stop_all()
+        sg.popup_animated(None)
+
 window.close()

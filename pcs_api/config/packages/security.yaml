@@ -12,27 +12,28 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        main:
+            pattern: ^/auth$
+            stateless: true
+            json_login:
+                check_path: /auth # The name in routes.yaml is enough for mapping
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
         api:
-            pattern: ^/api/
+            pattern: ^/
             provider: users
             stateless: true
             jwt: ~
             # guard:
             #     authenticators:
             #         - lexik_jwt_authentication.jwt_token_authenticator
-        main:
-            stateless: true
-            json_login:
-                check_path: auth # The name in routes.yaml is enough for mapping
-                username_path: email
-                password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
     access_control:
-        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
         - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI docs
         - { path: ^/auth, roles: PUBLIC_ACCESS }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

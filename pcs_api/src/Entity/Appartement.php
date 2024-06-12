@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: AppartementRepository::class)]
-#[ApiResource]
+#[ApiResource( security: "is_granted('ROLE_NON_USER')")]
 class Appartement
 {
     #[ORM\Id]
@@ -38,10 +38,6 @@ class Appartement
 
     #[ORM\Column(length: 255)]
     private ?string $country = null;
-
-
-    #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $nbRooms = null;
 
     #[ORM\Column]
     private ?float $note = null;
@@ -156,18 +152,6 @@ class Appartement
     public function setAddress(string $address): static
     {
         $this->address = $address;
-
-        return $this;
-    }
-
-    public function getNbRooms(): ?int
-    {
-        return $this->nbRooms;
-    }
-
-    public function setNbRooms(int $nbRooms): static
-    {
-        $this->nbRooms = $nbRooms;
 
         return $this;
     }

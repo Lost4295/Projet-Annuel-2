@@ -7,10 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 
 #[ORM\Entity(repositoryClass: OptionRepository::class)]
-#[ApiResource]
+#[ApiResource( security: "is_granted('ROLE_NON_USER')")]
 class Option
 {
 
@@ -27,6 +28,7 @@ class Option
 
 
     #[ORM\OneToMany(targetEntity: OptionsAbonnement::class, mappedBy: 'option')]
+    #[Ignore]
     private Collection $abonnement;
 
 

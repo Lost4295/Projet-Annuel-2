@@ -8,9 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: AbonnementRepository::class)]
-#[ApiResource]
+#[ApiResource( security: "is_granted('ROLE_NON_USER')")]
 class Abonnement
 {
     #[ORM\Id]
@@ -28,6 +29,7 @@ class Abonnement
     private Collection $subscribers;
 
     #[ORM\OneToMany(targetEntity: OptionsAbonnement::class, mappedBy: 'abonnement')]
+    #[Ignore]
     private Collection $options;
 
     #[ORM\Column(length: 255, nullable: true)]
