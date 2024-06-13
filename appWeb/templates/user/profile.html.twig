@@ -39,7 +39,7 @@
 					{% if is_granted("ROLE_PRESTA") %}
 						<button class="nav-link my-2 p-4" id="v-pills-presta-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta" type="button" role="tab" aria-controls="v-pills-presta" aria-selected="false">{{"prestadates"|trans}}</button>
 						<button class="nav-link my-2 p-4" id="v-pills-presta2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta2" type="button" role="tab" aria-controls="v-pills-presta2" aria-selected="false">{{"prestataire"|trans}}</button>
-						<button class="nav-link my-2 p-4" id="v-pills-presta3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta3" type="button" role="tab" aria-controls="v-pills-presta3" aria-selected="false">{{"prestataire"|trans}}</button>
+						<button class="nav-link my-2 p-4" id="v-pills-presta3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta3" type="button" role="tab" aria-controls="v-pills-presta3" aria-selected="false">{{"services"|trans}}</button>
 					{% endif %}
 					{% if is_granted("ROLE_VOYAGEUR") %}
 						<button class="nav-link my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
@@ -377,7 +377,7 @@
 											</div>
 											<h5 class="card-title">{{ service.titre }}</h5>
 											<div class="btn-group">
-											<a href="{{ path('service_detail', {'id': service.id}) }}" class="btn btn-primary">{{'see'|trans}}</a>
+											<a href="{{ path('spec_service', {'id': service.id}) }}" class="btn btn-primary">{{'see'|trans}}</a>
 											<a href="{{ path('service_modify', {'id': service.id}) }}" class="btn btn-warning">{{'modify'|trans}}</a>
 											<a href="{{ path('service_delete', {'id': service.id}) }}" class="btn btn-danger">{{'delete'|trans}}</a>
 											</div>
@@ -622,9 +622,10 @@
                             center: 'title',
                             right: 'timeGridDay,timeGridWeek,dayGridMonth,multiMonthYear' // user can switch between the two
                         }, buttonText: {
-                            today:        '{{"today"|trans}}',
+                            today:        "{{'today'|trans|raw}}",
                             month:        '{{"month"|trans}}',
                             week:         '{{"weeke"|trans}}',
+							year:		 '{{"year"|trans}}',
                             day:            '{{"day"|trans}}',
                             list:         '{{"list"|trans}}'
     }, titleFormat:{ year: 'numeric', month: 'long', day: 'numeric' },
@@ -725,6 +726,7 @@
                     nextButton.click();
                     prevButton.click();
             });
+			{% for dev in unpicked %}
             $("#pickdev-{{dev.id}}" ).click(function(){
                     $(this).append('<div class="spinner-border text-primary" id="loader" role="status"><span class="visually-hidden">Loading...</span></div>');
                     $.ajax({
@@ -746,6 +748,7 @@
                             }
                     });
                             });
+			{% endfor %}
 </script>
 <script>
 
