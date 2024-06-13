@@ -222,8 +222,8 @@ createticket: Créer un ticket
 Créer: Créer
 chgabo: Changer d'abonnement
 baillapps: __baillapps
-prestadates: __prestadates
-society: __society
+prestadates: Choix des dates
+society: Nom de la société
 siret: Numéro de siret
 see: Voir
 close: Fermer
@@ -242,11 +242,12 @@ prestanote: Note du prestataire
 nbanb: Nombre de services
 new: Nouveau
 tickets: Tickets
-nbvotes: __nbvotes
+nbvotes: Nombre de votes
 shweek: S
 today: Aujourd'hui
 month: Mois
 weeke: Semaine
 day: Jour
+year: Année
 list: Liste
 faq: ou bien consultez notre <a href="/faq">FAQ</a>
