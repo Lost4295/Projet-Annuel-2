@@ -67,6 +67,6 @@ jobs:
           echo "${{ secrets.SSHKEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.TESTHOST }} > ~/.ssh/known_hosts
       - name: connect and pull
-        run: ssh ${{ secrets.USERNAME }}@${{ secrets.TESTHOST }} "cd /var/www/html && echo ${{secrets.PASS }} | sudo -S git checkout main && echo ${{secrets.PASS }} | sudo -S git pull && exit"
+        run: ssh ${{ secrets.USERNAME }}@${{ secrets.TESTHOST }} "cd /var/www/html && echo ${{secrets.PASS }} | sudo -S git config --global --add safe.directory /var/www/html && echo ${{secrets.PASS }} | sudo -S git checkout main && echo ${{secrets.PASS }} | sudo -S git pull && exit"
       - name: cleanup
         run: rm -rf ~/.ssh 

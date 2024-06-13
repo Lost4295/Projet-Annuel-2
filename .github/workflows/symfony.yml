@@ -78,4 +78,4 @@ jobs:
       - name: connect and pull
         run: ssh ${{ secrets.VPSUSERNAME }}@${{ secrets.SITEHOST }} "cd /var/www/appWeb && git pull && exit"
       - name: cleanup
-        run: rm -rf ~/.ssh 
+        run: rm -rf ~/.ssh  
