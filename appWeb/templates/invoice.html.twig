@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'Facture'|trans }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .invoice-box {
+            width: 100%;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            color: #555;
+        }
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <table>
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <h1>Facture</h1>
+                            </td>
+                            <td>
+                                {{ 'Facture'|trans }} #: 123<br>
+                                {{ 'Créé'|trans }}: {{ "now"|date("d/m/Y") }}<br>
+                                {{ 'Due'|trans }}: {{ dates[1]|date("d/m/Y") }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                {{ 'Votre entreprise'|trans }}<br>
+                                Prénom / Nom<br>
+                                Email
+                            </td>
+                            <td>
+                                {{ 'Client'|trans }}<br>
+                                {{ user.getPrenom() }} {{ user.getNom() }}<br>
+                                {{ user.getEmail() }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="heading">
+                <td>
+                    {{ 'Détails'|trans }}
+                </td>
+                <td>
+                    {{ 'Montant'|trans }}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    {{ 'Appartement'|trans }} ({{ appart.city }})
+                </td>
+                <td>
+                    {{ p1 }} €
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    {{ 'Taxe de PCS'|trans }}
+                </td>
+                <td>
+                    {{ p2 }} €
+                </td>
+            </tr>
+            <tr class="total">
+                <td></td>
+                <td>
+                   {{ 'Total'|trans }}: {{ p1 + p2 }} €
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

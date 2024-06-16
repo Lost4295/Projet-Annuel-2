@@ -1,10 +1,29 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
-	<h1>{{'wip'|trans}}</h1>
-	<div class="spinner-border display-2" role="status" style="width:700px; height:700px">
-		<span class="visually-hidden">Loading...</span>
-	</div>
-	{% if app.request.locale != 'fr' %}
-	<div class="text-center alert-danger alert">{{'nolang'|trans}}</div>
-{% endif %}
+    <div class="container">
+        <h1>Paris Caretaker Services (PCS)</h1>
+        <p>Paris Caretaker Services (PCS) est une chaîne de conciergeries immobilières assurant une offre de gestion locative saisonnière (type AirBnB), créée à Paris en 2018. La société a connu une croissance rapide depuis sa création, principalement en raison de la qualité de son accueil et de la richesse de ses prestations.</p>
+        <p>Elle offre des services allant de la gestion des réservations jusqu'à l’entretien du bien immobilier pour le compte du propriétaire, en passant par l’accueil des clients. Ainsi, de nombreux bailleurs peuvent louer leurs logements sans avoir à gérer les différentes charges inhérentes à la location.</p>
+        <p>Obtenir un service de conciergerie chez PCS est très simple : il suffit de se rendre sur sa plateforme Web et de demander une simulation de devis et de gains potentiels (voir en annexe 3 un exemple de formulaire qu'il faudra améliorer par la suite).</p>
+        <p>PCS offre des services variés (attention, la liste n’est pas exhaustive et peut évoluer) :</p>
+        <ul>
+            <li>Check-in et check-out des clients</li>
+            <li>Nettoyage du logement</li>
+            <li>Publication des annonces avec mise en valeur du logement par le biais de photos de qualité et communication avec les voyageurs.</li>
+            <li>Contact (le service client est accessible 24h/24 et 7j/7).</li>
+            <li>Optimisation des tarifs de location</li>
+            <li>Fourniture de linge de maison</li>
+            <li>Travaux d’entretien, petites réparations, …</li>
+            <li>Petite maintenance et réparations ponctuelles</li>
+            <li>Changement des ampoules</li>
+            <li>Petits travaux de plomberie</li>
+            <li>Réparation du mobilier</li>
+            <li>Transport de et vers aéroport …</li>
+        </ul>
+        {% if app.request.locale != 'fr' %}
+            <div class="alert alert-danger mt-4">{{ 'nolang'|trans }}</div>
+        {% endif %}
+    </div>
 {% endblock %}
+
