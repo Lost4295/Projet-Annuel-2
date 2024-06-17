@@ -2,9 +2,9 @@
 // src/Service/PdfService.php
 namespace App\Service;
 
+use App\Entity\Location;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 class PdfService
@@ -16,7 +16,7 @@ class PdfService
         $this->twig = $twig;
     }
 
-    public function generatePdf(array $data): Response
+    public function generatePdf(Location $location): string
     {
         // Configure DomPDF according to your needs
         $pdfOptions = new Options();
@@ -26,7 +26,9 @@ class PdfService
         $dompdf = new Dompdf($pdfOptions);
 
         // Retrieve the HTML generated in our twig file
-        $html = $this->twig->render('invoice.html.twig', $data);
+        $html = $this->twig->render('invoice.html.twig', [
+            'location' => $location
+        ]);
 
         // Load HTML to Dompdf
         $dompdf->loadHtml($html);
@@ -37,11 +39,12 @@ class PdfService
         // Render the HTML as PDF
         $dompdf->render();
 
-        // Output the generated PDF to Browser (inline view)
-        $response = new Response($dompdf->output());
-        $response->headers->set('Content-Type', 'application/pdf');
-        $response->headers->set('Content-Disposition', 'inline; filename="invoice.pdf"');
+        // Generate a unique filename and save the PDF
+        $filename = 'invoice_' . uniqid() . '.pdf';
+        $outputPath = __DIR__ . '/../../public/invoices/' . $filename;
+        file_put_contents($outputPath, $dompdf->output());
 
-        return $response;
+        // Return the path to the saved PDF
+        return $outputPath;
     }
 }

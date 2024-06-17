@@ -78,6 +78,8 @@ class UserController extends AbstractController
                 }
             }
         }
+        $factu = $em->getRepository(Fichier::class)->findBy(["user" => $user->getId()]);
+        
         $tickets = $em->getRepository(Ticket::class)->findBy(["demandeur" => $user->getId()]);
         return $this->render('user/profile.html.twig', [
             'user' => $user,
@@ -91,7 +93,8 @@ class UserController extends AbstractController
             'dataserv' => $dataserv ?? null,
             'devis' => $devis ?? null,
             'workform' => $workform ?? null,
-            'unpicked' => $unPickedDevis ?? null
+            'unpicked' => $unPickedDevis ?? null,
+            'facture' => $factu ?? null
         ]);
     }
 

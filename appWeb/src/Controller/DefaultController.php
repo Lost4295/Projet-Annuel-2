@@ -6,9 +6,11 @@ namespace App\Controller;
 
 use App\Entity\Abonnement;
 use App\Entity\Appartement;
+use App\Entity\Fichier;
 use App\Entity\Location;
 use App\Entity\Service;
 use App\Entity\User;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +22,7 @@ class DefaultController extends AbstractController
 
     #[Route("/", name: "index")]
     #[Route("/", name: "homepage")]
-    public function index(Request $request, EntityManagerInterface $em)
+    public function index(Request $request, EntityManagerInterface $em, PdfService $pdf)
     {
         $user = $this->getUser();
         if ($user && !$user->isVerified()) {
@@ -51,6 +53,16 @@ class DefaultController extends AbstractController
                     $s = $em->getRepository(Service::class)->find($service);
                     $loca->addService($s);
                 }
+                $factu = new Fichier();
+                $factu->setNom("nom");
+                $factu->setUser($user);
+                $factu->setType("pdf");
+                $factu->setSize("size");
+                $path = $pdf->generatePdf($loca);
+                $factu->setPath($path);
+                
+                
+                $em->persist($factu);
                 $em->persist($loca);
                 $em->flush();
                 $this->addFlash('success', "locationsuccess");

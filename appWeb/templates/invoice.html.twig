@@ -73,7 +73,7 @@
                             <td>
                                 {{ 'Facture'|trans }} #: 123<br>
                                 {{ 'Créé'|trans }}: {{ "now"|date("d/m/Y") }}<br>
-                                {{ 'Due'|trans }}: {{ dates[1]|date("d/m/Y") }}
+                                {{ 'Due'|trans }}: {{ location.dateFin|date("d/m/Y") }}
                             </td>
                         </tr>
                     </table>
@@ -90,8 +90,8 @@
                             </td>
                             <td>
                                 {{ 'Client'|trans }}<br>
-                                {{ user.getPrenom() }} {{ user.getNom() }}<br>
-                                {{ user.getEmail() }}
+                                {{ location.locataire.prenom }} {{ location.locataire.nom }}<br>
+                                {{ location.locataire.email }}
                             </td>
                         </tr>
                     </table>
@@ -107,24 +107,24 @@
             </tr>
             <tr class="item">
                 <td>
-                    {{ 'Appartement'|trans }} ({{ appart.city }})
+                    {{ 'Appartement'|trans }} ({{ location.appartement.city }})
                 </td>
                 <td>
-                    {{ p1 }} €
+                    {{ location.price }} €
                 </td>
             </tr>
-            <tr class="item">
+            <tr class="item last">
                 <td>
-                    {{ 'Taxe de PCS'|trans }}
+                    {{ 'Services'|trans }}
                 </td>
                 <td>
-                    {{ p2 }} €
+                    {{ location.services|length }} Services
                 </td>
             </tr>
             <tr class="total">
                 <td></td>
                 <td>
-                   {{ 'Total'|trans }}: {{ p1 + p2 }} €
+                   {{ 'Total'|trans }}: {{ location.price }} €
                 </td>
             </tr>
         </table>

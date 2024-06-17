@@ -177,10 +177,36 @@
 											</div><!-- /.modal -->
 										</td>
 									</tr>
-								{% else %}
-								<tr>
-									<td colspan="5">{{'no_docs'|trans }}</td>
-								</tr>
+								{% endfor %}
+								{% for doc in facture %}
+									<tr>
+										<td>{{ doc.nom }}</td>
+										<td>{{ doc.date|date('d/m/Y') }}</td>
+										<td>{{ doc.size }}</td>
+										<td>{{ doc.type }}</td>
+										<td>
+											<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement">{{"see"|trans }}</button>
+											<a class="btn mx-2 btn-primary" href="{{ path('download_file', {'id': doc.id}) }}">{{'download'|trans }}</a>
+											<a class="btn mx-2 btn-danger" href="{{ path('delete_file', {'id': doc.id}) }}">{{'delete'|trans }}</a>
+											<div class="modal fade" id="modal-agreement">
+												<div class="modal-dialog modal-lg" role="document">
+											    	<div class="modal-content">
+														<div class="modal-header">
+                    									    <h4 class="modal-title">{{"see"|trans}} {{ doc.nom }} </h4>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    									</div>
+														<div class="modal-body">
+											    	    	<object type="application/pdf" data="{{asset("files/pdfs/" ~ doc.path )}}" width="100%" height="500" style="height: 85vh;">No Support</object>
+											        	</div>
+														<div class="modal-footer">
+                            								<button type="button" class="btn btn-default" data-bs-dismiss="modal">{{"close"|trans}}</button>
+                        								</div>
+											    	</div><!-- /.modal-content -->
+											    </div><!-- /.modal-dialog -->
+											</div><!-- /.modal -->
+										</td>
+									</tr>
+							
 								{% endfor %}
 							{% else %}
 								<tr>
