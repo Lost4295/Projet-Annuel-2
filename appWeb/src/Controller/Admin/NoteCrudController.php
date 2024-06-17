@@ -32,7 +32,7 @@ class NoteCrudController extends AbstractCrudController
         $service= AssociationField::new("service", "service");
         $note= NumberField::new("note", "note")->setRequired(true);
         $user= AssociationField::new("user", "user")->setRequired(true);
-        return [$id, $location, $ service, $note, $user];
+        return [$id, $location, $service, $note, $user];
         }
     }
     // ...

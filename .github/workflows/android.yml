@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths: 
-    - 'appAndroidV2/**'
+    - 'Android/**'
     - '.github/workflows/android.yml'
   pull_request:
     branches: [ "main" ]
@@ -25,7 +25,7 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      working-directory: ./appAndroidV2
+      working-directory: ./Android
     - name: Build with Gradle
       run: ./gradlew build
-      working-directory: ./appAndroidV2
+      working-directory: ./Android
