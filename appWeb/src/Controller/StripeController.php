@@ -94,6 +94,7 @@ class StripeController extends AbstractController
         $checkout_session = \Stripe\Checkout\Session::create([
             'customer_email' => $user->getUserIdentifier(),
             'submit_type' => 'book',
+            'invoice_creation' => ['enabled' => true],
             "consent_collection" => ["terms_of_service" => "required"],
             'payment_method_types' => ['card'],
             'automatic_tax' => ['enabled' => true],
@@ -133,6 +134,7 @@ class StripeController extends AbstractController
         $checkout_session = \Stripe\Checkout\Session::create([
             'customer_email' => $user->getUserIdentifier(),
             'submit_type' => 'pay',
+            'invoice_creation' => ['enabled' => true],
             "consent_collection" => ["terms_of_service" => "required"],
             'payment_method_types' => ['card'],
             'automatic_tax' => ['enabled' => true],

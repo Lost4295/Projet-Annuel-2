@@ -77,9 +77,13 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
             $that =$this->getReference('voyageur'.rand(1, 10).'-user');
             $loca = new Location();
             $loca->setLocataire($that);
-            $date = new DateTime(sprintf('202%d-01-%02d',rand(2,9), rand(1,31)));
+            $num = rand(1, 29);
+            $y = rand(0, 9);
+            $z = rand(1,12);
+            $date = new DateTime(sprintf('202%d-%02d-%02d', $y, $z, $num));
             $loca->setDateDebut($date);
-            $loca->setDateFin(new DateTime($date->add(new \DateInterval('P'.rand(1, 10).'D'))->format("Y-m-d H:i:s")));
+            $date2 = new DateTime(sprintf('202%d-%02d-%02d', $y, $z, rand($num + 1, 31)));
+            $loca->setDateFin($date2);
             $loca->setAppartement($this->getReference('appartement'.rand(1, 14)));
             $loca->setAdults(rand(1, 4));
             $loca->setKids(rand(0, 2));
@@ -91,7 +95,7 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
             foreach ($loca->getServices() as $service) {
                 $price += $service->getTarifs();
             }
-            $days = $loca->getDateDebut()->diff($loca->getDateFin())->days;
+            $days = $date->diff($date2)->days;
             $loca->setPrice($loca->getAppartement()->getPrice()*$days +$price);
             $this->addReference('location'.$i, $loca);
             for ($j = 1; $j <= 40; $j++) {

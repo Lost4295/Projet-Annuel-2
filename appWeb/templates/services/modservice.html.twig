@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ 'modservice.title'|trans }}
+{% endblock %}
+
+{% block body %}
+
+	<h1>{{"addserv"|trans}}</h1>
+	{{ form_start(form) }}
+    {{ form_row(form.titre) }} 
+    {{ form_row(form.description) }} 
+    {{ form_row(form.type) }} 
+    {{ form_row(form.tarifs) }} 
+    {{ form_row(form.additionalInfo) }} 
+    {{ form_row(form.images) }} 
+    <button type="submit" class="btn btn-primary">{{"submit"|trans}}</button>
+	{{ form_end(form) }}
+    <a class='btn btn-primary' href="{{ path('profile') }}">{{"back"|trans}}</a>
+    {% endblock %}

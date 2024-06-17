@@ -1,0 +1,65 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+
+{% block page_content %}
+	<h2>Contenu actuel</h2>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover align-middle text-center">
+			<thead>
+				<tr>
+					{% for abo, val in abonnements.nom %}
+						{% if loop.first %}
+							<th>Nom</th>
+						{% else %}
+							<th>
+								<img src="https://placehold.co/300x200" class="card-img-top" alt="...">
+								{{ abo }}
+							</th>
+						{% endif %}
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					{% for abo,val in abonnements.prix %}
+						{% if loop.first %}
+							<td>Prix</td>
+						{% else %}
+							<td>{{ val }}</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+				{% for key, val in options %}
+					<tr>
+						<td>{{key}}</td>
+						{% for abo,aboVal in val %}
+							{% if aboVal == 1 %}
+								<td>
+									<i class="fa fa-check text-success fa-3x"></i>
+								</td>
+							{% else %}
+								<td>
+									<i class="fa fa-times text-danger fa-3x"></i>
+								</td>
+							{% endif %}
+						{% endfor %}
+					</tr>
+				{% endfor %}
+				<tr>
+					{% for abo,val in abonnements.url %}
+						{% if loop.first %}
+							<td></td>
+						{% else %}
+							<td>
+								<a href="{{val.upd }}" class="btn btn-primary">Modifier</a>
+								<a href="{{val.del }}" class="btn btn-danger">Supprimer</a>
+							</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+			</tbody>
+		</table>
+		<a href="#" class="btn btn-primary">Ajouter un nouveau niveau d'abonnement</a>
+		<a href="#" class="btn btn-primary">Ajouter une option</a>
+	</div>
+{% endblock %}

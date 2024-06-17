@@ -25,7 +25,7 @@ security:
             login_throttling:
                     max_attempts: 5
             logout:
-                path: /logout
+                path: app_logout
             user_checker: App\Security\UserChecker
         main:
             lazy: true

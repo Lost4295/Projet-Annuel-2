@@ -45,26 +45,32 @@ class LocationController extends AbstractController
         $passedlocs = $em->getRepository(Location::class)->findPassedLocations($appart->getId());
         $canComm = false;
         $commentaires = [];
-        
+
         $commentaires = $em->getRepository(Commentaire::class)->findComments("appartement", $appart->getId());
         if ($passedlocs) {
             $canComm = true;
-            $formComm = $this->createForm(CommentaireType::class, null, [
+            $form = $this->createForm(CommentaireType::class, null);
+            $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", CommentaireType::class, null, array(
+                'auto_initialize' => false, // it's important!!!
                 'action' => $this->generateUrl('commentaire_create'),
                 'method' => 'POST',
-            ]);
+            ));
+            $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
+            $formComm = $builder->getForm();
         }
         $locs = $em->getRepository(Location::class)->findBy(["appartement" => $appart->getId()]);
-        foreach ($locs as $loc) {
-            $startDate = $loc->getDateDebut();
-            $endDate = $loc->getDateFin();
-            $dates[] = $startDate->format('Y-m-d');
-            $dates[] = $endDate->format('Y-m-d');
-            $interval = $startDate->diff($endDate);
-            $numDays = $interval->days;
-            for ($i = 1; $i < $numDays; $i++) {
-                $date = $startDate->add(new DateInterval('P1D'))->format('Y-m-d');
-                $dates[] = $date;
+        if ($locs) {
+            foreach ($locs as $loc) {
+                $startDate = $loc->getDateDebut();
+                $endDate = $loc->getDateFin();
+                $dates[] = $startDate->format('Y-m-d');
+                $dates[] = $endDate->format('Y-m-d');
+                $interval = $startDate->diff($endDate);
+                $numDays = $interval->days;
+                for ($i = 1; $i < $numDays; $i++) {
+                    $date = $startDate->add(new DateInterval('P1D'))->format('Y-m-d');
+                    $dates[] = $date;
+                }
             }
         }
         $form = $this->createForm(LocationFirstType::class, null, [
@@ -75,7 +81,7 @@ class LocationController extends AbstractController
         return $this->render('appartements/appart_detail.html.twig', [
             'appart' => $appart,
             'form' => $form,
-            'dates' => $dates?? null,
+            'dates' => $dates ?? null,
             'canComm' => $canComm,
             'commentaires' => $commentaires,
             'formComm' => $formComm ?? null,
@@ -105,7 +111,7 @@ class LocationController extends AbstractController
             return $this->redirectToRoute('appartements');
         }
 
-        
+
         $dates = explode("-", $firstForm->get('date')->getData());
         $dates = array_map(function ($date) {
             return new \DateTime($date);
@@ -193,7 +199,7 @@ class LocationController extends AbstractController
         }
         return $this->render("location/location_detail.html.twig", ['location' => $loc]);
     }
-    
+
     #[Route("/appartement/create", name: "create_appart")]
     #[IsGranted("ROLE_BAILLEUR")]
     public function createAppart(Request $request, EntityManagerInterface $em, AppartementService $as)
@@ -201,7 +207,7 @@ class LocationController extends AbstractController
         $res = new Appartement();
         $reservation = $this->createForm(AppartementType::class, $res);
         $builder = $reservation->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", AppartementType::class, $res, array(
-            'auto_initialize'=>false // it's important!!!
+            'auto_initialize' => false // it's important!!!
         ));
         $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
         $reservation = $builder->getForm();
@@ -212,13 +218,13 @@ class LocationController extends AbstractController
             if ($request->files->get('appartement')['images']) {
                 $res->removeImage("house-placeholder.jpg");
                 foreach ($request->files->get('appartement')['images'] as $image) {
-                    $destination = $this->getParameter('kernel.project_dir').'/var/uploads/appartements';
+                    $destination = $this->getParameter('kernel.project_dir') . '/var/uploads/appartements';
                     $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                    $newFilename = $originalFilename.'-'.uniqid().'.'.$image->guessExtension();
+                    $newFilename = $originalFilename . '-' . uniqid() . '.' . $image->guessExtension();
                     $image->move($destination, $newFilename);
                     if ($as->isOk($image)) {
-                        $finalDestination = $this->getParameter('kernel.project_dir').'/public/images/appartements';
-                        rename($destination."/".$newFilename, $finalDestination."/".$newFilename);
+                        $finalDestination = $this->getParameter('kernel.project_dir') . '/public/images/appartements';
+                        rename($destination . "/" . $newFilename, $finalDestination . "/" . $newFilename);
                         $res->addImage($newFilename);
                     }
                 }
@@ -241,7 +247,7 @@ class LocationController extends AbstractController
         }
         $reservation = $this->createForm(AppartementType::class, $res);
         $builder = $reservation->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", AppartementType::class, $res, array(
-            'auto_initialize'=>false // it's important!!!
+            'auto_initialize' => false // it's important!!!
         ));
         $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
         $reservation = $builder->getForm();
@@ -267,6 +273,6 @@ class LocationController extends AbstractController
             $em->flush();
             $this->addFlash("success", "appartdeleted");
         }
-            return $this->redirectToRoute('profile');
+        return $this->redirectToRoute('profile');
     }
 }

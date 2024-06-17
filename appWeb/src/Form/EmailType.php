@@ -25,13 +25,6 @@ class EmailType extends AbstractType
                 ],
                 'label' => 'destinataire'
             ])
-            ->add('cc', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control my-1'
-                ],
-                'label' => 'cc',
-                'required' => false
-            ])
             ->add('object', TextType::class, [
                 'attr' => [
                     'class' => 'form-control my-1'

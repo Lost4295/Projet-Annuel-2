@@ -161,7 +161,8 @@ input::-webkit-inner-spin-button {
 			</div>
 		</div>
 	</div>
-	<div class="row d-flex justify-content-around">
+	<div class="row d-flex justify-content-around" id="demo">
+	<div class="row d-flex justify-content-around" id="demo2">
 		{% for appart in apparts %}
 				<div class="card col-md-3 my-3 mx-1 py-1">
 					<div class="card-header">
@@ -191,6 +192,8 @@ input::-webkit-inner-spin-button {
 					</a>
 				</div>
 		{% endfor %}
+				</div>
+				</div>
 
 	{% endblock %}
 
@@ -199,7 +202,9 @@ input::-webkit-inner-spin-button {
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+	<link href="https://pagination.js.org/dist/2.6.0/pagination.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
+	<script src="https://pagination.js.org/dist/2.6.0/pagination.js"></script>
 	<script>
 		$( "#startdate" ).flatpickr( {
 			"plugins": [new rangePlugin(
@@ -239,13 +244,15 @@ input::-webkit-inner-spin-button {
 				return;
 			}
 			$(".collapse").collapse('hide');
-			$(".row").empty();
-			$(".row").append(`
+			dataContainer = $('#demo2');
+			dataContainer.empty();
+			dataContainer.append(`
 				<div class="spinner-border text-primary" id="loader" role="status">
 					<span class="visually-hidden">Loading...</span>
 				</div>
 			`);
 			console.log($("#dest").val(), $("#startdate").val(), $("#enddate").val(), $("#adults").val(), $("#children").val(), $("#babies").val());
+			
 			$.ajax({
 				url: "{{ path('ajax_search') }}",
 				type: "POST",
@@ -257,44 +264,26 @@ input::-webkit-inner-spin-button {
 					'children': $("#children").val(),
 					'babies': $("#babies").val()
 				},
-				success: function (data) {
-					data.forEach(appart => {
-						var text= `
-							<div class="card col-md-3 my-3 mx-1 py-1">
-								<div class="card-header">
-									<div class="splide" role="group" aria-label="Splide Basic HTML Example">
-										<div class="splide__track">
-											<ul class="splide__list">`;
-												for (key in appart.images) {
-													text+=(`<li class="splide__slide"><img src="images/appartements/${appart.images[key]}" class="card-img-top" alt="..."></li>`);
-												};
-											let route = "{{ path('appart_detail', { id: '0000' }) }}";
-											route = route.replace('0000', appart.id);
-											text+=(`
-											</ul>
-										</div>
-									</div>
-								</div>
-								<a href="${route}" class="text-decoration-none">
-									<div class="card-body">
-										<h5>${appart.city}
-											-
-											${appart.country}</h5>
-										<small class="text-black">${appart.description.slice(0,50)+"..."}</small>
-										<div class="text-black" style="display: flex; justify-content: space-between; width: 100%;">
-											<p>${appart.price}
-												€ / {{'Nuit'|trans}}</p>
-											<p>${appart.note}
-												/ 5</p>
-										</div>
-									</div>
-								</a>
-							</div>
-						`);
-						$(".row").append(text);
-					});
-					console.log(data);
-					monune();
+				success: function (datafi) {
+					console.log(datafi);
+					$('#demo').pagination({
+				    dataSource: datafi,
+				    pageSize: 9,
+				    ajax: {
+				        beforeSend: function() {
+				            dataContainer.html('<div class="spinner-border text-primary" id="loader" role="status"><span class="visually-hidden">Loading...</span></div>');
+				        }
+				    },
+					'className': 'paginationjs-theme-blue d-flex justify-content-center',
+				    callback: function(data, pagination) {
+				        // template method of yourself
+						console.log(data);
+						console.log(pagination);
+				        var html = template(data);
+				        dataContainer.html(html);
+						monune();
+				    }
+				})
 				},
 				complete: function () {
 					$("#loader").remove();
@@ -325,6 +314,66 @@ function monune() {
 		}).mount();
 	}
 }
-
+dataContainer = $('#demo2');
+$('#demo').pagination({
+    dataSource: "{{ path('ajax_get_apparts') }}",
+	locator: function() {
+		return 'data';
+	},
+    totalNumberLocator: (data) => {
+		return data.total;
+    },
+    pageSize: 9,
+    ajax: {
+        beforeSend: function() {
+            dataContainer.html('<div class="spinner-border text-primary" id="loader" role="status"><span class="visually-hidden">Loading...</span></div>');
+        }
+    },
+	'className': 'paginationjs-theme-blue d-flex justify-content-center',
+    callback: function(data, pagination) {
+        // template method of yourself
+        var html = template(data);
+        dataContainer.html(html);
+		monune();
+    }
+})
+function template(data) {
+	var html =""; 
+	data.forEach(appart => {
+						html+= `
+							<div class="card col-md-3 my-3 mx-1 py-1">
+								<div class="card-header">
+									<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+										<div class="splide__track">
+											<ul class="splide__list">`;
+												for (key in appart.images) {
+													html+=(`<li class="splide__slide"><img src="images/appartements/${appart.images[key]}" class="card-img-top" alt="..."></li>`);
+												};
+											let route = "{{ path('appart_detail', { id: '0000' }) }}";
+											route = route.replace('0000', appart.id);
+											html+=(`
+											</ul>
+										</div>
+									</div>
+								</div>
+								<a href="${route}" class="text-decoration-none">
+									<div class="card-body">
+										<h5>${appart.city}
+											-
+											${appart.country}</h5>
+										<small class="text-black">${appart.description.slice(0,50)+"..."}</small>
+										<div class="text-black" style="display: flex; justify-content: space-between; width: 100%;">
+											<p>${appart.price}
+												€ / {{'Nuit'|trans}}</p>
+											<p>${appart.note}
+												/ 5</p>
+										</div>
+									</div>
+								</a>
+							</div>
+						`);
+					});
+	return html;
+}
 	</script>
 {% endblock %}

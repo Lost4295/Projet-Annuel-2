@@ -39,6 +39,17 @@ class AjaxController extends AbstractController
         return $this->json($apparts);
     }
 
+    #[Route("/get/appart", name: "get_apparts")]
+    public function getAppart(Request $request)
+    {
+        $pageSize = $request->get('pageSize');
+        $pageNumber = $request->get('pageNumber');
+        $appart = $this->em->getRepository(Appartement::class)->getApparts($pageSize, $pageNumber);
+        $full = $this->em->getRepository(Appartement::class)->findAll();
+        $appart = ["data"=> $appart, "total" => count($full)];
+        return $this->json($appart);
+    }
+
     #[Route("/ratingl", name: "rating_l")]
     public function rateLocation(Request $request)
     {

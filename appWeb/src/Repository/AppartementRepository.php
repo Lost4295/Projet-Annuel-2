@@ -73,6 +73,14 @@ class AppartementRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getApparts (int $pageSize, int $pageNumber)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->setFirstResult($pageSize * ($pageNumber - 1))
+            ->setMaxResults($pageSize);
+        return $qb->getQuery()->getResult();
+    }
     //    public function findOneBySomeField($value): ?Appartement
     //    {
     //        return $this->createQueryBuilder('a')

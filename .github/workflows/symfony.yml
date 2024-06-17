@@ -76,6 +76,6 @@ jobs:
           echo "${{ secrets.VPSKEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SITEHOST }} > ~/.ssh/known_hosts
       - name: connect and pull
-        run: ssh ${{ secrets.VPSUSERNAME }}@${{ secrets.SITEHOST }} "cd /var/www/appWeb && git pull && exit"
+        run: ssh ${{ secrets.VPSUSERNAME }}@${{ secrets.SITEHOST }} "cd /var/www/appWeb && git pull && composer update && exit"
       - name: cleanup
         run: rm -rf ~/.ssh  

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.android.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_checkin"
+        android:name="com.example.android.ui.checkin.CheckInFragment"
+        android:label="@string/menu_checkin"
+        tools:layout="@layout/fragment_checkin" />
+
+    <fragment
+        android:id="@+id/nav_location"
+        android:name="com.example.android.ui.location.LocationFragment"
+        android:label="@string/menu_location"
+        tools:layout="@layout/fragment_location" />
+    <fragment
+        android:id="@+id/nav_services"
+        android:name="com.example.android.ui.services.ServicesFragment"
+        android:label="@string/menu_location"
+        tools:layout="@layout/fragment_services" />
+    <fragment
+        android:id="@+id/nav_presta"
+        android:name="com.example.android.ui.presta.PrestaFragment"
+        android:label="@string/menu_location"
+        tools:layout="@layout/fragment_presta" />
+    <fragment
+        android:id="@+id/nav_contacts"
+        android:name="com.example.android.ui.contacts.ContactsFragment"
+        android:label="@string/menu_location"
+        tools:layout="@layout/fragment_contacts" />
+</navigation>

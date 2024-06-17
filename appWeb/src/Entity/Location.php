@@ -18,11 +18,11 @@ class Location
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateDebut = null;
+    private ?\DateTime $dateDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\GreaterThan(propertyPath: 'dateDebut')]
-    private ?\DateTimeInterface $dateFin = null;
+    private ?\DateTime $dateFin = null;
 
     #[ORM\ManyToOne(inversedBy: 'locations')]
     #[ORM\JoinColumn(nullable: false)]

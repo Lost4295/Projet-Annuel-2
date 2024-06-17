@@ -24,8 +24,8 @@ class MailerController extends AbstractController
             ->subject('Time for Symfony Mailer!')
             ->text('Sending emails is fun again!')
             ->html('<p>See Twig integration for better HTML integration!</p>')
-            ->attachFromPath('/path/to/some-file.txt');
-
+            // ->attachFromPath('/path/to/some-file.txt')
+            ;
         $mailer->send($email);
         }
         return $this->render('base.html.twig');

@@ -94,7 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Location>
      */
-    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'locataire')]
+    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'locataire', cascade: ['persist', 'remove'])]
     private Collection $locations;
 
     /**
