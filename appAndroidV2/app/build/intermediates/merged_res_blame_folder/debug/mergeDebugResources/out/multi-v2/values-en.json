@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.example.appandroidpa.app-mergeDebugResources-2:/values-en/values-en.xml",
+            "map": [
+                {
+                    "source": "C:\\Quentin\\git\\ProjetAnnuelle\\Projet-Annuel-2\\appAndroidV2\\app\\src\\main\\res\\values-en\\strings.xml",
+                    "from": {
+                        "startLines": "8,2,11,15,10,12,14,13,7,6,5,4,3",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "460,57,560,765,516,611,714,662,397,321,260,183,108",
+                        "endColumns": "52,49,49,49,42,49,49,50,61,74,59,75,73",
+                        "endOffsets": "508,102,605,810,554,656,759,708,454,391,315,254,177"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,108,158,208,258,301,351,401,452,514,589,649,725",
+                        "endColumns": "52,49,49,49,42,49,49,50,61,74,59,75,73",
+                        "endOffsets": "103,153,203,253,296,346,396,447,509,584,644,720,794"
+                    }
+                }
+            ]
+        }
+    ]
+}
