@@ -164,33 +164,29 @@ def modify_data(values):
 def create_data(values):
     data = {}
     keys = ["titre", "description", "demandeur", "dateOuverture", "resolveur", "dateFermeture", "category", "type", "status", "priority", "urgence"]
-    try:
-        for key in keys:
-            if key in values:
-                if key == "demandeur" or key == "resolveur":
-                    data[key] = URI + values[key].replace("/users/", "")
-                elif key == "dateOuverture" or key == "lastUpdateDate":
-                    data[key] = time.strftime("%Y-%m-%d %H:%M:%S")
-                elif key == "category":
-                    categories = {"Technique": 1, "Fonctionnel": 2, "Demande": 3, "Incident": 4, "Autre": 5}
-                    data[key] = categories.get(values[key])
-                elif key == "type":
-                    types = {"Epic": 1, "Task": 2, "Story": 3, "Bug": 4, "Subtask": 5}
-                    data[key] = types.get(values[key])
-                elif key == "status":
-                    statuses = {"Nouveau": 1, "En cours": 2, "Résolu": 3, "Fermé": 4, "En attente": 5, "Rejeté": 6}
-                    data[key] = statuses.get(values[key])
-                elif key == "priority":
-                    priorities = {"Bas": 1, "Normal": 2, "Haut": 3, "Urgent": 4}
-                    data[key] = priorities.get(values[key])
-                elif key == "urgence":
-                    urgencies = {"Faible": 1, "Moyenne": 2, "Haute": 3, "Critique": 4}
-                    data[key] = urgencies.get(values[key])
-                else:
-                    data[key] = values[key]
-    except KeyError:
-        pass
-
+    for key in keys:
+        if key in values and values[key] != "":
+            if key == "demandeur" or key == "resolveur":
+                data[key] = URI + values[key].replace("/users/", "")
+            elif key == "dateOuverture" or key == "lastUpdateDate":
+                data[key] = time.strftime("%Y-%m-%d %H:%M:%S")
+            elif key == "category":
+                categories = {"Technique": 1, "Fonctionnel": 2, "Demande": 3, "Incident": 4, "Autre": 5}
+                data[key] = categories.get(values[key])
+            elif key == "type":
+                types = {"Epic": 1, "Task": 2, "Story": 3, "Bug": 4, "Subtask": 5}
+                data[key] = types.get(values[key])
+            elif key == "status":
+                statuses = {"Nouveau": 1, "En cours": 2, "Résolu": 3, "Fermé": 4, "En attente": 5, "Rejeté": 6}
+                data[key] = statuses.get(values[key])
+            elif key == "priority":
+                priorities = {"Bas": 1, "Normal": 2, "Haut": 3, "Urgent": 4}
+                data[key] = priorities.get(values[key])
+            elif key == "urgence":
+                urgencies = {"Faible": 1, "Moyenne": 2, "Haute": 3, "Critique": 4}
+                data[key] = urgencies.get(values[key])
+            else:
+                data[key] = values[key]
     return data
 
 def find_name(id, name):
