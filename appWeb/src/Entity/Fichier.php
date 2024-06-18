@@ -39,6 +39,8 @@ class Fichier
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\OneToOne(mappedBy: 'facture')]
+    private ?Location $location = null;
 
     public function __construct()
     {
@@ -89,14 +91,14 @@ class Fichier
 
         return $this;
     }
-    public function getEmail(): ?Email
+    public function getLocation(): ?Location
     {
-        return $this->email;
+        return $this->location;
     }
 
-    public function setEmail(?Email $email): static
+    public function setLocation(?Location $location): static
     {
-        $this->email = $email;
+        $this->location = $location;
 
         return $this;
     }
@@ -148,4 +150,18 @@ class Fichier
 
         return $this;
     }
+
+    
+    public function getEmail(): ?Email
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?Email $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
 }

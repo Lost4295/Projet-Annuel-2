@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 #[ApiResource( security: "is_granted('ROLE_NON_USER')")]
@@ -90,6 +91,10 @@ class Ticket
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $demandeur = null;
+
+    #[Ignore]
+    #[ORM\OneToMany(mappedBy: 'ticket', targetEntity: Fichier::class, orphanRemoval: true, cascade: ["persist"])]
+    private Collection $pj;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastUpdateDate = null;
@@ -278,6 +283,30 @@ class Ticket
     public function setDateFermeture($dateFermeture): static
     {
         $this->dateFermeture = $dateFermeture;
+
+        return $this;
+    }
+
+    public function getPjs(): Collection
+    {
+        return $this->pj;
+    }
+
+    public function addPj(Fichier $pj): static
+    {
+        if (!$this->pj->contains($pj)) {
+            $this->pj->add($pj);
+            $pj->setTicket($this);
+        }
+
+        return $this;
+    }
+
+    public function removePj(Fichier $pj): static
+    {
+        if ($this->pj->removeElement($pj)) {
+            $pj->setTicket(null);
+        }
 
         return $this;
     }

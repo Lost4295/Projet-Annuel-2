@@ -17,3 +17,4 @@
 'Invalid or expired login link.': 'Invalid or expired login link.'
 'Too many failed login attempts, please try again in %minutes% minute.': 'Too many failed login attempts, please try again in %minutes% minute.'
 nuhuh: 'Your user account is no longer usable. Please try again with another account.'
+plsverif: 'Your account is not verified. Please verify your email address for a mail from us, or check your spam folder.'

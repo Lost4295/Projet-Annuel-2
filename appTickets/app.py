@@ -49,12 +49,6 @@ def request_ticket(method, data, id, json=None):
         case "delete":
             response = requests.delete(
                 final_url, headers={"Authorization": f"Bearer {token}"})
-        case "put":
-            response = requests.put(
-                final_url, headers={"Authorization": f"Bearer {token}", "Content-Type":"application/ld+json"},json=json)
-        case "post":
-            response = requests.post(
-                final_url, headers={"Authorization": f"Bearer {token}", "Content-Type":"application/ld+json"},json=json)
     return response
 
 
@@ -103,7 +97,6 @@ def list_tickets(response):
                  response.json()[DESC], icon="ERROR")
     return [num, ticketlist]
 
-
 def see_ticket(response):
     try:
         response = response['see_ticket']
@@ -123,7 +116,6 @@ def see_ticket(response):
         sg.popup("Erreur lors de la récupération du ticket :" +
                  response.json()[DESC], icon="ERROR")
         return None
-
 
 def list_users(response):
     response = response['list_users']
@@ -148,7 +140,6 @@ def list_users(response):
         tabuser = [tabuser[i:i+3] for i in range(0, len(tabuser), 3)]
     return [num, tabuser]
 
-
 def see_user(response):
     response = response['see_user']
     if response.status_code == 200:
@@ -156,145 +147,69 @@ def see_user(response):
     return user
 
 def get_user(token, id):
-    response = requests.get(token[0]+URI+id,
+    print(token[0], id)
+    response = requests.get(token[0]+id,
                             headers={"Authorization": f"Bearer {token[1]}"})
     if response.status_code == 200:
         return response.json()
     else:
+        print(response)
         sg.popup("Erreur lors de la récupération de l'utilisateur :" +
                  response.json()[DESC], icon="ERROR")
 
+def modify_data(values):
+    data = create_data(values)
+    return data
+
 def create_data(values):
     data = {}
-    data["titre"] = values["clc 0 1"]
-    data["description"] = values["clc 1 1"]
-    data["demandeur"] = URI + values["clc 2 1"]
-    if values["clc 3 1"] != "":
-        data["resolveur"] = URI + values["clc 3 1"]
-    if values["clc 4 1"] != "":
-        data["dateFermeture"] = values["clc 4 1"]
-    match values["clc2 0 1"]:
-        case "Technique":
-            data["category"] = 1
-        case "Fonctionnel":
-            data["category"] = 2
-        case "Demande":
-            data["category"] = 3
-        case "Incident":
-            data["category"] = 4
-        case "Autre":
-            data["category"] = 5
-    match values["clc2 1 1"]:
-        case "Epic":
-            data["type"] = 1
-        case "Task":
-            data["type"] = 2
-        case "Story":
-            data["type"] = 3
-        case "Bug":
-            data["type"] = 4
-        case "Subtask":
-            data["type"] = 5
+    keys = ["titre", "description", "demandeur", "dateOuverture", "resolveur", "dateFermeture", "category", "type", "status", "priority", "urgence"]
+    try:
+        for key in keys:
+            if key in values:
+                if key == "demandeur" or key == "resolveur":
+                    data[key] = URI + values[key].replace("/users/", "")
+                elif key == "dateOuverture" or key == "lastUpdateDate":
+                    data[key] = time.strftime("%Y-%m-%d %H:%M:%S")
+                elif key == "category":
+                    categories = {"Technique": 1, "Fonctionnel": 2, "Demande": 3, "Incident": 4, "Autre": 5}
+                    data[key] = categories.get(values[key])
+                elif key == "type":
+                    types = {"Epic": 1, "Task": 2, "Story": 3, "Bug": 4, "Subtask": 5}
+                    data[key] = types.get(values[key])
+                elif key == "status":
+                    statuses = {"Nouveau": 1, "En cours": 2, "Résolu": 3, "Fermé": 4, "En attente": 5, "Rejeté": 6}
+                    data[key] = statuses.get(values[key])
+                elif key == "priority":
+                    priorities = {"Bas": 1, "Normal": 2, "Haut": 3, "Urgent": 4}
+                    data[key] = priorities.get(values[key])
+                elif key == "urgence":
+                    urgencies = {"Faible": 1, "Moyenne": 2, "Haute": 3, "Critique": 4}
+                    data[key] = urgencies.get(values[key])
+                else:
+                    data[key] = values[key]
+    except KeyError:
+        pass
 
-    match values["clc2 2 1"]:
-        case "Nouveau":
-            data["status"] = 1
-        case "En cours":
-            data["status"] = 2
-        case "Résolu":
-            data["status"] = 3
-        case "Fermé":
-            data["status"] = 4
-        case "En attente":
-            data["status"] = 5
-        case "Rejeté":
-            data["status"] = 6
-    match values["clc2 3 1"]:
-        case "Bas":
-            data["priority"] = 1
-        case "Normal":
-            data["priority"] = 2
-        case "Haut":
-            data["priority"] = 3
-        case "Urgent":
-            data["priority"] = 4
-    match values["clc2 4 1"]:
-        case "Faible":
-            data["urgence"] = 1
-        case "Moyenne":
-            data["urgence"] = 2
-        case "Haute":
-            data["urgence"] = 3
-        case "Critique":
-            data["urgence"] = 4
-    data["dateOuverture"] = time.strftime("%Y-%m-%d %H:%M:%S")
     return data
 
-def modify_data(values):
-    data = {}
-    data["titre"] = values["clm 0 1"]
-    data["description"] = values["clm 1 1"]
-    data["demandeur"] = URI + values["clm 2 1"]
-    if values["clm 3 1"] != "":
-        data["resolveur"] = URI + values["clm 3 1"]
-    if values["clm 4 1"] != "":
-        data["dateFermeture"] = values["clm 4 1"]
-    match values["clm2 0 1"]:
-        case "Technique":
-            data["category"] = 1
-        case "Fonctionnel":
-            data["category"] = 2
-        case "Demande":
-            data["category"] = 3
-        case "Incident":
-            data["category"] = 4
-        case "Autre":
-            data["category"] = 5
-    match values["clm2 1 1"]:
-        case "Epic":
-            data["type"] = 1
-        case "Task":
-            data["type"] = 2
-        case "Story":
-            data["type"] = 3
-        case "Bug":
-            data["type"] = 4
-        case "Subtask":
-            data["type"] = 5
-
-    match values["clm2 2 1"]:
-        case "Nouveau":
-            data["status"] = 1
-        case "En cours":
-            data["status"] = 2
-        case "Résolu":
-            data["status"] = 3
-        case "Fermé":
-            data["status"] = 4
-        case "En attente":
-            data["status"] = 5
-        case "Rejeté":
-            data["status"] = 6
-    match values["clm2 3 1"]:
-        case "Bas":
-            data["priority"] = 1
-        case "Normal":
-            data["priority"] = 2
-        case "Haut":
-            data["priority"] = 3
-        case "Urgent":
-            data["priority"] = 4
-    match values["clm2 4 1"]:
-        case "Faible":
-            data["urgence"] = 1
-        case "Moyenne":
-            data["urgence"] = 2
-        case "Haute":
-            data["urgence"] = 3
-        case "Critique":
-            data["urgence"] = 4
-    data["dateOuverture"] = time.strftime("%Y-%m-%d %H:%M:%S")
-    return data
+def find_name(id, name):
+    categories = {"Technique": 1, "Fonctionnel": 2, "Demande": 3, "Incident": 4, "Autre": 5}
+    types = {"Epic": 1, "Task": 2, "Story": 3, "Bug": 4, "Subtask": 5}
+    statuses = {"Nouveau": 1, "En cours": 2, "Résolu": 3, "Fermé": 4, "En attente": 5, "Rejeté": 6}
+    priorities = {"Bas": 1, "Normal": 2, "Haut": 3, "Urgent": 4}
+    urgencies = {"Faible": 1, "Moyenne": 2, "Haute": 3, "Critique": 4}
+    match name:
+        case "category":
+            return list(categories.keys())[list(categories.values()).index(id)]
+        case "type":
+            return list(types.keys())[list(types.values()).index(id)]
+        case "status":
+            return list(statuses.keys())[list(statuses.values()).index(id)]
+        case "priority":
+            return list(priorities.keys())[list(priorities.values()).index(id)]
+        case "urgence":
+            return list(urgencies.keys())[list(urgencies.values()).index(id)]
 
 def delete_ticket(response):
     response = response['del_t']
@@ -303,7 +218,6 @@ def delete_ticket(response):
     else:
         sg.popup("Erreur lors de la suppression du ticket :" +
                  response.json()[DESC], icon="ERROR")
-
 
 def create_ticket(token, data):
     response = requests.post(token[0]+"/tickets",
@@ -317,15 +231,14 @@ def create_ticket(token, data):
                  response.json()[DESC], icon="ERROR")
 
 
-def update_ticket(response):
-    print(response)
-    modify_data(response)
-    exit()
+def update_ticket(token,data,tid):
+    response = requests.put(
+                token[0]+"/tickets/"+tid, headers={"Authorization": f"Bearer {token[1]}", "Content-Type":"application/ld+json"},json=data)
     if response.status_code == 200:
         sg.popup("Ticket modifié avec succès !", icon="INFO")
     elif response.status_code == 400:
         sg.popup(
-            "Erreur lors de la modification du ticket. Merci de bien vouloir réessayer.", icon="ERROR")
+            "Erreur lors de la modification du ticket. Merci de bien vouloir réessayer. Erreur : "+response.json()[DESC], icon="ERROR")
     elif response.status_code == 422:
         sg.popup(
             "Le ticket n'a pas pu être modifié. Veuillez vérifier les données saisies.", icon="ERROR")
@@ -378,16 +291,22 @@ layout = [
 ]
 # Create the Window
 
-window = sg.Window('Hello Example', layout, size=(800, 600), resizable=True)
+def view_creator(data):
+    view = []
+    for i in data:
+        view.append(i)
+    return view
 
-# Event Loop to process "events" and get the "values" of the inputs
+
+
+
+window = sg.Window('Hello Example', layout, size=(800, 600), resizable=True)
 if __name__ == '__main__':
     token = authenticate()
-    cpt = 1  # The currently visible layout
-    clt = cli = cld = clu = cle = clc = clm = 0
+    cpt = 1 
+    cla = cli = cld = clu = cle = clc = clm = clz =  0
     while True:
         event, values = window.read()
-
         # if user closes window or clicks cancel
         if event in (sg.WINDOW_CLOSE_ATTEMPTED_EVENT, 'exit', 'Cancel', sg.WIN_CLOSED, 'Exit'):
             window.timer_stop_all()
@@ -395,9 +314,7 @@ if __name__ == '__main__':
             break
 
         if "return" in event:
-            print(event, f"cpt={cpt}")
             cpt = return_to_main(cpt)
-            print(event, f"cpt={cpt}")
             continue
         elif event == sg.TIMER_KEY:
             sg.popup_animated(sg.DEFAULT_BASE64_LOADING_GIF,
@@ -410,58 +327,61 @@ if __name__ == '__main__':
             id = event.split(":")[2] if len(event.split(":")) > 2 else None
             callback_key = event.split(":")[3] if len(
                 event.split(":")) > 3 else None
+            if callback_key is not None:
+                callback_key= ''.join(i for i in callback_key if not i.isdigit())
             window.start_thread(lambda: request_ticket(
-                method, token, id), callback_key)
+                method, token, id, values), callback_key)
+            print(event, callback_key)
             continue
         elif 'raq' in event:
             window.timer_start(100)
             id = event.split(":")[1] if len(event.split(":")) > 1 else None
             callback_key = event.split(":")[2] if len(
                 event.split(":")) > 2 else None
+            if callback_key is not None:
+                callback_key= ''.join(i for i in callback_key if not i.isdigit())
             window.start_thread(lambda: request_users(
                 "get", token, id), callback_key)
             continue
         if "_" in event:
             window[f'-COL{cpt}-'].update(visible=False)
-            print(event, f"cpt={cpt}")
             match event:
                 case "list_tickets":
-                    window.timer_stop_all()
                     sg.popup_animated(None)
+                    window.timer_stop_all()
                     cpt = 3
                     tickets = list_tickets(values)
                     count = tickets[0]//3
-                    if tickets[0] % 3 <= 3:
+                    if 0 < tickets[0] % 3 and tickets[0] % 3 < 3:
                         count += 1
-                    if clt > 0:
-                        for j in range(count):
-                            window[f"clt {j} {clt}"].hide_row()
-                        window[f'clt {clt}'].hide_row()
-                        window[f'clt {clt} return'].hide_row()
-                    clt += 1
+                    for i in range(len(tickets_list)):
+                        for j in range(len(tickets_list[i])):
+                                tickets_list[i][j].hide_row()
                     tickets_list = [
                         [sg.Text(f"Liste des tickets: {tickets[0]} tickets", font='_ 14',
-                                 justification='c', expand_x=True, key=f"clt {clt}")],
+                                 justification='c', expand_x=True, key=f"cla {cla}")],
                     ]
                     for j in range(count):
                         tickets_list.append([sg.Column([[sg.Button(f"Ticket {i['@id'].replace('/tickets/', '')} : {i['titre']} ",
-                                            key=f"req:get:{i['@id'].replace('/tickets/', '')}:see_ticket") for i in tickets[1][j]]], key=f"clt {j} {clt}")])
+                                            key=f"req:get:{i['@id'].replace('/tickets/', '')}:see_ticket") for i in tickets[1][j]]], key=f"cla {j} {cla}")])
                     tickets_list.append(
-                        [sg.Button("Retour", key=f"clt {clt} return")])
+                        [sg.Button("Retour", key=f"cla {cla} return")])
                     window.extend_layout(window[f'-COL{cpt}-'], tickets_list)
                 case str(x) if "see_ticket" in x:
+                    ticket = see_ticket(values)
+                    fullname = get_user(token, ticket['demandeur'])['nom'] + " " + get_user(token, ticket['demandeur'])['prenom']
+                    fullnamer = get_user(token, ticket['resolveur'])['nom'] + " " + get_user(token, ticket['resolveur'])['prenom'] if ticket['resolveur'] is not None else "Non attribué"
                     window.timer_stop_all()
                     sg.popup_animated(None)
-                    ticket = see_ticket(values)
                     cpt = 4
-                    if cli > 0:
-                        for i in range(len(ticket)):
-                            window[f'cli {cli}'].hide_row()
-                        window[f'cli {cli} return'].hide_row()
-                    cli += 1
-                    fullname = get_user(token, ticket['demandeur'])['nom'] + " " + get_user(token, ticket['demandeur'])['prenom'] # TODO : refaire
-                    # fullname = "John Doe"
+                    try:
+                        for i in range(len(tickete)):
+                            for j in range(len(tickete[i])):
+                                    tickete[i][j].hide_row()
+                    except NameError:
+                        pass
                     id = ticket['demandeur'].replace('/users/', '')
+                    idr = ticket['resolveur'].replace('/users/', '') if ticket ["resolveur"] is not None else "Non attribué"
                     tickete = [
                         [sg.Text(f"Ticket {ticket['@id'].replace('/tickets/', '')} : {ticket['titre']}",
                                  font='_ 14', justification='c', expand_x=True, key=f"cli {cli}")],
@@ -478,17 +398,17 @@ if __name__ == '__main__':
                         [sg.Text(
                             f"Dernière mise à jour : {ticket['lastUpdateDate']}", key=f"cli {cli}")],
                         [sg.Text(
-                            f"Catégorie : {ticket['category']}", key=f"cli {cli}")],
-                        [sg.Text(f"Type : {ticket['type']}",
+                            f"Catégorie : {find_name(ticket['category'], 'category')}", key=f"cli {cli}")],
+                        [sg.Text(f"Type : {find_name(ticket['type'], 'type')}",
                                  key=f"cli {cli}")],
                         [sg.Text(
-                            f"Statut : {ticket['status']}", key=f"cli {cli}")],
+                            f"Statut : {find_name(ticket['status'], 'status')}", key=f"cli {cli}")],
                         [sg.Text(
-                            f"Priorité : {ticket['priority']}", key=f"cli {cli}")],
+                            f"Priorité : {find_name(ticket['priority'], 'priority')}", key=f"cli {cli}")],
                         [sg.Text(
-                            f"Urgence : {ticket['urgence']}", key=f"cli {cli}")],
+                            f"Urgence : {find_name(ticket['urgence'], 'urgence')}", key=f"cli {cli}")],
                         [sg.Text(
-                            f"Resolveur : {ticket['resolveur']}", key=f"cli {cli}")],
+                            f"Résolveur : {fullnamer} ( ID : {idr})", key=f"cli {cli}")],
                         [sg.Column([[
                             sg.Button(
                                 "Modifier",  key=f"req:get:{ticket['@id'].replace('/tickets/', '')}:modify_t"),
@@ -498,19 +418,19 @@ if __name__ == '__main__':
                     ]
                     window.extend_layout(window[f'-COL{cpt}-'], tickete)
                 case "list_users":
-                    window.timer_stop_all()
-                    sg.popup_animated(None)
                     users = list_users(values)
+                    sg.popup_animated(None)
+                    window.timer_stop_all()
                     cpt = 5
                     count = users[0]//3
-                    if users[0] % 3 <= 3:
+                    if 0 < users[0] % 3 and users[0] % 3 < 3:
                         count += 1
-                    if clu > 0:
-                        for j in range(count):
-                            window[f"clu {j} {clu}"].hide_row()
-                        window[f'clu {clu}'].hide_row()
-                        window[f'clu {clu} return'].hide_row()
-                    clu += 1
+                    try:
+                        for i in range(len(userse)):
+                            for j in range(len(userse[i])):
+                                    userse[i][j].hide_row()
+                    except NameError:
+                        pass
                     userse = [
                         [sg.Text(f"Liste des utilisateurs : {users[0]} utilisateurs",
                                  font='_ 14', justification='c', expand_x=True, key=f"clu {clu}")],
@@ -522,24 +442,25 @@ if __name__ == '__main__':
                         [sg.Button("Retour", key=f"clu {clu} return")])
                     window.extend_layout(window[f'-COL{cpt}-'], userse)
                 case str(x) if "see_user" in x:
-                    window.timer_stop_all()
                     sg.popup_animated(None)
+                    window.timer_stop_all()
                     suser = see_user(values)
                     cpt = 6
-                    if cli > 0:
-                        for i in range(len(suser)):
-                            window[f'cli {cli}'].hide_row()
-                        window[f'cli {cli} return'].hide_row()
-                    cli += 1
+                    try:
+                        for i in range(len(usere)):
+                            for j in range(len(usere[i])):
+                                    usere[i][j].hide_row()
+                    except NameError:
+                        pass
                     usere = [
                         [sg.Text(f"Utilisateur {suser['@id'].replace('/users/', '')} : {suser['nom']} {suser['prenom']}",
-                                 font='_ 14', justification='c', expand_x=True, key=f"cli {cli}")],
-                        [sg.Text(f"Nom : {suser['nom']}", key=f"cli {cli}")],
+                                 font='_ 14', justification='c', expand_x=True, key=f"clz {clz}")],
+                        [sg.Text(f"Nom : {suser['nom']}", key=f"clz {clz}")],
                         [sg.Text(
-                            f"Prénom : {suser['prenom']}", key=f"cli {cli}")],
+                            f"Prénom : {suser['prenom']}", key=f"clz {clz}")],
                         [sg.Text(
-                            f"Id : {suser['@id'].replace('/users/', '')}", key=f"cli {cli}")],
-                        [sg.Button("Retour", key=f"cli {cli} return")],
+                            f"Id : {suser['@id'].replace('/users/', '')}", key=f"clz {clz}")],
+                        [sg.Button("Retour", key=f"clz {clz} return")],
                     ]
                     window.extend_layout(window[f'-COL{cpt}-'], usere)
                 case "create_ticket":
@@ -548,17 +469,14 @@ if __name__ == '__main__':
                                "Contenu du ticket", "ID du Demandeur"]
                     selectrows = ["Catégorie", "Type",
                                   "Statut", "Priorité", "Urgence"]
-                    if clc > 0:
-                        count = len(txtrows)
-                        count2 = len(selectrows)
-                        for j in range(count):
-                            window[f"clc {j} {clc}"].hide_row()
-                        for j in range(count2):
-                            window[f"clc2 {j} {clc}"].hide_row()
-                        window[f'clc {clc} submit_ticket'].hide_row()
-                        window[f'clc {clc}'].hide_row()
-                        window[f'clc {clc} return'].hide_row()
-                    clc += 1
+                    keyrows = ["titre", "description", "demandeur"]
+                    keyselect = ["category", "type", "status", "priority", "urgence"]
+                    try:
+                        for i in range(len(create_ticket_l)):
+                            for j in range(len(create_ticket_l[i])):
+                                    create_ticket_l[i][j].hide_row()
+                    except NameError:
+                        pass
                     data = [
                         ["Technique", "Fonctionnel", "Demande", "Incident", "Autre"],
                         ["Epic", "Task", "Story", "Bug", "Subtask",],
@@ -573,10 +491,10 @@ if __name__ == '__main__':
                     ]
                     for i in range(len(txtrows)):
                         create_ticket_l.append(
-                            [sg.Text(txtrows[i]), sg.InputText(key=f"clc {i} {clc}", do_not_clear=False)])
+                            [sg.Text(txtrows[i]), sg.InputText(key=keyrows[i], do_not_clear=False)])
                     for i in range(len(selectrows)):
                         create_ticket_l.append(
-                            [sg.Text(selectrows[i]), sg.Combo(data[i], key=f"clc2 {i} {clc}", readonly=True)])
+                            [sg.Text(selectrows[i]), sg.Combo(data[i], key=keyselect[i], readonly=True)])
                     create_ticket_l.append(
                         [sg.Button("Créer", key=f"clc {clc} submit_ticket")])
                     create_ticket_l.append(
@@ -586,23 +504,18 @@ if __name__ == '__main__':
                 case str(x) if "submit_ticket" in x:
                     cpt = 7
                     create_ticket(token, create_data(values))
-                    return_to_main(cpt)
+                    cpt = return_to_main(cpt)
                 case str(x) if "modify_t" in x:
                     window.timer_stop_all()
                     sg.popup_animated(None)
                     ticket = see_ticket(values)
                     cpt = 2
-                    if clm > 0:
-                        count = len(txtrows)
-                        count2 = len(selectrows)
-                        for j in range(count):
-                            window[f"clm {j} {clm}"].hide_row()
-                        for j in range(count2):
-                            window[f"clm2 {j} {clm}"].hide_row()
-                        window[f'clm {clm} submit_ticket'].hide_row()
-                        window[f'clm {clm}'].hide_row()
-                        window[f'clm {clm} return'].hide_row()
-                    clm += 1
+                    try:
+                        for i in range(len(modify_ticket)):
+                            for j in range(len(modify_ticket[i])):
+                                    modify_ticket[i][j].hide_row()
+                    except NameError:
+                        pass
                     modify_ticket = [
                         [sg.Text(f"Modifier le ticket {ticket['@id'].replace('/tickets/', '')} : {ticket['titre']}",
                                  font='_ 14', justification='c', expand_x=True, key=f"clm {clm}")],
@@ -615,7 +528,7 @@ if __name__ == '__main__':
                                   "Statut", "Priorité", "Urgence"]
                     names = ["titre", "description", "demandeur", "resolveur",
                              "dateOuverture", "dateFermeture", "lastUpdateDate"]
-                    
+                    selectnames= ["category", "type", "status", "priority", "urgence"]
                     data = [
                         ["Technique", "Fonctionnel", "Demande", "Incident", "Autre"],
                         ["Epic", "Task", "Story", "Bug", "Subtask",],
@@ -626,15 +539,15 @@ if __name__ == '__main__':
                     ]
                     for i in range(len(txtrows)):
                         modify_ticket.append(
-                            [sg.Text(txtrows[i]), sg.InputText(ticket[names[i]], key=f"clm {i} {clm}", do_not_clear=False)])
+                            [sg.Text(txtrows[i]), sg.InputText(ticket[names[i]], key=names[i], do_not_clear=False)])
                     for i in range(len(dateRows)):
                         modify_ticket.append(
-                            [sg.Text(dateRows[i]), sg.InputText(ticket[names[i+4]], key=f"clm2 {i} {clm}", do_not_clear=False)])
+                            [sg.Text(dateRows[i]), sg.InputText(ticket[names[i+4]], key=names[i+4], do_not_clear=False)])
                     for i in range(len(selectrows)):
                         modify_ticket.append(
-                            [sg.Text(selectrows[i]), sg.Combo(data[i], key=f"clm {i} {clm}", readonly=True)])
+                            [sg.Text(selectrows[i]), sg.Combo(data[i], key=selectnames[i], readonly=True, default_value=find_name(ticket[selectnames[i]], selectnames[i]))])
                     modify_ticket.append(
-                        [sg.Button("Modifier", key=f"clm {clm} req:put:{ticket['@id'].replace('/tickets/', '')}:mod_t ")])
+                        [sg.Button("Modifier", key=f"mod_t:{ticket['@id'].replace('/tickets/', '')}")])
                     modify_ticket.append(
                         [sg.Button("Retour", key=f"clm {clm} return")])
                     modify_ticket.append(
@@ -646,14 +559,11 @@ if __name__ == '__main__':
                     cpt = 8
                     tickets = list_tickets(values)
                     count = tickets[0]//3
-                    if count <= 3:
-                        count = tickets[0] % 3
-                    if cle > 0:
-                        for j in range(count):
-                            window[f"cle {j} {cle}"].hide_row()
-                        window[f'cle {cle}'].hide_row()
-                        window[f'cle {cle} return'].hide_row()
-                    cle += 1
+                    if 0 < tickets[0] % 3 and tickets[0] % 3 < 3:
+                        count += 1
+                    for i in range(len(tickets_list)):
+                        for j in range(len(tickets_list[i])):
+                                tickets_list[i][j].hide_row()
                     tickets_list = [
                         [sg.Text("Modifier un ticket", font='_ 14',
                                  justification='c', expand_x=True, key=f"cle {cle}")],
@@ -665,19 +575,16 @@ if __name__ == '__main__':
                         [sg.Button("Retour", key=f"cle {cle} return")])
                     window.extend_layout(window[f'-COL{cpt}-'], tickets_list)
                 case "delete_ticket_choose":
-                    window.timer_stop_all()
                     sg.popup_animated(None)
+                    window.timer_stop_all()
                     cpt = 9
                     tickets = list_tickets(values)
                     count = tickets[0]//3
-                    if count <= 3:
-                        count = tickets[0] % 3
-                    if cld > 0:
-                        for j in range(count):
-                            window[f"cld {j} {cld}"].hide_row()
-                        window[f'cld {cld}'].hide_row()
-                        window[f'cld {cld} return'].hide_row()
-                    cld += 1
+                    if 0 < tickets[0] % 3 and tickets[0] % 3 < 3:
+                        count += 1
+                    for i in range(len(tickets_list)):
+                        for j in range(len(tickets_list[i])):
+                                tickets_list[i][j].hide_row()
                     tickets_list = [
                         [sg.Text("Supprimer un ticket", font='_ 14',
                                  justification='c', expand_x=True, key=f"cld {cld}")],
@@ -689,11 +596,11 @@ if __name__ == '__main__':
                         [sg.Button("Retour", key=f"cld {cld} return")])
                     window.extend_layout(window[f'-COL{cpt}-'], tickets_list)
                 case str(x) if "mod_t" in x:
-                    update_ticket(values)
-                    return_to_main(cpt)
+                    update_ticket(token, modify_data(values),  event.split(":")[1])
+                    cpt = return_to_main(cpt)
                 case str(x) if "del_t" in x:
                     delete_ticket(values)
-                    return_to_main(cpt)
+                    cpt = return_to_main(cpt)
 
             window[f'-COL{cpt}-'].update(visible=True)
 

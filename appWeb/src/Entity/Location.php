@@ -40,6 +40,7 @@ class Location
 
     #[ORM\Column]
     private ?int $babies = null;
+    
     #[ORM\OneToOne(inversedBy: 'location')]
     private Fichier $facture;
 
@@ -180,12 +181,12 @@ class Location
 
         return $this;
     }
-    public function getFacture(): ?Facture
+    public function getFacture(): ?Fichier
     {
         return $this->facture;
     }
 
-    public function setFacture(?Facture $facture): static
+    public function setFacture(?Fichier $facture): static
     {
         $this->facture = $facture;
 

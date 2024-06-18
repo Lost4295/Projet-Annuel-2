@@ -19,6 +19,10 @@ class UserChecker implements UserCheckerInterface
             // the message passed to this exception is meant to be displayed to the user
             throw new CustomUserMessageAccountStatusException('nuhuh');
         }
+
+        if (!$user->isVerified()){
+            throw new CustomUserMessageAccountStatusException("plsverif");
+        }
     }
 
     public function checkPostAuth(UserInterface $user): void
