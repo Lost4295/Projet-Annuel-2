@@ -58,9 +58,16 @@ class DefaultController extends AbstractController
                 $factu->setUser($user);
                 $factu->setType("pdf");
                 $path = $pdf->generatePdf($loca);
-                $factu->setSize(PdfService::human_filesize(filesize($path)));
-                $factu->setPath($path);
-                $em->persist($factu);
+                if (file_exists($path[0])) {
+                    $factu->setSize(PdfService::human_filesize(filesize($path[0])));
+                    $factu->setPath($path[1]);
+                    $em->persist($factu);
+                    
+                    
+                } else {
+                    $this->addFlash('danger', "Échec de la génération de la facture.");
+                    
+                }
                 $em->persist($loca);
                 $em->flush();
                 $this->addFlash('success', "locationsuccess");

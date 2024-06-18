@@ -245,17 +245,34 @@ class UserController extends AbstractController
         }
     }
     #[Route('/file/delete/{id}', name: 'delete_file')]
-    #[IsGranted("ROLE_USER")]
-    public function deleteFile($id, EntityManagerInterface $em)
-    {
-        $file = $em->getRepository(Fichier::class)->find($id);
-        $path = $this->getParameter('kernel.project_dir') . '/public/files/pdfs/' . $file->getPath();
-        if ($file->getUser() == $this->getUser()){
-            return $this->file($path);
-        } else {
-            $this->addFlash('danger', 'You are not allowed to delete this file.');
-            return $this->redirectToRoute('profile');
-        }
+#[IsGranted("ROLE_USER")]
+public function deleteFile($id, EntityManagerInterface $em)
+{
+    $file = $em->getRepository(Fichier::class)->find($id);
+
+    if (!$file) {
+        $this->addFlash('danger', 'File not found.');
+        return $this->redirectToRoute('profile');
     }
+
+    $path = $this->getParameter('kernel.project_dir') . '/public/files/pdfs/' . $file->getPath();
+
+    if ($file->getUser() == $this->getUser()) {
+        if (file_exists($path)) {
+            unlink($path);
+        } else {
+            $this->addFlash('warning', 'The file does not exist on the server.');
+        }
+
+        $em->remove($file);
+        $em->flush();
+
+        $this->addFlash('success', 'File deleted successfully.');
+    } else {
+        $this->addFlash('danger', 'You are not allowed to delete this file.');
+    }
+
+    return $this->redirectToRoute('profile');
+}
 
 }

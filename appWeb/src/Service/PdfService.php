@@ -16,7 +16,7 @@ class PdfService
         $this->twig = $twig;
     }
 
-    public function generatePdf(Location $location): string
+    public function generatePdf(Location $location): array
     {
         // Configure DomPDF according to your needs
         $pdfOptions = new Options();
@@ -41,11 +41,11 @@ class PdfService
 
         // Generate a unique filename and save the PDF
         $filename = 'invoice_' . uniqid() . '.pdf';
-        $outputPath = __DIR__ . '/../../public/files/pdfs' . $filename;
+        $outputPath = __DIR__ . '/../../public/files/pdfs/' . $filename;
         file_put_contents($outputPath, $dompdf->output());
 
         // Return the path to the saved PDF
-        return $filename;
+        return [$outputPath, $filename];
     }
     public static function human_filesize($bytes, $decimals = 2) {
         $sz = 'BKMGTP';

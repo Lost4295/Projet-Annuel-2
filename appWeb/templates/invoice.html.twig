@@ -104,6 +104,7 @@
                 <td>
                     {{ 'Montant'|trans }}
                 </td>
+                
             </tr>
             <tr class="item">
                 <td>
@@ -115,16 +116,28 @@
             </tr>
             <tr class="item last">
                 <td>
-                    {{ 'Services'|trans }}
+                    Nombre de Services : {{ location.services|length }} 
                 </td>
-                <td>
-                    {{ location.services|length }} Services
-                </td>
+                {% set nb = 0 %}
+                
+                
+                {% for service in location.services %}
+                <tr class="item">
+                    <td>
+                        {{ service.titre }} 
+                    </td>
+                    <td>
+                        {{ service.tarifs }} €
+                    </td>
+                </tr>
+                {% set nb = nb + service.tarifs %}
+                {% endfor %}
+                
             </tr>
             <tr class="total">
                 <td></td>
                 <td>
-                   {{ 'Total'|trans }}: {{ location.price }} €
+                   {{ 'Total'|trans }}: {{ location.price + nb}} €
                 </td>
             </tr>
         </table>
