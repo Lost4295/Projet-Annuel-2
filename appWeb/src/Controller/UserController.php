@@ -249,9 +249,11 @@ class UserController extends AbstractController
     public function deleteFile($id, EntityManagerInterface $em)
     {
         $file = $em->getRepository(Fichier::class)->find($id);
-        $path = $this->getParameter('kernel.project_dir') . '/public/files/pdfs/' . $file->getPath();
         if ($file->getUser() == $this->getUser()){
-            return $this->file($path);
+            $em->remove($file);
+            $em->flush();
+            $this->addFlash('success', 'Your file has been deleted successfully.');
+            return $this->redirectToRoute('profile');
         } else {
             $this->addFlash('danger', 'You are not allowed to delete this file.');
             return $this->redirectToRoute('profile');

@@ -48,7 +48,7 @@ class ServiceController extends AbstractController
     }
 
 
-    #[Route("/service/{id}/delete", name: "service_delete", requirements: ['id' => '\d+'])]
+    #[Route("/service/delete/{id}", name: "service_delete", requirements: ['id' => '\d+'])]
     #[IsGranted("ROLE_PRESTA")]
     public function delete($id, EntityManagerInterface $em)
     {

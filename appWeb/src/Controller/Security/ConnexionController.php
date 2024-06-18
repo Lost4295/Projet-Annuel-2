@@ -219,10 +219,10 @@ class ConnexionController extends AbstractController
     }
 
 
-    #[Route(path: '/logout', name: 'logout')]
-    public function logout()
-    {
-        return $this->redirectToRoute('login');
-        // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
+    // #[Route(path: '/logout', name: 'logout')]
+    // public function logout()
+    // {
+    //     return $this->redirectToRoute('login');
+    //     // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    // }
 }
