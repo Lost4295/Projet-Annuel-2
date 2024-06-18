@@ -1,4 +1,4 @@
-FROM php:8.2.19-fpm
+FROM php:8.2.19-fpm as base
 
 ENV APACHE_RUN_USER=www-data
 ENV APACHE_RUN_GROUP=www-data

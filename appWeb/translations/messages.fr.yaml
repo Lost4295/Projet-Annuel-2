@@ -216,6 +216,7 @@ Chauffeur: Chauffeur
 'Retour à la liste des services': 'Retour à la liste des services'
 'Nos différents abonnements': 'Nos différents abonnements'
 Nom: Nom
+name: Nom
 'Abonnement actuel': 'Abonnement actuel'
 Acheter: Acheter
 createticket: Créer un ticket

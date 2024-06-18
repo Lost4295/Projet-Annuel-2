@@ -83,6 +83,7 @@ reset: 'Reset your password'
 sendreset: 'Send password reset email'
 resetpwd: 'Reset your password'
 size: Size
+name : Name
 action: Action
 no_docs: 'No documents.'
 url: URL

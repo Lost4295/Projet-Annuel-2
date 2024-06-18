@@ -41,10 +41,15 @@ class PdfService
 
         // Generate a unique filename and save the PDF
         $filename = 'invoice_' . uniqid() . '.pdf';
-        $outputPath = __DIR__ . '/../../public/invoices/' . $filename;
+        $outputPath = __DIR__ . '/../../public/files/pdfs' . $filename;
         file_put_contents($outputPath, $dompdf->output());
 
         // Return the path to the saved PDF
-        return $outputPath;
+        return $filename;
+    }
+    public static function human_filesize($bytes, $decimals = 2) {
+        $sz = 'BKMGTP';
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
     }
 }

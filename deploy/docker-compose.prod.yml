@@ -1,0 +1,43 @@
+version: '3'
+networks:
+  symfony:
+    driver: bridge
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_prod
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: website
+      MYSQL_USER: pcs
+      MYSQL_PASSWORD: pass
+    ports:
+      - 3308:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - symfony
+  api:
+    container_name: api_prod
+    restart: always
+    build: api
+    ports:
+      - 8000:443
+      - 8080:80
+    volumes:
+      - ../pcs_api:/var/www/html/pcs_api
+      - ./api/conf/.env.local:/var/www/html/pcs_api/.env.local
+    networks:
+      - symfony
+  website:
+    container_name: website_prod
+    restart: always
+    build: web
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - ../appWeb:/var/www/html/appWeb
+      - ./web/conf/.env.local:/var/www/html/appWeb/.env.local
+    networks:
+      - symfony

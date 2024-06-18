@@ -38,7 +38,9 @@
 					{% endif %}
 					{% if is_granted("ROLE_PRESTA") %}
 						<button class="nav-link my-2 p-4" id="v-pills-presta-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta" type="button" role="tab" aria-controls="v-pills-presta" aria-selected="false">{{"prestadates"|trans}}</button>
+					{% if pro.services|length > 0 %}
 						<button class="nav-link my-2 p-4" id="v-pills-presta2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta2" type="button" role="tab" aria-controls="v-pills-presta2" aria-selected="false">{{"prestataire"|trans}}</button>
+					{% endif %}
 						<button class="nav-link my-2 p-4" id="v-pills-presta3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta3" type="button" role="tab" aria-controls="v-pills-presta3" aria-selected="false">{{"services"|trans}}</button>
 					{% endif %}
 					{% if is_granted("ROLE_VOYAGEUR") %}
@@ -142,7 +144,7 @@
 					<div class="d-flex justify-content-around">
 						<table class="table table-bordered">
 							<tr>
-								<th>{{'nom'|trans }}</th>
+								<th>{{'name'|trans }}</th>
 								<th>{{'date'|trans }}</th>
 								<th>{{'size'|trans }}</th>
 								<th>{{'type'|trans }}</th>
@@ -156,10 +158,10 @@
 										<td>{{ doc.size }}</td>
 										<td>{{ doc.type }}</td>
 										<td>
-											<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement">{{"see"|trans }}</button>
+											<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement{{doc.id}}">{{"see"|trans }}</button>
 											<a class="btn mx-2 btn-primary" href="{{ path('download_file', {'id': doc.id}) }}">{{'download'|trans }}</a>
 											<a class="btn mx-2 btn-danger" href="{{ path('delete_file', {'id': doc.id}) }}">{{'delete'|trans }}</a>
-											<div class="modal fade" id="modal-agreement">
+											<div class="modal fade" id="modal-agreement{{doc.id}}">
 												<div class="modal-dialog modal-lg" role="document">
 											    	<div class="modal-content">
 														<div class="modal-header">
@@ -178,40 +180,6 @@
 										</td>
 									</tr>
 								{% endfor %}
-								{% for doc in facture %}
-									<tr>
-										<td>{{ doc.nom }}</td>
-										<td>{{ doc.date|date('d/m/Y') }}</td>
-										<td>{{ doc.size }}</td>
-										<td>{{ doc.type }}</td>
-										<td>
-											<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement">{{"see"|trans }}</button>
-											<a class="btn mx-2 btn-primary" href="{{ path('download_file', {'id': doc.id}) }}">{{'download'|trans }}</a>
-											<a class="btn mx-2 btn-danger" href="{{ path('delete_file', {'id': doc.id}) }}">{{'delete'|trans }}</a>
-											<div class="modal fade" id="modal-agreement">
-												<div class="modal-dialog modal-lg" role="document">
-											    	<div class="modal-content">
-														<div class="modal-header">
-                    									    <h4 class="modal-title">{{"see"|trans}} {{ doc.nom }} </h4>
-															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    									</div>
-														<div class="modal-body">
-											    	    	<object type="application/pdf" data="{{asset("files/pdfs/" ~ doc.path )}}" width="100%" height="500" style="height: 85vh;">No Support</object>
-											        	</div>
-														<div class="modal-footer">
-                            								<button type="button" class="btn btn-default" data-bs-dismiss="modal">{{"close"|trans}}</button>
-                        								</div>
-											    	</div><!-- /.modal-content -->
-											    </div><!-- /.modal-dialog -->
-											</div><!-- /.modal -->
-										</td>
-									</tr>
-							
-								{% endfor %}
-							{% else %}
-								<tr>
-									<td colspan="5">{{'no_docs'|trans }}</td>
-								</tr>
 							{% endif %}
 						</table>
 
@@ -350,6 +318,7 @@
 						</div>
 
 					</div>
+					{% if pro.services|length > 0 %}
 					<div class="tab-pane fade" id="v-pills-presta2" role="tabpanel" aria-labelledby="v-pills-presta2-tab" tabindex="0">
 						<div class="row">
 						+ dashboard sur avis clients (choix des clients sur les services) + note presta + note service
@@ -384,6 +353,9 @@
 						{% endfor %}
 						</div>
 					</div>
+					
+
+					{% endif %}
 					<div class="tab-pane fade" id="v-pills-presta3" role="tabpanel" aria-labelledby="v-pills-presta3-tab" tabindex="0">
 					<h1>Services</h1>
 						<a href="{{ path('create_service') }}" class="btn btn-primary">{{"new"|trans}}</a>
@@ -413,7 +385,6 @@
 							{% endfor %}
 						</div>
 					</div>
-
 				{% endif %}
 				{% if is_granted("ROLE_VOYAGEUR") %}
 					<div class="tab-pane fade" id="v-pills-loca" role="tabpanel" aria-labelledby="v-pills-loca-tab" tabindex="0">
@@ -445,7 +416,7 @@
 														<span class=" col-3"></span>
 													</div>
 													<div class="d-flex justify-content-between">
-														<span class="text-dark placeholder col-5"></span>
+														<span class="text-dark">{{location.appartement.city}} - {{location.appartement.country}} </span>
 														<span class="">{{location.price }}
 															€</span>
 													</div>
@@ -530,7 +501,7 @@
     monune();
 
     function monune() {
-        var elms = document.getElementsByClassNafffme("splide");
+        var elms = document.getElementsByClassName("splide");
 
         for (var i = 0; i < elms.length; i++) {
             new Splide(elms[i], {

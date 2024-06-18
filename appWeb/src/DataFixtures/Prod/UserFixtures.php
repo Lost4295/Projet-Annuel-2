@@ -8,6 +8,7 @@ use App\Entity\Professionnel;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\User;
+use App\Service\PdfService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -110,7 +111,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
             $file->setNom('test')
                 ->setType('pdf')
                 ->setPath('Bonjour.pdf')
-                ->setSize(self::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
+                ->setSize(PdfService::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
                 ->setUser($this->getReference("voyageur$i-user"));
             $manager->persist($file);
             $manager->persist($voyageur);
@@ -141,7 +142,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
                 $file->setNom('test')
                 ->setType('pdf')
                 ->setPath('Bonjour.pdf')
-                ->setSize(self::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
+                ->setSize(PdfService::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
                 ->setUser($this->getReference("bailleur$i-user"));
                 $manager->persist($file);
                 $manager->persist($bailleurpro);
@@ -187,7 +188,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
             $file->setNom('test')
                 ->setType('pdf')
                 ->setPath('Bonjour.pdf')
-                ->setSize(self::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
+                ->setSize(PdfService::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
                 ->setUser($this->getReference("prestau$i-user"));
             $manager->persist($file);
             $manager->persist($prestaire);
@@ -215,13 +216,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
             AbonnementFixtures::class,
         ];
     }
-
-    function human_filesize($bytes, $decimals = 2) {
-        $sz = 'BKMGTP';
-        $factor = floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
-    }
-
     public static function getGroups(): array
     {
         return ['prod', 'userprod'];

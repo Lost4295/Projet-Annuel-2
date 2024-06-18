@@ -1,4 +1,4 @@
-FROM php:8.2.19-fpm
+FROM php:8.2.19-fpm as base
 
 WORKDIR /var/www/html/appWeb
 

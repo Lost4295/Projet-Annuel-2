@@ -54,14 +54,12 @@ class DefaultController extends AbstractController
                     $loca->addService($s);
                 }
                 $factu = new Fichier();
-                $factu->setNom("nom");
+                $factu->setNom("Facture du " . date("d/m/Y"));
                 $factu->setUser($user);
                 $factu->setType("pdf");
-                $factu->setSize("size");
                 $path = $pdf->generatePdf($loca);
+                $factu->setSize(PdfService::human_filesize(filesize($path)));
                 $factu->setPath($path);
-                
-                
                 $em->persist($factu);
                 $em->persist($loca);
                 $em->flush();
