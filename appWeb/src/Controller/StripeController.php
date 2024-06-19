@@ -111,6 +111,10 @@ class StripeController extends AbstractController
     #[Route("/abos/{id}", name:"abos", requirements:['id'=> '\d+'])]
     public function abonnements( $id, Request $request, EntityManagerInterface $em) : Response {
         $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'conn');
+            return $this->redirectToRoute('app_login');
+        }
         $abonnement = $em->getRepository(Abonnement::class)->find($id);
         $price = $abonnement->getTarif();
         Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);

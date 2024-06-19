@@ -74,23 +74,7 @@ class AjaxController extends AbstractController
         $output = $as->updateAppart($locId);
         return $this->json($output);
     }
-    
-    #[Route("/ratingp", name: "rating_p")]
-    public function ratePresta(Request $request)
-    {
-        $rating = $request->request->get('rating');
-        $prestaId = $request->request->get('id');
-        $presta = $this->em->getRepository(Professionnel::class)->find($prestaId);
-        $note = new Note();
-        $note->setNote($rating);
-        $note->setPrestataire($presta);
-        $note->setUser($this->getUser());
-        $presta->addNote($note);
-        $this->em->persist($note);
-        $this->em->persist($presta);
-        $this->em->flush();
-        return $this->json(['success' => 'true']);
-    }
+
 
 
 }

@@ -107,7 +107,12 @@ back: 'Back to profile'
 modifymyinfo: 'Modify my information'
 download: Download
 delete: Delete
+conn: You must be connected to access this page.
 mail: Email
+stripe: Access to the Stripe dashboard
+devis: Quotes
+app: 
+tickcrt: Your ticket has been created successfully.
 crticket: 'To modify your information such as your name, first name or date of birth, '
 modmdp: 'To change your password, please '
 here: 'please create a ticket.'
@@ -232,7 +237,9 @@ siret: 'SIRET'
 see: 'See'
 close: 'Close'
 stats: 'Statistics'
+subsuced: Your subscription has been updated successfully.
 nblocs: 'Number of bookings'
+nodl: You are not allowed to download this file.
 notes: 'Notes'
 prices: 'Prices'
 nbappart: 'Number of apartments'
@@ -266,3 +273,6 @@ Sth: 'Start time'
 'Choisissez les jours de travail': 'Choose work days'
 Enh: 'End time'
 Submit: 'Submit'
+filebisup: File deleted successfully.
+nodelf: You are not allowed to delete this file.
+filnotf: File not found.

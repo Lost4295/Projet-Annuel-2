@@ -24,7 +24,7 @@ class Option
     private ?string $info = null;
 
 
-    #[ORM\OneToMany(targetEntity: OptionsAbonnement::class, mappedBy: 'option')]
+    #[ORM\ManyToMany(targetEntity: Abonnement::class, mappedBy: 'option')]
     private Collection $abonnement;
 
 
@@ -62,14 +62,14 @@ class Option
     }
 
     /**
-     * @return Collection<int, OptionsAbonnement>
+     * @return Collection<int, Abonnement>
      */
     public function getAbonnement(): Collection
     {
         return $this->abonnement;
     }
 
-    public function addAbonnement(OptionsAbonnement $abonnement): static
+    public function addAbonnement(Abonnement $abonnement): static
     {
         if (!$this->abonnement->contains($abonnement)) {
             $this->abonnement->add($abonnement);
@@ -77,7 +77,7 @@ class Option
         return $this;
     }
 
-    public function removeAbonnement(OptionsAbonnement $abonnement): static
+    public function removeAbonnement(Abonnement $abonnement): static
     {
         $this->abonnement->removeElement($abonnement);
 

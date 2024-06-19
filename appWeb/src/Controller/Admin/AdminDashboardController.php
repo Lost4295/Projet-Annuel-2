@@ -175,12 +175,12 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linktoRoute('apistate', 'fa fa-robot', 'api_state');
         yield MenuItem::linkToCrud('apis', 'fa fa-robot', Api::class);
         yield MenuItem::linkToUrl("stripe","fa fa-stripe" , "https://dashboard.stripe.com/" );
-        yield MenuItem::linktoRoute('tarifs', 'fa fa-shopping-cart', 'tarifs');
         yield MenuItem::linktoRoute('transaction', 'fa fa-list', 'all_states');
         yield MenuItem::linkToCrud('ticket', 'fa fa-plus', Ticket::class);
         yield MenuItem::section('userrl');
         yield MenuItem::linkToCrud('users', 'fa fa-user', User::class);
         yield MenuItem::linkToCrud('pro', 'fa fa-id-card', Professionnel::class);
+        yield MenuItem::linktoRoute('abos', 'fa fa-shopping-cart', 'tarifs');
         yield MenuItem::section('obrl');
         yield MenuItem::linkToCrud('commentaire', 'fa fa-comment', Commentaire::class);
         yield MenuItem::linkToCrud('email', 'fa fa-envelope', Email::class);

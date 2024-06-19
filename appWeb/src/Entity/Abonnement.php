@@ -25,8 +25,8 @@ class Abonnement
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'abonnement')]
     private Collection $subscribers;
 
-    #[ORM\OneToMany(targetEntity: OptionsAbonnement::class, mappedBy: 'abonnement')]
-    private Collection $options;
+    #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'abonnement')]
+    private Collection $option;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
@@ -34,7 +34,7 @@ class Abonnement
     public function __construct()
     {
         $this->subscribers = new ArrayCollection();
-        $this->options = new ArrayCollection();
+        $this->option = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -102,26 +102,26 @@ class Abonnement
     }
 
     /**
-     * @return Collection<int, OptionsAbonnement>
+     * @return Collection<int, Option>
      */
     public function getOptions(): Collection
     {
-        return $this->options;
+        return $this->option;
     }
 
-    public function addOption(OptionsAbonnement $option): static
+    public function addOption(Option $option): static
     {
-        if (!$this->options->contains($option)) {
-            $this->options->add($option);
+        if (!$this->option->contains($option)) {
+            $this->option->add($option);
             $option->addAbonnement($this);
         }
 
         return $this;
     }
 
-    public function removeOption(OptionsAbonnement $option): static
+    public function removeOption(Option $option): static
     {
-        if ($this->options->removeElement($option)) {
+        if ($this->option->removeElement($option)) {
             $option->removeAbonnement($this);
         }
 

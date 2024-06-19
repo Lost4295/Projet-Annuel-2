@@ -31,7 +31,7 @@
 				</tr>
 				{% for key, val in options %}
 					<tr>
-						<td>{{key}}</td>
+						<td><div>{{key}}</div> <div><a href="{{urlopt[key].upd}}" class="btn btn-primary">{{"modify"|trans}}</a><a href="{{urlopt[key].del}}" class="btn btn-danger">{{"delete"|trans}}</a></div></td>
 						{% for abo,aboVal in val %}
 							{% if aboVal == 1 %}
 								<td>
@@ -60,7 +60,7 @@
 			</tbody>
 		</table>
 
-		<a href="#" class="btn btn-primary">{{"Ajouter un nouveau niveau d'abonnement"| trans}}</a>
-		<a href="#" class="btn btn-primary">{{"Ajouter une option"|trans}}</a>
+		<a href="{{add_abos}}" class="btn btn-primary">{{"Ajouter un nouveau niveau d'abonnement"| trans}}</a>
+		<a href="{{add_opt}}" class="btn btn-primary">{{"Ajouter une option"|trans}}</a>
 	</div>
 {% endblock %}

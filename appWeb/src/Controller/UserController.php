@@ -8,6 +8,7 @@ use App\Entity\Abonnement;
 use App\Entity\Devis;
 use App\Entity\Fichier;
 use App\Entity\Location;
+use App\Entity\Option;
 use App\Entity\Professionnel;
 use App\Entity\Ticket;
 use App\Entity\User;
@@ -181,7 +182,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($info);
             $em->flush();
-            $this->addFlash('success', 'Your ticket has been created successfully.');
+            $this->addFlash('success', 'tickcrt');
             return $this->redirectToRoute('profile');
         }
         return $this->render('user/create_ticket.html.twig', ['form' => $form]);
@@ -195,8 +196,9 @@ class UserController extends AbstractController
             $abonnement = $user->getAbonnement();
         }
         $abos = $em->getRepository(Abonnement::class)->findAll();
+        $options = $em->getRepository(Option::class)->findAll();
+        $tab = [];
         $transform = [];
-        $options = [];
         $transform["key"] = [null];
         $transform["nom"] = [null];
         $transform["prix"] = [null];
@@ -205,15 +207,19 @@ class UserController extends AbstractController
             $transform["key"][] = $key;
             $transform["prix"][] =  $abo->getTarif();
             $transform["nom"][] =  $abo->getNom();
-            foreach ($abo->getOptions() as $option) {
-                $options[$option->getOption()->getNom()][] = ($option->isPresence()) ? "1" : "0";
+            foreach ($options as $option) {
+                if ($abo->getOptions()->contains($option)){
+                    $tab[$option->getNom()][$key] = 1;
+                } else {
+                    $tab[$option->getNom()][$key] = 0;
+                }
             }
             $transform["url"][$abo->getId()]["link"] = $this->generateUrl('change_abo',['id'=>$abo->getId()]);
             $transform["url"][$abo->getId()]["link"] = $this->generateUrl('stripe_abos',['id'=>$abo->getId()]);
         }
         return $this->render('user/abonnements.html.twig',[
             'abonnements' => $transform,
-            'options' => $options,
+            'options' => $tab,
             'abouser'=> $abonnement??null
         ]);
     }
@@ -227,7 +233,7 @@ class UserController extends AbstractController
         $user->setAbonnement($abo);
         $em->persist($user);
         $em->flush();
-        $this->addFlash('success', 'Your subscription has been updated successfully.');
+        $this->addFlash('success', 'subsuced');
         return $this->redirectToRoute('abos');
     }
 
@@ -240,7 +246,7 @@ class UserController extends AbstractController
         if ($file->getUser() == $this->getUser()){
             return $this->file($path);
         } else {
-            $this->addFlash('danger', 'You are not allowed to download this file.');
+            $this->addFlash('danger', 'nodl');
             return $this->redirectToRoute('profile');
         }
     }
@@ -251,25 +257,15 @@ public function deleteFile($id, EntityManagerInterface $em)
     $file = $em->getRepository(Fichier::class)->find($id);
 
     if (!$file) {
-        $this->addFlash('danger', 'File not found.');
+        $this->addFlash('danger', 'filnotf');
         return $this->redirectToRoute('profile');
     }
-
-    $path = $this->getParameter('kernel.project_dir') . '/public/files/pdfs/' . $file->getPath();
-
     if ($file->getUser() == $this->getUser()) {
-        if (file_exists($path)) {
-            unlink($path);
-        } else {
-            $this->addFlash('warning', 'The file does not exist on the server.');
-        }
-
         $em->remove($file);
         $em->flush();
-
-        $this->addFlash('success', 'File deleted successfully.');
+        $this->addFlash('success', 'filebisup');
     } else {
-        $this->addFlash('danger', 'You are not allowed to delete this file.');
+        $this->addFlash('danger', 'nodelf');
     }
 
     return $this->redirectToRoute('profile');
