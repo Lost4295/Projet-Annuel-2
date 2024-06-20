@@ -9,7 +9,7 @@
         }
         .invoice-box {
             width: 100%;
-            padding: 30px;
+            padding: 7px;
             border: 1px solid #eee;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
             font-size: 16px;
@@ -71,7 +71,7 @@
                                 <h1>Facture</h1>
                             </td>
                             <td>
-                                {{ 'Facture'|trans }} #: 123<br>
+                                {{ 'Facture'|trans }} n°: {{location.appartement.id}}<br>
                                 {{ 'Créé'|trans }}: {{ "now"|date("d/m/Y") }}<br>
                                 {{ 'Due'|trans }}: {{ location.dateFin|date("d/m/Y") }}
                             </td>
@@ -85,12 +85,14 @@
                         <tr>
                             <td>
                                 {{ 'Votre entreprise'|trans }}<br>
-                                Prénom / Nom<br>
+                                Prénom<br>
+                                Nom<br>
                                 Email
                             </td>
                             <td>
                                 {{ 'Client'|trans }}<br>
-                                {{ location.locataire.prenom }} {{ location.locataire.nom }}<br>
+                                {{ location.locataire.prenom }} <br>
+                                {{ location.locataire.nom }}<br>
                                 {{ location.locataire.email }}
                             </td>
                         </tr>
