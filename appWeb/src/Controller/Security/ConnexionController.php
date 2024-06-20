@@ -44,10 +44,9 @@ class ConnexionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form->getData());
             $g = $this->em->getRepository(Abonnement::class)->findOneBy(["nom" => "Gratuit"]);
             if (!$g) {
-                $this->addFlash("error", "errorabt");
+                $this->addFlash("danger", "errorabt");
                 $this->createErrorTicket();
             }
             $user->setEmail($form->get('email')->getData());
@@ -122,7 +121,7 @@ class ConnexionController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'verified');
 
         return $this->redirectToRoute('app_register');
     }

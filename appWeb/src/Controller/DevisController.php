@@ -108,7 +108,7 @@ class DevisController extends AbstractController
             $em->flush();
             return $this->json(["success" => true]);
         } else {
-            $this->addFlash('error', 'deverror');
+            $this->addFlash('danger', 'deverror');
             return $this->json(["success" => false]);
         }
     }

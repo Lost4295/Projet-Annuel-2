@@ -112,8 +112,8 @@ class StripeController extends AbstractController
     public function abonnements( $id, Request $request, EntityManagerInterface $em) : Response {
         $user = $this->getUser();
         if (!$user) {
-            $this->addFlash('error', 'conn');
-            return $this->redirectToRoute('app_login');
+            $this->addFlash('danger', 'conn');
+            return $this->redirectToRoute('login');
         }
         $abonnement = $em->getRepository(Abonnement::class)->find($id);
         $price = $abonnement->getTarif();
