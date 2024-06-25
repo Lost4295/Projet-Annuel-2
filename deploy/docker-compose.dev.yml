@@ -10,8 +10,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: website
-      MYSQL_USER: pcs
-      MYSQL_PASSWORD: pass
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: securedevpass
     ports:
       - 3308:3306
     volumes:
@@ -27,11 +27,11 @@ services:
       - 8084:80
     volumes:
       - ../pcs_api:/var/www/html/pcs_api
-      # - ./api/conf/.env.local:/var/www/html/pcs_api/.env.local
+      - ./api/conf/.env.dev.local:/var/www/html/pcs_api/.env.local
     networks:
       - symfony
   website:
-    container_name: website
+    container_name: website 
     restart: always
     build: web
     ports:
@@ -39,7 +39,7 @@ services:
       - 84:80
     volumes:
       - ../appWeb:/var/www/html/appWeb
-      # - ./web/conf/.env.local:/var/www/html/appWeb/.env.local
+      - ./web/conf/.env.dev.local:/var/www/html/appWeb/.env.dev.local
     networks:
       - symfony
   python:

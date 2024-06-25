@@ -9,8 +9,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: website
-      MYSQL_USER: pcs
-      MYSQL_PASSWORD: pass
+      MYSQL_USER: dockerp
+      MYSQL_PASSWORD: production
     ports:
       - 3308:3306
     volumes:
@@ -26,7 +26,7 @@ services:
       - 8080:80
     volumes:
       - ../pcs_api:/var/www/html/pcs_api
-      - ./api/conf/.env.local:/var/www/html/pcs_api/.env.local
+      - ./api/conf/.env.prod.local:/var/www/html/pcs_api/.env.local
     networks:
       - symfony
   website:
@@ -38,7 +38,7 @@ services:
       - 80:80
     volumes:
       - ../appWeb:/var/www/html/appWeb
-      - ./web/conf/.env.local:/var/www/html/appWeb/.env.local
+      - ./web/conf/.env.prod.local:/var/www/html/appWeb/.env.local
     networks:
       - symfony
   python:
