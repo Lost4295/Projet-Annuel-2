@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 networks:
   symfony:
     driver: bridge
@@ -6,6 +6,7 @@ services:
   mysql:
     image: mysql:8.0
     container_name: mysql
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: website
@@ -22,11 +23,11 @@ services:
     restart: always
     build: api
     ports:
-      - 8000:443
-      - 8080:80
+      - 8004:443
+      - 8084:80
     volumes:
       - ../pcs_api:/var/www/html/pcs_api
-      - ./api/conf/.env.local:/var/www/html/pcs_api/.env.local
+      # - ./api/conf/.env.local:/var/www/html/pcs_api/.env.local
     networks:
       - symfony
   website:
@@ -34,10 +35,23 @@ services:
     restart: always
     build: web
     ports:
-      - 443:443
-      - 80:80
+      - 444:443
+      - 84:80
     volumes:
       - ../appWeb:/var/www/html/appWeb
-      - ./web/conf/.env.local:/var/www/html/appWeb/.env.local
+      # - ./web/conf/.env.local:/var/www/html/appWeb/.env.local
+    networks:
+      - symfony
+  python:
+    container_name: python
+    restart: always
+    build: 
+      context: py
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - 3004:3004
+    volumes:
+      - ../appTickets/:/home/docker/
     networks:
       - symfony

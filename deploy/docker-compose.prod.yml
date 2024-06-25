@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 networks:
   symfony:
     driver: bridge
@@ -19,7 +19,7 @@ services:
       - symfony
   api:
     container_name: api_prod
-    restart: always
+    restart: on-failure:5 
     build: api
     ports:
       - 8000:443
@@ -31,7 +31,7 @@ services:
       - symfony
   website:
     container_name: website_prod
-    restart: always
+    restart: on-failure:5 
     build: web
     ports:
       - 443:443
@@ -39,5 +39,18 @@ services:
     volumes:
       - ../appWeb:/var/www/html/appWeb
       - ./web/conf/.env.local:/var/www/html/appWeb/.env.local
+    networks:
+      - symfony
+  python:
+    container_name: python_prod
+    restart: on-failure:5 
+    build: 
+      context: py
+      dockerfile: Dockerfile
+      target: prod
+    ports:
+      - 3000:3000
+    volumes:
+      - ../appTickets:/home/docker/
     networks:
       - symfony

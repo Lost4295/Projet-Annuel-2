@@ -30,19 +30,20 @@ RUN apt-get install -y libapache2-mod-php8.2 && apt-get clean
 RUN mkdir -p /var/log/apache2/80 /var/log/apache2/443
 COPY ./conf/apache2.conf /etc/apache2/apache2.conf
 COPY ./conf/website.conf /etc/apache2/sites-available/website.conf
-COPY ./conf/ssl.conf /etc/apache2/sites-available/ssl.conf
-COPY ./conf/fullchain.pem /etc/apache2/fullchain.pem
-COPY ./conf/privkey.pem /etc/apache2/privkey.pem
-COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
-COPY ./conf/deployweb.sh /deployweb.sh
-RUN chmod +x /deployweb.sh
+# COPY ./conf/ssl.conf /etc/apache2/sites-available/ssl.conf
+# COPY ./conf/fullchain.pem /etc/apache2/fullchain.pem
+# COPY ./conf/privkey.pem /etc/apache2/privkey.pem
+# COPY ./conf/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
+# COPY ./conf/deployweb.sh /deployweb.sh
+# RUN chmod +x /deployweb.sh
 RUN a2dismod mpm_worker
+RUN a2dismod php8.2
 RUN a2dismod mpm_prefork
-RUN a2enmod php8.2
 RUN a2enmod mpm_event http2
 RUN a2enmod rewrite ssl
+# RUN a2enmod ssl
 RUN a2dissite 000-default
-RUN a2ensite ssl.conf
+# RUN a2ensite ssl.conf
 RUN a2ensite website.conf
 EXPOSE 80 443
-CMD [ "/deployweb.sh" ]
+# CMD [ "/deployweb.sh" ]
