@@ -19,6 +19,6 @@ class GetIds extends AbstractController
     )]
     public function tot(): Response
     {
-        return $this->json([$this->getUser()->getId(),$this->getUser()->getUserIdentifier()]);
+        return $this->json(["data"=>[$this->getUser()->getId(),$this->getUser()->getUserIdentifier()]]);
     }
 }
