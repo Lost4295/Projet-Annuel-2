@@ -231,6 +231,12 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
             $serv->setPrestataire($this->getReference('presta' . rand(1, 15) . '-user'));
             $serv->setTitre($this->services[$i - 1]['service']);
             $serv->setTarifs(rand(1, 100));
+            $var = rand(1, 500);
+                while (!file_exists(__DIR__ . '/images/image' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $serv->addImage('image' . $var . '.jpg');
+                copy(__DIR__ . '/images/image' . $var . '.jpg', __DIR__ . '/../../../public/images/services/image' . $var . '.jpg');
             $serv->setType($this->services[$i - 1]['type']);
             $serv->setDescription($this->services[$i - 1]['description']);
             $this->addReference('service' . $i, $serv);
@@ -255,12 +261,74 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
             $appartement->setCity($this->locations[$n]['city']);
             $appartement->setCountry($this->locations[$n]['country']);
             $appartement->setSurface(50);
+            if (rand(1, 2) == 1) {
+                $var = rand(1, 500);
+                while (!file_exists(__DIR__ . '/images/apartment_' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $appartement->addImage('apartment_' . $var . '.jpg');
+                copy(__DIR__ . '/images/apartment_' . $var . '.jpg', __DIR__ . '/../../../public/images/appartements/apartment_' . $var . '.jpg');
+            } else {
+                $var = rand(1, 500);
+                while (!file_exists(__DIR__ . '/images/house_' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $appartement->addImage('house_' . $var . '.jpg');
+                copy(__DIR__ . '/images/house_' . $var . '.jpg', __DIR__ . '/../../../public/images/appartements/house_' . $var . '.jpg');
+                while (!file_exists(__DIR__ . '/images/garage_' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $appartement->addImage('garage_' . $var . '.jpg');
+                copy(__DIR__ . '/images/garage_' . $var . '.jpg', __DIR__ . '/../../../public/images/appartements/garage_' . $var . '.jpg');
+            }
+            $nbbath = rand(1, 3);
+            for ($j = 1; $j <= $nbbath; $j++) {
+                $var = rand(1, 500);
+                while (!file_exists(__DIR__ . '/images/bath_' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $appartement->addImage('bath_' . $var . '.jpg');
+                copy(__DIR__ . '/images/bath_' . $var . '.jpg', __DIR__ . '/../../../public/images/appartements/bath_' . $var . '.jpg');
+            }
+            $nbbed = rand(1, 5);
+            for ($j = 1; $j <= $nbbed; $j++) {
+                $var = rand(1, 500);
+                while (!file_exists(__DIR__ . '/images/bed_' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $appartement->addImage('bed_' . $var . '.jpg');
+                copy(__DIR__ . '/images/bed_' . $var . '.jpg', __DIR__ . '/../../../public/images/appartements/bed_' . $var . '.jpg');
+            }
+            for ($j = 1; $j <= rand(1, 3); $j++) {
+                $var = rand(1, 500);
+                while (!file_exists(__DIR__ . '/images/din_' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $appartement->addImage('din_' . $var . '.jpg');
+                copy(__DIR__ . '/images/din_' . $var . '.jpg', __DIR__ . '/../../../public/images/appartements/din_' . $var . '.jpg');
+            }
+            for ($j = 1; $j <= rand(1, 2); $j++) {
+                $var = rand(1, 500);
+                while (!file_exists(__DIR__ . '/images/kitchen_' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $appartement->addImage('kitchen_' . $var . '.jpg');
+                copy(__DIR__ . '/images/kitchen_' . $var . '.jpg', __DIR__ . '/../../../public/images/appartements/kitchen_' . $var . '.jpg');
+            }
+            for ($j = 1; $j <= rand(1, 2); $j++) {
+                $var = rand(1, 500);
+                while (!file_exists(__DIR__ . '/images/living_' . $var . '.jpg')) {
+                    $var = rand(1, 500);
+                }
+                $appartement->addImage('living_' . $var . '.jpg');
+                copy(__DIR__ . '/images/living_' . $var . '.jpg', __DIR__ . '/../../../public/images/appartements/living_' . $var . '.jpg');
+            }
             $appartement->setNbVoyageurs(rand(5, 15));
-            $appartement->setNbchambers(rand(1,3));
+            $appartement->setNbchambers(rand(1, 3));
             $appartement->setBailleur($this->getReference('bailleurp' . rand(1, 6) . '-user'));
-            $appartement->setNbBeds(rand(1, 5));
-            $appartement->setNbBathrooms(rand(1, 3));
-            $appartement->setPrice(rand(50, 200));
+            $appartement->setNbBeds($nbbed);
+            $appartement->setNbBathrooms($nbbath);
+            $appartement->setPrice(rand(15, 200));
             $appartement->setCreatedAt(new \DateTime(sprintf('202%d-01-%02d', rand(2, 9), rand(1, 31))));
             $appartement->setUpdatedAt(new \DateTime(sprintf('202%d-01-%02d', rand(2, 9), rand(1, 31))));
             $this->addReference('appartement' . $i, $appartement);
@@ -280,7 +348,7 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
             $loca->setLocataire($that);
             $num = rand(1, 29);
             $y = rand(0, 9);
-            $z = rand(1,12);
+            $z = rand(1, 12);
             $date = new DateTime(sprintf('202%d-%02d-%02d', $y, $z, $num));
             $loca->setDateDebut($date);
             $date2 = new DateTime(sprintf('202%d-%02d-%02d', $y, $z, rand($num + 1, 31)));
@@ -307,14 +375,15 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
                 $manager->persist($nott);
             }
             $manager->persist($loca);
+            $manager->flush();
         }
         $manager->flush();
-        foreach($this->comms as $comm){
+        foreach ($this->comms as $comm) {
             $comment = new Commentaire();
             $comment->setUser($this->getReference('voyageur' . rand(1, 10) . '-user'));
             $comment->setEntityId($this->getReference('appartement' . rand(1, 149))->getId());
             $comment->setType(Commentaire::APPART);
-            $comment->setDate(new DateTime(sprintf('202%d-%02d-%02d', rand(0,9), rand(1,12),rand(1,31))));
+            $comment->setDate(new DateTime(sprintf('202%d-%02d-%02d', rand(0, 9), rand(1, 12), rand(1, 31))));
             $comment->setCommentaire($comm);
             $manager->persist($comment);
         }

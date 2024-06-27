@@ -216,6 +216,7 @@ class Appartement
     public function addImage(string $image): static
     {
         $this->images[] = $image;
+        $this->removeImage("house-placeholder.jpg");
         $this->setImages(array_unique($this->images));
         return $this;
     }
@@ -225,6 +226,7 @@ class Appartement
         $key = array_search($image, $this->images);
         if ($key !== false) {
             unset($this->images[$key]);
+            $this->images = array_values($this->images);
         }
         return $this;
     }

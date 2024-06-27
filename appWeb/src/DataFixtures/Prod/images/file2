@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Directory containing the images
+DIR="."
+
+# Loop over all files in the directory
+for file in "$DIR"/*; do
+  # Extract the base name of the file (e.g., example_0001.jpg -> example_0001.jpg)
+  base=$(basename "$file")
+  
+  # Use regex to check if the file contains a numeric part, possibly with an underscore before it
+  if [[ $base =~ (.*[^0-9])([0-9]+)(\.[^.]+)$ ]]; then
+    prefix=${BASH_REMATCH[1]}
+    number=${BASH_REMATCH[2]}
+    extension=${BASH_REMATCH[3]}
+    
+    # Remove leading zeros from the number
+    new_number=$(echo $number | sed 's/^0*//')
+    
+    # Construct the new file name
+    new_name="${prefix}${new_number}${extension}"
+    
+    # Print the old and new file names for debugging
+    echo "Renaming '$file' to '$DIR/$new_name'"
+    
+    # Rename the file
+    mv "$file" "$DIR/$new_name"
+  else
+    echo "File '$file' does not match the pattern"
+  fi
+done

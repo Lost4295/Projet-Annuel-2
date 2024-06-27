@@ -7,7 +7,7 @@
 	<style>
 
 		.bar {
-			width: 650px;
+			width: 850px;
 			background: #002349;
 			box-shadow: 0 0 5px hsl(0 0% 78%);
 			height: 55px;
@@ -23,7 +23,7 @@
 			transition: 250ms ease;
 		}
 
-		.bar div:hover {
+		.bar > div:hover {
 			background: #25486E;
 		}
 
@@ -38,13 +38,31 @@
 
 		input[type="text"],
 		input[type="date"],
-		p.djf {
+		input[type="number"],
+		p.djf, span.t{
 			background: none;
 			border: none;
 			padding: 0.2rem 0 0;
 			position: relative;
 			top: -15px;
 		}
+		input[type="number"]
+		{
+			width: 30px;
+		}
+
+		.f {
+			 padding: 0 0 0 0!important;
+    display: flex; 
+    margin-bottom: 22px; 
+} 
+
+		/* Remove Arrows/Spinners */
+		input::-webkit-outer-spin-button, 
+		input::-webkit-inner-spin-button { 
+		    -webkit-appearance: none; 
+		    margin: 0; 
+		} 
 
 		/*.onlynum {
 			background: none;
@@ -101,6 +119,48 @@ input::-webkit-inner-spin-button {
 		.bar>div:hover::before {
 			background: transparent;
 		}
+		.slider-container { 
+    width: 100%; 
+} 
+  
+.slider-container { 
+    height: 6px; 
+    position: relative; 
+    background: #e4e4e4; 
+    border-radius: 5px; 
+} 
+  
+.slider-container .price-slider { 
+    height: 100%; 
+    left: 25%; 
+    right: 15%; 
+    position: absolute; 
+    border-radius: 5px; 
+    background: #01940b; 
+} 
+  
+.range-input { 
+    position: relative; 
+} 
+  
+.range-input input { 
+    position: absolute; 
+    width: 100%; 
+    height: 5px; 
+    background: none; 
+    top: -5px; 
+    pointer-events: none; 
+    cursor: pointer; 
+    -webkit-appearance: none; 
+}
+input[type="range"]::-webkit-slider-thumb { 
+    height: 18px; 
+    width: 18px; 
+    border-radius: 70%; 
+    background: #555; 
+    pointer-events: auto; 
+    -webkit-appearance: none; 
+} 
 	</style>
 
 {% endblock %}
@@ -120,12 +180,35 @@ input::-webkit-inner-spin-button {
 				<p>{{'checkout'|trans}}</p>
 				<input type="date" id="enddate" class="text-light" placeholder="{{'when'|trans }}">
 			</div>
+			<div class="text-light price">
+				<p>{{'price'|trans}}</p>
+				<div class="f d-flex justify-content between " data-bs-toggle="collapse" data-bs-target="#card2" aria-expanded="false" aria-controls="card">
+				<input type="number" class=" text-white min-input" value="" readonly><span class='t'> - </span><input type="number" class=" text-white max-input" value="" readonly>
+				</div>
+			</div>
 			<div class="text-light guests">
 				<p>{{"guests"|trans }}</p>
 				<p class="djf" data-bs-toggle="collapse" data-bs-target="#card" aria-expanded="false" aria-controls="card">0 {{"voyageur"|trans}}</p>
 				<span id="search">
 					<i class="bi-search"></i>
 				</span>
+			</div>
+		</div>
+	</div>
+	<div class="collapse" id="card2">
+		<div class=" d-flex justify-content-center">
+			<div class="card col-3">
+				<div class="card-body">
+				<div class="slider-container"> 
+                    <div class="price-slider"> 
+                    </div> 
+                </div> 
+				<div class="range-input"> 
+                <input type="range" class="min-range" min="0" max="200" value="0" step="1"> 
+                <input type="range" class="max-range" min="0" max="200" value="200" step="1"> 
+				</div>
+				</div>
+				<span class="bi bi-x-lg" id="clpr"></span>
 			</div>
 		</div>
 	</div>
@@ -163,7 +246,7 @@ input::-webkit-inner-spin-button {
 	</div>
 	<div class="row d-flex justify-content-around" id="demo">
 	<div class="row d-flex justify-content-around" id="demo2">
-		{% for appart in apparts %}
+		{# {% for appart in apparts %}
 				<div class="card col-md-3 my-3 mx-1 py-1">
 					<div class="card-header">
 						<div class="splide" role="group" aria-label="Splide Basic HTML Example">
@@ -191,7 +274,7 @@ input::-webkit-inner-spin-button {
 						</div>
 					</a>
 				</div>
-		{% endfor %}
+		{% endfor %} #}
 				</div>
 				</div>
 
@@ -206,6 +289,103 @@ input::-webkit-inner-spin-button {
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
 	<script src="https://pagination.js.org/dist/2.6.0/pagination.js"></script>
 	<script>
+	const rangevalue =  
+    document.querySelector(".slider-container .price-slider"); 
+const rangeInputvalue =  
+    document.querySelectorAll(".range-input input"); 
+  
+// Set the price gap 
+let priceGap = 20; 
+  
+// Adding event listners to price input elements 
+const priceInputvalue =  
+    document.querySelectorAll(".f input"); 
+for (let i = 0; i < priceInputvalue.length; i++) { 
+    priceInputvalue[i].addEventListener("input", e => { 
+  
+        // Parse min and max values of the range input 
+        let minp = parseInt(priceInputvalue[0].value); 
+        let maxp = parseInt(priceInputvalue[1].value); 
+        let diff = maxp - minp 
+  
+        if (minp < 0) { 
+            priceInputvalue[0].value = 0; 
+            minp = 0; 
+        } 
+  
+        // Validate the input values 
+        if (maxp > 200) { 
+            alert("maximum price cannot be greater than 200"); 
+            priceInputvalue[1].value = 200; 
+            maxp = 200; 
+        } 
+  
+        if (minp > maxp - priceGap) { 
+            priceInputvalue[0].value = maxp - priceGap; 
+            minp = maxp - priceGap; 
+  
+            if (minp < 0) { 
+                priceInputvalue[0].value = 0; 
+                minp = 0; 
+            } 
+        } 
+  
+        // Check if the price gap is met  
+        // and max price is within the range 
+        if (diff >= priceGap && maxp <= rangeInputvalue[1].max) { 
+            if (e.target.className === "min-input") { 
+                rangeInputvalue[0].value = minp; 
+                let value1 = rangeInputvalue[0].max; 
+                rangevalue.style.left = `${(minp / value1) * 100}%`; 
+            } 
+            else { 
+                rangeInputvalue[1].value = maxp; 
+                let value2 = rangeInputvalue[1].max; 
+                rangevalue.style.right =  
+                    `${100 - (maxp / value2) * 100}%`; 
+            } 
+        } 
+    }); 
+  
+    // Add event listeners to range input elements 
+    for (let i = 0; i < rangeInputvalue.length; i++) { 
+        rangeInputvalue[i].addEventListener("input", e => { 
+            let minVal =  
+                parseInt(rangeInputvalue[0].value); 
+            let maxVal =  
+                parseInt(rangeInputvalue[1].value); 
+  
+            let diff = maxVal - minVal 
+              
+            // Check if the price gap is exceeded 
+            if (diff < priceGap) { 
+              
+                // Check if the input is the min range input 
+                if (e.target.className === "min-range") { 
+                    rangeInputvalue[0].value = maxVal - priceGap; 
+                } 
+                else { 
+                    rangeInputvalue[1].value = minVal + priceGap; 
+                } 
+            } 
+            else { 
+              
+                // Update price inputs and range progress 
+                priceInputvalue[0].value = minVal; 
+                priceInputvalue[1].value = maxVal; 
+                rangevalue.style.left = 
+                    `${(minVal / rangeInputvalue[0].max) * 100}%`; 
+                rangevalue.style.right = 
+                    `${100 - (maxVal / rangeInputvalue[1].max) * 100}%`; 
+            } 
+        }); 
+    } 
+}
+const clpr = document.getElementById('clpr');
+clpr.addEventListener('click', function () {
+	$(".min-input").val(0);
+	$(".max-input").val(0);
+});
 		$( "#startdate" ).flatpickr( {
 			"plugins": [new rangePlugin(
 				{ input: "#enddate"},
@@ -239,7 +419,7 @@ input::-webkit-inner-spin-button {
 
 
 		$('#search').click(function () {
-			if ($("#dest").val() == "" && $("#startdate").val() == "" && $("#enddate").val() == "" && $("#adults").val() == 0) {
+			if ($("#dest").val() == "" && $("#startdate").val() == "" && $("#enddate").val() == "" && $("#adults").val() == 0 && $(".max-input").val() == 0 && $(".min-input").val() == 0){
 				console.error("Veuillez remplir au moins un champ");
 				return;
 			}
@@ -262,7 +442,9 @@ input::-webkit-inner-spin-button {
 					'enddate': $("#enddate").val(),
 					'adults': $("#adults").val(),
 					'children': $("#children").val(),
-					'babies': $("#babies").val()
+					'babies': $("#babies").val(),
+					'min': $(".min-input").val(),
+					'max': $(".max-input").val()
 				},
 				success: function (datafi) {
 					console.log(datafi);

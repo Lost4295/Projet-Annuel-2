@@ -36,7 +36,7 @@ class AppartementRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function findAppart ( string $dest= null, string $startdate= null, string $enddate= null, string $adults= null, string $children= null, string $babies= null)
+    public function findAppart ( string $dest= null, string $startdate= null, string $enddate= null, string $adults= null, string $children= null, string $babies= null, string $min= null, string $max= null)
     {
         $qb = $this->createQueryBuilder('a');
         if (isset($dest) && $dest !== '') {
@@ -69,6 +69,16 @@ class AppartementRepository extends ServiceEntityRepository
                 ->andWhere('l.dateFin NOT BETWEEN :startdate AND :enddate')
                 ->setParameter('startdate', $startdate)
                 ->setParameter('enddate', $enddate);
+        }
+        if (isset($min) && $min !== '') {
+            $qb
+                ->andWhere('a.price >= :min')
+                ->setParameter('min', $min);
+        }
+        if (isset($max) && $max !== '') {
+            $qb
+                ->andWhere('a.price <= :max')
+                ->setParameter('max', $max);
         }
         return $qb->getQuery()->getResult();
     }

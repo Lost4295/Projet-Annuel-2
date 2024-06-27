@@ -136,6 +136,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
                 $bailleurpro->setPostalCode(self::rander(5, true, false, false));
                 $bailleurpro->setCity("Paris");
                 $bailleurpro->setCountry("France");
+                $bailleurpro->setImage("person$i.jpg");
                 $this->addReference("bailleur$i-user", $bailleur);
                 $this->addReference("bailleurp$i-user", $bailleurpro);
                 $file = new Fichier();
@@ -183,6 +184,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
             $prestapro->setPostalCode("750" . rand(1, 20));
             $prestapro->setCity("Paris");
             $prestapro->setCountry("France");
+            $prestapro->setImage("logo$i.jpg");
             $this->addReference("presta$i-user", $prestapro);
             $file = new Fichier();
             $file->setNom('test')

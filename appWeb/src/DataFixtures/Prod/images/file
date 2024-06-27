@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Directory containing the images
+DIR="."
+
+# Loop over all files in the directory
+for file in "$DIR"/*; do
+  # Extract the base name of the file (e.g., example0001.jpg -> example0001)
+  base=$(basename "$file")
+  
+  # Use regex to check if the file contains a numeric part
+  if [[ $base =~ ([0-9]{3}) ]]; then
+    # Extract the number part from the filename
+    number=${BASH_REMATCH[1]}
+    
+    # Convert the number to an integer (to remove leading zeros)
+    number=$((10#$number))
+    
+    # Check if the number is greater than 500
+    if (( number > 500 )); then
+      # Delete the file
+      echo "Deleting $file"
+      rm "$file"
+    fi
+  fi
+done

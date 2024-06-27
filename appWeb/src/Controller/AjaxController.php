@@ -33,8 +33,10 @@ class AjaxController extends AbstractController
         $adults = $request->request->get('adults');
         $children = $request->request->get('children');
         $babies = $request->request->get('babies');
+        $min = $request->request->get('min');
+        $max = $request->request->get('max');
 
-        $apparts = $this->em->getRepository(Appartement::class)->findAppart($dest, $startdate, $enddate, $adults, $children, $babies);
+        $apparts = $this->em->getRepository(Appartement::class)->findAppart($dest, $startdate, $enddate, $adults, $children, $babies, $min, $max);
 
         return $this->json($apparts);
     }
