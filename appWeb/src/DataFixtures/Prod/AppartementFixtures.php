@@ -231,12 +231,14 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
             $serv->setPrestataire($this->getReference('presta' . rand(1, 15) . '-user'));
             $serv->setTitre($this->services[$i - 1]['service']);
             $serv->setTarifs(rand(1, 100));
-            $var = rand(1, 500);
+            for ($la = 0; $la < rand(1, 9); $la++) {
+                $var = rand(1, 500);
                 while (!file_exists(__DIR__ . '/images/image' . $var . '.jpg')) {
                     $var = rand(1, 500);
                 }
                 $serv->addImage('image' . $var . '.jpg');
                 copy(__DIR__ . '/images/image' . $var . '.jpg', __DIR__ . '/../../../public/images/services/image' . $var . '.jpg');
+            }
             $serv->setType($this->services[$i - 1]['type']);
             $serv->setDescription($this->services[$i - 1]['description']);
             $this->addReference('service' . $i, $serv);

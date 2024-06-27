@@ -222,6 +222,7 @@ class Service
     public function addImage(string $image): static
     {
         $this->images[] = $image;
+        $this->removeImage("default.png");
         $this->setImages(array_unique($this->images));
         return $this;
     }
