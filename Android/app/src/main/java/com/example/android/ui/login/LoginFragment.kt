@@ -30,7 +30,6 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -94,7 +93,8 @@ class LoginFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(
                     usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
+                    passwordEditText.text.toString(),
+                    requireContext()
                 )
             }
             false
@@ -104,7 +104,8 @@ class LoginFragment : Fragment() {
             loadingProgressBar.visibility = View.VISIBLE
             loginViewModel.login(
                 usernameEditText.text.toString(),
-                passwordEditText.text.toString()
+                passwordEditText.text.toString(),
+                requireContext()
             )
         }
     }

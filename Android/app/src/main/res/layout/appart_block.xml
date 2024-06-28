@@ -13,5 +13,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/appbltitle"
         android:textSize="22sp"
+        android:textAlignment="center"
         />
 </LinearLayout>

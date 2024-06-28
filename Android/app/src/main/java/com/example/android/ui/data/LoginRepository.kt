@@ -1,5 +1,6 @@
 package com.example.android.ui.data
 
+import android.content.Context
 import com.example.android.ui.data.model.LoggedInUser
 
 /**
@@ -27,9 +28,9 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(username: String, password: String, context: Context): Result<LoggedInUser> {
         // handle login
-        val result = dataSource.login(username, password)
+        val result = dataSource.login(username, password, context)
 
         if (result is Result.Success) {
             setLoggedInUser(result.data)

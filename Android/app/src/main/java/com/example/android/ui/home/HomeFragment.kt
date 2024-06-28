@@ -1,11 +1,11 @@
 package com.example.android.ui.home
 
+import android.Manifest.permission
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,11 +18,12 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.AppartAdapter
 import com.example.android.MiniAppart
+import com.example.android.R
 import com.example.android.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import com.example.android.R
 
 
 class HomeFragment : Fragment() {
@@ -48,11 +49,12 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         var queue = Volley.newRequestQueue(requireContext())
         var token: String = ""
         val jsonBody = JSONObject()
@@ -62,13 +64,13 @@ class HomeFragment : Fragment() {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-
+        var adapter :AppartAdapter? = null
+        view.findViewById<ListView>(R.id.lv_appart).adapter = null
         var req3 : JsonObjectRequest = object : JsonObjectRequest(
             Request.Method.GET,
             "https://api.pariscaretakerservices.fr/appartements",
             null,
             Response.Listener{ content ->
-                Log.i("herhdehtrz", content.toString())
                 var jsonarr: JSONArray = content.getJSONArray("hydra:member")
                 var listapp:MutableList<MiniAppart>  = mutableListOf<MiniAppart>()
                 for ( i in 0 .. jsonarr.length()-1){
@@ -85,8 +87,10 @@ class HomeFragment : Fragment() {
                         cur_jso.getString("titre"))
                     listapp.add(b)
                 }
-                var adapter = AppartAdapter(requireContext(), listapp)
-                getView()?.findViewById<ListView>(R.id.lv_appart)?.adapter ?: adapter
+                Log.i("herhdehtrz", listapp.toString())
+                adapter = AppartAdapter(requireContext(), listapp)
+                Log.d("Adapter", adapter.toString())
+                view.findViewById<ListView>(R.id.lv_appart).adapter = adapter
             },
             Response.ErrorListener { error ->
                 if (error.networkResponse != null) {
@@ -136,11 +140,16 @@ class HomeFragment : Fragment() {
                     Toast.makeText(requireContext(), error.toString(), Toast.LENGTH_LONG).show()
                 }
                 Log.e("herhe", error.toString())
-                Log.e("herhem", String(error.networkResponse.data, charset("UTF-8")))
-
             }
         )
         queue.add(req2)
+
+        view.findViewById<ListView>(R.id.lv_appart).setOnItemClickListener { parent, view, position, id ->
+            val item = parent.getItemAtPosition(position) as MiniAppart
+            Snackbar.make(view, item.toString(), Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+
         super.onViewCreated(view, savedInstanceState)
 
     }

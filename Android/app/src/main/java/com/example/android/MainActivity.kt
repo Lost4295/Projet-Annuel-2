@@ -1,6 +1,11 @@
 package com.example.android
 
+import android.app.PendingIntent
+import android.content.Intent
+import android.nfc.NdefMessage
+import android.nfc.NfcAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -12,7 +17,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.android.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -56,6 +60,30 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        Log.e("intent", intent.toString())
+        Log.e("intent", intent.action.toString())
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
+                val messages: List<NdefMessage> = rawMessages.map { it as NdefMessage }
+                // Process the messages array.
+                for ( i in 0..messages.size-1){
+                    Log.i("data$i",messages.get(i).toString())
+                }
+            }
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
