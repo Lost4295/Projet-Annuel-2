@@ -226,17 +226,18 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 1; $i < count($this->services); $i++) {
+        for ($i = 1; $i <= count($this->services); $i++) {
             $serv = new Service();
             $serv->setPrestataire($this->getReference('presta' . rand(1, 15) . '-user'));
             $serv->setTitre($this->services[$i - 1]['service']);
             $serv->setTarifs(rand(1, 100));
             for ($la = 0; $la < rand(1, 9); $la++) {
                 $nom =Service::TYPE_LIST[$this->services[$i - 1]['type']];
-                $var = rand(1, 500);
+                $var = rand(1, 9);
                 while (!file_exists(__DIR__ . '/images/'. $nom . $var . '.jpg')) {
-                    $var = rand(1, 500);
+                    $var = rand(1, 9);
                 }
+                
                 $serv->addImage($nom . $var . '.jpg');
                 copy(__DIR__ . '/images/' .$nom . $var . '.jpg', __DIR__ . '/../../../public/images/services/' .$nom. $var . '.jpg');
             }
