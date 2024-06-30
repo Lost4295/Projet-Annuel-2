@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Location;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -50,6 +51,18 @@ class LocationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+    public function findMonthlyInvoicesByUser(User $user, \DateTime $startDate, \DateTime $endDate): array
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.locataire = :user')
+            ->andWhere('f.dateha BETWEEN :startDate AND :endDate')
+            ->setParameter('user', $user)
+            ->setParameter('startDate', $startDate->format('Y-m-d 00:00:00'))
+            ->setParameter('endDate', $endDate->format('Y-m-d 23:59:59'))
+            ->orderBy('f.dateha', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
 

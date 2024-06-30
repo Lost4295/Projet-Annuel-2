@@ -18,17 +18,27 @@
         <tr>
             <th>Date</th>
             <th>Nom</th>
-            <th>Taille</th>
             <th>Prix</th>
         </tr>
+        {% set prix = 0 %}
+        {% set prix1 = 0 %}
         {% for invoice in invoices %}
+        {% set prix = prix + invoice.price %}
+        {% for tarif in invoice.services %}
+        {% set prix = prix + tarif.tarifs %}
+        {% set prix1 = prix1 + tarif.tarifs %}
+        {% endfor %}
             <tr>
-                <td>{{ "now"|date('d/m/Y') }}</td>
-                <td>{{ invoice.nom }}</td>
-                <td>{{ invoice.size }}</td>
-               {# <td>{{ 'Total'|trans }}: {{ invoice.location.price}} €</td> #}
+                <td>Facture du {{ invoice.dateha|date('d/m/Y') }}</td>
+                <td>{{ invoice.appartement.titre}}</td>
+                <td>{{invoice.price + prix1}}€</td>
             </tr>
         {% endfor %}
+        <tr>
+            <td>{{ 'Total'|trans }}</td>
+            <td></td>
+            <td>{{ prix }}€</td>
+        </tr>
     </table>
 </body>
 </html>

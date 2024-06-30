@@ -17,6 +17,10 @@ class Location
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTime $dateha = null;
+
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateDebut = null;
 
@@ -66,6 +70,20 @@ class Location
     {
         return $this->id . ' ' . $this->dateDebut->format('d/m/Y') . ' - ' . $this->dateFin->format('d/m/Y') . ' ' . $this->appartement->getTitre() . ' ' . $this->locataire->getFullName();
     }
+
+    public function getDateha(): ?\DateTimeInterface
+    {
+        return $this->dateha;
+    }
+    
+    public function setDateha(\DateTimeInterface $dateha): static
+    {
+        $this->dateha = $dateha;
+
+        return $this;
+    }
+
+  
     public function getId(): ?int
     {
         return $this->id;

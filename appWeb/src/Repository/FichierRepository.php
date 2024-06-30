@@ -23,19 +23,7 @@ class FichierRepository extends ServiceEntityRepository
     }
     
 
-    public function findMonthlyInvoicesByUser(User $user, \DateTime $startDate, \DateTime $endDate): array
-    {
-        return $this->createQueryBuilder('f')
-            ->leftJoin('f.location', 'l')
-            ->where('f.user = :user')
-            ->andWhere('f.date BETWEEN :startDate AND :endDate')
-            ->setParameter('user', $user)
-            ->setParameter('startDate', $startDate->format('Y-m-d 00:00:00'))
-            ->setParameter('endDate', $endDate->format('Y-m-d 23:59:59'))
-            ->orderBy('f.date', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
+    
 
     //    /**
     //     * @return Fichier[] Returns an array of Fichier objects

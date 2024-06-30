@@ -124,7 +124,7 @@ class DefaultController extends AbstractController
     public function generateMonthlyInvoice(EntityManagerInterface $em, PdfService $pdf)
     {
         $user = $this->getUser();
-        $invoices = $em->getRepository(Fichier::class)->findMonthlyInvoicesByUser($user, new \DateTime('first day of this month'), new \DateTime('last day of this month'));
+        $invoices = $em->getRepository(Location::class)->findMonthlyInvoicesByUser($user, new \DateTime('first day of this month'), new \DateTime('last day of this month'));
 
         if (empty($invoices)) {
             $this->addFlash('warning', 'No invoices found for this month.');
