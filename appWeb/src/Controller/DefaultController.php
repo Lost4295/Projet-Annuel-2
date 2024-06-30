@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DefaultController extends AbstractController
 {
@@ -117,5 +118,22 @@ class DefaultController extends AbstractController
         $name = $request->attributes->get("_route");
         $route = "info/" . $name . ".html.twig";
         return $this->render($route);
+    }
+    #[Route('/invoice/generate-monthly', name: 'generate_monthly_invoice')]
+    #[IsGranted("ROLE_USER")]
+    public function generateMonthlyInvoice(EntityManagerInterface $em, PdfService $pdf)
+    {
+        $user = $this->getUser();
+        $invoices = $em->getRepository(Fichier::class)->findMonthlyInvoicesByUser($user, new \DateTime('first day of this month'), new \DateTime('last day of this month'));
+
+        if (empty($invoices)) {
+            $this->addFlash('warning', 'No invoices found for this month.');
+            return $this->redirectToRoute('profile');
+        }
+
+        $path = $pdf->generateMonthlyPdf($invoices, $user);
+
+        // Redirect or display the PDF
+        return $this->file($path);
     }
 }

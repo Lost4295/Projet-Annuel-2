@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Fichier;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,21 @@ class FichierRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Fichier::class);
+    }
+    
+
+    public function findMonthlyInvoicesByUser(User $user, \DateTime $startDate, \DateTime $endDate): array
+    {
+        return $this->createQueryBuilder('f')
+            ->leftJoin('f.location', 'l')
+            ->where('f.user = :user')
+            ->andWhere('f.date BETWEEN :startDate AND :endDate')
+            ->setParameter('user', $user)
+            ->setParameter('startDate', $startDate->format('Y-m-d 00:00:00'))
+            ->setParameter('endDate', $endDate->format('Y-m-d 23:59:59'))
+            ->orderBy('f.date', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
