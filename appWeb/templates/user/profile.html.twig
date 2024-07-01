@@ -140,7 +140,11 @@
 					</div>
 				</div>
 				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">
-					<h2>{{'docs'|trans }}</h2>
+					<tr>
+					{{form(invoce)}}
+						<th><h2>{{'docs'|trans }}</h2></th>
+						<th><a href="{{ path('generate_monthly_invoice') }}" class="btn btn-primary">Facture du mois</a></th>
+					</tr>
 					<div class="d-flex justify-content-around">
 						<table class="table table-bordered">
 							<tr>
@@ -160,7 +164,7 @@
 										<td>
 											<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement{{doc.id}}">{{"see"|trans }}</button>
 											<a class="btn mx-2 btn-primary" href="{{ path('download_file', {'id': doc.id}) }}">{{'download'|trans }}</a>
-											<a href="{{ path('generate_monthly_invoice') }}" class="btn btn-primary">Facture du mois</a>
+											
 
 											<div class="modal fade" id="modal-agreement{{doc.id}}">
 												<div class="modal-dialog modal-lg" role="document">

@@ -13,6 +13,7 @@ use App\Entity\Professionnel;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\EventSubscriber\ModerationSubscriber;
+use App\Form\DateMoisType;
 use App\Form\ModifyProfileType;
 use App\Form\TicketType;
 use App\Form\WorkDaysType;
@@ -69,7 +70,21 @@ class UserController extends AbstractController
                 $em->flush();
                 $this->addFlash('success', "sucworkd");
             }
+            
         }
+        $invoce = $this->createForm(DateMoisType::class);
+        $invoce->handleRequest($request);
+    
+        if ($invoce->isSubmitted() && $invoce->isValid()){
+            if ($invoce->get('valider')->isClicked()){
+                $this->redirectToRoute('generate_monthly_invoice', $invoce->getData());
+
+            }
+            
+            
+
+        }
+        dump($invoce->isSubmitted(), $invoce->isValid());
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
             $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);
             foreach ($locations as $key => $location) {
@@ -95,7 +110,8 @@ class UserController extends AbstractController
             'devis' => $devis ?? null,
             'workform' => $workform ?? null,
             'unpicked' => $unPickedDevis ?? null,
-            'facture' => $factu ?? null
+            'facture' => $factu ?? null,
+            'invoce'=> $invoce ?? null
         ]);
     }
 

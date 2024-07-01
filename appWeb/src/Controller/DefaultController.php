@@ -122,8 +122,9 @@ class DefaultController extends AbstractController
     }
     #[Route('/invoice/generate-monthly', name: 'generate_monthly_invoice')]
     #[IsGranted("ROLE_USER")]
-    public function generateMonthlyInvoice(EntityManagerInterface $em, PdfService $pdf)
+    public function generateMonthlyInvoice(EntityManagerInterface $em, PdfService $pdf, Request $request)
     {
+        dd($request);
         $user = $this->getUser();
         $invoices = $em->getRepository(Location::class)->findMonthlyInvoicesByUser($user, new \DateTime('first day of this month'), new \DateTime('last day of this month'));
 
