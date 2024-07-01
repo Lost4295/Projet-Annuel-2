@@ -17,7 +17,7 @@ class DevisFixtures extends Fixture implements FixtureGroupInterface
             $devis->setNom('Nom'.$i);
             $devis->setPrenom('Prenom'.$i);
             $devis->setNumero('06'.rand(10000000,99999999));
-            $devis->setTypePresta(rand(1,4));
+            $devis->setTypePresta(rand(1,6));
             $manager->persist($devis);
         }
     }

@@ -48,6 +48,7 @@ class DefaultController extends AbstractController
                 $loca->setBabies($info->babies);
                 $loca->setDateDebut($info->dateDebut);
                 $loca->setDateFin($info->dateFin);
+                $loca->setDateha(new \DateTime());
                 $loca->setLocataire($em->getRepository(User::class)->findOneBy(["email"=>$info->locataire]));
                 $loca->setPrice($info->price);
                 foreach ($info->service as $service) {

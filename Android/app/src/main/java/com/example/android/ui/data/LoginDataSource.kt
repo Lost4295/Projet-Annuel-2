@@ -70,11 +70,10 @@ class LoginDataSource {
             ){
                 @Throws(AuthFailureError::class)
                 override fun getHeaders(): Map<String, String> {
-                    var params: MutableMap<String, String> = mutableMapOf<String,String>() ;
+                    var params: MutableMap<String, String> = mutableMapOf()
                     params.put("Authorization","Bearer $token")
                     params.put("Accept","*/*")
                     params.put("Content-Type","application/ld+json")
-
                     //..add other headers
                     return params
                 }
