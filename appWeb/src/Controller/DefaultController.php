@@ -50,11 +50,13 @@ class DefaultController extends AbstractController
                 $loca->setDateFin($info->dateFin);
                 $loca->setDateha(new \DateTime());
                 $loca->setLocataire($em->getRepository(User::class)->findOneBy(["email"=>$info->locataire]));
-                $loca->setPrice($info->price);
+                $finalPrice = 0;
                 foreach ($info->service as $service) {
                     $s = $em->getRepository(Service::class)->find($service);
                     $loca->addService($s);
+                    $finalPrice += $s->getTarifs();
                 }
+                $loca->setPrice($info->price+$finalPrice);
                 $factu = new Fichier();
                 $factu->setNom("Facture du " . date("d/m/Y"));
                 $factu->setUser($user);
@@ -120,22 +122,5 @@ class DefaultController extends AbstractController
         $route = "info/" . $name . ".html.twig";
         return $this->render($route);
     }
-    #[Route('/invoice/generate-monthly', name: 'generate_monthly_invoice')]
-    #[IsGranted("ROLE_USER")]
-    public function generateMonthlyInvoice(EntityManagerInterface $em, PdfService $pdf, Request $request)
-    {
-        dd($request);
-        $user = $this->getUser();
-        $invoices = $em->getRepository(Location::class)->findMonthlyInvoicesByUser($user, new \DateTime('first day of this month'), new \DateTime('last day of this month'));
-
-        if (empty($invoices)) {
-            $this->addFlash('warning', 'No invoices found for this month.');
-            return $this->redirectToRoute('profile');
-        }
-
-        $path = $pdf->generateMonthlyPdf($invoices, $user);
-
-        // Redirect or display the PDF
-        return $this->file($path);
-    }
+    
 }

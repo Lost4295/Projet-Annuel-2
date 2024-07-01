@@ -20,24 +20,19 @@
             <th>Nom</th>
             <th>Prix</th>
         </tr>
-        {% set prix = 0 %}
-        {% set prix1 = 0 %}
+        {% set total = 0 %}
         {% for invoice in invoices %}
-        {% set prix = prix + invoice.price %}
-        {% for tarif in invoice.services %}
-        {% set prix = prix + tarif.tarifs %}
-        {% set prix1 = prix1 + tarif.tarifs %}
-        {% endfor %}
+        {% set total = total + invoice.price %}
             <tr>
                 <td>Facture du {{ invoice.dateha|date('d/m/Y') }}</td>
                 <td>{{ invoice.appartement.titre}}</td>
-                <td>{{invoice.price + prix1}}€</td>
+                <td>{{invoice.price }}€</td>
             </tr>
         {% endfor %}
         <tr>
             <td>{{ 'Total'|trans }}</td>
             <td></td>
-            <td>{{ prix }}€</td>
+            <td>{{ total }}€</td>
         </tr>
     </table>
 </body>

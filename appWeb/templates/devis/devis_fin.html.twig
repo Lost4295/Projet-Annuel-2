@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1>{{"valdevis"|trans}}</h1>
+{{form_start(form)}}
+{{form_row(form.estimatedTime)}}
+{{form_row(form.startDate)}}
+{{form_row(form.endDate)}}
+{{form_row(form.price)}}
+<button type="submit" class="btn btn-primary">{{"submit"|trans}}</button>
+{{ form_end(form) }}
+
+{% endblock %}

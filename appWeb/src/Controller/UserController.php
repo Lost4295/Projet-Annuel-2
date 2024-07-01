@@ -15,9 +15,11 @@ use App\Entity\User;
 use App\EventSubscriber\ModerationSubscriber;
 use App\Form\DateMoisType;
 use App\Form\ModifyProfileType;
+use App\Form\PrestatypeType;
 use App\Form\TicketType;
 use App\Form\WorkDaysType;
 use App\Service\AppartementService;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,11 +33,11 @@ class UserController extends AbstractController
 
     #[Route("/profile", name: "profile")]
     #[IsGranted("ROLE_USER")]
-    public function profile(EntityManagerInterface $em, AppartementService $as, Request $request): Response
+    public function profile(EntityManagerInterface $em, AppartementService $as, Request $request, PdfService $pdf): Response
     {
         $user = $this->getUser();
         $appartements = $locations = $pastlocas = [];
-        if ($user->hasRole(User::ROLE_PRESTA)||$user->hasRole(User::ROLE_BAILLEUR)) {
+        if ($user->hasRole(User::ROLE_PRESTA) || $user->hasRole(User::ROLE_BAILLEUR)) {
             $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
             $as->updateProfessionnel($pro->getId()); //TODO revoir function
         }
@@ -70,21 +72,33 @@ class UserController extends AbstractController
                 $em->flush();
                 $this->addFlash('success', "sucworkd");
             }
-            
+            if ($pro->getPrestaType() == null) {
+
+                $prestatype = $pro->getPrestatype();
+                $prestatype = $this->createForm(PrestatypeType::class, $prestatype);
+                $prestatype->handleRequest($request);
+                if ($prestatype->isSubmitted() && $prestatype->isValid()) {
+                    $data = $prestatype->getData();
+                    $pro->setPrestatype($data['type']);
+                    $em->persist($pro);
+                    $em->flush();
+                    $this->addFlash('success', "sucworkd");
+                }
+            }
         }
         $invoce = $this->createForm(DateMoisType::class);
         $invoce->handleRequest($request);
-    
-        if ($invoce->isSubmitted() && $invoce->isValid()){
-            if ($invoce->get('valider')->isClicked()){
-                $this->redirectToRoute('generate_monthly_invoice', $invoce->getData());
 
+        if ($invoce->isSubmitted() && $invoce->isValid() && $invoce->get('valider')->isClicked()) {
+            $invoices = $em->getRepository(Location::class)->findMonthlyInvoicesByUser($user, new \DateTime('first day of ' . $invoce->getData()['mois']), new \DateTime('last day of ' . $invoce->getData()['mois']));
+            if (empty($invoices)) {
+                $this->addFlash('warning', 'No invoices found for this month.');
+                return $this->redirectToRoute('profile');
             }
-            
-            
-
+            $path = $pdf->generateMonthlyPdf($invoices, $user);
+            // Redirect or display the PDF
+            return $this->file($path);
         }
-        dump($invoce->isSubmitted(), $invoce->isValid());
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
             $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);
             foreach ($locations as $key => $location) {
@@ -95,14 +109,14 @@ class UserController extends AbstractController
             }
         }
         $factu = $em->getRepository(Fichier::class)->findBy(["user" => $user->getId()]);
-        
+
         $tickets = $em->getRepository(Ticket::class)->findBy(["demandeur" => $user->getId()]);
         return $this->render('user/profile.html.twig', [
             'user' => $user,
             'appartements' => $appartements,
             'locations' => $locations,
             'pastlocations' => $pastlocas,
-            'tickets' => $tickets?? null,
+            'tickets' => $tickets ?? null,
             'data' => $data ?? null,
             'pro' => $pro ?? null,
             'services' => $services ?? null,
@@ -111,7 +125,8 @@ class UserController extends AbstractController
             'workform' => $workform ?? null,
             'unpicked' => $unPickedDevis ?? null,
             'facture' => $factu ?? null,
-            'invoce'=> $invoce ?? null
+            'prestype' => $prestatype ?? null,
+            'invoce' => $invoce ?? null
         ]);
     }
 
@@ -127,7 +142,7 @@ class UserController extends AbstractController
         }
         $form = $this->createForm(ModifyProfileType::class, $user);
         $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", ModifyProfileType::class, $user, array(
-            'auto_initialize'=>false // it's important!!!
+            'auto_initialize' => false // it's important!!!
         ));
         $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
         $form = $builder->getForm();
@@ -190,7 +205,7 @@ class UserController extends AbstractController
         }
         $form = $this->createForm(TicketType::class, $info);
         $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", TicketType::class, $info, array(
-            'auto_initialize'=>false // it's important!!!
+            'auto_initialize' => false // it's important!!!
         ));
         $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
         $form = $builder->getForm();
@@ -208,7 +223,7 @@ class UserController extends AbstractController
     public function abonnements(EntityManagerInterface $em)
     {
         $user = $this->getUser();
-        if ($user){
+        if ($user) {
             $abonnement = $user->getAbonnement();
         }
         $abos = $em->getRepository(Abonnement::class)->findAll();
@@ -224,19 +239,19 @@ class UserController extends AbstractController
             $transform["prix"][] =  $abo->getTarif();
             $transform["nom"][] =  $abo->getNom();
             foreach ($options as $option) {
-                if ($abo->getOptions()->contains($option)){
+                if ($abo->getOptions()->contains($option)) {
                     $tab[$option->getNom()][$key] = 1;
                 } else {
                     $tab[$option->getNom()][$key] = 0;
                 }
             }
-            $transform["url"][$abo->getId()]["link"] = $this->generateUrl('change_abo',['id'=>$abo->getId()]);
-            $transform["url"][$abo->getId()]["link"] = $this->generateUrl('stripe_abos',['id'=>$abo->getId()]);
+            $transform["url"][$abo->getId()]["link"] = $this->generateUrl('change_abo', ['id' => $abo->getId()]);
+            $transform["url"][$abo->getId()]["link"] = $this->generateUrl('stripe_abos', ['id' => $abo->getId()]);
         }
-        return $this->render('user/abonnements.html.twig',[
+        return $this->render('user/abonnements.html.twig', [
             'abonnements' => $transform,
             'options' => $tab,
-            'abouser'=> $abonnement??null
+            'abouser' => $abonnement ?? null
         ]);
     }
 
@@ -259,7 +274,7 @@ class UserController extends AbstractController
     {
         $file = $em->getRepository(Fichier::class)->find($id);
         $path = $this->getParameter('kernel.project_dir') . '/public/files/pdfs/' . $file->getPath();
-        if ($file->getUser() == $this->getUser()){
+        if ($file->getUser() == $this->getUser()) {
             return $this->file($path);
         } else {
             $this->addFlash('danger', 'nodl');
@@ -267,24 +282,23 @@ class UserController extends AbstractController
         }
     }
     #[Route('/file/delete/{id}', name: 'delete_file')]
-#[IsGranted("ROLE_USER")]
-public function deleteFile($id, EntityManagerInterface $em)
-{
-    $file = $em->getRepository(Fichier::class)->find($id);
+    #[IsGranted("ROLE_USER")]
+    public function deleteFile($id, EntityManagerInterface $em)
+    {
+        $file = $em->getRepository(Fichier::class)->find($id);
 
-    if (!$file) {
-        $this->addFlash('danger', 'filnotf');
+        if (!$file) {
+            $this->addFlash('danger', 'filnotf');
+            return $this->redirectToRoute('profile');
+        }
+        if ($file->getUser() == $this->getUser()) {
+            $em->remove($file);
+            $em->flush();
+            $this->addFlash('success', 'filebisup');
+        } else {
+            $this->addFlash('danger', 'nodelf');
+        }
+
         return $this->redirectToRoute('profile');
     }
-    if ($file->getUser() == $this->getUser()) {
-        $em->remove($file);
-        $em->flush();
-        $this->addFlash('success', 'filebisup');
-    } else {
-        $this->addFlash('danger', 'nodelf');
-    }
-
-    return $this->redirectToRoute('profile');
-}
-
 }

@@ -1,4 +1,4 @@
-FROM php:8.2.19-apache
+FROM php:8.2.19-apache AS base
 
 
 ENV APACHE_RUN_USER=www-data
@@ -34,3 +34,9 @@ RUN chmod +x /deployweb.sh
 EXPOSE 80 443
 WORKDIR /var/www/html/appWeb
 CMD [ "/deployweb.sh" ]
+
+FROM base AS prod
+# On copie le code source de notre application dans le dossier /var/www/html/appWeb
+# Finalement, on installe les fichiers de l'application.
+COPY ../appWeb /var/www/html/appWeb
+COPY ./web/conf/.env.prod.local /var/www/html/appWeb/.env.local

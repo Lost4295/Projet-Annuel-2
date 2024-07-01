@@ -35,3 +35,9 @@ RUN chmod +x /deployapi.sh
 EXPOSE 80 443
 WORKDIR /var/www/html/pcs_api
 CMD [ "/deployapi.sh" ]
+
+FROM base AS prod
+# On copie le code source de notre application dans le dossier /var/www/html/pcs_api
+# Finalement, on installe les fichiers de l'application.
+COPY ../pcs_api /var/www/html/pcs_api
+COPY ./api/conf/.env.prod.local /var/www/html/pcs_api/.env.local

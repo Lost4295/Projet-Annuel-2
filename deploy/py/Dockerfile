@@ -10,6 +10,6 @@ RUN useradd -c docker -m -d /home/docker -s /bin/bash -m docker && echo "docker:
 
 FROM base AS prod
 RUN useradd -c prod -m -d /home/docker -s /bin/bash -m prod && echo "prod:prod" | chpasswd
-
+COPY ../appTickets/request.py /home/docker/app.py
 
 
