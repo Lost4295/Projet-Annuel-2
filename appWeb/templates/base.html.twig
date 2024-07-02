@@ -51,16 +51,16 @@
 							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'appartements' %} active {%endif%}" {% if app.request.get('_route') == 'appartements' %} aria-current="page" {% endif %} href="{{path('appartements') }}">{{'appartements' |trans }}</a>
 							{# Je triche oui #}
 							<div class="dropdown fs-4 mx-3{% if app.request.get(" _route") == 'services' %} active {%endif%} nav-link">
-								<a class="nav-link p-0 dropdown-toogle" role="button" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} data-bs-toggle="sdropdown" aria-expanded="false" href="{{path('services') }}">{{'services' |trans }}</a>
+								<button class="nav-link p-0 dropdown-toogle" type="button" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} data-bs-toggle="dropdown" aria-expanded="false">{{'services' |trans }}</button>
 								<ul class="dropdown-menu">
 									<li>
-										<a class="dropdown-item" href={{path("services")}}>Services</a>
+										<a class="dropdown-item" href='{{path("services")}}'>Services</a>
 									</li>
 									<li>
-										<a class="dropdown-item" href={{path("create_devis")}}>Demande de Devis</a>
+										<a class="dropdown-item" href='{{path("create_devis")}}'>Demande de Devis</a>
 									</li>
 									<li>
-										<a class="dropdown-item" href={{path("abos")}}>Abonnement</a>
+										<a class="dropdown-item" href='{{path("abos")}}'>Abonnement</a>
 									</li>
 								</ul>
 							</div>
@@ -123,15 +123,7 @@
 				<script src="{{ asset('js/offcanvas-navbar.js') }}"></script>
 				<script src="{{ asset('js/color-modes.js') }}"></script>
 				<script src="{{ asset('js/jquery.js') }}"></script>
-				<script>
-					$( document ).ready( function () {
-$( '.dropdown' ).hover( function () {
-$( this ).find( '.dropdown-menu' ).stop( true, true ).delay( 100 ).fadeIn( 200 );
-}, function () {
-$( this ).find( '.dropdown-menu' ).stop( true, true ).delay( 100 ).fadeOut( 200 );
-} );
-} );
-				</script>
+
 				{# <!-- Cookie Consent by PrivacyPolicies.com https://www.PrivacyPolicies.com --> #}
 				<script type="text/javascript" src="https://www.privacypolicies.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
 				<script type="text/javascript" charset="UTF-8">

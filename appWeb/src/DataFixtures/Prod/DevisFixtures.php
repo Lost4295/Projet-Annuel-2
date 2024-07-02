@@ -26,6 +26,7 @@ class DevisFixtures extends Fixture implements FixtureGroupInterface, DependentF
             $user = $this->getReference('bailleur'.rand(1,6).'-user');
             $devis->setEmail($user->getEmail());
             $devis->setNom($user->getNom());
+            $devis->setUser($user);
             $devis->setPrenom($user->getPrenom());
             $devis->setNumero($user->getPhoneNumber());
             $devis->setTypePresta(rand(1,6));

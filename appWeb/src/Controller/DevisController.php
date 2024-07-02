@@ -6,8 +6,11 @@ namespace App\Controller;
 
 use App\Entity\Devis;
 use App\Entity\Fichier;
+use App\Entity\Professionnel;
 use App\EventSubscriber\ModerationSubscriber;
+use App\Form\DevisFinType;
 use App\Form\DevisType;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,12 +22,12 @@ use Symfony\Component\HttpFoundation\Request;
 class DevisController extends AbstractController
 {
 
-    #[Route("/devis", name: "devis")]
-    public function table(EntityManagerInterface $em)
+    #[Route("/devis/{id}", name: "devis_see", requirements: ['id' => '\d+'])]
+    public function table($id, EntityManagerInterface $em)
     {
-        $devis = $em->getRepository(Fichier::class)->findBy(["type" => "devis"]);
+        $devis = $em->getRepository(Devis::class)->find($id);
 
-        return $this->render('devis.html.twig', [
+        return $this->render('devis/devis_see.html.twig', [
             'devis' => $devis,
         ]);
     }
@@ -85,15 +88,18 @@ class DevisController extends AbstractController
             $devis->setPrenom($data['prenom']);
             $devis->setNumero($data['numero']);
             $devis->setEmail($data['email']);
+            if ($this->getUser()) {
+                $devis->setUser($this->getUser());
+            }
             $devis->setTypePresta($data['prestation']);
-            $devis->setContactWithPhone(($data['contact'])?true:false);
+            $devis->setContactWithPhone(($data['contact']) ? true : false);
             $devis->setDescription($data['description']);
             $em->persist($devis);
             $em->flush();
             $this->addFlash('success', 'devsucess');
             return $this->redirectToRoute('index');
         }
-        return $this->render('devis.html.twig', [
+        return $this->render('devis/devis.html.twig', [
             'form' => $form,
         ]);
     }
@@ -102,14 +108,154 @@ class DevisController extends AbstractController
     public function pick($id, EntityManagerInterface $em)
     {
         $devis = $em->getRepository(Devis::class)->find($id);
-        if ($devis) {
-            $devis->setPrestataire($this->getUser());
-            $em->persist($devis);
-            $em->flush();
-            return $this->json(["success" => true]);
-        } else {
+        if (!$devis) {
             $this->addFlash('danger', 'deverror');
             return $this->json(["success" => false]);
         }
+        $presta = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $this->getUser()->getId()]);
+        if (!$presta) {
+            $this->addFlash('danger', 'deverror');
+            return $this->json(["success" => false]);
+        }
+        $devis->setPrestataire($presta);
+        $em->persist($devis);
+        $em->flush();
+        return $this->json(["success" => true]);
+    }
+    #[Route("/devis/make/{id}", name: "devis_finalize")]
+    public function finalize($id, EntityManagerInterface $em, Request $request, MailerController $mel,)
+    {
+        $devis = $em->getRepository(Devis::class)->find($id);
+        if (!$devis) {
+            $this->addFlash('danger', 'deverror');
+            return $this->redirectToRoute("profile");
+        }
+        $presta = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $this->getUser()->getId()]);
+        if (!$presta || $presta != $devis->getPrestataire()) {
+            $this->addFlash('danger', 'deverror');
+            return $this->redirectToRoute("profile");
+        }
+        $devisFinType = $this->createForm(DevisFinType::class, $devis);
+        $devisFinType->handleRequest($request);
+        if ($devisFinType->isSubmitted() && $devisFinType->isValid()) {
+            $esttime = $devisFinType->get('estimatedTime')->getData();
+            $devis->setStartDate($devisFinType->get('startDate')->getData());
+            $devis->setEndDate($devisFinType->get('endDate')->getData());
+            $devis->setEstimatedTime($esttime);
+            $devis->setPrix($devisFinType->get('prix')->getData());
+            $devis->setToValidate(true);
+            $devis->setTurn(true);
+            if (!$devis->getUser()) {
+                $url = $request->getSchemeAndHttpHost();
+                $sid = md5($devis->getId() . $devis->getNom() . $devis->getPrenom());
+                $devis->setSid($sid);
+                $mel->sendMail($devis->getEmail(), "devis", "Bonjour, votre devis a été finalisé, veuillez le valider en cliquant sur le lien suivant : <a href='$url/devis/validate/" . $devis->getId() . "?sid=$sid'>Valider</a>");
+            }
+            $em->persist($devis);
+            $em->flush();
+            $this->addFlash('success', 'devsucess');
+            return $this->redirectToRoute("profile");
+        }
+        return $this->render('devis/devis_fin.html.twig', [
+            'form' => $devisFinType,
+        ]);
+    }
+
+    #[Route("/devis/validate/{id}", name: "devis_validate")]
+    public function validate($id, EntityManagerInterface $em, Request $request, PdfService $pdf)
+    {
+        $devis = $em->getRepository(Devis::class)->find($id);
+        if (!$devis) {
+            $this->addFlash('danger', 'deverror');
+            return $this->redirectToRoute("profile");
+        }
+        if ($devis->getToValidate() && ($devis->getSid() == $request->get('sid') || $devis->getUser() == $this->getUser())) {
+            $data = $pdf->createDevisPdf($devis);
+            if (file_exists($data[0])) {
+                $file = new Fichier();
+                $file->setNom($data[1]);
+                $file->setPath($data[1]);
+                $file->setUser($devis->getUser());
+                $file->setSize($pdf::human_filesize(filesize($data[0])));
+                $file->setDate(new \DateTime());
+                $em->persist($file);
+            } else {
+                $this->addFlash('danger', 'errgeneratingpdf');
+                return $this->redirectToRoute("profile");
+            }
+            $devis->setOk(true);
+            $em->persist($devis);
+            $em->flush();
+            $this->addFlash('success', 'devsucess');
+            return $this->redirectToRoute("profile");
+        }
+        $this->addFlash('danger', 'deverrorunexpected');
+        return $this->redirectToRoute("profile");
+    }
+
+
+    #[Route("/devis/modify/{id}", name: "devis_modify")]
+    public function modify($id, EntityManagerInterface $em, Request $request)
+    {
+        $devis = $em->getRepository(Devis::class)->find($id);
+        if (!$devis) {
+            $this->addFlash('danger', 'deverror');
+            return $this->redirectToRoute("profile");
+        }
+        if ($devis->getUser()->isEqualTo($this->getUser()) && $devis->getPrestataire()->getResponsable()->isEqualTo($this->getUser())) {
+            $this->addFlash('danger', 'deverrorunexpected');
+            return $this->redirectToRoute("profile");
+        }
+        $devisFinType = $this->createForm(DevisFinType::class, $devis);
+        $devisFinType->handleRequest($request);
+        if ($devisFinType->isSubmitted() && $devisFinType->isValid()) {
+            $devis->setStartDate($devisFinType->get('startDate')->getData());
+            $devis->setEndDate($devisFinType->get('endDate')->getData());
+            $esttime = $devisFinType->get('estimatedTime')->getData();
+            $devis->setEstimatedTime($esttime);
+            $devis->setPrix($devisFinType->get('prix')->getData());
+            $devis->setToValidate(true);
+            $devis->setOk(false);
+            $devis->setTurn(false);
+            $em->persist($devis);
+            $em->flush();
+            $this->addFlash('success', 'devsucess');
+            return $this->redirectToRoute("profile");
+        }
+        return $this->render('devis/devis_fin.html.twig', [
+            'form' => $devisFinType,
+        ]);
+    }
+
+    #[Route("/devis/refuse/{id}", name: "devis_refuse")]
+    public function refuse($id, EntityManagerInterface $em)
+    {
+        $devis = $em->getRepository(Devis::class)->find($id);
+        if (!$devis) {
+            $this->addFlash('danger', 'deverror');
+            return $this->redirectToRoute("profile");
+        }
+        if ($devis->getUser()->isEqualTo($this->getUser()) && $devis->getPrestataire()->getResponsable()->isEqualTo($this->getUser())) {
+            dd($devis->getUser()->isEqualTo($this->getUser()), $devis->getPrestataire()->getResponsable()->isEqualTo($this->getUser()));
+            $this->addFlash('danger', 'deverrorunexpected');
+            return $this->redirectToRoute("profile");
+        }
+        $em->remove($devis);
+        $em->flush();
+        $this->addFlash('success', 'devsucess');
+        return $this->redirectToRoute("profile");
+    }
+
+    static function dateIntervalToHumanString(\DateInterval $interval)
+    {
+        $units = array("y" => "year", "m" => "month", "d" => "day", "h" => "hour", "i" => "minute", "s" => "second");
+        $specString = "";
+        foreach ($units as $prop => $spec) {
+            if ($number = $interval->$prop) {
+                $specString .= $number . " " . $spec;
+                $specString .= $number > 1 ? "s " : " ";
+            }
+        }
+        return trim($specString);
     }
 }

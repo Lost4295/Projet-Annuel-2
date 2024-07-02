@@ -60,14 +60,12 @@ class DefaultController extends AbstractController
                 $factu = new Fichier();
                 $factu->setNom("Facture du " . date("d/m/Y"));
                 $factu->setUser($user);
-                $factu->setType("pdf");
+                $factu->setType("location");
                 $path = $pdf->generatePdf($loca);
                 if (file_exists($path[0])) {
                     $factu->setSize(PdfService::human_filesize(filesize($path[0])));
                     $factu->setPath($path[1]);
                     $em->persist($factu);
-                    
-                    
                 } else {
                     $this->addFlash('danger', "Échec de la génération de la facture.");
                     

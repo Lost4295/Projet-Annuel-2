@@ -39,7 +39,7 @@ class UserController extends AbstractController
         $appartements = $locations = $pastlocas = [];
         if ($user->hasRole(User::ROLE_PRESTA) || $user->hasRole(User::ROLE_BAILLEUR)) {
             $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
-            $as->updateProfessionnel($pro->getId()); //TODO revoir function
+            $as->updateProfessionnel($pro->getId());
         }
         if ($user->hasRole(User::ROLE_BAILLEUR)) {
             $appartements = $pro->getAppartements();
@@ -47,6 +47,8 @@ class UserController extends AbstractController
             foreach ($appartements as $appartement) {
                 $data[$appartement->getTitre()] = $as->updateAppart($appartement->getId());
             }
+            $devis = $em->getRepository(Devis::class)->findBy(["user"=>$user->getId(), "isOk" => false, "turn"=>true]);
+            $validDevs = $em->getRepository(Devis::class)->findBy(["user" => $user->getId(), "isOk" => true]);
         }
         if ($user->hasRole(User::ROLE_PRESTA)) {
             $services = $pro->getServices();
@@ -57,8 +59,21 @@ class UserController extends AbstractController
             if ($pro->getPrestaType() == null) {
                 $this->addFlash('danger', 'chooprestype');
             } else {
-                $devis = $em->getRepository(Devis::class)->findBy(["prestataire" => $pro->getId()]);
+                $devis = $em->getRepository(Devis::class)->findBy(["isOk" => false, "turn"=>false]);
                 $unPickedDevis = $em->getRepository(Devis::class)->findBy(["prestataire" => null, "typePresta" => $pro->getPrestaType()]);
+                $vDevs = $em->getRepository(Devis::class)->findBy(["prestataire" => $pro->getId(), "isOk" => true]);
+                foreach ($vDevs as $vDev) {
+                    $dev = [];
+                    $dev["id"] = $vDev->getId();
+                    $dev["title"] = $vDev->getNom() . " " . $vDev->getPrenom();
+                    $dev["start"] = $vDev->getStartDate()->format('Y-m-d H:i:s');
+                    $dev["end"] = $vDev->getEndDate()->format('Y-m-d H:i:s');
+                    $dev["color"] = self::randomcolor();
+                    $dev["overlap"] = false;
+                    $dev["constraint"] = 'businessHours';
+                    $dev["url"] = $this->generateUrl('devis_see', ['id' => $vDev->getId()]);
+                    $validDevs[] = $dev;
+                }
             }
             $workdays = $pro->getWorkDays();
             $workform = $this->createForm(WorkDaysType::class, $workdays);
@@ -126,10 +141,15 @@ class UserController extends AbstractController
             'unpicked' => $unPickedDevis ?? null,
             'facture' => $factu ?? null,
             'prestype' => $prestatype ?? null,
-            'invoce' => $invoce ?? null
+            'invoce' => $invoce ?? null,
+            'validDevs' => $validDevs ?? null
         ]);
     }
 
+    public function randomcolor()
+    {
+        return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+    }
 
     #[Route("profile/modify/", name: "check_infos")]
     #[IsGranted("ROLE_USER")]

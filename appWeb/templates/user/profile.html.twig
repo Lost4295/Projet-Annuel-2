@@ -177,8 +177,6 @@
 										<td>
 											<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement{{doc.id}}">{{"see"|trans }}</button>
 											<a class="btn mx-2 btn-primary" href="{{ path('download_file', {'id': doc.id}) }}">{{'download'|trans }}</a>
-											
-
 											<div class="modal fade" id="modal-agreement{{doc.id}}">
 												<div class="modal-dialog modal-lg" role="document">
 											    	<div class="modal-content">
@@ -283,28 +281,48 @@
 					<div class='row'>
 						{% for dev in devis %}
 							{% if dev.toValidate is not null %}
-								<div class="card my-2 col-4">
+							<div class="col-4">
+								<div class="card my-2">
 									<div class="card-header d-flex justify-content-between">
-										<div>{{ dev.nom }}</div>
-										<div>{{ dev.prenom }}</div>
+										{{ dev.prestataire.societyName }} {{"propose"|trans}} : 
 									</div>
 									<div class="card-body">
-										{{ dev.prestataire.societyName }} {{"propose"|trans}} : 
-										{{"startdate"|trans}} : {{dev.startDate}}
-										{{"enddate"|trans}} : {{dev.endDate}}
-										{{"estimatedtime"|trans}} : {{dev.estimatedTime}}
-										{{"price"|trans}} : {{dev.price}}
+										{{"startdate"|trans}} : {{dev.startDate|date("d/m/Y H:i:s")}}
+										{{"enddate"|trans}} : {{dev.endDate|date("d/m/Y H:i:s")}}
+										{{"estimatedtime"|trans}} : {{dev.estimatedTime|di}}
+										{{"price"|trans}} : {{dev.prix}}
 									</div>
 									<div class="card-footer">
-										<div class="button-group">
+										<div class="btn-group">
 										<a href="{{ path('devis_validate', {'id': dev.id}) }}" class="btn btn-success">{{"validate"|trans}}</a>
-										<a href="{{ path('devis_modify', {'id': dev.id}) }}" class="btn btn-danger">{{"modify"|trans}}</a>
+										<a href="{{ path('devis_modify', {'id': dev.id}) }}" class="btn btn-warning">{{"modify"|trans}}</a>
 										<a href="{{ path('devis_refuse', {'id': dev.id}) }}" class="btn btn-danger">{{"refuse"|trans}}</a>
 										</div>
 									</div>
 								</div>
+								</div>
 							{% endif %}
 						{% endfor %}
+					</div>
+					
+					<h2>{{"okdevs"|trans}}</h2>
+					<div class='row'>
+						{% for devis in validDevs %}
+							<div class="col-4">
+								<div class="card my-2">
+									<div class="card-header d-flex justify-content-between">
+										{{ devis.prestataire.societyName }} {{"propose"|trans}} : 
+									</div>
+									<div class="card-body">
+										{{"startdate"|trans}} : {{devis.startDate|date("d/m/Y H:i:s")}}
+										{{"enddate"|trans}} : {{devis.endDate|date("d/m/Y H:i:s")}}
+										{{"estimatedtime"|trans}} : {{devis.estimatedTime}}
+										{{"price"|trans}} : {{devis.prix}}
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
 					</div>
 				{% endif %}
 				{% if is_granted("ROLE_PRESTA") %}
@@ -321,7 +339,7 @@
 								<h3>{{"deviswaiting"|trans}}</h3>
 								<div id="devisw">
 								{% for dev in devis %}
-								{% if dev.toValidate is null %}
+								{% if dev.toValidate == 1 %}
 									<a href="{{path('devis_finalize', {'id': dev.id})}}" class="btn btn-primary me-3 my-1" id="dev-{{loop.index}}">{{"devde"|trans }} {{dev.nom}} {{dev.prenom}}</a>
 								{% endif %}
 								{% endfor %}
@@ -688,6 +706,27 @@
                                 startTime: "{{pro.startHour}}", // a start time (10am in this example)
                                 endTime:    "{{pro.endHour}}", // an end time (6pm in this example)
                             },
+					events : {{validDevs|json_encode|raw }},
+					eventDrop: function(info) {
+						// alert(info.event.title + " was dropped on " + info.event.start.toISOString() + " to " + info.event.end.toISOString());
+						// if (!confirm("Are you sure about this change?")) {
+						//   	info.revert();
+						// }
+						$.ajax({
+							url: "{{path('ajax_devis_modify', {id: '0000'})}}".replace('0000', info.event.id),
+							type: 'POST',
+							data: {
+								start: info.event.start.toISOString(),
+								end: info.event.end.toISOString()
+							},
+							success: function(response) {
+								console.log(response);
+							},
+							error: function(response) {
+								console.error(response);
+							}
+						});
+					}
                     });
                     calendar.render();
                     });

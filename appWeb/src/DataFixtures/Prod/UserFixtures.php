@@ -12,6 +12,7 @@ use App\Service\PdfService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
@@ -108,8 +109,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
                 ->setIsVerified(true);
             $this->setReference("voyageur$i-user", $voyageur);
             $file = new Fichier();
-            $file->setNom('test')
-                ->setType('pdf')
+            $file->setNom(new TranslatableMessage("hello",[], "messages" ))
+                ->setType('info')
                 ->setPath('Bonjour.pdf')
                 ->setSize(PdfService::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
                 ->setUser($this->getReference("voyageur$i-user"));
@@ -140,8 +141,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
                 $this->addReference("bailleur$i-user", $bailleur);
                 $this->addReference("bailleurp$i-user", $bailleurpro);
                 $file = new Fichier();
-                $file->setNom('test')
-                ->setType('pdf')
+                $file->setNom(new TranslatableMessage("hello",[], "messages" ))
+                ->setType('info')
                 ->setPath('Bonjour.pdf')
                 ->setSize(PdfService::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
                 ->setUser($this->getReference("bailleur$i-user"));
@@ -187,8 +188,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
             $prestapro->setImage("logo$i.jpg");
             $this->addReference("presta$i-user", $prestapro);
             $file = new Fichier();
-            $file->setNom('test')
-                ->setType('pdf')
+            $file->setNom(new TranslatableMessage("hello",[], "messages" ))
+                ->setType('info')
                 ->setPath('Bonjour.pdf')
                 ->setSize(PdfService::human_filesize(filesize(__DIR__.'/../../../public/files/pdfs/Bonjour.pdf')))
                 ->setUser($this->getReference("prestau$i-user"));

@@ -5,6 +5,7 @@
 namespace App\Controller;
 
 use App\Entity\Appartement;
+use App\Entity\Devis;
 use App\Entity\Location;
 use App\Entity\Note;
 use App\Entity\Professionnel;
@@ -78,5 +79,18 @@ class AjaxController extends AbstractController
     }
 
 
+    #[Route("/dev/modif", name: "devis_modify")]
+    public function modifyDevis(Request $request)
+    {
+        $id = $request->get('id');
+        $devis = $this->em->getRepository(Devis::class)->find($id);
+        $start = new \DateTime($request->request->get('start'));
+        $end = new \DateTime($request->request->get('end'));
+        $devis->setStartDate($start->add(new \DateInterval('PT2H')));
+        $devis->setEndDate($end->add(new \DateInterval('PT2H')));
+        $this->em->persist($devis);
+        $this->em->flush();
+        return $this->json(['success' => 'true']);
+    }
 
 }

@@ -27,6 +27,7 @@ class WorkDaysType extends AbstractType
                     'Samedi' => 6,
                     'Dimanche' => 0,
                 ],
+                'help' => 'Select the days you work, to help others see your availability.',
                 'multiple' => true,
                 'expanded' => false,
             ])
