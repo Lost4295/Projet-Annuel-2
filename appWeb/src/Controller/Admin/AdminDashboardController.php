@@ -89,7 +89,7 @@ class AdminDashboardController extends AbstractDashboardController
             // use this method to display a custom favicon: the given path is passed
             // "as is" to the Twig asset() function:
             // <link rel="shortcut icon" href="{{ asset('...') }}">
-            ->setFaviconPath('brand/bootstrap-logo.svg')
+            ->setFaviconPath('brand/PCS_Logo/White_Keys.svg')
 
             // the domain used by default is 'messages'
             // ->setTranslationDomain('my-custom-domain')

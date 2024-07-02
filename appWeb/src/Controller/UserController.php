@@ -17,6 +17,7 @@ use App\Form\DateMoisType;
 use App\Form\ModifyProfileType;
 use App\Form\PrestatypeType;
 use App\Form\TicketType;
+use App\Form\VerifyType;
 use App\Form\WorkDaysType;
 use App\Service\AppartementService;
 use App\Service\PdfService;
@@ -47,7 +48,7 @@ class UserController extends AbstractController
             foreach ($appartements as $appartement) {
                 $data[$appartement->getTitre()] = $as->updateAppart($appartement->getId());
             }
-            $devis = $em->getRepository(Devis::class)->findBy(["user"=>$user->getId(), "isOk" => false, "turn"=>true]);
+            $devis = $em->getRepository(Devis::class)->findBy(["user" => $user->getId(), "isOk" => false, "turn" => true]);
             $validDevs = $em->getRepository(Devis::class)->findBy(["user" => $user->getId(), "isOk" => true]);
         }
         if ($user->hasRole(User::ROLE_PRESTA)) {
@@ -59,7 +60,7 @@ class UserController extends AbstractController
             if ($pro->getPrestaType() == null) {
                 $this->addFlash('danger', 'chooprestype');
             } else {
-                $devis = $em->getRepository(Devis::class)->findBy(["isOk" => false, "turn"=>false]);
+                $devis = $em->getRepository(Devis::class)->findBy(["isOk" => false, "turn" => false]);
                 $unPickedDevis = $em->getRepository(Devis::class)->findBy(["prestataire" => null, "typePresta" => $pro->getPrestaType()]);
                 $vDevs = $em->getRepository(Devis::class)->findBy(["prestataire" => $pro->getId(), "isOk" => true]);
                 foreach ($vDevs as $vDev) {
@@ -301,24 +302,38 @@ class UserController extends AbstractController
             return $this->redirectToRoute('profile');
         }
     }
-    #[Route('/file/delete/{id}', name: 'delete_file')]
-    #[IsGranted("ROLE_USER")]
-    public function deleteFile($id, EntityManagerInterface $em)
-    {
-        $file = $em->getRepository(Fichier::class)->find($id);
 
-        if (!$file) {
-            $this->addFlash('danger', 'filnotf');
+    #[Route("/verify", name: "verifyform")]
+    public function verifyForm(Request $request, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('danger', 'notallowed');
+            return $this->redirectToRoute('app_login');
+        }
+        if (!$user->isVerified()) {
+            $this->addFlash('danger', 'alreadyverif');
             return $this->redirectToRoute('profile');
         }
-        if ($file->getUser() == $this->getUser()) {
-            $em->remove($file);
-            $em->flush();
-            $this->addFlash('success', 'filebisup');
-        } else {
-            $this->addFlash('danger', 'nodelf');
+        if (!$user->hasRole(User::ROLE_BAILLEUR) && !$user->hasRole(User::ROLE_PRESTA)) {
+            $this->addFlash('danger', 'notallowed');
+            return $this->redirectToRoute('profile');
         }
-
-        return $this->redirectToRoute('profile');
+        $pro = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $user->getId()]);
+        $form = $this->createForm(VerifyType::class, $pro);
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("verify_pro", VerifyType::class, $pro, array(
+            'auto_initialize' => false // it's important!!!
+        ));
+        $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $pro->setJustification($form->get('justification')->getData());
+            $em->persist($pro);
+            $em->flush();
+            $this->addFlash('success', 'verif');
+            return $this->redirectToRoute('profile');
+        }
+        return $this->render('user/verify.html.twig', ['form' => $form->createView()]);
     }
 }

@@ -148,9 +148,15 @@
 
 					{% endif %}
 					<div class="d-flex justify-content-around">
-						<div class="col-5">
+						<div class="col-5 m-4">
 							<a href="{{path("check_infos")}}" class="btn btn-primary">{{'modifymyinfo'|trans }}</a>
 						</div>
+						{% if pro is not null and pro.isVerified == 0 %}
+						<div class="col-5 m-4">
+							<a href="{{path("verifyform")}}" class="btn btn-primary">{{'verifme'|trans }}</a>
+							<p class="text-muted">{{'verifmeinfo'|trans }}</p>
+						</div>
+						{% endif %}
 					</div>
 				</div>
 				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">
@@ -203,6 +209,7 @@
 				</div>
 				{% if is_granted("ROLE_BAILLEUR") %}
 					<div class="tab-pane fade" id="v-pills-baill" role="tabpanel" aria-labelledby="v-pills-baill-tab" tabindex="0">
+					{% if  pro.isVerified == 1 %}
 					<h1>Stats</h1>
 						<h2><a data-bs-toggle="collapse" href="#statsdash" role="button" aria-expanded="false" aria-controls="statsdash">{{'stats'|trans }}</a></h2>
 						<div class="row collapse" id="statsdash">
@@ -246,8 +253,12 @@
 							</div>
 						{% endfor %}
 						</div>
+					{% else %}
+						<div class="alert alert-warning">{{"notverified"|trans}}</div>
+					{% endif %}
 					</div>
 					<div class="tab-pane fade" id="v-pills-apps" role="tabpanel" aria-labelledby="v-pills-apps-tab" tabindex="0">
+					{% if  pro.isVerified == 1 %}
 						<h1>Appartements</h1>
 						<a href="{{path("create_appart") }}" class="btn btn-primary">Nouveau</a>
 						<div class="row">
@@ -275,8 +286,12 @@
 								</div>
 							{% endfor %}
 						</div>
+					{% else %}
+						<div class="alert alert-warning">{{"notverified"|trans}}</div>
+					{% endif %}
 					</div>
 					<div class="tab-pane fade" id="v-pills-veis" role="tabpanel" aria-labelledby="v-pills-veis-tab" tabindex="0">
+					{% if  pro.isVerified == 1 %}
 					<h2>{{"devtoval"|trans}}</h2>
 					<div class='row'>
 						{% for dev in devis %}
@@ -323,10 +338,15 @@
 							</div>
 						{% endfor %}
 					</div>
+					{% else %}
+						<div class="alert alert-warning">{{"notverified"|trans}}</div>
+					{% endif %}
 					</div>
 				{% endif %}
 				{% if is_granted("ROLE_PRESTA") %}
 					<div class="tab-pane fade" id="v-pills-presta" role="tabpanel" aria-labelledby="v-pills-presta-tab" tabindex="0">
+					{% if  pro.isVerified == 1 %}
+
 						<h2>{{"prestadispos"|trans}}</h2>
 						set dispos ici
 						+ devis en attente + form dates de travail etc
@@ -386,11 +406,13 @@
 							</div>
 								{% endif %}
 						</div>
-
-
+					{% else %}
+						<div class="alert alert-warning">{{"notverified"|trans}}</div>
+					{% endif %}
 					</div>
 					{% if pro.services|length > 0 %}
 					<div class="tab-pane fade" id="v-pills-presta2" role="tabpanel" aria-labelledby="v-pills-presta2-tab" tabindex="0">
+					{% if  pro.isVerified == 1 %}
 						<div class="row">
 						+ dashboard sur avis clients (choix des clients sur les services) + note presta + note service
 							<div class="col-6">
@@ -423,11 +445,13 @@
 							</div>
 						{% endfor %}
 						</div>
+					{% else %}
+						<div class="alert alert-warning">{{"notverified"|trans}}</div>
+					{% endif %}
 					</div>
-					
-
 					{% endif %}
 					<div class="tab-pane fade" id="v-pills-presta3" role="tabpanel" aria-labelledby="v-pills-presta3-tab" tabindex="0">
+					{% if  pro.isVerified == 1 %}
 					<h1>Services</h1>
 						<a href="{{ path('create_service') }}" class="btn btn-primary">{{"new"|trans}}</a>
 						<div class="row">
@@ -455,6 +479,9 @@
 								</div>
 							{% endfor %}
 						</div>
+					{% else %}
+						<div class="alert alert-warning">{{"notverified"|trans}}</div>
+					{% endif %}
 					</div>
 				{% endif %}
 				{% if is_granted("ROLE_VOYAGEUR") %}

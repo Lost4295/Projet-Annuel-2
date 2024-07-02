@@ -13,6 +13,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
 class ProfessionnelCrudController extends AbstractCrudController
 {
@@ -38,10 +44,20 @@ class ProfessionnelCrudController extends AbstractCrudController
         $city = TextField::new("city", "city")->setRequired(true);
         $postalCode = TextField::new("postalCode", "postalcode")->setRequired(true)->setMaxLength(5);
         $country = TextField::new("country", "country")->setRequired(true);
-        if (Crud::PAGE_INDEX === $pageName || Crud::PAGE_DETAIL === $pageName) {
+        $image = ImageField::new("image", "image")->setBasePath("/images/presta")->setUploadDir("/public/images/presta");
+        $avgNote = NumberField::new("avgNote", "avgNote");
+        $workDays = ChoiceField::new("workDays", "workDays");
+        $startHour = TimeField::new("startHour", "startHour");
+        $endHour = TimeField::new("endHour", "endHour");
+        $devis = AssociationField::new("devis", "devis");
+        $prestatype = ChoiceField::new("prestatype", "prestatype");
+        $isVerified = BooleanField::new("isVerified", "isVerified");
+        if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services, $appartements];
+        } else if (Crud::PAGE_DETAIL === $pageName) {
+            return [$id, $responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services, $appartements, $image, $avgNote, $workDays, $startHour, $endHour, $devis, $prestatype, $isVerified];
         } else {
-            return [$responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services, $appartements];
+            return [$responsable, $societyName, $siretNumber, $societyAddress, $city, $postalCode, $country, $services, $appartements, $image, $avgNote, $workDays, $startHour, $endHour, $devis, $prestatype, $isVerified];
         }
     }
 
