@@ -9,3 +9,6 @@ auth:
 swagger_ui:
     path: /docs
     controller: api_platform.swagger.action.ui
+stripe:
+    path: /create-payment-intent
+    controller: App\Controller\StripeController::createPaymentIntent
