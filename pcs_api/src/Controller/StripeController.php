@@ -33,9 +33,9 @@ class StripeController extends AbstractController
             echo json_encode(['error' => 'Invalid Content Type']);
             exit();
         }
-        if (!isset($_POST["Auth"]) || $_POST["Auth"]!= "paris_caretaker_services") {
+        if (!isset($_POST["auth"]) || $_POST["auth"]!= "paris_caretaker_services") {
             http_response_code(403);
-            echo json_encode(['error' => 'Unauthorized.'. $_POST["Auth"]??"No Auth"]);
+            echo json_encode(['error' => 'Unauthorized.'. (isset($_POST["auth"]))?$_POST["auth"]:"No Auth"]);
             exit();
         }
         $stripe = new StripeClient($_ENV["STRIPE_SECRET"]);
