@@ -6,6 +6,7 @@ use Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Stripe\StripeClient;
 
 class StripeController extends AbstractController
 {
@@ -22,7 +23,7 @@ class StripeController extends AbstractController
     #[Route('/create-payment-intent', name: 'create_payment_intent', methods: ['GET', 'POST'])]
     public function createPaymentIntent(): Response
     {
-        $stripe = new \Stripe\StripeClient($_ENV["STRIPE_SECRET"]);
+        $stripe = new StripeClient($_ENV["STRIPE_SECRET"]);
 
 
         header('Content-Type: application/json');
