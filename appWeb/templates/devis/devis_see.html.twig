@@ -1,27 +1,39 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
-    <h1>Devis</h1>
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Nom</th>
-                <td>{{ devis.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prenom</th>
-                <td>{{ devis.prenom }}</td>
-            </tr>
-            <tr>
-                <th>Numero</th>
-                <td>{{ devis.numero }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ devis.email }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ devis.description }}</td>
-            </tr>
-        </tbody>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-4">Devis</h1>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th scope="row" class="bg-light">Nom</th>
+                                <td>{{ devis.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light">Prénom</th>
+                                <td>{{ devis.prenom }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light">Numéro</th>
+                                <td>{{ devis.numero }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light">Email</th>
+                                <td>{{ devis.email }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light">Description</th>
+                                <td>{{ devis.description }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
