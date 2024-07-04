@@ -84,15 +84,25 @@
 									{% set p2 = appart.price * 0.05 %}
 									<div>{{ p2 }}€</div>
 								</div>
+								{% set final = p1 + p2 %}
+								{% if abo.nom == "Globe-trotter" %}
+								<div class="col m-2 d-flex justify-content-between">
+									<div>{{"réduction VIP"|trans}}</div>
+									{% set minus = final * 0.15  %}
+									<div> - {{ minus|round(2,"floor" )}}€</div>
+								</div>
+								{% set final = final - minus %}
+								{% endif %}
 							</div>
 						</div>
+						
 						<hr class="text-light">
 						<div class="row">
 							<div class="col d-flex justify-content-between">
 								<div class="col m-2 d-flex justify-content-between">
 									<div>
 										{{"total"|trans}}</div>
-									<div>{{ p1 + p2 }}
+									<div>{{ final|round(2, "floor")}}
 										€</div>
 								</div>
 							</div>
@@ -105,7 +115,7 @@
 					<h2>{{"Options supplémentaires"|trans}}</h2>
 					{{ form_start(secondForm) }}
 					{{ form_row(secondForm.services) }}
-					{{ form_row(secondForm.price, {value: p1+p2, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
+					{{ form_row(secondForm.price, {value: final, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{ form_widget(secondForm.firstForm.kids, {value: firstForm.vars.value.kids, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{ form_widget(secondForm.firstForm.adults, {value: firstForm.vars.value.adults, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}
 					{{ form_widget(secondForm.firstForm.babies, {value: firstForm.vars.value.babies, attr:  {"class":"visually-hidden", "readonly": "readonly"}}) }}

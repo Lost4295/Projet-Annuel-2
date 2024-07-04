@@ -50,8 +50,8 @@ services:
       dockerfile: Dockerfile
       target: dev
     ports:
-      - 3004:3004
+      - 3004:4200
     volumes:
-      - ../appTickets/:/home/docker/
+      - ../appTickets/request.py:/home/docker/app.py
     networks:
       - symfony

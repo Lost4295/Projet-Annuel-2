@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DevisRepository;
+use DateInterval;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,6 +15,7 @@ class Devis
     public const PRESTA_PLOMBERIE = 3;
     public const PRESTA_PEINTURE = 4;
     public const PRESTA_BRICOLAGE = 5;
+    public const PRESTA_CHAUFFEUR = 6;
 
     public const PRESTA_LIST = [
         self::PRESTA_NETTOYAGE => 'Nettoyage',
@@ -21,6 +23,7 @@ class Devis
         self::PRESTA_PLOMBERIE => 'Plomberie',
         self::PRESTA_PEINTURE => 'Peinture',
         self::PRESTA_BRICOLAGE => 'Bricolage',
+        self::PRESTA_CHAUFFEUR => 'Chauffeur',
     ];
 
     #[ORM\Id]
@@ -55,8 +58,30 @@ class Devis
     #[ORM\ManyToOne(targetEntity: Professionnel::class, inversedBy: 'devis')]
     private ?Professionnel $prestataire = null;
 
-    #[ORM\Column(length:10, nullable: true)]
+    #[ORM\Column(length:50, nullable: true)]
     private ?string $estimatedTime = null;
+
+    #[ORM\Column]
+    private ?bool $isOk = false;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $startDate = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endDate = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?bool $toValidate = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $sid = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $prix = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $turn = false; // FALSE = PRESTA, TRUE = CLIENT
+
 
     public function getId(): ?int
     {
@@ -192,6 +217,90 @@ class Devis
     public function setEstimatedTime(string $estimatedTime): static
     {
         $this->estimatedTime = $estimatedTime;
+
+        return $this;
+    }
+
+    public function getOk(): ?bool
+    {
+        return $this->isOk;
+    }
+
+    public function setOk(bool $isOk): static
+    {
+        $this->isOk = $isOk;
+
+        return $this;
+    }
+
+    public function getToValidate(): ?bool
+    {
+        return $this->toValidate;
+    }
+
+    public function setToValidate(bool $toValidate): static
+    {
+        $this->toValidate = $toValidate;
+
+        return $this;
+    }
+
+    public function getStartDate(): ?\DateTimeInterface
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(?\DateTimeInterface $startDate): static
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?\DateTimeInterface $endDate): static
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    public function getSid(): ?string
+    {
+        return $this->sid;
+    }
+
+    public function setSid(?string $sid): static
+    {
+        $this->sid = $sid;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(?float $prix): static
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function isTurn(): ?bool
+    {
+        return $this->turn;
+    }
+
+    public function setTurn(?bool $turn): static
+    {
+        $this->turn = $turn;
 
         return $this;
     }

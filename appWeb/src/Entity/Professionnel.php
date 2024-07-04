@@ -77,6 +77,12 @@ class Professionnel
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $prestatype;
 
+    #[ORM\Column()]
+    private bool $isVerified = false;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $justification = null;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
@@ -410,6 +416,30 @@ class Professionnel
     public function setPrestaType(int $prestatype): static
     {
         $this->prestatype = $prestatype;
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getJustification(): ?string
+    {
+        return $this->justification;
+    }
+
+    public function setJustification(?string $justification): static
+    {
+        $this->justification = $justification;
 
         return $this;
     }

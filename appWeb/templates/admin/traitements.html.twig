@@ -6,11 +6,8 @@
 			<tr>
 				<th>Id</th>
 				<th>{{"nom"|trans}}</th>
-				<th>{{"type"|trans}}</th>
-				<th>Info</th>
-				<th>{{"état"}}</th>
-				<th>{{"Date de Création"|trans}}</th>
-				<th>{{"Date de Modification"|trans}}</th>
+				<th>{{"siret"|trans}}</th>
+				<th>{{"address"|trans}}</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -20,21 +17,16 @@
 					<tr>
 						<td>{{ traitement.id }}</td>
 						<td>{{ traitement.name }}</td>
-						<td>{{ traitement.lastname }}</td>
-						<td>{{ traitement.email }}</td>
-						<td>{{ traitement.phone }}</td>
-						<td>{{ traitement.birthdate|date('Y-m-d') }}</td>
+						<td>{{ traitement.siret }}</td>
+						<td>{{ traitement.address }}</td>
+						<td>
+							<a href="{{traitement.url}}" class="btn btn-primary">{{"see"|trans}}</a>
+						</td>
 					</tr>
 				{% endfor %}
 			{% else %}
 				<tr>
-					<td colspan="8">{{"Pas de traitements en cours"|trans}}</td>
-				</tr>
-				<tr>
-					<td colspan="7">Test</td>
-					<td>
-						<a href="{{url}}" class="btn btn-primary">{{"add"|trans}}</a>
-					</td>
+					<td colspan="6">{{"Pas de traitements en cours"|trans}}</td>
 				</tr>
 			{% endif %}
 		</tbody>

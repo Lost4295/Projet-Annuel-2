@@ -1,0 +1,141 @@
+<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var allevents = "";
+                    var calendarEl = document.getElementById('calendar');
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        themeSystem: 'bootstrap5',
+                        weekNumbers: true,
+                        height: '700px',
+                        locale: "{{app.request.locale}}",
+                        weekNumberCalculation: {% if app.request.locale == 'fr' %}
+                            'ISO', {% else %} 'local',
+                        {% endif %}
+                        weekText: '{{"shweek"|trans}}',
+                        navLinks: true,
+                        headerToolbar: {
+                            left: 'prevYear,prev,next,nextYear today',
+                            center: 'title',
+                            right: 'timeGridDay,timeGridWeek,dayGridMonth,multiMonthYear' // user can switch between the two
+                        }, buttonText: {
+                            today:        "{{'today'|trans|raw}}",
+                            month:        '{{"month"|trans}}',
+                            week:         '{{"weeke"|trans}}',
+							year:		 '{{"year"|trans}}',
+                            day:            '{{"day"|trans}}',
+                            list:         '{{"list"|trans}}'
+    }, titleFormat:{ year: 'numeric', month: 'long', day: 'numeric' },
+                    nowIndicator: true,
+                    editable:true,
+                    stick: true,
+                    businessHours: {
+                                // days of week. an array of zero-based day of week integers (0=Sunday)
+                                daysOfWeek:    {{pro.workDays |json_encode|raw}}, // Monday - Thursday
+                                startTime: "{{pro.startHour}}", // a start time (10am in this example)
+                                endTime:    "{{pro.endHour}}", // an end time (6pm in this example)
+                            },ventOverlap: true, //TODO : finir
+                    droppable: true,
+                    drop: function(arg) {
+                            // is the "remove after drop" checkbox checked?
+                            //if (document.getElementById('drop-remove').checked) {
+                                // if so, remove the element from the "Draggable Events" list
+                                    arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+                            },
+                    eventReceive: function(info) {
+                    //eventReceive: function(info) {
+                    //	d = {{pro.workDays |json_encode|raw}}
+                    //	if (d.includes(info.event.start.getDay())){
+                    //	calendar.addEvent({
+                    //		title: info.event.title,
+                    //		start: info.event.start,
+                    //		end: info.event.end,
+                    //		allDay: info.event.allDay,
+                    //		groupId: info.event.groupId,
+                    //		})
+                    //	}
+    //				$.ajax({
+     //					{# url: "{{path('presta_add_event')}}", #}
+    //					type: 'POST',
+    //					data: {
+    //						title: info.event.title,
+    //						start: info.event.start,
+    //						end: info.event.end,
+    //					},
+    //					success: function(response) {
+    //						console.log(response);
+    //					}
+    //				});
+                            }
+                    });
+                    calendar.render();
+
+
+                    //{#{% for dev in devis %}
+                    //	new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index}}'), {
+                    //		eventData: {
+                    //			title: '{{dev.nom ~ " " ~ dev.prenom}}',
+                    //			duration: {hours:2},
+                    //			color: 'blue',
+                    //			groupId: 'devis-{{dev.id}}',
+                    //			startEditable: true,
+                    //			durationEditable: true,
+                    //			revert: true,
+                    //		}
+                    //	});
+                    //{% endfor %} #}
+
+                    {% for dev in devis %}
+                            new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index}}'), {
+                                    eventData: {
+                                            title: '{{dev.nom ~ " " ~ dev.prenom}}',
+                                            duration: '02:00',
+                                            color: 'blue',
+                                            startTime: '10:00',
+                                            endTime: '12:00',
+                                            groupId: 'devis-{{dev.id}}',
+                                            startEditable: true,
+                                            durationEditable: true,
+                                            revert: true,
+                                    }
+                            });
+                    {% endfor %}
+                    {% for dev in devis %}
+                            new FullCalendar.Draggable(document.querySelector('#dragdev-{{loop.index+1}}'), {
+                                    eventData: {
+                                            title: '{{dev.nom ~ " " ~ dev.prenom}}',
+                                            duration: '02:00',
+                                            color: 'red',
+                                            startTime: '10:00',
+                                            endTime: '12:00',
+                                            groupId: 'devis-{{dev.id+1}}',
+                                            startEditable: true,
+                                            durationEditable: true,
+                                            revert: true,
+                                    }
+                            });
+                    {% endfor %}
+                    });
+                    {% for dev in unpicked %}
+            $("#pickdev-{{dev.id}}" ).click(function(){
+                    $(this).append('<div class="spinner-border text-primary" id="loader" role="status"><span class="visually-hidden">Loading...</span></div>');
+                    $.ajax({
+                            url: "{{path('devis_pick')}}",
+                            type: 'POST',
+                            data: {
+                                    id: {{dev.id}},
+                            },
+                            success: function(response) {
+                                    ("#devisw").append('<div id="dragdev-{{dev.id}}" class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event badge me-3 my-1"><div    class="fc-event-main">Event 1e</div></div>');
+                                    console.log(response);
+                                    $(this).remove();
+                            },
+                            error: function(response) {
+                                    console.error(response);
+                            },
+                            complete: function(response) {
+                                    $('#loader').remove();
+                            }
+                    });
+                            });
+			{% endfor %}
+</script>

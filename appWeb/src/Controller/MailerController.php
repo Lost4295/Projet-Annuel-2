@@ -10,8 +10,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MailerController extends AbstractController
 {
+    private  MailerInterface $mailer;
+
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     #[Route('/email')]
-    public function sendEmail(MailerInterface $mailer)
+    public function sendEmail()
     {
         for ($i = 0; $i < 10; $i++) {
         $email = (new Email())
@@ -26,10 +33,20 @@ class MailerController extends AbstractController
             ->html('<p>See Twig integration for better HTML integration!</p>')
             // ->attachFromPath('/path/to/some-file.txt')
             ;
-        $mailer->send($email);
+        $this->mailer->send($email);
         }
         return $this->render('base.html.twig');
 
         // ...
+    }
+    public function sendMail($destinataire, $sujet, $message)
+    {
+        $email = (new Email())
+            ->from('contact@pariscaretakerservices.fr')
+            ->to($destinataire)
+            ->subject($sujet)
+            ->text($message)
+            ->html($message);
+        $this->mailer->send($email);
     }
 }

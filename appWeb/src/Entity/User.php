@@ -11,10 +11,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -432,15 +433,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ];
     }
 
-
-
-
-
-
-
-
-
-
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles());
@@ -578,7 +570,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->warnings->contains($warning)) {
             $this->warnings->add($warning);
-            $warning->setUsers($this);
+            $warning->setUser($this);
             if (count($this->warnings) >= 3 ){
                 $this->setBanned(true);
             }
@@ -591,8 +583,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->warnings->removeElement($warning)) {
             // set the owning side to null (unless already changed)
-            if ($warning->getUsers() === $this) {
-                $warning->setUsers(null);
+            if ($warning->getUser() === $this) {
+                $warning->setUser(null);
             }
         }
 
@@ -649,7 +641,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->devis->contains($devis)) {
             $this->devis->add($devis);
-            $devis->setPrestataire($this);
+            $devis->setUser($this);
         }
 
         return $this;
@@ -659,11 +651,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->devis->removeElement($devis)) {
             // set the owning side to null (unless already changed)
-            if ($devis->getPrestataire() === $this) {
-                $devis->setPrestataire(null);
+            if ($devis->getUser() === $this) {
+                $devis->setUser(null);
             }
         }
 
         return $this;
+    }
+
+    public function isEqualTo(UserInterface $user): bool
+    {
+        if (!$user instanceof User) {
+            return false;
+        }
+
+        if ($this->password !== $user->getPassword() || $this->email !== $user->getEmail()) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -148,7 +148,8 @@ class LocationController extends AbstractController
             'appart' => $appart,
             'secondForm' => $secondForm,
             'dates' => $dates,
-            "days" => $days
+            "days" => $days,
+            "abo"=>$user->getAbonnement()
         ]);
     }
 

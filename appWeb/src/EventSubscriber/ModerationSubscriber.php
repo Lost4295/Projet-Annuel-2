@@ -45,8 +45,6 @@ class ModerationSubscriber implements EventSubscriberInterface
                         $warning->setField($ff);
                         $warning->setWord($word);
                         $warning->setDate(new \DateTime());
-                        // dd($warning, $this->request->getSession()->all(), $user);
-                        
                         $this->em->persist($warning);
                         $this->em->flush();
                         $this->request->getSession()->getFlashBag()->add("danger","forbiddenword");

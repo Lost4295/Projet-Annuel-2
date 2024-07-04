@@ -24,9 +24,6 @@ services:
     ports:
       - 8000:443
       - 8080:80
-    volumes:
-      - ../pcs_api:/var/www/html/pcs_api
-      - ./api/conf/.env.prod.local:/var/www/html/pcs_api/.env.local
     networks:
       - symfony
   website:
@@ -36,9 +33,6 @@ services:
     ports:
       - 443:443
       - 80:80
-    volumes:
-      - ../appWeb:/var/www/html/appWeb
-      - ./web/conf/.env.prod.local:/var/www/html/appWeb/.env.local
     networks:
       - symfony
   python:
@@ -50,7 +44,5 @@ services:
       target: prod
     ports:
       - 3000:3000
-    volumes:
-      - ../appTickets:/home/docker/
     networks:
       - symfony
