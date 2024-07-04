@@ -176,6 +176,7 @@ class DevisController extends AbstractController
                 $file->setNom($data[1]);
                 $file->setPath($data[1]);
                 $file->setUser($devis->getUser());
+                $file->setType("devis");
                 $file->setSize($pdf::human_filesize(filesize($data[0])));
                 $file->setDate(new \DateTime());
                 $em->persist($file);

@@ -58,8 +58,6 @@ class StripeController extends AbstractController
                 ['stripe_version' => '2022-08-01']);
             // retrieve JSON from POST body
 
-
-            // Create a PaymentIntent with amount and currency
             $paymentIntent = $stripe->paymentIntents->create([
                 'amount' => $jsonObj->appart->price * 100,
                 'description'=> $jsonObj->appart->shortDesc,
