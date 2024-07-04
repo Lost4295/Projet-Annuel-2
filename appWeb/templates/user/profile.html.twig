@@ -209,7 +209,7 @@
 				</div>
 				{% if is_granted("ROLE_BAILLEUR") %}
 					<div class="tab-pane fade" id="v-pills-baill" role="tabpanel" aria-labelledby="v-pills-baill-tab" tabindex="0">
-					{% if  pro.isVerified == 1 %}
+					{% if pro is not null and pro.isVerified == 1 %}
 					<h1>Stats</h1>
 						<h2><a data-bs-toggle="collapse" href="#statsdash" role="button" aria-expanded="false" aria-controls="statsdash">{{'stats'|trans }}</a></h2>
 						<div class="row collapse" id="statsdash">
@@ -256,9 +256,10 @@
 					{% else %}
 						<div class="alert alert-warning">{{"notverified"|trans}}</div>
 					{% endif %}
+					{% endif %}
 					</div>
 					<div class="tab-pane fade" id="v-pills-apps" role="tabpanel" aria-labelledby="v-pills-apps-tab" tabindex="0">
-					{% if  pro.isVerified == 1 %}
+					{% if pro is not null and pro.isVerified == 1 %}
 						<h1>Appartements</h1>
 						<a href="{{path("create_appart") }}" class="btn btn-primary">Nouveau</a>
 						<div class="row">
@@ -291,64 +292,61 @@
 					{% endif %}
 					</div>
 					<div class="tab-pane fade" id="v-pills-veis" role="tabpanel" aria-labelledby="v-pills-veis-tab" tabindex="0">
-					{% if  pro.isVerified == 1 %}
-					<h2 class="my-4 text-center">{{ 'devtoval'|trans }}</h2>
-					<div class="row">
-						{% for dev in devis %}
-							{% if dev.toValidate is not null %}
-								<div class="col-md-6 col-lg-4">
-									<div class="card my-2 shadow-sm">
-										<div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-											<span>{{ dev.prestataire.societyName }}</span>
-											<span>{{ 'propose'|trans }}</span>
+					{% if pro is not null and pro.isVerified == 1 %}
+						<h2>{{"devtoval"|trans}}</h2>
+						<div class='row'>
+							{% for dev in devis %}
+								{% if dev.toValidate is not null %}
+								<div class="col-4">
+									<div class="card my-2">
+										<div class="card-header d-flex justify-content-between">
+											{{ dev.prestataire.societyName }} {{"propose"|trans}} : 
 										</div>
 										<div class="card-body">
-											<p><strong>{{ 'startdate'|trans }} :</strong> {{ dev.startDate|date('d/m/Y H:i:s') }}</p>
-											<p><strong>{{ 'enddate'|trans }} :</strong> {{ dev.endDate|date('d/m/Y H:i:s') }}</p>
-											<p><strong>{{ 'estimatedtime'|trans }} :</strong> {{ dev.estimatedTime|di }}</p>
-											<p><strong>{{ 'price'|trans }} :</strong> {{ dev.prix }}</p>
+											{{"startdate"|trans}} : {{dev.startDate|date("d/m/Y H:i:s")}}
+											{{"enddate"|trans}} : {{dev.endDate|date("d/m/Y H:i:s")}}
+											{{"estimatedtime"|trans}} : {{dev.estimatedTime|di}}
+											{{"price"|trans}} : {{dev.prix}}
 										</div>
-										<div class="card-footer text-center">
-											<div class="btn-group" role="group">
-												<a href="{{ path('devis_validate', {'id': dev.id}) }}" class="btn btn-success">{{ 'validate'|trans }}</a>
-												<a href="{{ path('devis_modify', {'id': dev.id}) }}" class="btn btn-warning">{{ 'modify'|trans }}</a>
-												<a href="{{ path('devis_refuse', {'id': dev.id}) }}" class="btn btn-danger">{{ 'refuse'|trans }}</a>
+										<div class="card-footer">
+											<div class="btn-group">
+											<a href="{{ path('devis_validate', {'id': dev.id}) }}" class="btn btn-success">{{"validate"|trans}}</a>
+											<a href="{{ path('devis_modify', {'id': dev.id}) }}" class="btn btn-warning">{{"modify"|trans}}</a>
+											<a href="{{ path('devis_refuse', {'id': dev.id}) }}" class="btn btn-danger">{{"refuse"|trans}}</a>
 											</div>
 										</div>
 									</div>
+									</div>
+								{% endif %}
+							{% endfor %}
+
+						</div>
+
+						<h2>{{"okdevs"|trans}}</h2>
+						<div class='row'>
+							{% for devis in validDevs %}
+								<div class="col-4">
+									<div class="card my-2">
+										<div class="card-header d-flex justify-content-between">
+											{{ devis.prestataire.societyName }} {{"propose"|trans}} : 
+										</div>
+										<div class="card-body">
+											{{"startdate"|trans}} : {{devis.startDate|date("d/m/Y H:i:s")}}
+											{{"enddate"|trans}} : {{devis.endDate|date("d/m/Y H:i:s")}}
+											{{"estimatedtime"|trans}} : {{devis.estimatedTime}}
+											{{"price"|trans}} : {{devis.prix}}
+										</div>
+									</div>
 								</div>
-							{% endif %}
-						{% endfor %}
-					</div>
+							{% endfor %}
+						</div>
 					{% else %}
 						<div class="alert alert-warning">{{"notverified"|trans}}</div>
 					{% endif %}
-					<h2>{{"okdevs"|trans}}</h2>
-					<div class='row'>
-						{% for devis in validDevs %}
-							<div class="col-4">
-								<div class="card my-2">
-									<div class="card-header d-flex justify-content-between">
-										{{ devis.prestataire.societyName }} {{"propose"|trans}} : 
-									</div>
-									<div class="card-body">
-										{{"startdate"|trans}} : {{devis.startDate|date("d/m/Y H:i:s")}}
-										{{"enddate"|trans}} : {{devis.endDate|date("d/m/Y H:i:s")}}
-										{{"estimatedtime"|trans}} : {{devis.estimatedTime}}
-										{{"price"|trans}} : {{devis.prix}}
-									</div>
-								</div>
-							</div>
-						{% endfor %}
 					</div>
-					{% else %}
-						<div class="alert alert-warning">{{"notverified"|trans}}</div>
-					{% endif %}
-					</div>
-				{% endif %}
 				{% if is_granted("ROLE_PRESTA") %}
 					<div class="tab-pane fade" id="v-pills-presta" role="tabpanel" aria-labelledby="v-pills-presta-tab" tabindex="0">
-					{% if  pro.isVerified == 1 %}
+					{% if pro is not null and pro.isVerified == 1 %}
 
 						<h2>{{"prestadispos"|trans}}</h2>
 						set dispos ici
@@ -415,7 +413,7 @@
 					</div>
 					{% if pro.services|length > 0 %}
 					<div class="tab-pane fade" id="v-pills-presta2" role="tabpanel" aria-labelledby="v-pills-presta2-tab" tabindex="0">
-					{% if  pro.isVerified == 1 %}
+					{% if pro is not null and pro.isVerified == 1 %}
 						<div class="row">
 						+ dashboard sur avis clients (choix des clients sur les services) + note presta + note service
 							<div class="col-6">
@@ -454,7 +452,7 @@
 					</div>
 					{% endif %}
 					<div class="tab-pane fade" id="v-pills-presta3" role="tabpanel" aria-labelledby="v-pills-presta3-tab" tabindex="0">
-					{% if  pro.isVerified == 1 %}
+					{% if pro is not null and pro.isVerified == 1 %}
 					<h1>Services</h1>
 						<a href="{{ path('create_service') }}" class="btn btn-primary">{{"new"|trans}}</a>
 						<div class="row">
