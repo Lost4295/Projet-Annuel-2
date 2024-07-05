@@ -12,6 +12,16 @@ use ApiPlatform\Metadata\ApiResource;
 #[ApiResource( security: "is_granted('ROLE_NON_USER')")]
 class Professionnel
 {
+    const DAYS_LIST = [
+        "lundi",
+        "mardi",
+        "mercredi",
+        "jeudi",
+        "vendredi",
+        "samedi",
+        "dimanche"
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -51,13 +61,37 @@ class Professionnel
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\Column(length:4)]
+    private ?string $avgNote = "0";
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private array $workDays = [];
+
+    #[ORM\Column(length:20, nullable: true)]
+    private ?string $startHour = null;
+    #[ORM\Column(length:20, nullable: true)]
+    private ?string $endHour = null;
+    
+    #[ORM\OneToMany(targetEntity: Devis::class, mappedBy: 'prestataire', orphanRemoval: true)]
+    private Collection $devis;
+
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $prestatype;
+
+    #[ORM\Column()]
+    private bool $isVerified = false;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $justification = null;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
+        $this->devis = new ArrayCollection();
         $this->appartements = new ArrayCollection();
         $this->image = "user-placeholder.jpg";
+        $this->workDays = [];
     }
-
     public function __toString(): string
     {
         return $this->societyName;
@@ -247,6 +281,165 @@ class Professionnel
         } else {
             $this->image = "user-placeholder.jpg";
         }
+
+        return $this;
+    }
+    
+    /**
+     * Get the value of startHour
+     */ 
+    public function getStartHour()
+    {
+        return $this->startHour;
+    }
+
+    /**
+     * Set the value of startHour
+     *
+     * @return  self
+     */ 
+    public function setStartHour($startHour)
+    {
+        $this->startHour = $startHour;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of endHour
+     */ 
+    public function getEndHour()
+    {
+        return $this->endHour;
+    }
+
+    /**
+     * Set the value of endHour
+     *
+     * @return  self
+     */ 
+    public function setEndHour($endHour)
+    {
+        $this->endHour = $endHour;
+
+        return $this;
+    }
+
+    public function getWorkDays(): array
+    {
+        return$this->workDays;
+    }
+
+    /**
+     * @param list<string> $workDay
+     */
+    public function setWorkDays(array $workDays): static
+    {
+        foreach ($workDays as $workDay) {
+            if (!in_array($workDay, array_keys(self::DAYS_LIST))) {
+                throw new \InvalidArgumentException("Invalid work day : $workDay");
+            }
+        }
+        $this->workDays = $workDays;
+        return $this;
+    }
+
+    public function addWorkDay(int $workDay): static
+    {
+        if (!in_array($workDay, $this->workDays) && in_array($workDay,array_keys(self::DAYS_LIST))) {
+            $this->workDays[] = $workDay;
+        }
+        $this->setWorkDays(array_unique($this->workDays));
+        return $this;
+    }
+
+    public function removeWorkDay(int $workDay): static
+    {
+        $key = array_search($workDay, $this->workDays);
+        if ($key !== false) {
+            unset($this->workDays[$key]);
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of avgNote
+     */ 
+    public function getAvgNote()
+    {
+        return $this->avgNote;
+    }
+
+    /**
+     * Set the value of avgNote
+     *
+     * @return  self
+     */ 
+    public function setAvgNote($avgNote)
+    {
+        $this->avgNote = $avgNote;
+        return $this;
+    }
+    
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): static
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis->add($devis);
+            $devis->setPrestataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): static
+    {
+        if ($this->devis->removeElement($devis)) {
+            // set the owning side to null (unless already changed)
+            if ($devis->getPrestataire() === $this) {
+                $devis->setPrestataire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPrestaType(): ?int
+    {
+        return $this->prestatype;
+    }
+
+    public function setPrestaType(int $prestatype): static
+    {
+        $this->prestatype = $prestatype;
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getJustification(): ?string
+    {
+        return $this->justification;
+    }
+
+    public function setJustification(?string $justification): static
+    {
+        $this->justification = $justification;
 
         return $this;
     }

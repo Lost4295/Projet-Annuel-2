@@ -20,6 +20,9 @@ class Location
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTime $dateha = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDebut = null;
 
@@ -46,6 +49,9 @@ class Location
 
     #[ORM\Column]
     private ?float $price = null;
+        
+    #[ORM\OneToOne(inversedBy: 'location')]
+    private Fichier $facture;
 
     #[ORM\ManyToMany(targetEntity:Service::class, inversedBy: 'locations')]
     private Collection $services;
@@ -61,7 +67,28 @@ class Location
         $this->notes = new ArrayCollection();
         $this->services = new ArrayCollection();
     }
+    public function getDateha(): ?\DateTimeInterface
+    {
+        return $this->dateha;
+    }
+    
+    public function setDateha(\DateTimeInterface $dateha): static
+    {
+        $this->dateha = $dateha;
 
+        return $this;
+    }
+    public function getFacture(): ?Fichier
+    {
+        return $this->facture;
+    }
+
+    public function setFacture(?Fichier $facture): static
+    {
+        $this->facture = $facture;
+
+        return $this;
+    }
     public function __toString(): string
     {
         return $this->id . ' ' . $this->dateDebut->format('d/m/Y') . ' - ' . $this->dateFin->format('d/m/Y') . ' ' . $this->appartement->getTitre() . ' ' . $this->locataire->getFullName();

@@ -27,6 +27,10 @@ class Note
     #[ORM\ManyToOne(inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+    
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Service $service = null;
 
     public function getId(): ?int
     {
@@ -65,6 +69,26 @@ class Note
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+    
+    /**
+     * Get the value of service
+     */
+    public function getService() : ?Service
+    {
+        return $this->service;
+    }
+
+    /**
+     * Set the value of service
+     *
+     * @return  self
+     */
+    public function setService(?Service $service)
+    {
+        $this->service = $service;
 
         return $this;
     }

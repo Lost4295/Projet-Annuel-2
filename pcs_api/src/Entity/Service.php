@@ -56,12 +56,26 @@ class Service
      */
     #[ORM\ManyToMany(targetEntity: Location::class, mappedBy: 'services')]
     private Collection $locations;
+    
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'service', orphanRemoval: true)]
+    private ?Collection $notes = null;
+
+    #[ORM\Column(length:4)]
+    private string $avgNote = "0";
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $additionalInfo = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private array $images;
+
 
     public function __construct()
     {
         $this->locations = new ArrayCollection();
+        $this->images = ["default.png"];
+        $this->notes = new ArrayCollection();
+        $this->avgNote = 0;
     }
-
     public function __toString(): string
     {
         return $this->titre;
@@ -160,6 +174,95 @@ class Service
         if ($this->locations->removeElement($location)) {
             $location->removeService($this);
         }
+
+        return $this;
+    }
+    
+    /**
+     * Get the value of note
+     */ 
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            $note->setService(null);
+        }
+
+        return $this;
+    }
+
+    public function getImages(): array
+    {
+        return$this->images; 
+    }
+
+    /**
+     * @param list<string> $image
+     */
+    public function setImages(array $image): static
+    {
+        $this->images = $image;
+        return $this;
+    }
+
+    public function addImage(string $image): static
+    {
+        $this->images[] = $image;
+        $this->removeImage("default.png");
+        $this->setImages(array_unique($this->images));
+        return $this;
+    }
+
+    public function removeImage(string $image): static
+    {
+        $key = array_search($image, $this->images);
+        if ($key !== false) {
+            unset($this->images[$key]);
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of avgNote
+     */ 
+    public function getAvgNote()
+    {
+        return $this->avgNote;
+    }
+
+    /**
+     * Set the value of avgNote
+     *
+     * @return  self
+     */ 
+    public function setAvgNote($avgNote)
+    {
+        $this->avgNote = $avgNote;
+
+        return $this;
+    }
+    public function getAdditionalInfo(): ?string
+    {
+        return $this->additionalInfo;
+    }
+
+    public function setAdditionalInfo(?string $additionalInfo): static
+    {
+        $this->additionalInfo = $additionalInfo;
 
         return $this;
     }

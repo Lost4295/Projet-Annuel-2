@@ -39,6 +39,9 @@ class Appartement
 
     #[ORM\Column(length: 255)]
     private ?string $country = null;
+    
+    #[ORM\Column(type: Types::SMALLINT)]
+    private ?int $nbVoyageurs = null;
 
     #[ORM\Column]
     private ?float $note = null;
@@ -304,7 +307,17 @@ class Appartement
     {
         return $this->appartPluses;
     }
+    public function getNbVoyageurs(): ?int
+    {
+        return $this->nbVoyageurs;
+    }
 
+    public function setNbVoyageurs(int $nbVoyageurs): static
+    {
+        $this->nbVoyageurs = $nbVoyageurs;
+
+        return $this;
+    }
     public function addAppartPlus(AppartPlus $appartPlus): static
     {
         if (!$this->appartPluses->contains($appartPlus)) {
