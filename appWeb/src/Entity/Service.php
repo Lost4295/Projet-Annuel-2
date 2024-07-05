@@ -232,6 +232,7 @@ class Service
         $key = array_search($image, $this->images);
         if ($key !== false) {
             unset($this->images[$key]);
+            $this->images = array_values($this->images);
         }
         return $this;
     }
