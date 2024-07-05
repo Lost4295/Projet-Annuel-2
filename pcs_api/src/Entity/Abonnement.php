@@ -28,7 +28,7 @@ class Abonnement
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'abonnement')]
     private Collection $subscribers;
 
-    #[ORM\OneToMany(targetEntity: OptionsAbonnement::class, mappedBy: 'abonnement')]
+    #[ORM\OneToMany(targetEntity: Option::class, mappedBy: 'abonnement')]
     #[Ignore]
     private Collection $options;
 
@@ -105,14 +105,14 @@ class Abonnement
     }
 
     /**
-     * @return Collection<int, OptionsAbonnement>
+     * @return Collection<int, Option>
      */
     public function getOptions(): Collection
     {
         return $this->options;
     }
 
-    public function addOption(OptionsAbonnement $option): static
+    public function addOption(Option $option): static
     {
         if (!$this->options->contains($option)) {
             $this->options->add($option);
@@ -122,7 +122,7 @@ class Abonnement
         return $this;
     }
 
-    public function removeOption(OptionsAbonnement $option): static
+    public function removeOption(Option $option): static
     {
         if ($this->options->removeElement($option)) {
             $option->removeAbonnement($this);
