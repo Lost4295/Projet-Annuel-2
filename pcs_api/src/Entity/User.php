@@ -12,12 +12,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use ApiPlatform\Metadata\Delete;
-use App\Controller\GetIds;
+
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -579,7 +574,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->warnings->contains($warning)) {
             $this->warnings->add($warning);
-            $warning->setUsers($this);
+            $warning->setUser($this);
             if (count($this->warnings) >= 3 ){
                 $this->setBanned(true);
             }
@@ -592,8 +587,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->warnings->removeElement($warning)) {
             // set the owning side to null (unless already changed)
-            if ($warning->getUsers() === $this) {
-                $warning->setUsers(null);
+            if ($warning->getUser() === $this) {
+                $warning->setUser(null);
             }
         }
 

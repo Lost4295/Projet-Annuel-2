@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\FichierRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: FichierRepository::class)]
 #[ApiResource( security: "is_granted('ROLE_NON_USER')")]
