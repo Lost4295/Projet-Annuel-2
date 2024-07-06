@@ -20,8 +20,7 @@ class GetDocs extends AbstractController
     public function tot(): Response
     {
         $user = $this->getUser();
-        return $this->json(["data"=>[
-            $user->getDocuments(),
-        ]]);
+        return $this->json(["data"=>$user->getDocuments(),
+        ]);
     }
 }
