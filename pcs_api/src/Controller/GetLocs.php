@@ -40,7 +40,7 @@ class GetLocs extends AbstractController
                     "description"=>$service->getDescription(),
                     "tarifs"=>$service->getTarifs(),
                     "type"=>$service->getType(),
-                    "prestataire"=>$service->getPrestataire()->getNom(),
+                    "prestataire"=>$service->getPrestataire()->getSocietyName(),
                 ];
             }
             $data[] = $loco;
