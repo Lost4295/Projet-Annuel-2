@@ -13,7 +13,7 @@ class GetDocs extends AbstractController
 
     #[Route(
         name: 'current_user_get_docs',
-        path: '/docs/',
+        path: '/docuser/',
         methods: ['GET'],
         defaults: ['_api_resource_class' => 'App\Entity\User', '_api_item_operation_name' => 'get'],
     )]
