@@ -28,6 +28,6 @@ class GetPrestas extends AbstractController
             }
         }
 
-        return $this->json(["data"=>$presta]);
+        return $this->json(["data"=>array_values($presta)]);
     }
 }
