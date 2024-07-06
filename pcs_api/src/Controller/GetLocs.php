@@ -24,6 +24,27 @@ class GetLocs extends AbstractController
     {
         $user = $this->getUser();
         $locs = $em->getRepository(Location::class)->findBy(["locataire"=>$user]);
-        return $this->json(["data"=>$locs]);
+        $data = [];
+        foreach ($locs as $loc ){
+            $loco = [
+                "id"=>$loc->getId(),
+                "date_debut"=>$loc->getDateDebut(),
+                "date_fin"=>$loc->getDateFin(),
+                "prix"=>$loc->getPrix(),
+                "services"=>[],
+                "appartemnt"=>$loc->getAppartement()->getImages()[0],
+            ];
+            foreach ($loc->getServices() as $service){
+                $loco["services"][] = [
+                    "titre"=>$service->getTitre(),
+                    "description"=>$service->getDescription(),
+                    "tarifs"=>$service->getTarifs(),
+                    "type"=>$service->getType(),
+                    "prestataire"=>$service->getPrestataire()->getNom(),
+                ];
+            }
+            $data[] = $loco;
+        }
+        return $this->json(["data"=>$data]);
     }
 }

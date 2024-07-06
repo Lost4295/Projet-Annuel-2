@@ -84,6 +84,7 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
             $loca->setDateDebut($date);
             $date2 = new DateTime(sprintf('202%d-%02d-%02d', $y, $z, rand($num + 1, 31)));
             $loca->setDateFin($date2);
+            $loca->setDateha(new DateTime(sprintf('202%d-%02d-%02d', $y, $z, rand($num, 31))));
             $loca->setAppartement($this->getReference('appartement'.rand(1, 14)));
             $loca->setAdults(rand(1, 4));
             $loca->setKids(rand(0, 2));
