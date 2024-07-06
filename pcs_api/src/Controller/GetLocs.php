@@ -36,11 +36,10 @@ class GetLocs extends AbstractController
             ];
             foreach ($loc->getServices() as $service){
                 $loco["services"][] = [
+                    "id"=>$service->getId(),
                     "titre"=>$service->getTitre(),
                     "description"=>$service->getDescription(),
-                    "tarifs"=>$service->getTarifs(),
-                    "type"=>$service->getType(),
-                    "prestataire"=>$service->getPrestataire()->getSocietyName(),
+                    "image" => $service->getImages()[0],
                 ];
             }
             $data[] = $loco;
