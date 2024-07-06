@@ -30,7 +30,7 @@ class GetLocs extends AbstractController
                 "id"=>$loc->getId(),
                 "date_debut"=>$loc->getDateDebut(),
                 "date_fin"=>$loc->getDateFin(),
-                "prix"=>$loc->getPrix(),
+                "prix"=>$loc->getPrice(),
                 "services"=>[],
                 "appartemnt"=>$loc->getAppartement()->getImages()[0],
             ];
