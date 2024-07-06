@@ -20,7 +20,10 @@ services:
   api:
     container_name: api_prod
     restart: on-failure:5 
-    build: api
+    build:
+      context: api
+      dockerfile: Dockerfile
+      target: prod
     ports:
       - 8000:443
       - 8080:80
@@ -29,7 +32,10 @@ services:
   website:
     container_name: website_prod
     restart: on-failure:5 
-    build: web
+    build:
+      context: web
+      dockerfile: Dockerfile
+      target: prod
     ports:
       - 443:443
       - 80:80

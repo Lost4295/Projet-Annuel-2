@@ -47,7 +47,6 @@
 					{% if is_granted("ROLE_VOYAGEUR") %}
 						<button class="nav-link my-2 p-4" id="v-pills-loca-tab" data-bs-toggle="pill" data-bs-target="#v-pills-loca" type="button" role="tab" aria-controls="v-pills-loca" aria-selected="false">{{"loca"|trans}}</button>
 					{% endif %}
-					<button class="nav-link my-2 p-4" id="v-pills-secur-tab" data-bs-toggle="pill" data-bs-target="#v-pills-secur" type="button" role="tab" aria-controls="v-pills-secur" aria-selected="false">{{"secur"|trans}}</button>
 					{% if tickets|length > 0 %}
 						<button class="nav-link my-2 p-4" id="v-pills-tick-tab" data-bs-toggle="pill" data-bs-target="#v-pills-tick" type="button" role="tab" aria-controls="v-pills-tick" aria-selected="false">{{"tickets"|trans}}</button>
 					{% endif %}
@@ -566,7 +565,6 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="tab-pane fade" id="v-pills-secur" role="tabpanel" aria-labelledby="v-pills-secur-tab" tabindex="0">secur...</div>
 				{% if tickets|length > 0 %}
 					<div class="tab-pane fade col-5" id="v-pills-tick" role="tabpanel" aria-labelledby="v-pills-tick-tab" tabindex="0">
 					<h2> {{"tickets"|trans}}</h2>

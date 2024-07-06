@@ -21,7 +21,10 @@ services:
   api:
     container_name: api
     restart: always
-    build: api
+    build:
+      context: api
+      dockerfile: Dockerfile
+      target: dev
     ports:
       - 8004:443
       - 8084:80
@@ -33,7 +36,10 @@ services:
   website:
     container_name: website 
     restart: always
-    build: web
+    build: 
+      context: web
+      dockerfile: Dockerfile
+      target: dev
     ports:
       - 444:443
       - 84:80
