@@ -40,3 +40,5 @@ FROM base AS prod
 # Finalement, on installe les fichiers de l'application.
 COPY ../appWeb /var/www/html/appWeb
 COPY ./web/conf/.env.prod.local /var/www/html/appWeb/.env.local
+
+FROM base AS dev
