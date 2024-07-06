@@ -8,12 +8,12 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AsController]
-class GetIds extends AbstractController
+class GetDocs extends AbstractController
 {
 
     #[Route(
-        name: 'current_user_get',
-        path: '/user/',
+        name: 'current_user_get_docs',
+        path: '/docs/',
         methods: ['GET'],
         defaults: ['_api_resource_class' => 'App\Entity\User', '_api_item_operation_name' => 'get'],
     )]
@@ -21,13 +21,7 @@ class GetIds extends AbstractController
     {
         $user = $this->getUser();
         return $this->json(["data"=>[
-            "id"=>$user->getId(),
-            "name"=>$user->getNom(),
-            "firstname"=>$user->getPrenom(),
-            "email"=>$user->getUserIdentifier(),
-            "phone"=>$user->getPhoneNumber(),
-            "birthdate"=>$user->getBirthdate()->format('d-m-Y'),
-            "abonnement"=>$user->getAbonnement()->__toString(),
-            ]]);
+            $user->getDocuments(),
+        ]]);
     }
 }
