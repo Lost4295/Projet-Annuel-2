@@ -28,11 +28,11 @@ class GetLocs extends AbstractController
         foreach ($locs as $loc ){
             $loco = [
                 "id"=>$loc->getId(),
-                "date_debut"=>$loc->getDateDebut(),
-                "date_fin"=>$loc->getDateFin(),
+                "dateDebut"=>$loc->getDateDebut(),
+                "dateFin"=>$loc->getDateFin(),
                 "prix"=>$loc->getPrice(),
                 "services"=>[],
-                "appartemnt"=>$loc->getAppartement()->getImages()[0],
+                "appartement"=>$loc->getAppartement()->getImages()[0],
             ];
             foreach ($loc->getServices() as $service){
                 $loco["services"][] = [
