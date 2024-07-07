@@ -10,7 +10,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Appartement;
 use App\Entity\Commentaire;
+use App\Entity\Fichier;
 use App\Entity\Note;
+use App\Service\PdfService;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,9 +20,11 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 class AppartementFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     private AppartementService $as;
-    public function __construct(AppartementService $as)
+    private PdfService $pdfS;
+    public function __construct(AppartementService $as, PdfService $pdfS)
     {
         $this->as = $as;
+        $this->pdfS = $pdfS;
     }
     private $locations = [
         ["city" => "Paris", "country" => "France", "postal_code" => "75000"],
@@ -379,6 +383,19 @@ class AppartementFixtures extends Fixture implements DependentFixtureInterface, 
                 $nott->setNote(rand(1, 5));
                 $manager->persist($nott);
             }
+            $file = new Fichier();
+            $file->setLocation($loca);
+            $date = new DateTime(sprintf('202%d-%02d-%02d', $y, $z, $num));
+            $pdf = $this->pdfS->generatePdf($loca);
+            $file->setDate($date);
+            $file->setUser($that);
+            $file->setNom("Facture de location du ".$date->format('d/m/Y'));
+            $file->setType('location');
+            if (file_exists($pdf[0])) {
+                $file->setSize(PdfService::human_filesize(filesize($pdf[0])));
+                $file->setPath($pdf[1]);
+            }
+            $manager->persist($file);
             $manager->persist($loca);
             $manager->flush();
         }

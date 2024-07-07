@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: AppartementRepository::class)]
 #[ApiResource]
@@ -75,6 +76,7 @@ class Appartement
      */
     #[ORM\ManyToMany(targetEntity: AppartPlus::class, inversedBy: 'appartement')]
     #[ORM\JoinTable(name: 'scp_appartement_appart_plus')]
+    #[Ignore]
     private Collection $appartPluses;
 
     #[ORM\Column(nullable: true)]

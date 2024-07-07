@@ -167,14 +167,14 @@ fun checker() : Long {
                 json.put("dateDebut",SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendarD.time)+"T00:00:00Z")
                 json.put("dateFin",SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendarF.time)+"T00:00:00Z")
                 json.put("appartement", "/appartements/" + data?.getString("id"))
-                json.put("locataire", "/users/" + shp.getString("id", ""))
+                json.put("locataire",  shp.getString("id", ""))
                 json.put("adults", requireView().findViewById<TextView>(R.id.et_adulte).text.toString().toInt())
                 json.put("kids", requireView().findViewById<TextView>(R.id.et_enfant).text.toString().toInt())
                 json.put("babies", requireView().findViewById<TextView>(R.id.et_bebes).text.toString().toInt())
                 json.put("price", data?.getInt("price")?.times(period))
                 val request:JsonObjectRequest = object : JsonObjectRequest(
                     Method.POST,
-                    "https://api.pariscaretakerservices.fr/locations",
+                    "https://api.pariscaretakerservices.fr/create-reservation",
                     json,
                     {
                         Toast.makeText(requireContext(), "Payment completed", Toast.LENGTH_SHORT).show()
@@ -195,10 +195,8 @@ fun checker() : Long {
                     override fun getHeaders(): MutableMap<String, String> {
                         val params = HashMap<String, String>()
                         val shp = requireContext().getSharedPreferences("user", 0)
-                        var token = shp.getString("usrtoken", "").toString()
-                        params["Authorization"] = "Bearer $token"
                         params["Accept"] = "*/*"
-                        params["Content-Type"] = "application/ld+json"
+                        params["Content-Type"] = "application/json"
                         return params
                     }
                 }
