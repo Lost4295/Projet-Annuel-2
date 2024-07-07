@@ -174,7 +174,7 @@ fun checker() : Long {
                 json.put("price", data?.getInt("price")?.times(period))
                 val request:JsonObjectRequest = object : JsonObjectRequest(
                     Method.POST,
-                    "https://api.pariscaretakerservices.fr/create-reservation",
+                    "https://api.pariscaretakerservices.fr/loca",
                     json,
                     {
                         Toast.makeText(requireContext(), "Payment completed", Toast.LENGTH_SHORT).show()

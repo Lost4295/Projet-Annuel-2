@@ -12,3 +12,6 @@ swagger_ui:
 stripe:
     path: /create-payment-intent
     controller: App\Controller\StripeController::createPaymentIntent
+loca:
+    path: /loca
+    controller: App\Controller\LocaController::loca

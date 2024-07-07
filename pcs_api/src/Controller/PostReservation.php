@@ -19,7 +19,7 @@ class PostReservation extends AbstractController
 {
 
     #[Route(
-        '/create-reservation',
+        '/loca',
         name: 'create_location',
         methods: ['GET', 'POST']
     )]
@@ -33,6 +33,18 @@ class PostReservation extends AbstractController
     }
     public function tot(): Response
     {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['error' => 'Method Not Allowed']);
+            exit();
+        }
+        if ($_SERVER['CONTENT_TYPE'] !== 'application/json') {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid Content Type']);
+            exit();
+        }
+        header('Content-Type: application/json');
+
         try {
             $jsonStr = file_get_contents('php://input');
             $jsonObj = json_decode($jsonStr);
