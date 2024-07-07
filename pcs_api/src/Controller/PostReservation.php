@@ -31,7 +31,7 @@ class PostReservation extends AbstractController
         $this->pdfService = $pdfService;
         $this->em = $em;
     }
-    public function tot(): Response
+    public function loca(): Response
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
