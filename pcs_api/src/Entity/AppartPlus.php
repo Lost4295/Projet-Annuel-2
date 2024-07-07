@@ -68,6 +68,12 @@ class AppartPlus
         return $this->id;
     }
 
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
     public function getIcon(): ?string
     {
         return $this->icon;
