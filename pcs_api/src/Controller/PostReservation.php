@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsController]
+
 class PostReservation extends AbstractController
 {
 
