@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
-#[ApiResource( security: "is_granted('ROLE_NON_USER')")]
+#[ApiResource( security: "is_granted('IS_AUTHENTICATED_FULLY')")]
 class Location
 {
     #[ORM\Id]

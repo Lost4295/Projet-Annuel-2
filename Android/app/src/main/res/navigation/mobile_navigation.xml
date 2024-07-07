@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
-
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.android.ui.home.HomeFragment"
@@ -18,19 +17,14 @@
         tools:layout="@layout/fragment_checkin" />
 
     <fragment
-        android:id="@+id/nav_location"
-        android:name="com.example.android.ui.location.LocationFragment"
-        android:label="@string/menu_location"
-        tools:layout="@layout/fragment_location" />
-    <fragment
         android:id="@+id/nav_services"
         android:name="com.example.android.ui.services.ServicesFragment"
-        android:label="@string/menu_location"
+        android:label="Services"
         tools:layout="@layout/fragment_services" />
     <fragment
         android:id="@+id/nav_presta"
         android:name="com.example.android.ui.presta.PrestaFragment"
-        android:label="@string/menu_location"
+        android:label="Prestataires"
         tools:layout="@layout/fragment_presta" />
     <fragment
         android:id="@+id/nav_contacts"
@@ -42,4 +36,19 @@
         android:name="com.example.android.ui.login.LoginFragment"
         android:label="Se Connectationner"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/nav_appart"
+        android:name="com.example.android.ui.appart.AppartFragment"
+        android:label="Appartement"
+        tools:layout="@layout/fragment_appart" />
+    <fragment
+        android:id="@+id/nav_reservation"
+        android:name="com.example.android.ReservationFragment"
+        android:label="Reserver"
+        tools:layout="@layout/fragment_reservation" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.android.ui.profile.ProfileFragment"
+        android:label="Profil"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reservation"
+        android:textSize="30sp"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date de début : "
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:id="@+id/tv_dateD"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="JJ/MM/AAAA"
+        android:inputType="date"
+        android:layout_gravity="center"
+        android:id="@+id/btn_dateD"
+        />
+    <!-- <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="JJ/MM/AAAA"
+        android:inputType="date"
+        android:layout_gravity="center" /> -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date de Fin : "
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_dateF"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="JJ/MM/AAAA"
+        android:inputType="date"
+        android:layout_gravity="center"
+        android:id="@+id/btn_dateF"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre d'adultes : "
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Nombre..."
+        android:inputType="number"
+        android:layout_gravity="center"
+        android:id="@+id/et_adulte"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre d'enfants :"
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Nombre..."
+        android:inputType="number"
+        android:layout_gravity="center"
+        android:id="@+id/et_enfant"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Nombre de bébés :"
+        android:textSize="20sp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Nombre..."
+        android:inputType="number"
+        android:layout_gravity="center"
+        android:id="@+id/et_bebes"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prix estimé : "
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Réserver"
+        android:layout_gravity="center"
+        android:id="@+id/btn_reserv"
+        />
+
+</LinearLayout>

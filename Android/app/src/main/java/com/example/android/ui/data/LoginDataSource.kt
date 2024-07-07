@@ -2,16 +2,17 @@ package com.example.android.ui.data
 
 import android.content.Context
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.findNavController
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.android.MiniAppart
+import com.example.android.R
 import com.example.android.ui.data.model.LoggedInUser
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -21,13 +22,14 @@ import java.io.IOException
  */
 class LoginDataSource {
 
-    fun login(username: String, password: String, context: Context): Result<LoggedInUser> {
+    fun login(username: String, password: String, context: Context, view: View): Result<LoggedInUser> {
         try {
             // TODO: handle loggedInUser authentication
             var queue = Volley.newRequestQueue(context)
-            var token: String = ""
-            var id: String = ""
-            var name: String = ""
+            var token = ""
+            var id = ""
+            var name= ""
+            var msg: String
             val jsonBody = JSONObject()
             try {
                 jsonBody.put("email", username)
@@ -43,10 +45,24 @@ class LoginDataSource {
                 json2,
                 Response.Listener{ content ->
                     try {
-                        var cur_jso =content.getJSONArray("data")
-                        if (cur_jso.getString(1) == username){
-                            id = cur_jso.getString(0)
-                            name = cur_jso.getString(1)
+                        val cur_jso =content.getJSONObject("data")
+                        if (cur_jso.getString("email") == username){
+                            id = cur_jso.getString("id")
+                            name = cur_jso.getString("email")
+                            val realusername = cur_jso.getString("firstname")
+                            val editor = context.getSharedPreferences("user", Context.MODE_PRIVATE).edit()
+                            editor.putString("usrtoken", token)
+                            editor.putString("id", id)
+                            editor.putString("name", name)
+                            editor.putString("rname", realusername)
+                            editor.putString("phone", cur_jso.getString("phone"))
+                            editor.putString("birthdate", cur_jso.getString("birthdate"))
+                            editor.putString("abonnement", cur_jso.getString("abonnement"))
+                            editor.putString("namer", cur_jso.getString("name"))
+                            editor.apply()
+                            Toast.makeText(context, "Bienvenue sur le site de PCS, $realusername !", Toast.LENGTH_LONG).show()
+                            view.findNavController().navigate(R.id.nav_home)
+
                         } else {
                             Toast.makeText(context, "Error: Data ; username = $username, name = $name", Toast.LENGTH_LONG).show()
                         }
@@ -82,30 +98,36 @@ class LoginDataSource {
                 Request.Method.POST,
                 "https://api.pariscaretakerservices.fr/auth",
                 jsonBody,
-                Response.Listener{ content ->
+                { content ->
                     try {
                         token = content.getString("token")
                         queue.add(req2)
-                        //Toast.makeText(context, "WIN ! YOU ARE CONNECTED", Toast.LENGTH_LONG).show()
                     } catch (e: JSONException){
                         e.printStackTrace()
                     }
                 },
-                Response.ErrorListener { error ->
+                { error ->
                     if (error.networkResponse != null) {
                         val statusCode = error.networkResponse.statusCode
-                        val errorMessage = String(error.networkResponse.data, charset("UTF-8"))
-                        Toast.makeText(context, "Error: $statusCode - $errorMessage", Toast.LENGTH_LONG).show()
+                        if (statusCode == 401) {
+                            msg = "Vos identifiants sont incorrects. Merci de réessayer."
+                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                        } else {
+                            val errorMessage = String(error.networkResponse.data, charset("UTF-8"))
+                            Toast.makeText(context, "Error: $statusCode - $errorMessage", Toast.LENGTH_LONG).show()
+                        }
+                       // Toast.makeText(context, "Error: $statusCode - $errorMessage", Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show()
+                        msg = "Une erreur est survenue. Merci de réessayer plus tard."
+                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                     }
-                    Log.e("herhe", error.toString())
-                    Log.e("herhem", String(error.networkResponse.data, charset("UTF-8")))
-
+                    //Log.e("herhe", error.toString())
+                    //Log.e("herhem", String(error.networkResponse.data, charset("UTF-8")))
                 }
             )
+
             queue.add(auth)
-            val fakeUser = LoggedInUser(id, name)
+            val fakeUser = LoggedInUser("5", "014")
             return Result.Success(fakeUser)
         } catch (e: Throwable) {
             return Result.Error(IOException("Error logging in", e))

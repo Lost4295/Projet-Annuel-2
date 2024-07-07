@@ -1,6 +1,7 @@
 package com.example.android.ui.contacts
 
 import android.content.Intent
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +13,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.databinding.FragmentContactsBinding
 import com.example.android.R
+import com.example.android.databinding.FragmentContactsBinding
+
+
 class ContactsFragment : Fragment() {
 
     private var _binding: FragmentContactsBinding? = null
@@ -33,10 +36,6 @@ class ContactsFragment : Fragment() {
         _binding = FragmentContactsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSlideshow
-        galleryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         root.findViewById<Button>(R.id.button)?.setOnClickListener {
             if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(android.Manifest.permission.CALL_PHONE)) {
@@ -53,6 +52,14 @@ class ContactsFragment : Fragment() {
                 callIntent.setData(Uri.parse("tel:123456789"))
                 startActivity(callIntent)
             }
+        }
+
+        root.findViewById<TextView>(R.id.linkmail).paintFlags = Paint.UNDERLINE_TEXT_FLAG;
+
+        root.findViewById<TextView>(R.id.linkmail).setOnClickListener {
+            val emailIntent = Intent(Intent.ACTION_SENDTO)
+            emailIntent.data = Uri.parse("mailto:contact@pariscaretakerservices.fr")
+            startActivity(emailIntent)
         }
         return root
     }

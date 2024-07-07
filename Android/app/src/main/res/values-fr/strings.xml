@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">appAndroidPA</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Paris CareTakerServices</string>
+<string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+<string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+<string name="nav_header_title">Paris CaretakerServices</string>
+<string name="nav_header_subtitle">   </string>
+<string name="nav_header_desc">En-tête de navigation</string>
+<string name="action_settings">Paramètres</string>
 
     <string name="menu_home">Accueil</string>
     <string name="menu_checkin">Enregistrement</string>
@@ -14,4 +14,12 @@
     <string name="menu_services">Services</string>
     <string name="menu_presta">Prestataires</string>
     <string name="menu_contact">Contacts</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Se connecter</string>
+    <string name="action_sign_in_short">Se connecter</string>
+    <string name="welcome">"Bienvenue ! "</string>
+    <string name="invalid_username">Identifiant invalide</string>
+    <string name="invalid_password">Le mot de passe doit faire plus de 1 caractère.</string>
+    <string name="login_failed">"Connexion échouée."</string>
 </resources>

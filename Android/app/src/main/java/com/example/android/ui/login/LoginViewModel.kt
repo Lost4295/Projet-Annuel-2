@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import android.view.View
 import com.example.android.ui.data.LoginRepository
 import com.example.android.ui.data.Result
 
@@ -18,9 +19,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-    fun login(username: String, password: String, context:Context) {
+    fun login(username: String, password: String, context:Context, view: View) {
         // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password, context)
+        val result = loginRepository.login(username, password, context, view)
 
         if (result is Result.Success) {
             _loginResult.value =
@@ -51,6 +52,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+        return password.isNotEmpty()
     }
 }

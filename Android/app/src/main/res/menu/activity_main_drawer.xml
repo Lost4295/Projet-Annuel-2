@@ -9,10 +9,6 @@
             android:icon="@drawable/home"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_checkin"
-            android:icon="@drawable/checkin"
-            android:title="@string/menu_checkin" />
-        <item
             android:id="@+id/nav_location"
             android:icon="@drawable/location"
             android:title="@string/menu_location" />

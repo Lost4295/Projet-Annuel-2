@@ -11,10 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.findNavController
+import com.example.android.MainActivity
 import com.example.android.databinding.FragmentLoginBinding
 
 import com.example.android.R
+import com.google.android.material.navigation.NavigationView
 
 class LoginFragment : Fragment() {
 
@@ -31,12 +35,23 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+
+
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val prefs = requireContext().getSharedPreferences("user", 0)
+        val token = prefs.getString("usrtoken", null)
+        val id = prefs.getString("id", null)
+        val rname = prefs.getString("rname", null)
+
+        if ((token != null && id != null) || rname != null) {
+            view.findNavController().navigate(R.id.nav_profile)
+        }
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
@@ -94,7 +109,8 @@ class LoginFragment : Fragment() {
                 loginViewModel.login(
                     usernameEditText.text.toString(),
                     passwordEditText.text.toString(),
-                    requireContext()
+                    requireContext(),
+                    view
                 )
             }
             false
@@ -105,16 +121,24 @@ class LoginFragment : Fragment() {
             loginViewModel.login(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString(),
-                requireContext()
+                requireContext(),
+                view
             )
         }
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
+        /*
         val welcome = getString(R.string.welcome) + model.displayName
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
+         */
+
+    }
+
+    public fun update() {
+
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
