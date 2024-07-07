@@ -19,9 +19,9 @@ class PostReservation extends AbstractController
 {
 
     #[Route(
+        '/create-reservation',
         name: 'create_location',
-        path: '/create-reservation/',
-        methods: ['POST'],
+        methods: ['GET', 'POST'],
         defaults: ['_api_resource_class' => 'App\Entity\Location', '_api_item_operation_name' => 'POST'],
     )]
 
@@ -56,7 +56,7 @@ class PostReservation extends AbstractController
             $file->setLocation($loc);
             $file->setDate(new \DateTime());
             $file->setUser($loc->getLocataire());
-            $file->setNom("Facture de location du ".$file->getDate()->format('d/m/Y'));
+            $file->setNom("Facture de location du " . $file->getDate()->format('d/m/Y'));
             $file->setType('location');
             $fac = $this->pdfService->generatePdf($loc);
             if (file_exists($fac[0])) {
@@ -64,8 +64,8 @@ class PostReservation extends AbstractController
                 $file->setPath($fac[1]);
             }
         } catch (\Error $e) {
-            return $this->json(["error"=>"Invalid JSON"]);
+            return $this->json(["error" => "Invalid JSON"]);
         }
-        return $this->json(["data"=>"Reservation created"]);
+        return $this->json(["data" => "Reservation created"]);
     }
 }
