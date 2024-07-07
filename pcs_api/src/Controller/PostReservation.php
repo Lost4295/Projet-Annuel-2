@@ -21,8 +21,7 @@ class PostReservation extends AbstractController
     #[Route(
         '/create-reservation',
         name: 'create_location',
-        methods: ['GET', 'POST'],
-        defaults: ['_api_resource_class' => 'App\Entity\Location', '_api_item_operation_name' => 'POST'],
+        methods: ['GET', 'POST']
     )]
 
     private PdfService $pdfService;
