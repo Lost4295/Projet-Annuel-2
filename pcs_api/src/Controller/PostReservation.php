@@ -58,9 +58,6 @@ class PostReservation extends AbstractController
             $loc->setAdults($jsonObj->adults);
             $loc->setKids($jsonObj->kids);
             $loc->setBabies($jsonObj->babies);
-            foreach ($jsonObj->services as $service) {
-                $loc->addService($this->em->getRepository(Service::class)->find($service));
-            }
             $this->em->persist($loc);
             $this->em->flush();
             $file = new Fichier();
