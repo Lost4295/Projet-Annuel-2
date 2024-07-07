@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AsController]
-class GetDocs extends AbstractController
+class PostReservation extends AbstractController
 {
 
     #[Route(
