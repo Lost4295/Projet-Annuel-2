@@ -14,4 +14,4 @@ stripe:
     controller: App\Controller\StripeController::createPaymentIntent
 loca:
     path: /loca
-    controller: App\Controller\LocaController::loca
+    controller: App\Controller\PostReservation::loca

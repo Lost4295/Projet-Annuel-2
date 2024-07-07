@@ -90,6 +90,8 @@ fun checker() : Long {
         val dateD = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(btnDateDebut.text.toString())
         val dateF = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(btnDateFin.text.toString())
         if (dateD != null) {
+            val price = requireView().findViewById<TextView>(R.id.estprice)
+            price.text = " Prix estimé :" + (dateF.time - dateD.time)/(1000*60*60*24) * arguments?.getInt("price")!! + " €"
            return (dateF.time - dateD.time)/(1000*60*60*24)
             req = true
         }
@@ -197,6 +199,7 @@ fun checker() : Long {
                         val shp = requireContext().getSharedPreferences("user", 0)
                         params["Accept"] = "*/*"
                         params["Content-Type"] = "application/json"
+                        params["Authorization"] = "Bearer " + shp.getString("usrtoken", "")
                         return params
                     }
                 }

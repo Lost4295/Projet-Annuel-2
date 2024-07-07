@@ -103,6 +103,7 @@
         android:text="Prix estimé : "
         android:textSize="20sp"
         android:layout_gravity="center"
+        android:id="@+id/estprice"
         android:layout_margin="20dp"/>
     <Button
         android:layout_width="wrap_content"
