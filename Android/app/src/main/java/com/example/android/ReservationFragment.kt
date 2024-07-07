@@ -196,7 +196,6 @@ fun checker() : Long {
                     }){
                     override fun getHeaders(): MutableMap<String, String> {
                         val params = HashMap<String, String>()
-                        val shp = requireContext().getSharedPreferences("user", 0)
                         params["Accept"] = "*/*"
                         params["Content-Type"] = "application/json"
                         params["Authorization"] = "Bearer " + shp.getString("usrtoken", "")

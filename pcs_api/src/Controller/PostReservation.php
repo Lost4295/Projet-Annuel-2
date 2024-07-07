@@ -53,7 +53,7 @@ class PostReservation extends AbstractController
             $loc->setDateDebut(new \DateTime($jsonObj->dateDebut));
             $loc->setDateFin(new \DateTime($jsonObj->dateFin));
             $loc->setPrice($jsonObj->price);
-            $loc->setLocataire($this->em->getRepository(User::class)->find($jsonObj->user));
+            $loc->setLocataire($this->em->getRepository(User::class)->find($jsonObj->locataire));
             $loc->setAppartement($this->em->getRepository(Appartement::class)->find($jsonObj->appartement));
             $loc->setAdults($jsonObj->adults);
             $loc->setKids($jsonObj->kids);
