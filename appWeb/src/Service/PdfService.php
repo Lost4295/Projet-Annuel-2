@@ -49,7 +49,7 @@ class PdfService
         // Return the path to the saved PDF
         return [$outputPath, $filename];
     }
-    public function createDevisPdf(Devis $devis): array
+    public function createDevisPdf(Devis $devis, bool $presta = false): array
     {
         // Configure DomPDF according to your needs
         $pdfOptions = new Options();
@@ -58,10 +58,17 @@ class PdfService
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
 
+    if ($presta) {
+            // Retrieve the HTML generated in our twig file
+        $html = $this->twig->render('templates/devispresta.html.twig', [
+            'devis' => $devis
+        ]);
+    } else {
         // Retrieve the HTML generated in our twig file
         $html = $this->twig->render('templates/devis.html.twig', [
             'devis' => $devis
         ]);
+    }
 
         // Load HTML to Dompdf
         $dompdf->loadHtml($html);

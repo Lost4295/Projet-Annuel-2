@@ -184,6 +184,20 @@ class DevisController extends AbstractController
                 $this->addFlash('danger', 'errgeneratingpdf');
                 return $this->redirectToRoute("profile");
             }
+            $data2 = $pdf->createDevisPdf($devis, true);
+            if (file_exists($data2[0])) {
+                $file2 = new Fichier();
+                $file2->setNom($data2[1]);
+                $file2->setPath($data2[1]);
+                $file2->setUser($devis->getPrestataire()->getResponsable());
+                $file2->setType("devis");
+                $file2->setSize($pdf::human_filesize(filesize($data2[0])));
+                $file2->setDate(new \DateTime());
+                $em->persist($file2);
+            } else {
+                $this->addFlash('danger', 'errgeneratingpdf');
+                return $this->redirectToRoute("profile");
+            }
             $devis->setOk(true);
             $em->persist($devis);
             $em->flush();
