@@ -164,11 +164,12 @@ fun checker() : Long {
                 val data = arguments
                 val queue = Volley.newRequestQueue(requireContext())
                 val shp = requireContext().getSharedPreferences("user", 0)
+                Log.i("id", data?.getLong("id").toString())
                 val json = JSONObject()
                 json.put("dateha", SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Calendar.getInstance().time)+"T00:00:00Z")
                 json.put("dateDebut",SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendarD.time)+"T00:00:00Z")
                 json.put("dateFin",SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendarF.time)+"T00:00:00Z")
-                json.put("appartement", "/appartements/" + data?.getString("id"))
+                json.put("appartement", data?.getLong("id").toString())
                 json.put("locataire",  shp.getString("id", ""))
                 json.put("adults", requireView().findViewById<TextView>(R.id.et_adulte).text.toString().toInt())
                 json.put("kids", requireView().findViewById<TextView>(R.id.et_enfant).text.toString().toInt())

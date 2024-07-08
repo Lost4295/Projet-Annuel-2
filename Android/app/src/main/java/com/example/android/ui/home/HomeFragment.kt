@@ -289,6 +289,7 @@ class HomeFragment : Fragment() {
         view.findViewById<ListView>(R.id.lv_appart).setOnItemClickListener { parent, view, position, id ->
             val item = adapter?.getItem(position) as Appart
             val bundle = Bundle()
+            bundle.putLong("id", item.id)
             bundle.putString("shortDesc", item.shortDesc)
             bundle.putInt("price", item.price)
             bundle.putString("address", item.address)
