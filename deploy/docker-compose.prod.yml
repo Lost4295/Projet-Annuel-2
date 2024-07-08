@@ -3,7 +3,7 @@ networks:
   symfony:
     driver: bridge
 services:
-  mysql:
+  mysql_prod:
     image: mysql:8.0
     container_name: mysql_prod
     environment:
@@ -17,7 +17,7 @@ services:
       - ./mysql:/var/lib/mysql
     networks:
       - symfony
-  api:
+  api_prod:
     container_name: api_prod
     restart: on-failure:5 
     build:
@@ -29,7 +29,7 @@ services:
       - 8080:80
     networks:
       - symfony
-  website:
+  website_prod:
     container_name: website_prod
     restart: on-failure:5 
     build:
@@ -41,7 +41,7 @@ services:
       - 80:80
     networks:
       - symfony
-  python:
+  python_prod:
     container_name: python_prod
     restart: on-failure:5 
     build: 
