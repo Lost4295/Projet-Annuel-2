@@ -19,6 +19,7 @@
     <string name="action_sign_in">Se connecter</string>
     <string name="action_sign_in_short">Se connecter</string>
     <string name="welcome">"Bienvenue ! "</string>
+    <string name="profile">Profil</string>
     <string name="invalid_username">Identifiant invalide</string>
     <string name="invalid_password">Le mot de passe doit faire plus de 1 caractère.</string>
     <string name="login_failed">"Connexion échouée."</string>
