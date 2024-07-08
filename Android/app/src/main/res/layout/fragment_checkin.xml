@@ -33,7 +33,7 @@
         android:textSize="30sp"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="35dp"/>
+        android:layout_marginBottom="15dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,11 +59,13 @@
         android:layout_width="300dp"
         android:layout_height="350dp"
        android:layout_gravity="center"
-        android:layout_marginBottom="35dp"/>
+        android:layout_marginBottom="5dp"/>
     <com.ncorti.slidetoact.SlideToActView
         android:id="@+id/example"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
+        app:slider_icon="@drawable/baseline_lock_outline_24"
+        app:complete_icon="@drawable/baseline_lock_open_24"
         app:text="Valider l'ouverture" />
 </LinearLayout>
     </LinearLayout>

@@ -51,7 +51,7 @@
 							<a class="nav-link fs-4 mx-3{% if app.request.get(" _route") == 'appartements' %} active {%endif%}" {% if app.request.get('_route') == 'appartements' %} aria-current="page" {% endif %} href="{{path('appartements') }}">{{'appartements' |trans }}</a>
 							{# Je triche oui #}
 							<div class="dropdown fs-4 mx-3{% if app.request.get(" _route") == 'services' %} active {%endif%} nav-link">
-								<button class="nav-link p-0 dropdown-toogle" type="button" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} data-bs-toggle="dropdown" aria-expanded="false">{{'services' |trans }}</button>
+								<button class="w-100 text-center nav-link p-0 dropdown-toogle" type="button" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} data-bs-toggle="dropdown" aria-expanded="false">{{'services' |trans }}</button>
 								<ul class="dropdown-menu">
 									<li>
 										<a class="dropdown-item" href='{{path("services")}}'>Services</a>
@@ -147,7 +147,7 @@ cookieconsent.run( {
 				</noscript>
 				{# <!-- End Cookie Consent by PrivacyPolicies.com https://www.PrivacyPolicies.com --> #}
 <!-- Start of HubSpot Embed Code -->
-  <script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/144780934.js"></script>
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/144993426.js"></script>
 <!-- End of HubSpot Embed Code -->
 				{% block javascripts %}{% endblock %}
 			</body>
