@@ -40,10 +40,12 @@ class Checkin extends AbstractController
             $user = $this->getUser();
             $locs = $user->getLocations();
             foreach ($locs as $loc) {
+                $pairs = [];
+                $pairs[] = [$loc->getAppartement()->getId(), $jsonObj->id];
                 if ($loc->getAppartement()->getId() == $jsonObj->id) {
                     return $this->json(["data" => "OK"]);
                 }
-                return $this->json(["data" => "NOK"]);
+                return $this->json(["data" => "NOK", "checked"=> $pairs]);
             }
         } catch (\Error $e) {
             return $this->json(["data" => "Invalid JSON"]);
