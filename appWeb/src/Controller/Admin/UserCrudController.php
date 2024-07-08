@@ -67,9 +67,9 @@ class UserCrudController extends AbstractCrudController
         $locations = AssociationField::new("locations", 'locations')->setRequired(false);
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $phoneNumber];
+            return [$id, $nom, $prenom, $email, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $phoneNumber];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $nom, $prenom, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement, $locations, $tickets, $ticketsAttribues];
+            return [$id, $nom, $prenom, $email, $roles, $lastConnDate, $creationDate, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement, $locations, $tickets, $ticketsAttribues];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$email, $roles, $nom, $prenom, $admin, $birthdate, $isVerified, $avatar, $phoneNumber, $abonnement, $locations, $tickets, $ticketsAttribues];
         } elseif (Crud::PAGE_NEW === $pageName) {
