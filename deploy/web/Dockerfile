@@ -39,6 +39,6 @@ FROM base AS prod
 # On copie le code source de notre application dans le dossier /var/www/html/appWeb
 # Finalement, on installe les fichiers de l'application.
 COPY ./appWeb /var/www/html/appWeb
-COPY ./web/conf/.env.prod.local /var/www/html/appWeb/.env.local
+COPY ./conf/.env.prod.local /var/www/html/appWeb/.env.local
 
 FROM base AS dev

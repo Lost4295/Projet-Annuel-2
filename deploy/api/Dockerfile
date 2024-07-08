@@ -40,6 +40,6 @@ FROM base AS prod
 # On copie le code source de notre application dans le dossier /var/www/html/pcs_api
 # Finalement, on installe les fichiers de l'application.
 COPY ./pcs_api /var/www/html/pcs_api
-COPY ./api/conf/.env.prod.local /var/www/html/pcs_api/.env.local
+COPY ./conf/.env.prod.local /var/www/html/pcs_api/.env.local
 
 FROM base AS dev
