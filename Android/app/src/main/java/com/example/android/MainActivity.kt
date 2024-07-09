@@ -69,16 +69,6 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
-    private fun createNFCIntentFilter(): Array<IntentFilter> {
-        val intentFilter = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED)
-        try {
-            intentFilter.addDataType("*/*")
-        } catch (e: IntentFilter.MalformedMimeTypeException) {
-            throw RuntimeException("Failed to add MIME type.", e)
-        }
-        return arrayOf(intentFilter)
-    }
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         readFromIntent(intent)
@@ -155,8 +145,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
-        val pref = getSharedPreferences("user", MODE_PRIVATE)
-        pref.edit().clear().apply()
         super.onStop()
     }
     override fun onDestroy() {

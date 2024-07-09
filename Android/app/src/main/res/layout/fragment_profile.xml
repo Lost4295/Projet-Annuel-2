@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Nom :"
+                    android:text="Nom : "
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Prénom :"
+                    android:text="Prénom : "
 
                     />
                 <TextView
@@ -90,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Date de naissance :"
+                    android:text="Date de naissance : "
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Téléphone :"
+                    android:text="Téléphone : "
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Email :"
+                    android:text="Email : "
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -148,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Abonnement :"
+                    android:text="Abonnement : "
                     />
 
                 <TextView
@@ -172,6 +172,17 @@
             android:id="@+id/profmodif"
             android:text="Modifier"
             />
+        <Button
+            android:layout_marginTop="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/btn_logout"
+            android:backgroundTint="#FFFF0000"
+            android:text="Se déconnecter"
+            />
+
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/nav_login"
         android:name="com.example.android.ui.login.LoginFragment"
-        android:label="Se Connectationner"
+        android:label="Se connecter"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/nav_appart"
@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/nav_reservation"
         android:name="com.example.android.ReservationFragment"
-        android:label="Reserver"
+        android:label="Réserver"
         tools:layout="@layout/fragment_reservation" />
     <fragment
         android:id="@+id/nav_profile"

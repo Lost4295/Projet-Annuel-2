@@ -23,6 +23,7 @@ import com.example.android.ui.documents.DocumentAdapter
 import com.example.android.ui.location.Location
 import com.example.android.ui.location.LocationAdapter
 import com.example.android.ui.services.Service
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 
 class ProfileFragment : Fragment() {
@@ -40,10 +41,36 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        var shp = requireContext().getSharedPreferences("user", 0)
         var tabs = root.findViewById<TabLayout>(R.id.tabs)
         val data1 = root.findViewById<LinearLayout>(R.id.data1)
         val data2 = root.findViewById<LinearLayout>(R.id.data2)
         val data3 = root.findViewById<LinearLayout>(R.id.data3)
+        val logout = root.findViewById<Button>(R.id.btn_logout)
+        val name = shp.getString("namer", null)
+        val firstname = shp.getString("rname", null)
+        val email = shp.getString("name", null)
+        val phone = shp.getString("phone", null)
+        val birthdate = shp.getString("birthdate", null)
+        val abonnement = shp.getString("abonnement", null)
+        val tvname: TextView = root.findViewById(R.id.profblnom)
+        val tvfirstname: TextView = root.findViewById(R.id.profblprenom)
+        val tvemail: TextView = root.findViewById(R.id.profblemail)
+        val tvphone: TextView = root.findViewById(R.id.profblphone)
+        val tvbirthdate: TextView = root.findViewById(R.id.profblbirth)
+        val tvabonnement: TextView = root.findViewById(R.id.profblabo)
+        tvname.text = name
+        tvfirstname.text = firstname
+        tvemail.text = email
+        tvphone.text = phone
+        tvbirthdate.text = birthdate
+        tvabonnement.text = abonnement
+        logout.setOnClickListener {
+            val navView = activity?.findViewById<NavigationView>(R.id.nav_view)
+            navView?.findViewById<TextView>(R.id.emailuser)?.text = ""
+            shp.edit().clear().apply()
+            root.findNavController().navigate(R.id.nav_login)
+        }
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 var queue = Volley.newRequestQueue(requireContext())
@@ -54,24 +81,14 @@ class ProfileFragment : Fragment() {
                         data1.visibility = View.VISIBLE
                         data2.visibility = View.GONE
                         data3.visibility = View.GONE
-                        val name = shp.getString("namer", null)
-                        val firstname = shp.getString("rname", null)
-                        val email = shp.getString("name", null)
-                        val phone = shp.getString("phone", null)
-                        val birthdate = shp.getString("birthdate", null)
-                        val abonnement = shp.getString("abonnement", null)
-                        val tvname: TextView = root.findViewById(R.id.profblnom)
-                        val tvfirstname: TextView = root.findViewById(R.id.profblprenom)
-                        val tvemail: TextView = root.findViewById(R.id.profblemail)
-                        val tvphone: TextView = root.findViewById(R.id.profblphone)
-                        val tvbirthdate: TextView = root.findViewById(R.id.profblbirth)
-                        val tvabonnement: TextView = root.findViewById(R.id.profblabo)
                         tvname.text = name
                         tvfirstname.text = firstname
                         tvemail.text = email
                         tvphone.text = phone
                         tvbirthdate.text = birthdate
                         tvabonnement.text = abonnement
+                        tvname.invalidate();
+                        tvname.requestLayout();
                     }
                     1 -> {
                         data1.visibility = View.GONE
@@ -82,6 +99,7 @@ class ProfileFragment : Fragment() {
                         val spinner = root.findViewById<ProgressBar>(R.id.progressBar2);
                         val textView: TextView = root.findViewById(R.id.tv_loadingloc)
                         val locslv = root.findViewById<ListView>(R.id.lv_location)
+
                         spinner.visibility = View.VISIBLE
                         textView.visibility = View.VISIBLE
                         locslv.visibility = View.GONE
@@ -149,6 +167,7 @@ class ProfileFragment : Fragment() {
                         } else {
                             root.findNavController().navigate(R.id.nav_login)
                         }
+
                     }
                     2 -> {
                         data1.visibility = View.GONE
