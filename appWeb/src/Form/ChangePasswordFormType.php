@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 class ChangePasswordFormType extends AbstractType
 {
@@ -24,21 +25,25 @@ class ChangePasswordFormType extends AbstractType
                     ],
                 ],
                 'first_options' => [
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Please enter a password',
-                        ]),
-                        new Length([
-                            'min' => 6,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
-                            // max length allowed by Symfony for security reasons
-                            'max' => 4096,
-                        ]),
-                    ],
                     'label' => 'New password',
                 ],
                 'second_options' => [
                     'label' => 'Repeat Password',
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter a password',
+                    ]),
+                    new Length([
+                        'min' => 8,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                    new PasswordStrength([
+                        'minScore' => 1,
+                        'message' => 'Your password is too easy to guess. Company\'s security policy requires to use a stronger password.'
+                    ]),
                 ],
                 'invalid_message' => 'The password fields must match.',
                 // Instead of being set onto the object directly,
