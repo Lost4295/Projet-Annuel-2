@@ -49,6 +49,11 @@ class ConnexionController extends AbstractController
                 $this->addFlash("danger", "errorabt");
                 $this->createErrorTicket();
             }
+            $userExists = $this->em->getRepository(User::class)->findOneBy(["email" => $form->get('email')->getData()]);
+            if ($userExists) {
+                $this->addFlash("danger", "erroruser");
+                return $this->redirectToRoute('login');
+            }
             $user->setEmail($form->get('email')->getData());
             $user->setNom($form->get('nom')->getData());
             $user->setAbonnement($g);
