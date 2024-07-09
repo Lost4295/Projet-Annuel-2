@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-{% block page_title %}
+{% block title %}
 	{{"register"|trans}}
 {% endblock %}
 {% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
@@ -9,7 +9,7 @@
 	{% for flash_error in app.flashes('verify_email_error') %}
 		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 	{% endfor %}
-	{% set page_title = block('page_title') %}
+	{% set page_title = block('title') %}
 	<div class="login-wrapper" style="margin-top:0px">
 		<header class="main-header">
 			<div id="header-logo">

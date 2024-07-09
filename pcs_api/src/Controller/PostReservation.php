@@ -58,19 +58,9 @@ class PostReservation extends AbstractController
             $loc->setAdults($jsonObj->adults);
             $loc->setKids($jsonObj->kids);
             $loc->setBabies($jsonObj->babies);
+            $loc->setFactToCreate(true);
             $this->em->persist($loc);
             $this->em->flush();
-            $file = new Fichier();
-            $file->setLocation($loc);
-            $file->setDate(new \DateTime());
-            $file->setUser($loc->getLocataire());
-            $file->setNom("Facture de location du " . $file->getDate()->format('d/m/Y'));
-            $file->setType('location');
-            $fac = $this->pdfService->generatePdf($loc);
-            if (file_exists($fac[0])) {
-                $file->setSize(PdfService::human_filesize(filesize($fac[0])));
-                $file->setPath($fac[1]);
-            }
         } catch (\Error $e) {
             return $this->json(["error" => "Invalid JSON"]);
         }

@@ -4,6 +4,7 @@ Auto: Auto
 locations: 'Nos locations'
 services: 'Nos services'
 prestataires: 'Nos prestataires'
+abo: Abonnement
 contacter: 'Nous contacter'
 Profile: Profil
 Admin: Admin
@@ -20,4 +21,25 @@ about: 'Infos sur l’entreprise'
 noaccess: "Vous n'avez pas accès à cette ressource."
 samedate: 'La date de début et la date de fin sont identiques.'
 appartements: 'Nos appartements'
-chooprestype: Merci de choisir le type de prestations que vous souhaitez proposer.
+chooprestype: 'Merci de choisir le type de prestations que vous souhaitez proposer.'
+dateunavailable: "Les dates que vous avez choisies ne sont pas disponibles. Veuillez en choisir d'autres."
+verif: Votre vérification a été envoyée avec succès.
+errorabt: 'Une erreur est survenue. Les administrateurs ont été prévenus. Veuillez réessayer plus tard.'
+erroruser: "Cet utilisateur existe déjà. Si vous avez oublié votre mot de passe, veuillez cliquer sur 'Mot de passe oublié'."
+devsucess: 'Devis créé avec succès.'
+devfinsucess: 'Devis finalisé avec succès.'
+deverrornoexist: "Ce devis n'existe pas."
+deverrornopresta: "Vous n'avez pas les rôles requis pour effectuer cette action."
+errgeneratingpdf: 'Une erreur est survenue lors de la génération du PDF. Veuillez réessayer.'
+devvalsucess: 'Devis validé avec succès.'
+devmodsucess: 'Devis modifié avec succès.'
+devrefsucess: 'Devis refusé avec succès.'
+Password: 'Mot de passe'
+'New Password': 'Nouveau mot de passe'
+'Repeat Password': 'Répéter le mot de passe'
+plsverif: "Votre compte n'est pas vérifié. Veuillez vérifier votre adresse email pour un mail de notre part, ou vérifiez votre dossier spam."
+errgeneratinginvoice: 'Une erreur est survenue lors de la génération de la facture.'
+locationsuccess: 'Location créée avec succès.'
+abosuccess: " Vous avez bien souscrit à l'abonnement."
+appartdeleted: 'Appartement supprimé avec succès.'
+sucworkd: 'Vos jours de travail ont été mis à jour avec succès.'

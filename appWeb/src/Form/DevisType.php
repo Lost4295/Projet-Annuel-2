@@ -19,26 +19,26 @@ class DevisType extends AbstractType
                 'attr' => [
                     'class' => 'form-control my-1'
                 ],
-                'label' => 'Prénom'
+                'label' => 'prenom'
             ])
             ->add('nom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control my-1'
                 ],
-                'label' => 'Nom'
+                'label' => 'nom'
             ])
             ->add('numero', TextType::class, [
                 'attr' => [
                     'class' => 'form-control my-1'
                 ],
-                'label' => 'Numéro'
+                'label' => 'phone'
 
             ])
             ->add('email', TextType::class, [
                 'attr' => [
                     'class' => 'form-control my-1'
                 ],
-                'label' => 'Email'
+                'label' => 'email'
             ])
             ->add('prestation', ChoiceType::class, [
                 'choices'  => [
@@ -48,21 +48,21 @@ class DevisType extends AbstractType
                     'Peinture' => Devis::PRESTA_PEINTURE,
                     'Bricolage' => Devis::PRESTA_BRICOLAGE
                 ],
-                'label' => 'Type de prestation',
+                'label' => 'prestype',
             ])
             ->add('contact', ChoiceType::class, [
                 'choices'  => [
-                    'Email' => 0,
-                    'Telephone' => 1,
+                    'email' => 0,
+                    'telephone' => 1,
 
                 ],
-                'label' => 'Comment souhaitez être contacté ?',
+                'label' => 'contact',
             ])
             ->add('description', TextareaType::class, [
                 'attr' => [
                     'class' => 'form-control my-1'
                 ],
-                'label' => 'Description'
+                'label' => 'description'
             ]);
     }
 }

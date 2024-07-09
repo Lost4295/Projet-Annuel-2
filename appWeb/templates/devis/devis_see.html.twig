@@ -1,30 +1,37 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {{ 'devis'|trans }}
+{% endblock %}
+
 {% block body %}
 <div class="container my-5">
     <div class="row">
         <div class="col-12">
-            <h1 class="text-center mb-4">Devis</h1>
+            <h1 class="text-center mb-4">{{"devis"|trans}}</h1>
             <div class="card shadow-sm">
                 <div class="card-body">
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
-                                <th scope="row" class="bg-light">Nom</th>
+                                <th scope="row" class="bg-light">{{"nom"|trans}}</th>
                                 <td>{{ devis.nom }}</td>
                             </tr>
                             <tr>
-                                <th scope="row" class="bg-light">Prénom</th>
+                                <th scope="row" class="bg-light">{{"prenom"|trans}}</th>
                                 <td>{{ devis.prenom }}</td>
                             </tr>
+                            {% if devis.contactWithEmail == false %}
                             <tr>
-                                <th scope="row" class="bg-light">Numéro</th>
+                                <th scope="row" class="bg-light">{{'phone'|trans}}</th>
                                 <td>{{ devis.numero }}</td>
                             </tr>
+                            {% else %}
                             <tr>
                                 <th scope="row" class="bg-light">Email</th>
                                 <td>{{ devis.email }}</td>
                             </tr>
+                            {% endif %}
                             <tr>
                                 <th scope="row" class="bg-light">Description</th>
                                 <td>{{ devis.description }}</td>

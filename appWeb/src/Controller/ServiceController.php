@@ -72,7 +72,7 @@ class ServiceController extends AbstractController
             throw $this->createAccessDeniedException();
         }
         $form = $this->createForm(ServiceType::class, $service);
-        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", ServiceType::class, $service, array(
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("modify_service", ServiceType::class, $service, array(
             'auto_initialize'=>false // it's important!!!
         ));
         $builder->addEventSubscriber(new ModerationSubscriber($em, $request));

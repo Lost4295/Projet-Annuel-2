@@ -177,6 +177,11 @@ class LocationController extends AbstractController
     {
         $commentaire = new Commentaire();
         $form = $this->createForm(CommentaireType::class, $commentaire);
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder("create_commentaire", CommentaireType::class, $commentaire, array(
+            'auto_initialize'=>false // it's important!!!
+        ));
+        $builder->addEventSubscriber(new ModerationSubscriber($em, $request));
+        $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
@@ -217,7 +222,6 @@ class LocationController extends AbstractController
             $res->setCreatedAt(new \DateTime());
             $res->setUpdatedAt(new \DateTime());
             if ($request->files->get('appartement')['images']) {
-                $res->removeImage("house-placeholder.jpg");
                 foreach ($request->files->get('appartement')['images'] as $image) {
                     $destination = $this->getParameter('kernel.project_dir') . '/var/uploads/appartements';
                     $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
@@ -225,7 +229,7 @@ class LocationController extends AbstractController
                     $image->move($destination, $newFilename);
                     if ($as->isOk($image)) {
                         $finalDestination = $this->getParameter('kernel.project_dir') . '/public/images/appartements';
-                        rename($destination . "/" . $newFilename, $finalDestination . "/" . $newFilename);
+                        rename("$destination/$newFilename", "$finalDestination/$newFilename");
                         $res->addImage($newFilename);
                     }
                 }
@@ -247,7 +251,7 @@ class LocationController extends AbstractController
             return $this->redirectToRoute('profile');
         }
         $reservation = $this->createForm(AppartementType::class, $res);
-        $builder = $reservation->getConfig()->getFormFactory()->createNamedBuilder("modify_profile", AppartementType::class, $res, array(
+        $builder = $reservation->getConfig()->getFormFactory()->createNamedBuilder("modify_appart", AppartementType::class, $res, array(
             'auto_initialize' => false // it's important!!!
         ));
         $builder->addEventSubscriber(new ModerationSubscriber($em, $request));

@@ -2,6 +2,7 @@ Light: Light
 Dark: Dark
 Auto: Auto
 locations: 'Our rentals'
+abo: Subscription
 services: 'Our services'
 prestataires: 'Our service providers'
 contacter: 'Contact us'
@@ -21,3 +22,25 @@ noaccess: 'You have no access to this resource.'
 samedate: 'The start date and end date are the same.'
 appartements: 'Our apartments'
 chooprestype: 'Please choose the type of services you want to offer.'
+dateunavailable: 'The dates you have chosen are not available. Please choose another dates.'
+verif: Your verification has been successfully sent.
+deverrorunexpected: 'An unexpected error has occurred. Please try again.'
+errorabt: 'An error has occurred. The administrators have been notified.'
+erroruser: "This user already exists. If you don't remember your password, please click on the 'Forgot password' link."
+devsucess: 'Quote created successfully.'
+devfinsucess: 'Quote finalized successfully.'
+deverrornoexist: 'This quote does not exist.'
+deverrornopresta: 'You do not have the required permissions to execute this action.'
+errgeneratingpdf: 'An error occurred while generating the PDF. Please try again.'
+devvalsucess: 'Quote validated successfully.'
+devmodsucess: 'Quote modified successfully.'
+devrefsucess: 'Quote refused successfully.'
+Password: Password
+plsverif: 'Your account is not verified. Please verify your email address for a mail from us, or check your spam folder.'
+'New Password': 'New Password'
+'Repeat Password': 'Repeat Password'
+errgeneratinginvoice: 'An error occurred while generating the invoice.'
+locationsuccess: 'Location created successfully.'
+abosuccess: 'You have successfully subscribed to the subscription.'
+appartdeleted: 'Apartment deleted successfully.'
+sucworkd: 'Your work days have been updated successfully.'

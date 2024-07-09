@@ -34,17 +34,25 @@ class DevisFinType extends AbstractType
                     'minutes' => 'minutes',
                     'seconds' => 'seconds',
                 ]
+                ,
+                'label'=> 'estimatedtime'
             ])
             ->add("startDate", DateTimeType::class, ['attr' => [
                 'class' => 'form-control my-1'
-            ],])
+            ],
+            'label'=> "startdate"
+            ])
             ->add("endDate", DateTimeType::class, ['attr' => [
                 'class' => 'form-control my-1'
-            ],])
+            ],
+            'label'=> "enddate"
+            ])
             ->add("prix", NumberType::class, ['attr' => [
                 'class' => 'form-control my-1',
                 'step' => 0.01,
-            ],]);
+            ],
+            'label'=> "price"
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

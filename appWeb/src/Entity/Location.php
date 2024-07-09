@@ -60,6 +60,9 @@ class Location
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'location', orphanRemoval: true)]
     private Collection $notes;
 
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $factToCreate = false;
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -252,6 +255,18 @@ class Location
                 $note->setLocation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFactToCreate(): ?bool
+    {
+        return $this->factToCreate;
+    }
+
+    public function setFactToCreate(bool $factToCreate): static
+    {
+        $this->factToCreate = $factToCreate;
 
         return $this;
     }

@@ -54,13 +54,13 @@
 								<button class="w-100 text-center nav-link p-0 dropdown-toogle" type="button" {% if app.request.get('_route') == 'services' %} aria-current="page" {% endif %} data-bs-toggle="dropdown" aria-expanded="false">{{'services' |trans }}</button>
 								<ul class="dropdown-menu">
 									<li>
-										<a class="dropdown-item" href='{{path("services")}}'>Services</a>
+										<a class="dropdown-item" href='{{path("services")}}'>{{"services"|trans }}</a>
 									</li>
 									<li>
-										<a class="dropdown-item" href='{{path("create_devis")}}'>Demande de Devis</a>
+										<a class="dropdown-item" href='{{path("create_devis")}}'>{{"Demande de Devis"|trans}}</a>
 									</li>
 									<li>
-										<a class="dropdown-item" href='{{path("abos")}}'>Abonnement</a>
+										<a class="dropdown-item" href='{{path("abos")}}'>{{"abo"|trans}}</a>
 									</li>
 								</ul>
 							</div>
@@ -112,7 +112,6 @@
 				<footer class="footer border-info bg-info py-3 fixed-bottom">
 					<div class="d-flex justify-content-center align-items-center">
 						Copyright © 2024 CaretakerServices &emsp;
-						<a href="{{path('cookies') }}" class="link-light px-3">{{'cookies'|trans}}</a>
 						<a href="{{path('privacy') }}" class="link-light px-3">{{'privacy'|trans}}</a>
 						<a href="{{path('terms') }}" class="link-light px-3">{{'cgu'|trans}}</a>
 						<a href="{{path('about') }}" class="link-light px-3">{{'about'|trans}}</a>
@@ -132,7 +131,7 @@ cookieconsent.run( {
 "notice_banner_type": "simple",
 "consent_type": "express",
 "palette": "light",
-"language": "fr",
+"language": "{{ app.request.getLocale() }}",
 "page_load_consent_levels": ["strictly-necessary"],
 "notice_banner_reject_button_hide": false,
 "preferences_center_close_button_hide": false,

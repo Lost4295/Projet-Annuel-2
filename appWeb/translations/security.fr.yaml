@@ -16,5 +16,6 @@
 'Too many failed login attempts, please try again later.': 'Plusieurs tentatives de connexion ont échoué, veuillez réessayer plus tard.'
 'Invalid or expired login link.': 'Lien de connexion invalide ou expiré.'
 'Too many failed login attempts, please try again in %minutes% minute.': 'Plusieurs tentatives de connexion ont échoué, veuillez réessayer dans %minutes% minute.'
+'Too many failed login attempts, please try again in %minutes% minutes.': 'Trop de tentatives de connexion échouées, veuillez réessayer dans %minutes% minutes.'
 nuhuh: "Votre compte utilisateur n'est plus utilisable. Veuillez réessayer avec un autre compte."
 plsverif: "Votre compte n'est pas vérifié. Veuillez vérifier votre adresse email pour un mail de notre part, ou vérifiez votre dossier spam."
