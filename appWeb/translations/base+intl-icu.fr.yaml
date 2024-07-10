@@ -42,4 +42,5 @@ errgeneratinginvoice: 'Une erreur est survenue lors de la génération de la fac
 locationsuccess: 'Location créée avec succès.'
 abosuccess: " Vous avez bien souscrit à l'abonnement."
 appartdeleted: 'Appartement supprimé avec succès.'
+conn: "Veuillez vous connecter pour continuer."
 sucworkd: 'Vos jours de travail ont été mis à jour avec succès.'
