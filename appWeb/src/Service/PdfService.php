@@ -118,7 +118,7 @@ class PdfService
         file_put_contents($outputPath, $dompdf->output());
 
         // Return the path to the saved PDF
-        return $outputPath;
+        return [$outputPath, $filename];
     }
     public static function human_filesize($bytes, $decimals = 2)
     {
