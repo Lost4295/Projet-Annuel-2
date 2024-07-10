@@ -20,7 +20,7 @@ class AbonnementFixtures extends Fixture implements FixtureGroupInterface
         $opt2->setNom("VIP sur les prestas");
 
         $opt3 = new Option();
-        $opt3->setNom("toto");
+        $opt3->setNom("Option spéciale 3");
 
         $abonnement = new Abonnement();
         $abonnement->setNom("Gratuit")
@@ -31,7 +31,7 @@ class AbonnementFixtures extends Fixture implements FixtureGroupInterface
         $abonnement2->setNom("baladeur")
         ->setTarif("9.90")
         ->addOption($opt1)
-        ->addOption($opt2);
+        ->addOption($opt3);
 
         $abonnement3 = new Abonnement();
         $abonnement3->setNom("Explorateur")
