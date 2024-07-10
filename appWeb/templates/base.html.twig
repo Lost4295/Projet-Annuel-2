@@ -108,8 +108,21 @@
 					</div>
 				</nav>
 				<main class="container-fluid mb-5 pb-5">
-				{% if app.user is null or app.user.abonnement.nom == "Gratuit" %}
+				{% if app.user is null %}
 							<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039903955084566"
+							     crossorigin="anonymous"></script>
+							<!-- bloc -->
+							<ins class="adsbygoogle"
+							     style="display:block"
+							     data-ad-client="ca-pub-7039903955084566"
+							     data-ad-slot="4719822405"
+							     data-ad-format="auto"
+							     data-full-width-responsive="true"></ins>
+							<script>
+							     (adsbygoogle = window.adsbygoogle || []).push({});
+							</script>
+						{% else if app.user.abonnement.nom == "Gratuit" %}
+													<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039903955084566"
 							     crossorigin="anonymous"></script>
 							<!-- bloc -->
 							<ins class="adsbygoogle"
@@ -125,7 +138,20 @@
 					{% block body %}
 						&nbsp;
 					{% endblock %}
-						{% if app.user is null or app.user.abonnement.nom == "Gratuit" %}
+						{% if app.user is null %}
+					<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039903955084566"
+     crossorigin="anonymous"></script>
+<!-- 22 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7039903955084566"
+     data-ad-slot="1981978423"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% else if  app.user.abonnement.nom == "Gratuit" %}
 					<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039903955084566"
      crossorigin="anonymous"></script>
 <!-- 22 -->
