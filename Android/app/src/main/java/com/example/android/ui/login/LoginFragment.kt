@@ -59,7 +59,10 @@ class LoginFragment : Fragment() {
         val passwordEditText = binding.password
         val loginButton = binding.login
         val loadingProgressBar = binding.loading
-
+        loadingProgressBar.visibility = View.GONE
+        usernameEditText.visibility = View.VISIBLE
+        passwordEditText.visibility = View.VISIBLE
+        loginButton.isEnabled = false
         loginViewModel.loginFormState.observe(viewLifecycleOwner,
             Observer { loginFormState ->
                 if (loginFormState == null) {
@@ -77,7 +80,6 @@ class LoginFragment : Fragment() {
         loginViewModel.loginResult.observe(viewLifecycleOwner,
             Observer { loginResult ->
                 loginResult ?: return@Observer
-                loadingProgressBar.visibility = View.GONE
                 loginResult.error?.let {
                     showLoginFailed(it)
                 }
@@ -106,6 +108,10 @@ class LoginFragment : Fragment() {
         passwordEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                loadingProgressBar.visibility = View.VISIBLE
+                usernameEditText.visibility = View.GONE
+                passwordEditText.visibility = View.GONE
+                loginButton.isEnabled = false
                 loginViewModel.login(
                     usernameEditText.text.toString(),
                     passwordEditText.text.toString(),
@@ -118,6 +124,9 @@ class LoginFragment : Fragment() {
 
         loginButton.setOnClickListener {
             loadingProgressBar.visibility = View.VISIBLE
+            usernameEditText.visibility = View.GONE
+            passwordEditText.visibility = View.GONE
+            loginButton.isEnabled = false
             loginViewModel.login(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString(),
@@ -142,6 +151,14 @@ class LoginFragment : Fragment() {
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
+        val usernameEditText = binding.username
+        val passwordEditText = binding.password
+        val loginButton = binding.login
+        val loadingProgressBar = binding.loading
+        usernameEditText.visibility = View.VISIBLE
+        passwordEditText.visibility = View.VISIBLE
+        loginButton.isEnabled = true
+        loadingProgressBar.visibility = View.GONE
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
     }

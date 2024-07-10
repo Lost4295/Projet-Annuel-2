@@ -1,5 +1,8 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block page_title %}
+{{ 'Justification'|trans }} : {{pro.societyName}}
+{% endblock %}
 {% block page_content %}
 <h1 >Justification de {{pro.societyName}}</h1>
 {# <style>
@@ -164,10 +167,10 @@
                                 <p>{{"societyName"|trans}} : {{pro.societyName}}</p>
                                 <p>{{"siretNumber"|trans}} : {{pro.siretNumber}}</p>
                                 <p>{{"societyAddress"|trans}} : {{pro.societyAddress}}</p>
-                                <p>{{"role"|trans}} : {% if hasrole("ROLE_PRESTA", pro.responsable) %} {{"prestataire"|trans}} {% elseif hasrole("ROLE_BAILLEUR",pro.responsable)%}{{"bailleur"|trans}}{% endif %}</p>
+                                <p>{{"role"|trans}} : {% if hasrole("ROLE_PRESTA", pro.responsable) %} {{"prestataire"|trans}} {% elseif hasrole("ROLE_BAILLEUR",pro.responsable)%}{{"baill"|trans}}{% endif %}</p>
                             <div class="btn-group d-flex justify-content-center">
-                                <a href="{{val}}" class="btn btn-success">Valider</a>
-                                <a href="{{ref}}" class="btn btn-danger">Refuser</a>
+                                <a href="{{val}}" class="btn btn-success">{{"Valider"|trans}}</a>
+                                <a href="{{ref}}" class="btn btn-danger">{{"refuse"|trans }}</a>
                             </div>
                         </div>
                     </div>

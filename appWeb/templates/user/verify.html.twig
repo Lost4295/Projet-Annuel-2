@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
+{% block title %}{{"Verification de l'inscription"|trans}}{% endblock %}
 {% block body %}
-    <h1>Verification de l'inscription</h1>
+    <h1>{{"Verification de l'inscription"|trans}}</h1>
 
     {{ form_start(form) }}
     {{ form_row(form.justification) }}

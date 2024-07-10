@@ -109,12 +109,12 @@ class DevisController extends AbstractController
     {
         $devis = $em->getRepository(Devis::class)->find($id);
         if (!$devis) {
-            $this->addFlash('danger', 'deverror');
+            $this->addFlash('danger', 'deverrornoexist');
             return $this->json(["success" => false]);
         }
         $presta = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $this->getUser()->getId()]);
         if (!$presta) {
-            $this->addFlash('danger', 'deverror');
+            $this->addFlash('danger', 'deverrornopresta');
             return $this->json(["success" => false]);
         }
         $devis->setPrestataire($presta);
@@ -127,12 +127,12 @@ class DevisController extends AbstractController
     {
         $devis = $em->getRepository(Devis::class)->find($id);
         if (!$devis) {
-            $this->addFlash('danger', 'deverror');
+            $this->addFlash('danger', 'deverrornoexist');
             return $this->redirectToRoute("profile");
         }
         $presta = $em->getRepository(Professionnel::class)->findOneBy(["responsable" => $this->getUser()->getId()]);
         if (!$presta || $presta != $devis->getPrestataire()) {
-            $this->addFlash('danger', 'deverror');
+            $this->addFlash('danger', 'deverrornopresta');
             return $this->redirectToRoute("profile");
         }
         $devisFinType = $this->createForm(DevisFinType::class, $devis);
@@ -153,7 +153,7 @@ class DevisController extends AbstractController
             }
             $em->persist($devis);
             $em->flush();
-            $this->addFlash('success', 'devsucess');
+            $this->addFlash('success', 'devfinsucess');
             return $this->redirectToRoute("profile");
         }
         return $this->render('devis/devis_fin.html.twig', [
@@ -166,7 +166,7 @@ class DevisController extends AbstractController
     {
         $devis = $em->getRepository(Devis::class)->find($id);
         if (!$devis) {
-            $this->addFlash('danger', 'deverror');
+            $this->addFlash('danger', 'deverrornoexist');
             return $this->redirectToRoute("profile");
         }
         if ($devis->getToValidate() && ($devis->getSid() == $request->get('sid') || $devis->getUser() == $this->getUser())) {
@@ -184,13 +184,27 @@ class DevisController extends AbstractController
                 $this->addFlash('danger', 'errgeneratingpdf');
                 return $this->redirectToRoute("profile");
             }
+            $data2 = $pdf->createDevisPdf($devis, true);
+            if (file_exists($data2[0])) {
+                $file2 = new Fichier();
+                $file2->setNom($data2[1]);
+                $file2->setPath($data2[1]);
+                $file2->setUser($devis->getPrestataire()->getResponsable());
+                $file2->setType("devis");
+                $file2->setSize($pdf::human_filesize(filesize($data2[0])));
+                $file2->setDate(new \DateTime());
+                $em->persist($file2);
+            } else {
+                $this->addFlash('danger', 'errgeneratingpdf');
+                return $this->redirectToRoute("profile");
+            }
             $devis->setOk(true);
             $em->persist($devis);
             $em->flush();
-            $this->addFlash('success', 'devsucess');
+            $this->addFlash('success', 'devvalsucess');
             return $this->redirectToRoute("profile");
         }
-        $this->addFlash('danger', 'deverrorunexpected');
+        $this->addFlash('danger', 'deverrornopresta');
         return $this->redirectToRoute("profile");
     }
 
@@ -200,11 +214,11 @@ class DevisController extends AbstractController
     {
         $devis = $em->getRepository(Devis::class)->find($id);
         if (!$devis) {
-            $this->addFlash('danger', 'deverror');
+            $this->addFlash('danger', 'deverrornoexist');
             return $this->redirectToRoute("profile");
         }
         if ($devis->getUser()->isEqualTo($this->getUser()) && $devis->getPrestataire()->getResponsable()->isEqualTo($this->getUser())) {
-            $this->addFlash('danger', 'deverrorunexpected');
+            $this->addFlash('danger', 'deverrornopresta');
             return $this->redirectToRoute("profile");
         }
         $devisFinType = $this->createForm(DevisFinType::class, $devis);
@@ -220,7 +234,7 @@ class DevisController extends AbstractController
             $devis->setTurn(false);
             $em->persist($devis);
             $em->flush();
-            $this->addFlash('success', 'devsucess');
+            $this->addFlash('success', 'devmodsucess');
             return $this->redirectToRoute("profile");
         }
         return $this->render('devis/devis_fin.html.twig', [
@@ -233,17 +247,16 @@ class DevisController extends AbstractController
     {
         $devis = $em->getRepository(Devis::class)->find($id);
         if (!$devis) {
-            $this->addFlash('danger', 'deverror');
+            $this->addFlash('danger', 'deverrornoexist');
             return $this->redirectToRoute("profile");
         }
         if ($devis->getUser()->isEqualTo($this->getUser()) && $devis->getPrestataire()->getResponsable()->isEqualTo($this->getUser())) {
-            dd($devis->getUser()->isEqualTo($this->getUser()), $devis->getPrestataire()->getResponsable()->isEqualTo($this->getUser()));
-            $this->addFlash('danger', 'deverrorunexpected');
+            $this->addFlash('danger', 'deverrornopresta');
             return $this->redirectToRoute("profile");
         }
         $em->remove($devis);
         $em->flush();
-        $this->addFlash('success', 'devsucess');
+        $this->addFlash('success', 'devrefsucess');
         return $this->redirectToRoute("profile");
     }
 

@@ -27,7 +27,7 @@
 
 {% block body %}
 	<div class='row'>
-		<div class="col-2 border border-success">
+		<div class="col-2">
 			<div class="d-flex align-items-start">
 				<div class="nav flex-column nav-pills me-3 w-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 					<button class="nav-link my-2 p-4 active" id="v-pills-info-tab" data-bs-toggle="pill" data-bs-target="#v-pills-info" type="button" role="tab" aria-controls="v-pills-info" aria-selected="true">{{"info"|trans}}</button>
@@ -39,9 +39,9 @@
 					{% endif %}
 					{% if is_granted("ROLE_PRESTA") %}
 						<button class="nav-link my-2 p-4" id="v-pills-presta-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta" type="button" role="tab" aria-controls="v-pills-presta" aria-selected="false">{{"prestadates"|trans}}</button>
-					{% if pro.services|length > 0 %}
-						<button class="nav-link my-2 p-4" id="v-pills-presta2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta2" type="button" role="tab" aria-controls="v-pills-presta2" aria-selected="false">{{"prestataire"|trans}}</button>
-					{% endif %}
+						{% if pro.services|length > 0 %}
+							<button class="nav-link my-2 p-4" id="v-pills-presta2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta2" type="button" role="tab" aria-controls="v-pills-presta2" aria-selected="false">{{"prestataire"|trans}}</button>
+						{% endif %}
 						<button class="nav-link my-2 p-4" id="v-pills-presta3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-presta3" type="button" role="tab" aria-controls="v-pills-presta3" aria-selected="false">{{"services"|trans}}</button>
 					{% endif %}
 					{% if is_granted("ROLE_VOYAGEUR") %}
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-10 border border-danger">
+		<div class="col-10">
 			<div class="tab-content" id="v-pills-tabContent">
 				<div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab" tabindex="0">
 					<h2>{{'profile'|trans }}</h2>
@@ -105,7 +105,7 @@
 							{{ user.abonnement.nom }}
 						</div>
 					</div>
-					
+
 					{% if is_granted("ROLE_BAILLEUR") or is_granted("ROLE_PRESTA") %}
 						<div class="row">
 							<div class="col-4 my-2">
@@ -128,7 +128,9 @@
 								{{ "address" |trans }}
 							</div>
 							<div class="col-6">
-								{{pro.societyAddress}} {{pro.postalCode}} {{pro.city}}
+								{{pro.societyAddress}}
+								{{pro.postalCode}}
+								{{pro.city}}
 							</div>
 						</div>
 
@@ -144,397 +146,385 @@
 								{% endif %}
 							</div>
 						</div>
-
 					{% endif %}
 					<div class="d-flex justify-content-around">
 						<div class="col-5 m-4">
 							<a href="{{path("check_infos")}}" class="btn btn-primary">{{'modifymyinfo'|trans }}</a>
 						</div>
 						{% if pro is not null and pro.isVerified == 0 %}
-						<div class="col-5 m-4">
-							<a href="{{path("verifyform")}}" class="btn btn-primary">{{'verifme'|trans }}</a>
-							<p class="text-muted">{{'verifmeinfo'|trans }}</p>
-						</div>
+							<div class="col-5 m-4">
+								<a href="{{path("verifyform")}}" class="btn btn-primary">{{'verifme'|trans }}</a>
+								<p class="text-muted">{{'verifmeinfo'|trans }}</p>
+							</div>
 						{% endif %}
 					</div>
 				</div>
 				<div class="tab-pane fade" id="v-pills-docs" role="tabpanel" aria-labelledby="v-pills-docs-tab" tabindex="0">
-					
-					{{form(invoce)}}
-					<h2>{{'docs'|trans }}</h2>
-					
-					<div class="d-flex justify-content-around">
-						<table class="table table-bordered">
-							<tr>
-								<th>{{'name'|trans }}</th>
-								<th>{{'date'|trans }}</th>
-								<th>{{'size'|trans }}</th>
-								<th>{{'type'|trans }}</th>
-								<th>{{'action'|trans }}</th>
-							</tr>
-							{% if user.documents is defined %}
-								{% for doc in user.documents %}
-									<tr>
-										<td>{{ doc.nom }}</td>
-										<td>{{ doc.date|date('d/m/Y') }}</td>
-										<td>{{ doc.size }}</td>
-										<td>{{ doc.type }}</td>
-										<td>
-											<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement{{doc.id}}">{{"see"|trans }}</button>
-											<a class="btn mx-2 btn-primary" href="{{ path('download_file', {'id': doc.id}) }}">{{'download'|trans }}</a>
-											<div class="modal fade" id="modal-agreement{{doc.id}}">
-												<div class="modal-dialog modal-lg" role="document">
-											    	<div class="modal-content">
-														<div class="modal-header">
-                    									    <h4 class="modal-title">{{"see"|trans}} {{ doc.nom }} </h4>
-															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    									</div>
-														<div class="modal-body">
-											    	    	<object type="application/pdf" data="{{asset("files/pdfs/" ~ doc.path )}}" width="100%" height="500" style="height: 85vh;">No Support</object>
-											        	</div>
-														<div class="modal-footer">
-                            								<button type="button" class="btn btn-default" data-bs-dismiss="modal">{{"close"|trans}}</button>
-                        								</div>
-											    	</div><!-- /.modal-content -->
-											    </div><!-- /.modal-dialog -->
-											</div><!-- /.modal -->
-										</td>
-									</tr>
-								{% endfor %}
-							{% endif %}
-						</table>
-
-					</div>
-				</div>
-				{% if is_granted("ROLE_BAILLEUR") %}
-					<div class="tab-pane fade" id="v-pills-baill" role="tabpanel" aria-labelledby="v-pills-baill-tab" tabindex="0">
-					{% if pro is not null and pro.isVerified == 1 %}
-					<h1>Stats</h1>
-						<h2><a data-bs-toggle="collapse" href="#statsdash" role="button" aria-expanded="false" aria-controls="statsdash">{{'stats'|trans }}</a></h2>
-						<div class="row collapse" id="statsdash">
-							<div class="col-4">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="card-title">{{'nblocs'|trans }}</h5>
-										<canvas id="chartl"></canvas>
-									</div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="card-title">{{'notes'|trans }}</h5>
-										<canvas id="chartn"></canvas>
-
-									</div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="card-title">{{'prices'|trans }}</h5>
-										<canvas id="chartp"></canvas>
-
-									</div>
-								</div>
-							</div>
-						</div>
-						<h2><a data-bs-toggle="collapse" href="#apartsdash" role="button" aria-expanded="false" aria-controls="apartsdash">{{'appart'|trans }}</a></h2>
-						<div class="row collapse" id="apartsdash">
-						{% for appart in appartements %}
-							<div class="col-4">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="card-title">{{'nbappart'|trans }}</h5>
-										<canvas id="chart-app-{{loop.index}}"></canvas>
-									</div>
-								</div>
-							</div>
-						{% endfor %}
-						</div>
-					{% else %}
-						<div class="alert alert-warning">{{"notverified"|trans}}</div>
-					{% endif %}
-					{% endif %}
-					</div>
-					<div class="tab-pane fade" id="v-pills-apps" role="tabpanel" aria-labelledby="v-pills-apps-tab" tabindex="0">
-					{% if pro is not null and pro.isVerified == 1 %}
-						<h1>Appartements</h1>
-						<a href="{{path("create_appart") }}" class="btn btn-primary">Nouveau</a>
-						<div class="row">
-							{% for appart in appartements %}
-								<div class="col-3 my-3">
-									<div class="card">
-										<div class="card-body">
-											<div class="splide" role="group" aria-label="Splide Basic HTML Example">
-												<div class="splide__track">
-													<ul class="splide__list">
-													{% for img in appart.images %}
-														<li class="splide__slide"><img src="{{asset("images/appartements/"~img)}}" class="card-img-top" alt="..."></li>
-													{% endfor %}
-													</ul>
+						{{form(invoce)}}
+						<h2>{{'docs'|trans }}</h2>
+						<div class="d-flex justify-content-around">
+							<table class="table table-bordered">
+								<tr>
+									<th>{{'name'|trans }}</th>
+									<th>{{'date'|trans }}</th>
+									<th>{{'size'|trans }}</th>
+									<th>{{'type'|trans }}</th>
+									<th>{{'action'|trans }}</th>
+								</tr>
+								{% if user.documents is defined %}
+									{% for doc in user.documents %}
+										<tr>
+											<td>{{ doc.nom }}</td>
+											<td>{{ doc.date|date('d/m/Y') }}</td>
+											<td>{{ doc.size }}</td>
+											<td>{{ doc.type }}</td>
+											<td>
+												<button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#modal-agreement{{doc.id}}">{{"see"|trans }}</button>
+												<a class="btn mx-2 btn-primary" href="{{ path('download_file', {'id': doc.id}) }}">{{'download'|trans }}</a>
+												<div class="modal fade" id="modal-agreement{{doc.id}}">
+													<div class="modal-dialog modal-lg" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title">{{"see"|trans}}
+																	{{ doc.nom }}
+																</h4>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															</div>
+															<div class="modal-body">
+																<object type="application/pdf" data="{{asset("files/pdfs/" ~ doc.path )}}" width="100%" height="500" style="height: 85vh;">No Support</object>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-bs-dismiss="modal">{{"close"|trans}}</button>
+															</div>
+														</div>
+														<!-- /.modal-content -->
+													</div>
+													<!-- /.modal-dialog -->
 												</div>
+												<!-- /.modal -->
+											</td>
+										</tr>
+									{% endfor %}
+								{% endif %}
+							</table>
+						</div>
+					</div>
+					{% if is_granted("ROLE_BAILLEUR") %}
+						<div class="tab-pane fade" id="v-pills-baill" role="tabpanel" aria-labelledby="v-pills-baill-tab" tabindex="0">
+							{% if pro is not null and pro.isVerified == 1 %}
+								<h1>Stats</h1>
+								<h2>
+									<a data-bs-toggle="collapse" href="#statsdash" role="button" aria-expanded="false" aria-controls="statsdash">{{'stats'|trans }}</a>
+								</h2>
+								<div class="row collapse" id="statsdash">
+									<div class="col-4">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title">{{'nblocs'|trans }}</h5>
+												<canvas id="chartl"></canvas>
 											</div>
-											<h5 class="card-title">{{ appart.titre }}</h5>
-											<div class="btn-group">
-											<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="btn btn-primary">{{"see"|trans}}</a>
-											<a href="{{ path('appart_modify', {'id': appart.id}) }}" class="btn btn-warning">{{"modify"|trans}}</a>
-											<a href="{{ path('appart_delete', {'id': appart.id}) }}" class="btn btn-danger">{{"delete"|trans}}</a>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title">{{'notes'|trans }}</h5>
+												<canvas id="chartn"></canvas>
+											</div>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title">{{'prices'|trans }}</h5>
+												<canvas id="chartp"></canvas>
 											</div>
 										</div>
 									</div>
 								</div>
-							{% endfor %}
+								<h2>
+									<a data-bs-toggle="collapse" href="#apartsdash" role="button" aria-expanded="false" aria-controls="apartsdash">{{'appart'|trans }}</a>
+								</h2>
+								<div class="row collapse" id="apartsdash">
+									{% for appart in appartements %}
+										<div class="col-4">
+											<div class="card">
+												<div class="card-body">
+													<h5 class="card-title">{{'nbappart'|trans }}</h5>
+													<canvas id="chart-app-{{loop.index}}"></canvas>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="alert alert-warning">{{"notverified"|trans}}</div>
+							{% endif %}
 						</div>
-					{% else %}
-						<div class="alert alert-warning">{{"notverified"|trans}}</div>
 					{% endif %}
+					<div class="tab-pane fade" id="v-pills-apps" role="tabpanel" aria-labelledby="v-pills-apps-tab" tabindex="0">
+						{% if pro is not null and pro.isVerified == 1 %}
+							<h1>Appartements</h1>
+							<a href="{{path("create_appart") }}" class="btn btn-primary">Nouveau</a>
+							<div class="row">
+								{% for appart in appartements %}
+									<div class="col-3 my-3">
+										<div class="card">
+											<div class="card-body">
+												<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+													<div class="splide__track">
+														<ul class="splide__list">
+															{% for img in appart.images %}
+																<li class="splide__slide"><img src="{{asset("images/appartements/"~img)}}" class="card-img-top" alt="..."></li>
+															{% endfor %}
+														</ul>
+													</div>
+												</div>
+												<h5 class="card-title">{{ appart.titre }}</h5>
+												<div class="btn-group">
+													<a href="{{ path('appart_detail', {'id': appart.id}) }}" class="btn btn-primary">{{"see"|trans}}</a>
+													<a href="{{ path('appart_modify', {'id': appart.id}) }}" class="btn btn-warning">{{"modify"|trans}}</a>
+													<a href="{{ path('appart_delete', {'id': appart.id}) }}" class="btn btn-danger">{{"delete"|trans}}</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						{% else %}
+							<div class="alert alert-warning">{{"notverified"|trans}}</div>
+						{% endif %}
 					</div>
 					<div class="tab-pane fade" id="v-pills-veis" role="tabpanel" aria-labelledby="v-pills-veis-tab" tabindex="0">
-					{% if pro is not null and pro.isVerified == 1 %}
-						<h2>{{"devtoval"|trans}}</h2>
-						<div class='row'>
-							{% for dev in devis %}
-								{% if dev.toValidate is not null %}
-								<div class="col-4">
-									<div class="card my-2">
-										<div class="card-header d-flex justify-content-between">
-											{{ dev.prestataire.societyName }} {{"propose"|trans}} : 
-										</div>
-										<div class="card-body">
-											{{"startdate"|trans}} : {{dev.startDate|date("d/m/Y H:i:s")}}
-											{{"enddate"|trans}} : {{dev.endDate|date("d/m/Y H:i:s")}}
-											{{"estimatedtime"|trans}} : {{dev.estimatedTime|di}}
-											{{"price"|trans}} : {{dev.prix}}
-										</div>
-										<div class="card-footer">
-											<div class="btn-group">
-											<a href="{{ path('devis_validate', {'id': dev.id}) }}" class="btn btn-success">{{"validate"|trans}}</a>
-											<a href="{{ path('devis_modify', {'id': dev.id}) }}" class="btn btn-warning">{{"modify"|trans}}</a>
-											<a href="{{ path('devis_refuse', {'id': dev.id}) }}" class="btn btn-danger">{{"refuse"|trans}}</a>
-											</div>
-										</div>
-									</div>
-									</div>
-								{% endif %}
-							{% endfor %}
-
-						</div>
-
-						<h2>{{"okdevs"|trans}}</h2>
-						<div class='row'>
-							{% for devis in validDevs %}
-								<div class="col-4">
-									<div class="card my-2">
-										<div class="card-header d-flex justify-content-between">
-											{{ devis.prestataire.societyName }} {{"propose"|trans}} : 
-										</div>
-										<div class="card-body">
-											{{"startdate"|trans}} : {{devis.startDate|date("d/m/Y H:i:s")}}
-											{{"enddate"|trans}} : {{devis.endDate|date("d/m/Y H:i:s")}}
-											{{"estimatedtime"|trans}} : {{devis.estimatedTime}}
-											{{"price"|trans}} : {{devis.prix}}
-										</div>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					{% else %}
-						<div class="alert alert-warning">{{"notverified"|trans}}</div>
-					{% endif %}
-					</div>
-				{% if is_granted("ROLE_PRESTA") %}
-					<div class="tab-pane fade" id="v-pills-presta" role="tabpanel" aria-labelledby="v-pills-presta-tab" tabindex="0">
-					{% if pro is not null and pro.isVerified == 1 %}
-
-						<h2>{{"prestadispos"|trans}}</h2>
-						set dispos ici
-						+ devis en attente + form dates de travail etc
-						<div class="row" style="max-height:700px">
-							<div id='calendar'></div>
-						</div>
-						{% if pro.workDays is not empty %}
-						<div class="row my-3 d-flex justify-content-between">
-							<div class="col-4">
-								<h3>{{"deviswaiting"|trans}}</h3>
-								<div id="devisw">
+						{% if pro is not null and pro.isVerified == 1 %}
+							<h2>{{"devtoval"|trans}}</h2>
+							<div class='row'>
 								{% for dev in devis %}
-								{% if dev.toValidate == 1 %}
-									<a href="{{path('devis_finalize', {'id': dev.id})}}" class="btn btn-primary me-3 my-1" id="dev-{{loop.index}}">{{"devde"|trans }} {{dev.nom}} {{dev.prenom}}</a>
-								{% endif %}
-								{% endfor %}
-								</div>
-							</div>
-							<div class="col-3 pull-left">
-								<h3>{{"devisnottak"|trans}}</h3>
-								{% for dev in unpicked %}
-									<div class="card m-2" id="dev-{{dev.id}}">
-										<div class="card-body">
-										<div class="d-flex justify-content-between align-items-center">
-											<div>
-												<div>{{"devde"|trans }} {{dev.nom}} {{dev.prenom}}</div>
-												<div>Contact : {{ dev.contactWithPhone ? dev.numero : dev.email }}</div>
-											</div>
-											<a class="btn btn-primary" data-bs-toggle="collapse" href="#devnpick-{{dev.id}}" role="button" aria-expanded="false" aria-controls="devnpick-{{dev.id}}"><i class="bi bi-plus"></i></a>
-										</div>
-										<div class="collapse" id="devnpick-{{dev.id}}">
-												{{ dev.description }}
-												<btn id='pickdev-{{dev.id}}' class="btn btn-success">{{"pick"|trans}}</a>
-											</div>
-										</div>
-									</div>
-								{% endfor %}
-							</div>
-						</div>
-								{% endif %}
-
-						<div class="row">
-							<div class="col-6">
-								<h3>{{"workdays"|trans}}</h3>
-									{{form_start(workform)}}
-									{{ form_row(workform.days) }}
-									{{ form_rest(workform) }}
-									{{ form_end(workform) }}
-							</div>
-							{% if pro.prestatype is null %}
-							<div class="col-6">
-								<h3>{{"prestatype"|trans}}</h3>
-									{{form_start(prestype)}}
-									{{ form_row(prestype.type) }}
-									{{ form_rest(prestype) }}
-									{{ form_end(prestype) }}
-							</div>
-								{% endif %}
-						</div>
-					{% else %}
-						<div class="alert alert-warning">{{"notverified"|trans}}</div>
-					{% endif %}
-					</div>
-					{% if pro.services|length > 0 %}
-					<div class="tab-pane fade" id="v-pills-presta2" role="tabpanel" aria-labelledby="v-pills-presta2-tab" tabindex="0">
-					{% if pro is not null and pro.isVerified == 1 %}
-						<div class="row">
-						+ dashboard sur avis clients (choix des clients sur les services) + note presta + note service
-							<div class="col-6">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="card-title">{{'services'|trans }}</h5>
-										<canvas id="chartps"></canvas>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-6">
-								<div class="card">
-									<div class="card-body h-100">
-										<h5 class="card-title">{{'prestanote'|trans }} {{pro.avgNote}}</h5>
-										<canvas id="chartpn"></canvas>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row" id="u">
-						{% for anb in services %}
-							<div class="col-4">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="card-title">{{'nbanb'|trans }}</h5>
-										<canvas id="chart-serv-{{loop.index}}"></canvas>
-									</div>
-								</div>
-							</div>
-						{% endfor %}
-						</div>
-					{% else %}
-						<div class="alert alert-warning">{{"notverified"|trans}}</div>
-					{% endif %}
-					</div>
-					{% endif %}
-					<div class="tab-pane fade" id="v-pills-presta3" role="tabpanel" aria-labelledby="v-pills-presta3-tab" tabindex="0">
-					{% if pro is not null and pro.isVerified == 1 %}
-					<h1>Services</h1>
-						<a href="{{ path('create_service') }}" class="btn btn-primary">{{"new"|trans}}</a>
-						<div class="row">
-							{% for service in services %}
-								<div class="col-3 my-3">
-									<div class="card">
-										<div class="card-body">
-											<div class="splide" role="group" aria-label="Splide Basic HTML Example">
-												<div class="splide__track">
-													<ul class="splide__list">
-													{% for img in service.images %}
-														<li class="splide__slide"><img src="{{asset("images/services/"~img)}}" class="card-img-top" alt="..."></li>
-													{% endfor %}
-													</ul>
+									{% if dev.toValidate is not null %}
+										<div class="col-4">
+											<div class="card my-2">
+												<div class="card-header d-flex justify-content-between">
+													{{ dev.prestataire.societyName }}
+													{{"propose"|trans}}
+													:
 												</div>
-											</div>
-											<h5 class="card-title">{{ service.titre }}</h5>
-											<div class="btn-group">
-											<a href="{{ path('spec_service', {'id': service.id}) }}" class="btn btn-primary">{{'see'|trans}}</a>
-											<a href="{{ path('service_modify', {'id': service.id}) }}" class="btn btn-warning">{{'modify'|trans}}</a>
-											<a href="{{ path('service_delete', {'id': service.id}) }}" class="btn btn-danger">{{'delete'|trans}}</a> 
-											</div>
-										</div>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					{% else %}
-						<div class="alert alert-warning">{{"notverified"|trans}}</div>
-					{% endif %}
-					</div>
-				{% endif %}
-				{% if is_granted("ROLE_VOYAGEUR") %}
-					<div class="tab-pane fade" id="v-pills-loca" role="tabpanel" aria-labelledby="v-pills-loca-tab" tabindex="0">
-						<h2>{{'loca'|trans }}</h2>
-						<h3>{{"futureloca"|trans }}</h3>
-						<div class="row d-flex justify-content-around">
-							{% for location in locations %}
-								<div class="col-4 my-2">
-									<div class="card">
-										<div class="card-header">
-											<div class="splide" role="group" aria-label="Splide Basic HTML Example">
-												<div class="splide__track">
-													<ul class="splide__list">
-														{% for img in location.appartement.images %}
-															<li class="splide__slide"><img src="{{asset("images/appartements/"~ img )}}" class="card-img-top" alt="..."></li>
-														{% endfor %}
-													</ul>
+												<div class="card-body">
+													{{"startdate"|trans}}
+													:
+													{{dev.startDate|date("d/m/Y H:i:s")}}
+													{{"enddate"|trans}}
+													:
+													{{dev.endDate|date("d/m/Y H:i:s")}}
+													{{"estimatedtime"|trans}}
+													:
+													{{dev.estimatedTime|di}}
+													{{"price"|trans}}
+													:
+													{{dev.prix}}
+												</div>
+												<div class="card-footer">
+													<div class="btn-group">
+														<a href="{{ path('devis_validate', {'id': dev.id}) }}" class="btn btn-success">{{"validate"|trans}}</a>
+														<a href="{{ path('devis_modify', {'id': dev.id}) }}" class="btn btn-warning">{{"modify"|trans}}</a>
+														<a href="{{ path('devis_refuse', {'id': dev.id}) }}" class="btn btn-danger">{{"refuse"|trans}}</a>
+													</div>
 												</div>
 											</div>
 										</div>
-										<a href="{{path("location_info", {id:location.id} ) }}" class="text-decoration-none">
+									{% endif %}
+								{% endfor %}
+							</div>
+							<h2>{{"okdevs"|trans}}</h2>
+							<div class='row'>
+								{% for devis in validDevs %}
+									<div class="col-4">
+										<div class="card my-2">
+											<div class="card-header d-flex justify-content-between">
+												{{ devis.prestataire.societyName }}
+												{{"propose"|trans}}
+												:
+											</div>
 											<div class="card-body">
-												<h4>{{location.appartement.shortDesc }}</h4>
-												<small class="text-dark placeholder-glow">
-													<div class="d-flex justify-content-between">
-														<span class="">{{location.dateDebut|date("d-m-Y")}}
-															-
-															{{location.dateFin|date("d-m-Y")}}</span>
-														<span class=" col-3"></span>
-													</div>
-													<div class="d-flex justify-content-between">
-														<span class="text-dark">{{location.appartement.city}} - {{location.appartement.country}} </span>
-														<span class="">{{location.price }}
-															€</span>
-													</div>
-												</small>
+												{{"startdate"|trans}}
+												:
+												{{devis.startDate|date("d/m/Y H:i:s")}}
+												{{"enddate"|trans}}
+												:
+												{{devis.endDate|date("d/m/Y H:i:s")}}
+												{{"estimatedtime"|trans}}
+												:
+												{{devis.estimatedTime|di}}
+												{{"price"|trans}}
+												:
+												{{devis.prix}}
 											</div>
-										</a>
+										</div>
 									</div>
+								{% endfor %}
+							</div>
+						{% else %}
+							<div class="alert alert-warning">{{"notverified"|trans}}</div>
+						{% endif %}
+					</div>
+					{% if is_granted("ROLE_PRESTA") %}
+						<div class="tab-pane fade" id="v-pills-presta" role="tabpanel" aria-labelledby="v-pills-presta-tab" tabindex="0">
+							{% if pro is not null and pro.isVerified == 1 %}
+
+								<h2>{{"prestadispos"|trans}}</h2>
+								<div class="row" style="max-height:700px">
+									<div id='calendar'></div>
 								</div>
-							{% endfor %}
-							<h3>{{"pastloca"|trans }}</h3>
+								{% if pro.workDays is not empty %}
+									<div class="row my-3 d-flex justify-content-between">
+										<div class="col-4">
+											<h3>{{"deviswaiting"|trans}}</h3>
+											<div id="devisw">
+												{% for dev in devis %}
+													{% if dev.toValidate == 1 %}
+														<a href="{{path('devis_finalize', {'id': dev.id})}}" class="btn btn-primary me-3 my-1" id="dev-{{loop.index}}">{{"devde"|trans }}
+															{{dev.nom}}
+															{{dev.prenom}}</a>
+													{% endif %}
+												{% endfor %}
+											</div>
+										</div>
+										<div class="col-3 pull-left">
+											<h3>{{"devisnottak"|trans}}</h3>
+											{% for dev in unpicked %}
+												<div class="card m-2" id="dev-{{dev.id}}">
+													<div class="card-body">
+														<div class="d-flex justify-content-between align-items-center">
+															<div>
+																<div>{{"devde"|trans }}
+																	{{dev.nom}}
+																	{{dev.prenom}}</div>
+																<div>Contact :
+																	{{ dev.contactWithPhone ? dev.numero : dev.email }}</div>
+															</div>
+															<a class="btn btn-primary" data-bs-toggle="collapse" href="#devnpick-{{dev.id}}" role="button" aria-expanded="false" aria-controls="devnpick-{{dev.id}}">
+																<i class="bi bi-plus"></i>
+															</a>
+														</div>
+														<div class="collapse" id="devnpick-{{dev.id}}">
+															{{ dev.description }}
+															<btn id='pickdev-{{dev.id}}' class="btn btn-success">{{"pick"|trans}}</a>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+										</div>
+									</div>
+								{% endif %}
+
+								<div class="row">
+									<div class="col-6">
+										<h3>{{"workdays"|trans}}</h3>
+										{{form_start(workform)}}
+										{{ form_row(workform.days) }}
+										{{ form_rest(workform) }}
+										{{ form_end(workform) }}
+									</div>
+									{% if pro.prestatype is null %}
+										<div class="col-6">
+											<h3>{{"prestatype"|trans}}</h3>
+											{{form_start(prestype)}}
+											{{ form_row(prestype.type) }}
+											{{ form_rest(prestype) }}
+											{{ form_end(prestype) }}
+										</div>
+									{% endif %}
+								</div>
+							{% else %}
+								<div class="alert alert-warning">{{"notverified"|trans}}</div>
+							{% endif %}
+						</div>
+						{% if pro.services|length > 0 %}
+							<div class="tab-pane fade" id="v-pills-presta2" role="tabpanel" aria-labelledby="v-pills-presta2-tab" tabindex="0">
+								{% if pro is not null and pro.isVerified == 1 %}
+									<div class="row">
+										<div class="col-6">
+											<div class="card">
+												<div class="card-body">
+													<h5 class="card-title">{{'services'|trans }}</h5>
+													<canvas id="chartps"></canvas>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="card">
+												<div class="card-body h-100">
+													<h5 class="card-title">{{'prestanote'|trans }}
+														{{pro.avgNote}}</h5>
+													<canvas id="chartpn"></canvas>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row" id="u">
+										{% for anb in services %}
+											<div class="col-4">
+												<div class="card">
+													<div class="card-body">
+														<h5 class="card-title">{{'nbanb'|trans }}</h5>
+														<canvas id="chart-serv-{{loop.index}}"></canvas>
+													</div>
+												</div>
+											</div>
+										{% endfor %}
+									</div>
+								{% else %}
+									<div class="alert alert-warning">{{"notverified"|trans}}</div>
+								{% endif %}
+							</div>
+						{% endif %}
+						<div class="tab-pane fade" id="v-pills-presta3" role="tabpanel" aria-labelledby="v-pills-presta3-tab" tabindex="0">
+							{% if pro is not null and pro.isVerified == 1 %}
+								<h1>Services</h1>
+								<a href="{{ path('create_service') }}" class="btn btn-primary">{{"new"|trans}}</a>
+								<div class="row">
+									{% for service in services %}
+										<div class="col-3 my-3">
+											<div class="card">
+												<div class="card-body">
+													<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+														<div class="splide__track">
+															<ul class="splide__list">
+																{% for img in service.images %}
+																	<li class="splide__slide"><img src="{{asset("images/services/"~img)}}" class="card-img-top" alt="..."></li>
+																{% endfor %}
+															</ul>
+														</div>
+													</div>
+													<h5 class="card-title">{{ service.titre }}</h5>
+													<div class="btn-group">
+														<a href="{{ path('spec_service', {'id': service.id}) }}" class="btn btn-primary">{{'see'|trans}}</a>
+														<a href="{{ path('service_modify', {'id': service.id}) }}" class="btn btn-warning">{{'modify'|trans}}</a>
+														<a href="{{ path('service_delete', {'id': service.id}) }}" class="btn btn-danger">{{'delete'|trans}}</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div class="alert alert-warning">{{"notverified"|trans}}</div>
+							{% endif %}
+						</div>
+					{% endif %}
+					{% if is_granted("ROLE_VOYAGEUR") %}
+						<div class="tab-pane fade" id="v-pills-loca" role="tabpanel" aria-labelledby="v-pills-loca-tab" tabindex="0">
+							<h2>{{'loca'|trans }}</h2>
+							<h3>{{"futureloca"|trans }}</h3>
 							<div class="row d-flex justify-content-around">
-								{% for location in pastlocations %}
+								{% for location in locations %}
 									<div class="col-4 my-2">
-										<div class="card past">
+										<div class="card">
 											<div class="card-header">
 												<div class="splide" role="group" aria-label="Splide Basic HTML Example">
 													<div class="splide__track">
 														<ul class="splide__list">
 															{% for img in location.appartement.images %}
-																<li class="splide__slide"><img src="{{asset("images/appartements/"~img)}}" class="card-img-top" alt="..."></li>
+																<li class="splide__slide"><img src="{{asset("images/appartements/"~ img )}}" class="card-img-top" alt="..."></li>
 															{% endfor %}
 														</ul>
 													</div>
@@ -551,7 +541,10 @@
 															<span class=" col-3"></span>
 														</div>
 														<div class="d-flex justify-content-between">
-															<span class="text-dark">{{location.appartement.city}} - {{location.appartement.country}} </span>
+															<span class="text-dark">{{location.appartement.city}}
+																-
+																{{location.appartement.country}}
+															</span>
 															<span class="">{{location.price }}
 																€</span>
 														</div>
@@ -561,32 +554,73 @@
 										</div>
 									</div>
 								{% endfor %}
+								<h3>{{"pastloca"|trans }}</h3>
+								<div class="row d-flex justify-content-around">
+									{% for location in pastlocations %}
+										<div class="col-4 my-2">
+											<div class="card past">
+												<div class="card-header">
+													<div class="splide" role="group" aria-label="Splide Basic HTML Example">
+														<div class="splide__track">
+															<ul class="splide__list">
+																{% for img in location.appartement.images %}
+																	<li class="splide__slide"><img src="{{asset("images/appartements/"~img)}}" class="card-img-top" alt="..."></li>
+																{% endfor %}
+															</ul>
+														</div>
+													</div>
+												</div>
+												<a href="{{path("location_info", {id:location.id} ) }}" class="text-decoration-none">
+													<div class="card-body">
+														<h4>{{location.appartement.shortDesc }}</h4>
+														<small class="text-dark placeholder-glow">
+															<div class="d-flex justify-content-between">
+																<span class="">{{location.dateDebut|date("d-m-Y")}}
+																	-
+																	{{location.dateFin|date("d-m-Y")}}</span>
+																<span class=" col-3"></span>
+															</div>
+															<div class="d-flex justify-content-between">
+																<span class="text-dark">{{location.appartement.city}}
+																	-
+																	{{location.appartement.country}}
+																</span>
+																<span class="">{{location.price }}
+																	€</span>
+															</div>
+														</small>
+													</div>
+												</a>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
 							</div>
 						</div>
-					</div>
-				{% endif %}
-				{% if tickets|length > 0 %}
-					<div class="tab-pane fade col-5" id="v-pills-tick" role="tabpanel" aria-labelledby="v-pills-tick-tab" tabindex="0">
-					<h2> {{"tickets"|trans}}</h2>
-						{% for ticket in tickets %}
-							<div class="card my-2">
-								<div class="card-header d-flex justify-content-between">
-									<div>{{ ticket.titre }}</div>
-									<div>{{ ticket.dateOuverture|date("d/m/Y") }}</div>
+					{% endif %}
+					{% if tickets|length > 0 %}
+						<div class="tab-pane fade col-5" id="v-pills-tick" role="tabpanel" aria-labelledby="v-pills-tick-tab" tabindex="0">
+							<h2>
+								{{"tickets"|trans}}</h2>
+							{% for ticket in tickets %}
+								<div class="card my-2">
+									<div class="card-header d-flex justify-content-between">
+										<div>{{ ticket.titre }}</div>
+										<div>{{ ticket.dateOuverture|date("d/m/Y") }}</div>
+									</div>
+									<div class="card-body">
+										{{ ticket.description }}
+									</div>
+									<div class="card-footer">
+										{{ constant("STATUS_LIST",ticket)[ticket.status]|trans }}
+									</div>
 								</div>
-								<div class="card-body">
-									{{ ticket.description }}
-								</div>
-								<div class="card-footer">
-									{{ constant("STATUS_LIST",ticket)[ticket.status]|trans }}
-								</div>
-							</div>
-						{% endfor %}
-					</div>
-				{% endif %}
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
 			</div>
-		</div>
-	{% endblock %}
+		{% endblock %}
 {% block javascripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>

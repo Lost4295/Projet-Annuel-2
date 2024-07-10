@@ -49,6 +49,11 @@ class ConnexionController extends AbstractController
                 $this->addFlash("danger", "errorabt");
                 $this->createErrorTicket();
             }
+            $userExists = $this->em->getRepository(User::class)->findOneBy(["email" => $form->get('email')->getData()]);
+            if ($userExists) {
+                $this->addFlash("danger", "erroruser");
+                return $this->redirectToRoute('login');
+            }
             $user->setEmail($form->get('email')->getData());
             $user->setNom($form->get('nom')->getData());
             $user->setAbonnement($g);
@@ -77,18 +82,19 @@ class ConnexionController extends AbstractController
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('toto@titi.com', 'Administrateur Site')) //FIXME À changer
+                    ->from(new Address('contact@pariscaretakerservices.fr', 'Paris Caretaker Services')) 
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Merci de confirmer votre email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
 
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
+            // return $userAuthenticator->authenticateUser(
+            //     $user,
+            //     $authenticator,
+            //     $request
+            // );
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -121,7 +127,7 @@ class ConnexionController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'verified');
+        $this->addFlash('success', 'uverified');
 
         return $this->redirectToRoute('app_register');
     }
@@ -158,7 +164,7 @@ class ConnexionController extends AbstractController
             // the title visible above the login form (define this option only if you are
             // rendering the login template in a regular Symfony controller; when rendering
             // it from an EasyAdmin Dashboard this is automatically set as the Dashboard title)
-            'page_title' => 'Connexion',
+            'page_title' => 'login',
 
             // the string used to generate the CSRF token. If you don't define
             // this parameter, the login form won't include a CSRF token

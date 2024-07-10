@@ -74,14 +74,10 @@ class UserAuthenticator extends AbstractAuthenticator
         }
         //For example:
         $url = $this->getTargetPath($request->getSession(), 'secured_area');
-        dump($url);
         $url = $this->getTargetPath($request->getSession(), 'secured_area') ?? $this->getTargetPath($request->getSession(), 'main') ;
-        dump($url);
         if (!$url) {
             $url = $this->urlGenerator->generate('index');
             }
-        dd($url);
-
         return new RedirectResponse($url);
         //return parent::onAuthenticationSuccess($request, $token);
 

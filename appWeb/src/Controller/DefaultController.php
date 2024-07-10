@@ -30,10 +30,6 @@ class DefaultController extends AbstractController
             $this->addFlash('warning', "plsverif");
         }
 
-        $connected = $request->query->get('e', null);
-        if ($connected) {
-            $this->addFlash('danger', "unauthorized");
-        }
         $paid = $request->query->get('c', null);
         $uid = null;
         $loca = null;
@@ -67,7 +63,7 @@ class DefaultController extends AbstractController
                     $factu->setPath($path[1]);
                     $em->persist($factu);
                 } else {
-                    $this->addFlash('danger', "Échec de la génération de la facture.");
+                    $this->addFlash('danger', "errgeneratinginvoice");
                     
                 }
                 $em->persist($loca);
@@ -98,7 +94,6 @@ class DefaultController extends AbstractController
 
 
 
-    #[Route("/cookies", name: "cookies")]
     #[Route("/ventes", name: "ventes")]
     #[Route("/privacy", name: "privacy")]
     #[Route("/terms", name: "terms")]
@@ -107,17 +102,16 @@ class DefaultController extends AbstractController
     public function legals(Request $request)
     {
         $name = $request->attributes->get("_route");
-        $route = "legal/" . $name . ".html.twig";
+        $route = "legal/$name.html.twig";
         return $this->render($route);
     }
 
     #[Route("/faq", name: "faq")]
     #[Route("/contact", name: "contact")]
-    #[Route("/pricing", name: "pricing")]
     public function contact(Request $request)
     {
         $name = $request->attributes->get("_route");
-        $route = "info/" . $name . ".html.twig";
+        $route = "info/$name.html.twig";
         return $this->render($route);
     }
     

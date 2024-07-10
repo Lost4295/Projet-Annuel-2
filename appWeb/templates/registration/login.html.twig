@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{page_title}}
+	{{page_title|trans}}
 {% endblock %}
 
 {% block body %}
@@ -17,7 +17,7 @@
 	{% endif %}
 	<div class="row d-flex justify-content-center">
 		<div class="col-md-6">
-			<h1 class="h3 mb-3 font-weight-normal">{{page_title}}</h1>
+			<h1 class="h3 mb-3 font-weight-normal">{{page_title |trans}}</h1>
 			<div class="card bg-info">
 				<div class="card-body">
 					<form action="{{ path('login') }}" method="post">

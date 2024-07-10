@@ -3,6 +3,8 @@ package com.example.android.ui.data
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.findNavController
@@ -24,6 +26,11 @@ class LoginDataSource {
 
     fun login(username: String, password: String, context: Context, view: View): Result<LoggedInUser> {
         try {
+            val usernameEditText = view.findViewById<TextView>(R.id.username)
+            val passwordEditText = view.findViewById<TextView>(R.id.password)
+            val loginButton = view.findViewById<Button>(R.id.login)
+            val loadingProgressBar = view.findViewById<ProgressBar>(R.id.loading)
+
             // TODO: handle loggedInUser authentication
             var queue = Volley.newRequestQueue(context)
             var token = ""
@@ -60,6 +67,10 @@ class LoginDataSource {
                             editor.putString("abonnement", cur_jso.getString("abonnement"))
                             editor.putString("namer", cur_jso.getString("name"))
                             editor.apply()
+                            loadingProgressBar.visibility = View.GONE
+                            usernameEditText.visibility = View.VISIBLE
+                            passwordEditText.visibility = View.VISIBLE
+                            loginButton.isEnabled = false
                             Toast.makeText(context, "Bienvenue sur le site de PCS, $realusername !", Toast.LENGTH_LONG).show()
                             view.findNavController().navigate(R.id.nav_home)
 
@@ -123,6 +134,10 @@ class LoginDataSource {
                     }
                     //Log.e("herhe", error.toString())
                     //Log.e("herhem", String(error.networkResponse.data, charset("UTF-8")))
+                    loadingProgressBar.visibility = View.GONE
+                    usernameEditText.visibility = View.VISIBLE
+                    passwordEditText.visibility = View.VISIBLE
+                    loginButton.isEnabled = true
                 }
             )
 

@@ -170,7 +170,7 @@ class UserType extends AbstractType
                         'max' => 4096,
                     ]),
                     new PasswordStrength([
-                        'minScore' => 2,
+                        'minScore' => 1,
                         'message' => 'Your password is too easy to guess. Company\'s security policy requires to use a stronger password.'
                     ]),
                 ],
