@@ -304,4 +304,6 @@ class Devis
 
         return $this;
     }
+
+
 }

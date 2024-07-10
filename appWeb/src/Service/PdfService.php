@@ -126,4 +126,38 @@ class PdfService
         $factor = floor((strlen($bytes) - 1) / 3);
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
     }
+
+    public function generateMonthlyDevisPdf(array $invoices, User $user): array
+    {
+        // Configure DomPDF according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->twig->render('templates/invoicefinal.html.twig', [
+            'invoices' => $invoices,
+            'user' => $user,
+            'month' => new \DateTime('first day of this month'),
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Generate a unique filename and save the PDF
+        $filename = 'Devis_' . uniqid() . '.pdf';
+        $outputPath = __DIR__ . '/../../public/files/pdfs/' . $filename;
+        file_put_contents($outputPath, $dompdf->output());
+
+        // Return the path to the saved PDF
+        return [$outputPath, $filename];
+    }
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Final Devis</title>
+        <style>
+            body { font-family: Arial, sans-serif; }
+            .invoice-box { width: 100%; border-collapse: collapse; }
+            .invoice-box td, .invoice-box th { border: 1px solid #ddd; padding: 8px; }
+            .invoice-box tr:nth-child(even){ background-color: #f2f2f2; }
+            .invoice-box tr:hover { background-color: #ddd; }
+            .invoice-box th { padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #031926; color: white; }
+        </style>
+    </head>
+    <body>
+        <h1>Facture du mois pour {{ user.prenom }} {{user.nom}}- {{ month|date('F Y') }}</h1>
+        <table class="invoice-box">
+            <tr>
+                <th>Date</th>
+                <th>Nom</th>
+                <th>Prix</th>
+            </tr>
+            {% set total = 0 %}
+            {% for devi in devis %}
+            {% set total = total + devis.price %}
+                <tr>
+                    <td>{{ devis.startDate}}</td>
+                    <td>{{devis.prix }}€</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>{{ 'Total'|trans }}</td>
+                <td></td>
+                <td>{{ total }}€</td>
+            </tr>
+        </table>
+    </body>
+</html>
