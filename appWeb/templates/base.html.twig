@@ -107,7 +107,8 @@
 						</div>
 					</div>
 				</nav>
-				<main class="container-fluid mb-5 pb-5">
+				<main class="container-fluid mb-5 pb-5">{{dump( app.user)}}
+				{{dump( app.user.abonnement.nom == "Gratuit")}}
 						{% if app.user is null or app.user.abonnement.nom == "Gratuit" %}
 							<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039903955084566"
 							     crossorigin="anonymous"></script>
