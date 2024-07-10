@@ -2,7 +2,7 @@ FROM ubuntu:20.04 AS base
 
 WORKDIR /home/docker
 RUN apt-get update && \
-apt-get install -y openssl shellinabox && apt-get clean
+apt-get install -y openssl shellinabox python3 && apt-get clean
 
 CMD [ "shellinaboxd", "-t" ]
 FROM base AS dev

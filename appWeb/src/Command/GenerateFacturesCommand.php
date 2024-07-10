@@ -2,7 +2,10 @@
 
 namespace App\Command;
 
+use App\Entity\Fichier;
+use App\Entity\Professionnel;
 use App\Entity\User;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,19 +22,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class GenerateFacturesCommand extends Command
 {
+    private $pdf;
     private $em;
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, PdfService $pdf)
     {
+        $this->pdf = $pdf;
         $this->em = $em;
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -40,11 +37,39 @@ class GenerateFacturesCommand extends Command
         $io->info('Start generating factures');
 
         // Get all clients
-        $bailleurs = $this->em->getRepository(User::class)->findBaileurs();
-        foreach ($bailleurs as $bailleur) {
-            //créer une facture pour chaque bailleur avec DomPDF
-        }
+        $clients = $this->em->getRepository(User::class)->findAll();
 
+        foreach ($clients as $client) {
+            if ($client->hasRole("ROLE_VOYAGEUR")) {
+                $data = $this->pdf->generateMonthlyPdf($client->getLocations()->toArray(), $client);
+                $file = new Fichier();
+                $date = new \DateTime();
+                $file->setDate($date);
+                $file->setNom("Factures du mois " . $date->format('m/Y'));
+                $file->setType('location');
+                if (file_exists($data[0])) {
+                    $file->setSize(PdfService::human_filesize(filesize($data[0])));
+                    $file->setPath($data[1]);
+                }
+                $file->setUser($client);
+                $this->em->persist($file);
+            } else {
+                $resp = $this->em->getRepository(Professionnel::class)->findOneBy(['responsable' => $client]);
+                $data = $this->pdf->generateMonthlyDevisPdf($resp->getDevis()->toArray(), $client);
+                $file = new Fichier();
+                $date = new \DateTime();
+                $file->setDate($date);
+                $file->setNom("Devis du mois " . $date->format('m/Y'));
+                $file->setType('devis');
+                if (file_exists($data[0])) {
+                    $file->setSize(PdfService::human_filesize(filesize($data[0])));
+                    $file->setPath($data[1]);
+                }
+                    $file->setUser($client);
+                    $this->em->persist($file);
+            }
+        }
+        $this->em->flush();
         return Command::SUCCESS;
     }
 }

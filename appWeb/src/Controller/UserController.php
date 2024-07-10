@@ -106,14 +106,21 @@ class UserController extends AbstractController
         $invoce->handleRequest($request);
 
         if ($invoce->isSubmitted() && $invoce->isValid() && $invoce->get('valider')->isClicked()) {
-            $invoices = $em->getRepository(Location::class)->findMonthlyInvoicesByUser($user, new \DateTime('first day of ' . $invoce->getData()['mois']), new \DateTime('last day of ' . $invoce->getData()['mois']));
-            if (empty($invoices)) {
-                $this->addFlash('warning', 'No invoices found for this month.');
-                return $this->redirectToRoute('profile');
+            if ($user->hasRole(User::ROLE_BAILLEUR) || $user->hasRole(User::ROLE_PRESTA)) {
+                $devis = $em->getRepository(Devis::class)->findBy(["user" => $user, "isOk" => true]);
+                $path = $pdf->generateMonthlyDevisPdf($devis, $user);
+                // Redirect 
+                return $this->file($path[0]);
+            } else {
+                $invoices = $em->getRepository(Location::class)->findMonthlyInvoicesByUser($user, new \DateTime('first day of ' . $invoce->getData()['mois']), new \DateTime('last day of ' . $invoce->getData()['mois']));
+                if (empty($invoices)) {
+                    $this->addFlash('warning', 'No invoices found for this month.');
+                    return $this->redirectToRoute('profile');
+                }
+                $path = $pdf->generateMonthlyPdf($invoices, $user);
+                // Redirect or display the PDF
+                return $this->file($path[0]);
             }
-            $path = $pdf->generateMonthlyPdf($invoices, $user);
-            // Redirect or display the PDF
-            return $this->file($path);
         }
         if ($user->hasRole(User::ROLE_VOYAGEUR)) {
             $locations = $em->getRepository(Location::class)->findBy(["locataire" => $user->getId()]);

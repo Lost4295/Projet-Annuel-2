@@ -87,7 +87,7 @@ class PdfService
         // Return the path to the saved PDF
         return [$outputPath, $filename];
     }
-    public function generateMonthlyPdf(array $invoices, User $user): string
+    public function generateMonthlyPdf(array $invoices, User $user): array
     {
         // Configure DomPDF according to your needs
         $pdfOptions = new Options();

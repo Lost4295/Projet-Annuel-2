@@ -129,8 +129,7 @@ class CheckInFragment : Fragment() {
                 if (data == "NOK") {
                     Toast.makeText(requireContext(), "Location non trouvée", Toast.LENGTH_LONG).show()
                     findNavController().navigate(R.id.nav_home)
-                }
-
+                } else {
                 load.visibility = View.GONE
                 prog.visibility = View.GONE
                 ll.visibility = View.VISIBLE
@@ -155,7 +154,7 @@ class CheckInFragment : Fragment() {
                         findNavController().navigate(R.id.nav_home)
 
                     }
-                }
+                }}
             },
             Response.ErrorListener { error ->
                 if (error.networkResponse != null) {
@@ -183,7 +182,8 @@ class CheckInFragment : Fragment() {
             }
         };
         queue.add(req)
-    }}
+            }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
